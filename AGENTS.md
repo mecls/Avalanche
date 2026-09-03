@@ -59,8 +59,28 @@ Only three: `nav`, `track-record`, `case-study-grid`.
   destination.
 - **`accent` keys in `content/copy.ts` are ignored.** They drove a gold italic
   motif that the current design doesn't have. Kept, not rendered.
-- **The hero video stops at 9.3s.** The master hard-cuts into a bright plate at
-  9.59s. Re-check the luma profile before changing the trim or the source.
+- **The hero encoder settings look wrong and are measured.** crf 31 / VP9 46 is
+  high because the sun's specular glitter on the water changes every frame and
+  drives the whole bitrate — at crf 27 the clip is 4.16MB. VP9 is offered first
+  in the markup, so it has to actually be the smaller file; there is no
+  portable crf for it, and across this hero's sources it has ranged 32 to 46.
+  Compare the two sizes the script prints after touching either encoder.
+  `gradfun` is load-bearing: the frame is mostly one huge sky gradient.
+- **The hero scrim is a 5-stop gradient, not a wash, and is clip-specific.**
+  Stops come from measured per-band luma and from what each band's text needs
+  for AA, so **re-derive them when you swap the source**. Two anchors are
+  deliberate: the second stop uses `--header-h` so the dark band tracks the
+  header, and the lower stops are anchored to the *bottom*, because the text
+  block is bottom-pinned and a percentage trough drifts up under the eyebrow on
+  a short window. Worked through in `hero.tsx` and the README.
+- **Every text run in the hero is `fg`, never `fg-muted`/`fg-faint`.** One
+  rule, not five exceptions. The muted tokens are calibrated for flat grounds;
+  on a photograph contrast has to be measured against the brightest column each
+  run crosses, and there `#a3a3ae` lands at 1.8–3.7:1. Do not "restore" them.
+- **Section padding is capped at 5.5rem, not 8rem.** It was lowered so the
+  hero's client strip and the Track Record band fit on one screen together —
+  the constraint is `stripH + bandH <= 100dvh - --header-h`. Raising it breaks
+  that.
 - **Client logos are pre-processed to white-on-transparent** by
   `scripts/logos-to-alpha.mjs`. `logo-marquee.tsx` and `logo-grid.tsx` both
   assume this — do not add a blend mode to compensate for something. Re-run the

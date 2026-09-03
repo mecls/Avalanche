@@ -121,9 +121,33 @@ Full-bleed background behind the headline. `components/sections/hero.tsx` is a *
 node scripts/optimize-hero-video.mjs [path/to/source.mp4]
 ```
 
-It trims, strips audio and the stray timecode stream, and emits `hero.mp4` (720p h264), `hero.webm` (VP9) and `hero-poster.webp` — about 1.5MB for the set, down from a 17.8MB master.
+It strips audio and any stray data streams, downscales, debands, and emits `hero.mp4` (h264), `hero.webm` (VP9) and `hero-poster.webp`.
 
-**The trim is not arbitrary.** The master runs 15.4s but hard-cuts at 9.59s into a bright, blown-out window shot — measured with `signalstats`, mean luma jumps 60 → 152 and stays there. On a black page that reads as a strobe every time the loop wraps. The encode stops at 9.3s. If you swap the source video, re-check its luma profile before assuming the same cut point.
+**The current source is a 2560×1440 / 13.8Mbps master** — a wide, backlit view of the full span of the Ponte 25 de Abril with the sun high over the Tagus. It is clean, so the script only downscales to 1600, debands, and encodes. Two things it does *not* do are worth knowing, because both were needed by earlier sources and would be wrong here:
+
+- **No restoration.** An earlier clip was only available as a 608×320 stock preview, so the script ran `hqdn3d` → `lanczos` → `unsharp` → `gradfun` to clean, enlarge and re-crisp it before `object-cover` magnified the artifacts. Denoising a 13.8Mbps master instead destroys real detail to fix artifacts that aren't there.
+- **No debar.** Another master shipped letterboxed — a 2020-tall picture inside a 2160-tall container. Run `cropdetect` on any new source rather than assuming.
+
+Both are in the git history if a future source needs them.
+
+**`gradfun` is not optional on this clip.** Most of the frame is one enormous smooth sky gradient running out of a blown highlight, which is the textbook case for 8-bit banding. With it the gradient holds clean at 1.5× nearest-neighbour zoom.
+
+**The rates look high (crf 31 / VP9 46) and are deliberate.** The sun's specular path on the water is a field of fine glitter that changes completely every frame — it is enormously expensive and it alone drives the bitrate. At crf 27 this clip encodes to 4.16MB. Light denoise was tried to tame it and lost, costing more in detail than it saved in bits. VP9 does especially badly here: at crf 40 it is 3.54MB against the mp4's 2.18MB. Since VP9 is offered *first* in the markup it has to actually be the smaller file, so **always compare the two printed sizes after changing the source or either encoder** — there is no portable crf, and across the sources this hero has carried it has ranged from 32 to 46.
+
+**The whole 15s ships.** Mean luma is flat at 118.0–118.6 end to end with no cut, so the loop wraps invisibly. An earlier source had to be trimmed at 9.3s because it hard-cut into a blown plate and strobed on every wrap — measure a new source with `signalstats` rather than assuming.
+
+### The hero scrim
+
+Not a uniform wash. It is a five-stop vertical gradient whose stops are derived from measured per-band luma and from what each band's text needs for AA, and **it has to be re-derived when the source changes** — these numbers are specific to this clip.
+
+Two structural details that will bite anyone moving it:
+
+- The second stop is anchored to `var(--header-h)`, not a percentage, so the dark band tracks the header instead of riding up above the announcement strip on a short window.
+- The lower stops are anchored to the **bottom** (`calc(100% - 620px)`), because the text block is bottom-pinned by `justify-end`. Its distance from the foot is fixed while its percentage position slides with the viewport, so a percentage trough drifts up under the eyebrow on a short window and drops it below AA.
+
+**Every text run in the hero is `fg`** — none is `fg-muted` or `fg-faint` as it would be anywhere else. That is one rule, not five exceptions. The muted tokens are calibrated against the flat grounds in `globals.css`, where the background is one known colour; here it is a photograph, so contrast is measured against the *brightest column each run crosses*, not the mean beneath it. This clip's sun reflection is blown to (253,254,251) and drifts under the text, which puts `#a3a3ae` at 1.8–3.7:1, and 2.3:1 on mobile where the crop lands squarely on the sun path. Holding those at AA with the scrim instead would need ~0.78 alpha across the text band, flattening the shot into a grey wash. White clears every run at 5.6:1 or better with the scrim at 0.60.
+
+Verified by compositing the real decoded frames against the real gradient at nine timestamps, on desktop and at a 390px viewport: all runs pass, tightest 4.7:1.
 
 ## Logos
 

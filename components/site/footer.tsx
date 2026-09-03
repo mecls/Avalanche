@@ -8,7 +8,7 @@ export function SiteFooter() {
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
             <p className="display text-3xl">
-              {site.shortName}
+              {site.name}
               <span className="text-fg-faint">.</span>
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-fg-muted">

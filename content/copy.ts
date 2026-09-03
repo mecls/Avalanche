@@ -15,7 +15,6 @@
 
 export const site = {
   name: "Avalanche Capital",
-  shortName: "Avalanche",
   tagline: "Private capital advisory with an edge",
   description:
     "Private capital advisory for funds, founders, and operating companies. Exposure to the right capital sources, the right mandates, and the right counterparties.",

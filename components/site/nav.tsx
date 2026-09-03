@@ -141,7 +141,7 @@ export function SiteNav() {
           className="display text-xl tracking-tight text-fg"
           aria-label={`${site.name} home`}
         >
-          {site.shortName}
+          {site.name}
           <span className="text-fg-faint">.</span>
         </Link>
 

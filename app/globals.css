@@ -173,8 +173,17 @@ body {
   letter-spacing: -0.025em;
 }
 
+/* Section rhythm. The cap was 8rem, which put 256px of padding into every
+   band and meant no section on the site could share a screen with its
+   neighbour — the hero's client strip scrolled away before Track Record was
+   readable. 5.5rem holds the same rhythm and buys back 80px a section.
+
+   The target this was set against: the fixed header is --header-h tall and
+   covers the top of the page, so a band and the hero's client strip share a
+   screen only if stripH + bandH <= 100dvh - --header-h. Track Record is the
+   tallest band that has to clear it. */
 @utility section-y {
-  padding-block: clamp(4rem, 8vw, 8rem);
+  padding-block: clamp(3.5rem, 6vw, 5.5rem);
 }
 
 @utility shell {
