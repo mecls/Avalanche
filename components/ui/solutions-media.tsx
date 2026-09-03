@@ -1,9 +1,10 @@
 /**
  * The two diagrams inside the /solutions media cards.
  *
- * These REPLACED public/solutions/{secondaries,fundraising}.webp, which were
- * 1760px raster plates. Three things were wrong with those, and all three are
- * structural rather than matters of taste:
+ * These REPLACED public/solutions/{secondaries,fundraising}.webp, a pair of
+ * 1760px raster plates — now deleted, recoverable from commit d797028^. Three
+ * things were wrong with them, and all three were structural rather than
+ * matters of taste:
  *
  *  1. They carried a BLUE accent (#2d6a9f-ish) that appears nowhere else on
  *     this site. The palette has exactly one accent and it is gold.

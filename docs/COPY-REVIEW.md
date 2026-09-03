@@ -134,8 +134,8 @@ generic sector names, no real counterparties, no figures.
 
 These replaced `public/solutions/{secondaries,fundraising}.webp`, which carried
 a blue accent found nowhere else on the site and rendered soft at display size.
-**Those two files are now unreferenced** — 55KB still sitting in `public/`.
-Delete them if you don't want them, or say so and I will.
+Both files have been **deleted** — they are recoverable from `d797028^` if the
+old artwork is ever wanted back.
 
 **If you have real screenshots** — an actual matching view, a real segmentation
 screen — they would beat either of these, and swapping one in is a per-card
