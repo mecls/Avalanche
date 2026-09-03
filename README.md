@@ -145,6 +145,12 @@ Two structural details that will bite anyone moving it:
 - The second stop is anchored to `var(--header-h)`, not a percentage, so the dark band tracks the header instead of riding up above the announcement strip on a short window.
 - The lower stops are anchored to the **bottom** (`calc(100% - 620px)`), because the text block is bottom-pinned by `justify-end`. Its distance from the foot is fixed while its percentage position slides with the viewport, so a percentage trough drifts up under the eyebrow on a short window and drops it below AA.
 
+### Scale
+
+Display type is deliberately large — h1 84px, section h2 52px, stat figures 72px — and section padding is capped at 4.5rem rather than 8rem. Both were set together against a reference where the type carries the page and the padding stays out of the way. The height the larger type needs was taken out of section padding and gaps, **not** out of the cells, which is what keeps the hero's client strip and the Track Record band on one screen together (`stripH + bandH <= 100dvh - --header-h`, clearing by 8px today).
+
+The hero's client strip sits inside `shell`, so its rule and logos align with the headline and CTA row instead of running full-bleed. `LogoMarquee` needs its `overflow-hidden` for that: the scrolling row is several times wider than its box and `mask-image` defaults to `mask-repeat: repeat`, so without clipping the fade gradient tiles and the strip reads as a few logos with holes between them.
+
 **Every text run in the hero is `fg`** — none is `fg-muted` or `fg-faint` as it would be anywhere else. That is one rule, not five exceptions. The muted tokens are calibrated against the flat grounds in `globals.css`, where the background is one known colour; here it is a photograph, so contrast is measured against the *brightest column each run crosses*, not the mean beneath it. This clip's sun reflection is blown to (253,254,251) and drifts under the text, which puts `#a3a3ae` at 1.8–3.7:1, and 2.3:1 on mobile where the crop lands squarely on the sun path. Holding those at AA with the scrim instead would need ~0.78 alpha across the text band, flattening the shot into a grey wash. White clears every run at 5.6:1 or better with the scrim at 0.60.
 
 Verified by compositing the real decoded frames against the real gradient at nine timestamps, on desktop and at a 390px viewport: all runs pass, tightest 4.7:1.

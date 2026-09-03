@@ -132,10 +132,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* The hero footage is warm and amber; the palette is neutral. Pulling the
-   saturation down sits it in the same world without regrading the file. */
+/* Sits the footage in a neutral palette without regrading the file. This was
+   saturate(0.5), set against a warm amber clip that needed pulling back hard.
+   The current source is a backlit, already low-chroma shot, and at 0.5 it went
+   flat grey — the sky and the warm horizon both disappeared. 0.92 keeps it
+   restrained without draining it. Re-judge this when the footage changes. */
 .hero-video {
-  filter: saturate(0.5) contrast(1.02);
+  filter: saturate(0.92) contrast(1.03);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -176,14 +179,15 @@ body {
 /* Section rhythm. The cap was 8rem, which put 256px of padding into every
    band and meant no section on the site could share a screen with its
    neighbour — the hero's client strip scrolled away before Track Record was
-   readable. 5.5rem holds the same rhythm and buys back 80px a section.
+   readable. 4.5rem holds the same rhythm and buys back 112px a section, which is
+   also what pays for the larger display sizes the bands now carry.
 
    The target this was set against: the fixed header is --header-h tall and
    covers the top of the page, so a band and the hero's client strip share a
    screen only if stripH + bandH <= 100dvh - --header-h. Track Record is the
    tallest band that has to clear it. */
 @utility section-y {
-  padding-block: clamp(3.5rem, 6vw, 5.5rem);
+  padding-block: clamp(3.25rem, 5.5vw, 4.5rem);
 }
 
 @utility shell {

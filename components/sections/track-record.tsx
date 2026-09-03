@@ -90,14 +90,14 @@ function Stat({
   const n = useCountUp(to, run);
 
   return (
-    <BracketCell index={index} minH="min-h-[11rem] lg:min-h-[12rem]" className={className}>
-      <p className="display text-[clamp(2.5rem,4.6vw,3.5rem)] tabular-nums">
+    <BracketCell index={index} minH="min-h-[12rem] lg:min-h-[13rem]" className={className}>
+      <p className="display text-[clamp(2.75rem,5.2vw,4.5rem)] tabular-nums">
         {prefix}
         {n.toFixed(decimals)}
         {suffix}
       </p>
 
-      <p className="mt-auto max-w-[15rem] pt-6 text-sm leading-snug text-fg-muted">
+      <p className="mt-auto max-w-[16rem] pt-6 text-[0.9375rem] leading-snug text-fg-muted">
         {label}
       </p>
     </BracketCell>
@@ -179,7 +179,7 @@ export function TrackRecord({
     return (
       <section ref={ref} className="section-y bg-ground-deep">
         <div className="shell">
-          <h2 className="display text-[clamp(1.875rem,4vw,2.75rem)] text-balance sm:text-right">
+          <h2 className="display text-[clamp(2rem,4.4vw,3.25rem)] text-balance sm:text-right">
             {trackRecord.title}
           </h2>
 
@@ -208,7 +208,7 @@ export function TrackRecord({
             3+3 above, 2+2+2 below — so one grid does the whole thing. At the
             2-column breakpoint five cells would leave a ragged half-row, so
             the last one spans the full width there. */}
-        <BracketGrid className="mt-10 sm:mt-12 lg:[&>div:first-child]:grid-cols-6">
+        <BracketGrid className="mt-8 sm:mt-10 lg:[&>div:first-child]:grid-cols-6">
           {trackRecord.stats.map((s, i) => (
             <Stat
               key={s.label}
@@ -222,7 +222,7 @@ export function TrackRecord({
           ))}
         </BracketGrid>
 
-        <div className="mt-7 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
           <CtaButton href="#get-in-touch">{trackRecord.cta}</CtaButton>
           <p className="flex items-center gap-2.5 text-[0.8125rem] text-fg-faint">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-live" />

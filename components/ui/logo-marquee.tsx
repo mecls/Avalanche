@@ -37,8 +37,15 @@ export function LogoMarquee({
 
   return (
     <div
-      className={`relative flex select-none ${className}`}
-      // fade the strip out at both edges
+      className={`relative flex select-none overflow-hidden ${className}`}
+      // Fade the strip out at both edges.
+      //
+      // `overflow-hidden` is load-bearing, not tidiness: the scrolling row is
+      // several times wider than this box, and a mask-image defaults to
+      // mask-repeat: repeat. Without clipping, the gradient TILES across the
+      // overflow and the strip reads as a few logos with holes between them
+      // rather than a continuous run. It went unnoticed while this box was the
+      // full viewport width, because the first tile covered all of it.
       style={{
         maskImage:
           "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)",

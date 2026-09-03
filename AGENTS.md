@@ -77,10 +77,21 @@ Only three: `nav`, `track-record`, `case-study-grid`.
   rule, not five exceptions. The muted tokens are calibrated for flat grounds;
   on a photograph contrast has to be measured against the brightest column each
   run crosses, and there `#a3a3ae` lands at 1.8–3.7:1. Do not "restore" them.
-- **Section padding is capped at 5.5rem, not 8rem.** It was lowered so the
+- **Section padding is capped at 4.5rem, not 8rem.** It was lowered so the
   hero's client strip and the Track Record band fit on one screen together —
-  the constraint is `stripH + bandH <= 100dvh - --header-h`. Raising it breaks
-  that.
+  the constraint is `stripH + bandH <= 100dvh - --header-h`, and it currently
+  clears by 8px. Raising it breaks that, and so does growing the display sizes
+  without taking the height back out of padding or gaps.
+- **Display type is deliberately large.** h1 84px, section h2 52px, the stat
+  figures 72px. The band was rebuilt against a reference where the type does
+  the work and the padding does not; the height for it came out of section
+  padding and gaps, not out of the cells. If you shrink these you are undoing
+  the point.
+- **The hero client strip sits INSIDE `shell`.** Its rule and logos align with
+  the headline and CTA row rather than running full-bleed. `logo-marquee.tsx`
+  needs its `overflow-hidden` for this: the scrolling row is far wider than the
+  box and `mask-image` defaults to `mask-repeat: repeat`, so without clipping
+  the fade gradient tiles and the strip reads as a few logos with holes.
 - **Client logos are pre-processed to white-on-transparent** by
   `scripts/logos-to-alpha.mjs`. `logo-marquee.tsx` and `logo-grid.tsx` both
   assume this — do not add a blend mode to compensate for something. Re-run the

@@ -100,7 +100,7 @@ export default function CustomersPage() {
           <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
             <div>
               <p className="eyebrow mb-5">{customers.trustedByEyebrow}</p>
-              <h2 className="display text-[clamp(1.875rem,4vw,2.75rem)] text-balance">
+              <h2 className="display text-[clamp(2rem,4.4vw,3.25rem)] text-balance">
                 {customers.trustedByTitle}
               </h2>
             </div>
