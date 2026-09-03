@@ -1,17 +1,22 @@
 import type { NextConfig } from "next";
 
 /**
- * No redirects.
+ * /process no longer exists — the step timeline it carried is now /solutions,
+ * cut back to two blocks. Anything that pointed at the old page lands there.
  *
- * There used to be a permanent one from /process to /solutions#fundraising,
- * from when the process page was folded into Solutions. /process is a real
- * route again (app/process/page.tsx), so it has been removed.
+ * `permanent: false` (307) ON PURPOSE, and it is the second time this route
+ * has moved. A previous 308 from /process to /solutions#fundraising is still
+ * cached in browsers that followed it, and a 308 cannot be withdrawn — no
+ * response header un-caches one already issued. A 307 keeps this move
+ * revisable. It also happens to be harmless if the old 308 fires instead: the
+ * destination is the same page, just with a now-dead fragment.
  *
- * NOTE for deployment: that redirect was a 308, which browsers and CDNs cache
- * indefinitely. Anyone whose browser followed it while it was live will keep
- * being sent to /solutions until they clear it. Purge the CDN cache on the
- * next deploy; there is no header that can un-cache a 308 already issued.
+ * Purge the CDN cache on the next deploy either way.
  */
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  async redirects() {
+    return [{ source: "/process", destination: "/solutions", permanent: false }];
+  },
+};
 
 export default nextConfig;

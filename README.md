@@ -24,22 +24,27 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 
 ## Structure
 
-5 pages. There is no "get in touch" page — booking is the closing band (`components/site/cta-band.tsx`) at the foot of every page, and `#get-in-touch` is the anchor every CTA points to.
+4 pages. There is no "get in touch" page — booking is the closing band (`components/site/cta-band.tsx`) at the foot of every page, and `#get-in-touch` is the anchor every CTA points to.
 
 ```
 /            Hero (video, full-screen, client strip) · Track record · Who we serve ·
              What we raise · Neurable case study + testimonial · Verticals · FAQ · Calendar
-/process     Page heading · three numbered step rows on a vertical progress rail
+/solutions   Page heading · two numbered blocks — Secondaries, Fundraising — on a
+             vertical progress rail
 /customers   Filterable grid of all 13 case studies
-/solutions   Secondaries · Fundraising
 /team        Five partners · Press
 ```
 
-`/process` was folded into `/solutions#fundraising` for a while and `next.config.ts`
-carried a **permanent** redirect to prove it. It is a real route again and the
-redirect is gone — but a 308 is cached by browsers and CDNs indefinitely, so
-purge the CDN on the next deploy. Anyone whose browser followed it while it was
-live will keep landing on `/solutions` and no response header can undo that.
+**`/process` no longer exists.** The step timeline it carried is now `/solutions`,
+cut back from three steps to two blocks. `next.config.ts` redirects the old
+route, deliberately with a **307 and not a 308**: this route has moved twice,
+an earlier 308 to `/solutions#fundraising` is still cached in any browser that
+followed it, and a 308 cannot be withdrawn — no response header un-caches one
+already issued. A 307 keeps this move revisable. Purge the CDN on the next
+deploy either way.
+
+The `#secondaries` and `#fundraising` anchors were kept on the two blocks, so
+the old deep links still land in the right place.
 
 ### The hero
 
@@ -191,25 +196,30 @@ node scripts/logos-to-alpha.mjs
 
 `scripts/optimize-logos.mjs` is the earlier one-off that extracted these from SVG-wrapped base64 (9.5MB → 404KB). It has nothing left to do unless you add new `.svg` wrappers.
 
-## The process timeline
+## The solutions timeline
 
-`/process` is a measured clone of farahcap.com's. Everything below was checked
+`/solutions` is a measured clone of farahcap.com's /process. Everything below was checked
 against the rendered DOM at 1440×894 and matches to the second decimal.
 
 | | Spec | Built |
 |---|---|---|
 | Header wrapper | 1440 × 404.81 | 1440 × 404.80 |
-| Steps container | 1440 × 1998.25 | 1440 × 1998.25 |
+| Blocks container, 3 rows¹ | 1440 × 1998.25 | 1440 × 1998.25 |
 | Row pitch | 632.75 | 632.75 |
 | Row / media / rail / track | 612.75 / 644×612.75 / 40 / 3×552.75 | identical |
 | Text column | 644 × 218.81 | 644 × 218.80 |
 | Text top offset in row | 196.97 | 196.97 |
 
+¹ Measured while the page still had three rows, which is what the spec
+specifies. It now ships **two** blocks, so the container is 1365.50
+(20 + 612.75 + 20 + 612.75 + 100). Every per-row figure above is unchanged —
+that is the point of the card sizing the row.
+
 **The card sizes the row, and that is the whole layout.** The media card is
 `flex:1 0 0` with `aspect-ratio: 1.05098/1`, so it resolves to 644 × 612.75 and
 the row inherits its height; `align-items: center` then centres the text against
-it. Copy length therefore cannot move anything — step 3 runs a line longer than
-the others and the rhythm is unchanged.
+it. Copy length therefore cannot move anything — block 02 runs a line longer
+than block 01 and the rhythm is unchanged.
 
 **The rail's progress fill must be absolutely positioned.** In flow it is 580px
 of content inside a `flex: 1 1 0%` track, and a flex-grow item still contributes
@@ -223,8 +233,8 @@ deliberately taller than the track that clips it, so a full sweep is one
 The spine breaks for 20px between rows because each rail is exactly as tall as
 its own row and the container's gap sits between them. That is correct.
 
-Below 1200px the rail is **deleted**, not stacked — the step number survives in
-the "Step n" label.
+Below 1200px the rail is **deleted**, not stacked — the block order survives in
+the document order.
 
 ### The reveal is CSS-only
 

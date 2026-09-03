@@ -103,27 +103,44 @@ vertical needs a matching glyph added there.
 
 ---
 
-## The /process media cards — illustrative, not data
+## The /solutions page — two blocks
 
-`components/ui/process-media.tsx` draws the three graphics inside the step
-cards. **Nothing in them is a figure, a result, or a claim about a real
-mandate**, and that is deliberate — every bar length, marker position and
-state is composition, chosen to depict the shape of the work described beside
-it. None of it carries a number.
+The page shows **Secondaries** and **Fundraising**. Where each string came from:
 
-| Step | Graphic | Note |
+| Slot | Text | Source |
 |---|---|---|
-| 01 Deal Readiness | Readiness board — five materials, each with a bar and a comparable-set marker | Material names are generic (deck, data room, model, cap table, diligence pack). Two read "below set"; that is a picture of the review, not a finding. |
-| 02 Investor Segment | `public/solutions/fundraising.webp` | **An existing asset**, already shipped on `/solutions`. Not new artwork. It contains a "14 matched" count — that count predates this page. |
-| 03 Conversion | Four-stage panel ending in a gold "Term sheet" bar | Bar length is stage width, not a conversion rate. The point is that the last row is a different *kind* of thing, not that it is small. |
+| Eyebrow | "Solutions" | The page name. |
+| H1 | "Dive Deeper Into Our Offerings" | `offerings.title` — existing Avalanche copy. |
+| Lede | "Across venture and private equity…" | `thesis.lede` — existing, and it happens to name both blocks ("capital, deal flow, or secondary liquidity"). |
+| 01 title | "Secondary Liquidity" | `secondaries.title` — existing. |
+| 01 body | — | `secondaries.lede`, already marked DRAFT at source. |
+| 02 title | **"Primary Capital"** | **Authored here.** A standard category name, set opposite "Secondary Liquidity". No claim in it, but it is the one string on the page I wrote. |
+| 02 body | — | The Growth Capital offering verbatim (`offerings.items[2].body`), already marked DRAFT at source. |
 
-One thing to decide: the reference fills these cards with photography and
-bespoke chart art. These are drawn in the site's own tokens instead, because
-copying the reference's assets was not an option and no Avalanche photography
-exists for this page. **If you have real screenshots** — an actual dataroom
-review, a real segmentation view — they would be stronger than any of this, and
-swapping them in is a per-card change with no layout consequence (the card is
-`aspect-ratio`-sized and crops with `overflow: clip`).
+**They are labelled by name, not "Step 1" and "Step 2".** The rail numbers them
+01 and 02, but these are two parallel offerings, not a sequence — a shareholder
+selling a position does not then run a primary raise. Labelling them as steps
+would claim a progression the business does not run.
+
+### The diagrams — illustrative, not data
+
+`components/ui/solutions-media.tsx`. Both are schematics: anonymous positions,
+generic sector names, no real counterparties, no figures.
+
+| Block | Graphic | Note |
+|---|---|---|
+| 01 Secondaries | Two columns of anonymous entries, one gold route connecting a matched pair | "Position 01–04" / "Buyer 01–04" are deliberately schematic so nothing reads as a real deal. |
+| 02 Fundraising | Stage × sector grid with a gold selection over the matched subset | The "8 matched" pill is **computed from the rectangle**, so the caption cannot disagree with the dots drawn under it. Stage and sector names are standard market categories. |
+
+These replaced `public/solutions/{secondaries,fundraising}.webp`, which carried
+a blue accent found nowhere else on the site and rendered soft at display size.
+**Those two files are now unreferenced** — 55KB still sitting in `public/`.
+Delete them if you don't want them, or say so and I will.
+
+**If you have real screenshots** — an actual matching view, a real segmentation
+screen — they would beat either of these, and swapping one in is a per-card
+change with no layout consequence (the card is `aspect-ratio`-sized and crops
+with `overflow: clip`).
 
 ---
 

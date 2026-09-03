@@ -1,4 +1,4 @@
-/** FAQ — on the homepage and on /process.
+/** FAQ — homepage only. (It was also on /process, which no longer exists.)
  *
  *  Answers were written here, not lifted from a published FAQ: neither
  *  avalanche-capital.com nor fundraisr.ai has one (checked fundraisr's /faq,

@@ -52,7 +52,7 @@
   /* The same hue, held CONSTANT across bands. --color-gold above is darkened
      to #7c6c45 on a light band so that TEXT set in it clears 3:1; that
      darkening is wrong for a decorative graphic, which carries no text and
-     no meaning of its own. The process rail is the only user: a 3px fill
+     no meaning of its own. The solutions rail is the only user: a 3px fill
      whose step is also stated in words beside it. Never set type in this. */
   --color-gold-deep: #ae9e77;
   --color-warm: #dfdad8;
@@ -347,7 +347,7 @@ body {
 
 /* Sizes live at the call site everywhere EXCEPT the two display sizes that
    step down on a phone. The hero H1 has an authored two-line break, so a
-   clamp would resize it into a three-line wrap; the 80/58 pair on /process
+   clamp would resize it into a three-line wrap; the 80/58 pair on /solutions
    steps down at the same 809px boundary and is kept here beside it so the two
    cannot drift apart. */
 @media (max-width: 809px) {
@@ -366,7 +366,7 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   The /process step timeline — scroll-linked reveal, with NO JS.
+   The /solutions step timeline — scroll-linked reveal, with NO JS.
 
    `view-timeline-name` on each row publishes that row's own progress
    through the viewport; the rail fill and the text column both read it,
@@ -415,7 +415,7 @@ body {
        transparent text is never text the reader could otherwise be reading.
        Pulling either one inwards (entry 15% was the first attempt) buys a
        punchier fade at the cost of that guarantee, and also dims the first
-       row at first paint: on /process row 1 is already 75% on screen before
+       row at first paint: on /solutions row 1 is already 75% on screen before
        a single pixel is scrolled, and it loaded at 58% opacity. */
     @keyframes step-reveal {
       entry 0% {

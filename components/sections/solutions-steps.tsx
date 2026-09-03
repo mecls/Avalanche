@@ -1,30 +1,30 @@
 import { CtaButton } from "@/components/ui/button";
 import {
-  ConversionPanel,
-  InvestorGrid,
-  ReadinessBoard,
-} from "@/components/ui/process-media";
-import { fundraising } from "@/content/copy";
+  FundraisingDiagram,
+  SecondariesDiagram,
+} from "@/components/ui/solutions-media";
+import { solutions } from "@/content/copy";
 
 /**
- * The /process step timeline: a page heading, then three numbered rows of
- * media-card / rail / text.
+ * /solutions: a page heading, then two numbered rows of media card / rail /
+ * text.
  *
  * Built to measured geometry. The numbers that look arbitrary are not:
  *
  *  - The media card is `flex:1 0 0` with `aspect-ratio: 1.05098/1`, which is
  *    what makes a row 612.75px tall at a 1440px viewport. The card drives the
  *    ROW height, and `items-center` then centres the text against it — so the
- *    layout does not move when a step's body runs to a different number of
+ *    layout does not move when a block's body runs to a different number of
  *    lines. That is the property to preserve when editing copy.
  *  - 644 + 36 + 40 + 36 + 644 = 1400, the shell's content box at 1440.
  *  - The rail's progress fill is 580px inside a ~552.75px track ON PURPOSE.
  *    A sweep is one `translateY(-100%)` of the fill, clipped by the track, so
  *    nothing animates height and nothing relayouts per frame.
  *
- * The rail is DELETED below 1200px rather than stacked or moved: the step
- * number survives in the "Step n" label, and a horizontal spine beside a
- * stacked card would be inventing a layout the reference does not have.
+ * The rail is DELETED below 1200px rather than stacked or moved: the number
+ * survives in the rail-less layout only as position, and a horizontal spine
+ * beside a stacked card would be inventing a layout the reference does not
+ * have.
  *
  * The spine visibly breaks for 20px between rows — each rail is exactly as
  * tall as its own row, and the container's gap sits between them. That gap is
@@ -32,7 +32,7 @@ import { fundraising } from "@/content/copy";
  */
 
 /**
- * Eyebrow, step label and rail number are one typographic run at three call
+ * Eyebrow, block label and rail number are one typographic run at three call
  * sites: Inter 500, 14/16.8, 0.06em, uppercase, inheriting `fg`.
  *
  * NOT the site's `eyebrow` utility, which is 600 and `fg-muted`. This section
@@ -62,10 +62,10 @@ function ArrowGlyph() {
  * The dark textured plate every card sits on.
  *
  * `data-band="dark"` re-points the tokens for the card's subtree, which is
- * what lets the graphics inside be written against `fg` / `line` / `gold` and
- * come out light-on-dark inside an otherwise white section. The grain is the
- * hero's tile, doing the same job: the radial below it is a long ramp over a
- * wide box, which is the case that bands on an 8-bit display.
+ * what lets its contents be written against `fg` / `line` / `gold` and come
+ * out light-on-dark inside an otherwise white section. The grain is the hero's
+ * tile, doing the same job: the radial below it is a long ramp over a wide
+ * box, which is the case that bands on an 8-bit display.
  */
 function Plate({ children }: { children: React.ReactNode }) {
   return (
@@ -97,11 +97,11 @@ function Plate({ children }: { children: React.ReactNode }) {
   );
 }
 
-/** One graphic per step, in step order. */
-const MEDIA = [ReadinessBoard, InvestorGrid, ConversionPanel] as const;
+/** One graphic per block, in order. */
+const MEDIA = [SecondariesDiagram, FundraisingDiagram] as const;
 
-export function ProcessSteps() {
-  const steps = fundraising.steps;
+export function SolutionsSteps() {
+  const blocks = solutions.blocks;
 
   return (
     <section data-band="light">
@@ -112,55 +112,58 @@ export function ProcessSteps() {
       <div className="shell flex flex-col items-center justify-center gap-2.5 overflow-clip pt-[100px] pb-12 max-[809px]:pt-[60px] max-[809px]:pb-8">
         <div className="flex w-full flex-row items-end justify-center gap-6 max-[809px]:flex-col max-[809px]:items-start max-[809px]:gap-8">
           <div className="flex flex-1 flex-col items-start justify-center gap-4 overflow-clip max-[809px]:w-full max-[809px]:flex-none">
-            <p className={LABEL}>{fundraising.pageEyebrow}</p>
+            <p className={LABEL}>{solutions.eyebrow}</p>
 
             <div className="max-w-[720px]">
               <h1 className="display display-80 text-[80px]">
-                {fundraising.title}
+                {solutions.title}
               </h1>
             </div>
 
             <div className="max-w-[680px]">
               <p className="text-[16px] leading-6 text-fg-muted">
-                {fundraising.lede}
+                {solutions.lede}
               </p>
             </div>
           </div>
 
           <div className="flex shrink-0 items-center">
             <CtaButton href="#get-in-touch" className="group">
-              {fundraising.cta}
+              {solutions.cta}
               <ArrowGlyph />
             </CtaButton>
           </div>
         </div>
       </div>
 
-      {/* Steps. An <ol> because the order is the content — the rail, the
-          numbers and the labels all say so, and a screen reader should hear
-          it too. */}
+      {/* An <ol> because the rail numbers them and a screen reader should hear
+          the same count. It is an ordered LIST, not a sequence of steps — see
+          the note on `solutions.blocks` in content/copy.ts for why the labels
+          say "Secondaries" and "Fundraising" rather than "Step 1" and
+          "Step 2". */}
       <ol className="shell flex list-none flex-col items-center justify-center gap-5 overflow-clip pt-5 pb-[100px] max-[1199px]:gap-[60px] max-[809px]:gap-[54px] max-[809px]:pb-[60px]">
-        {steps.map((step, i) => {
+        {blocks.map((block, i) => {
           const Media = MEDIA[i];
-          const last = i === steps.length - 1;
+          const last = i === blocks.length - 1;
 
           return (
             <li
-              key={step.n}
-              className="step-row flex w-full flex-row items-center justify-center gap-9 overflow-clip max-[1199px]:flex-col"
+              key={block.n}
+              id={block.id}
+              className="step-row flex w-full scroll-mt-32 flex-row items-center justify-center gap-9 overflow-clip max-[1199px]:flex-col"
             >
               <Plate>{Media ? <Media /> : null}</Plate>
 
               {/* Rail. `self-stretch` rather than a height: the row is sized
                   by the card, so a percentage height here would resolve
-                  against nothing. `aria-hidden` because the number it shows is
-                  already spoken by the step label. */}
+                  against nothing. `aria-hidden` because the number it shows
+                  duplicates the list's own ordinal. */}
               <div
                 aria-hidden
                 className="flex w-10 shrink-0 flex-col items-center justify-center gap-5 self-stretch overflow-hidden max-[1199px]:hidden"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[36px] border-2 border-line">
-                  <p className={LABEL}>{step.n}</p>
+                  <p className={LABEL}>{block.n}</p>
                 </div>
 
                 {/* The fill is ABSOLUTE, and that is load-bearing rather than
@@ -183,19 +186,19 @@ export function ProcessSteps() {
               </div>
 
               <div className="step-text flex max-w-[1160px] flex-1 flex-col items-start justify-start gap-6 max-[1199px]:w-full max-[1199px]:max-w-none max-[1199px]:flex-none">
-                <p className={LABEL}>Step {Number(step.n)}</p>
+                <p className={LABEL}>{block.label}</p>
 
-                <h2 className="display display-58 text-[58px]">{step.title}</h2>
+                <h2 className="display display-58 text-[58px]">{block.title}</h2>
 
                 <div className="max-w-[680px]">
                   <p className="text-[16px] leading-6 text-fg-muted">
-                    {step.body}
+                    {block.body}
                   </p>
                 </div>
 
                 {last && (
                   <CtaButton href="#get-in-touch" className="group">
-                    {fundraising.cta}
+                    {solutions.cta}
                     <ArrowGlyph />
                   </CtaButton>
                 )}

@@ -53,38 +53,12 @@ export const announce = {
 } as const;
 
 /**
- * The header links.
- *
- * An item with a `menu` gets a dropdown. Solutions is the only one, and it has
- * exactly TWO entries because /solutions has exactly two sections — they are
- * the page's own anchors, so the menu cannot drift out of step with the page
- * without the anchors breaking first. The parent stays a real link to the
- * whole page; the menu is a shortcut into it, not a replacement for it.
- *
- * `blurb` lines are DRAFT — I wrote them. Each restates copy already on the
- * site (`secondaries.lede`, and the three `fundraising.steps`) rather than
- * making a new claim. See docs/COPY-REVIEW.md.
+ * The header links. Flat — no dropdowns. /solutions carries Secondaries and
+ * Fundraising as its own two blocks, so a menu duplicating them would be a
+ * second copy of the same two names to keep in step.
  */
 export const nav = [
-  {
-    href: "/solutions",
-    label: "Solutions",
-    menu: [
-      {
-        href: "/solutions#secondaries",
-        label: "Secondaries",
-        // DRAFT
-        blurb: "Liquidity for GPs, LPs, and shareholders ahead of a full exit.",
-      },
-      {
-        href: "/solutions#fundraising",
-        label: "Fundraising",
-        // DRAFT
-        blurb: "Primary raises run end to end, from readiness to term sheet.",
-      },
-    ],
-  },
-  { href: "/process", label: "Process" },
+  { href: "/solutions", label: "Solutions" },
   { href: "/customers", label: "Customers" },
   { href: "/team", label: "Team" },
 ] as const;
@@ -242,12 +216,18 @@ export const secondaries = {
   lede: "Not every position should be held to the end of the fund's life. We work with GPs, LPs, and shareholders seeking liquidity ahead of a full exit — sourcing counterparties, framing the position for them, and running the process discreetly.",
 } as const;
 
+/**
+ * NOT CURRENTLY RENDERED. The three-step fundraising process — Deal Readiness,
+ * Investor Segment, Conversion — had its own page until /solutions was cut back
+ * to the two blocks below on 4 Sep 2026.
+ *
+ * Kept because `steps[0]` and `steps[1]` are genuine copy from
+ * avalanche-capital.com and the voice in all three is grounded in the blog
+ * posts (see docs/COPY-REVIEW.md). The graphics that went with them are
+ * recoverable from commit ac09735.
+ */
 export const fundraising = {
-  /** `eyebrow` labels the block on /solutions, where it is one of two
-   *  offerings. `pageEyebrow` labels the same copy on /process, where it is
-   *  the whole page — hence two words rather than one shared string. */
   eyebrow: "Fundraising",
-  pageEyebrow: "Process",
   title: "Dive Deeper Into Our Fundraising Process",
   accent: "Fundraising Process",
   lede: "A structured framework designed to deliver precision, momentum, and investor confidence.",
@@ -270,6 +250,50 @@ export const fundraising = {
       // DRAFT
       title: "Solving For Conversion",
       body: "Meetings are not the milestone — term sheets and signed agreements are. This phase aligns the remaining variables: the message that earns the meeting, the channel it goes out on, the presentation itself, and a data room that carries the same story straight through diligence. Each is refined against what investors actually respond to, so interest converts rather than stalling.",
+    },
+  ],
+} as const;
+
+/**
+ * /solutions — the page the step timeline carries.
+ *
+ * TWO blocks, not three, and they are the two things Avalanche actually does.
+ *
+ * The rail numbers them 01 and 02, but the LABEL beside each is the service
+ * name rather than "Step n". That is deliberate: these are two parallel
+ * offerings, not a sequence a client moves through. A shareholder selling a
+ * position does not go on to run a primary raise, and labelling them as steps
+ * would claim a progression the business does not run. The numbering is an
+ * index, which is what the rail already reads as.
+ *
+ * `title`, `lede` and both bodies are existing copy — `offerings.title`,
+ * `thesis.lede`, `secondaries.lede` and the Growth Capital offering
+ * respectively. The one authored string is "Primary Capital", a standard
+ * category name paired against "Secondary Liquidity". See docs/COPY-REVIEW.md.
+ */
+export const solutions = {
+  eyebrow: "Solutions",
+  title: offerings.title,
+  lede: thesis.lede,
+  cta: "Get started",
+  blocks: [
+    {
+      n: "01",
+      /** Anchor. /solutions#secondaries was a live link before this rebuild;
+       *  keeping the ids means neither of the old deep links breaks. */
+      id: "secondaries",
+      label: secondaries.eyebrow,
+      title: secondaries.title,
+      body: secondaries.lede,
+    },
+    {
+      n: "02",
+      id: "fundraising",
+      label: fundraising.eyebrow,
+      // Authored — the category name opposite "Secondary Liquidity".
+      title: "Primary Capital",
+      // The Growth Capital offering, verbatim. DRAFT at its source.
+      body: offerings.items[2].body,
     },
   ],
 } as const;

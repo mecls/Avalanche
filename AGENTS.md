@@ -47,9 +47,9 @@ comment claiming "no serif, no accent colour", it predates the rebuild.
 - A light section is `data-band="light"` on the `<section>`. That single
   attribute re-points every token for the subtree, which is why shared
   components take no `tone` prop. `data-band="dark"` goes back the other way,
-  and nesting is real: the `/process` media cards are dark plates inside a
-  white section, and the readiness panel inside one of them flips back to
-  light again. Write the contents against roles and both flips are free.
+  and nesting is real: the `/solutions` media cards are dark plates inside a
+  white section, and the SVG diagrams inside them are written against `fg`,
+  `line` and `gold` without knowing which page they are on.
 - **A page whose first section is light needs `main` painted too.** `main`
   reserves `--header-h` of *padding* for the chrome, and padding shows the
   element's own background — which was nothing, so the strip showed the dark
@@ -61,7 +61,7 @@ comment claiming "no serif, no accent colour", it predates the rebuild.
   `--color-ground` still resolves dark.
 - `--color-gold-deep` is the accent **held constant across bands**, for
   decorative graphics only. `--color-gold` darkens to `#7c6c45` on a light band
-  so text set in it clears 3:1; that darkening is wrong for the process rail,
+  so text set in it clears 3:1; that darkening is wrong for the solutions rail,
   which carries no text. Never set type in `gold-deep`.
 - Because of this, `bg-fg text-ground` is a white button on dark and a black
   button on light **from the same markup**. Preserve that property.
@@ -76,10 +76,10 @@ comment claiming "no serif, no accent colour", it predates the rebuild.
 
 ## Client components
 
-Only three: `nav`, `track-record`, `case-study-grid`. **`/process` deliberately
+Only three: `nav`, `track-record`, `case-study-grid`. **`/solutions` deliberately
 adds none** — its scroll-linked rail and text reveal are CSS `view-timeline`,
-not JS. Keep it that way; see the process notes in `README.md` before touching
-that block, including why the reduced-motion guard has to say
+not JS. Keep it that way; see "The solutions timeline" in `README.md` before touching
+it, including why the reduced-motion guard has to say
 `animation: none` rather than rely on the global duration override.
 
 - **External state is read with `useSyncExternalStore`**, never mirrored into a
@@ -155,7 +155,7 @@ that block, including why the reduced-motion guard has to say
   replaced the two-column heading + booking-panel layout with the reference's
   single-column one; its button goes straight to `site.booking`. Kept, not
   rendered, like the other unmounted sections.
-- **The `/process` media cards are the layout's load-bearing element.** The
+- **The `/solutions` media cards are the layout's load-bearing element.** The
   card is `flex:1 0 0` with `aspect-ratio: 1.05098/1`; the ROW takes its height
   from the card and `items-center` centres the text against it, which is why
   copy length cannot move the page. The rail's 580px fill must stay
