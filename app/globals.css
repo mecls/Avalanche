@@ -47,7 +47,9 @@
      fg        14.7 / 13.7 / 15.3  AAA
      fg-muted   6.4 /  6.0 /  6.7  AA
      fg-faint   5.3 /  4.9 /  5.5  AA */
-[data-band="light"] {
+[data-band="light"],
+.tone-light,
+body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
   --color-ground-deep: #f2f2f0;
   --color-ground: #fafaf9;
   --color-ground-alt: #f2f2f0;
@@ -61,9 +63,36 @@
 
   --color-line: rgba(0, 0, 0, 0.12);
   --color-line-soft: rgba(0, 0, 0, 0.07);
+}
 
+/* Only a band paints itself. The two header selectors above borrow the same
+   tokens WITHOUT the ground, because the header owns its own background — it
+   has to be able to go fully transparent over the hero video. */
+[data-band="light"] {
   background-color: var(--color-ground);
   color: var(--color-fg);
+}
+
+/* First paint on a page that opens on a light band, before nav.tsx has
+   measured anything. Without this the header renders its dark-band markup for
+   a frame — white type on a white hero, i.e. nothing at all. The moment the
+   nav hydrates it sets .tone-light / .tone-dark and takes over; `:not()` is
+   what lets .tone-dark win here despite this selector being heavier. */
+body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
+  background-color: color-mix(in srgb, var(--color-ground) 85%, transparent);
+  border-bottom-color: var(--color-line);
+}
+
+/* Client marks are pre-processed to white-on-transparent
+   (scripts/logos-to-alpha.mjs), so they vanish on a light band. Inverting
+   maps pure white onto pure black and leaves alpha untouched, which is
+   exactly the second tone the light bands need — no second set of assets to
+   generate and keep in sync. */
+[data-band="light"] .logo-mark {
+  filter: invert(1);
+  /* The held-back opacity these carry on a dark ground reads as washed-out
+     grey once inverted onto a light one, so it is spent here. */
+  opacity: 1;
 }
 
 /* The way back out of a light band. Without this the switch is one-way and a

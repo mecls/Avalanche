@@ -104,7 +104,53 @@ function Stat({
   );
 }
 
-export function TrackRecord() {
+/**
+ * One statistic as a full-width row: label on the left, figure hard right,
+ * baselines aligned, hairline above. This is the /customers treatment.
+ *
+ * Below `sm` the two stack — a 5rem figure and a wrapping label cannot share
+ * a 390px line — and the figure leads, because that is the part worth seeing
+ * first once they are no longer read across.
+ */
+function StatRow({
+  prefix,
+  to,
+  suffix,
+  decimals,
+  label,
+  run,
+}: {
+  prefix: string;
+  to: number;
+  suffix: string;
+  decimals: number;
+  label: string;
+  run: boolean;
+}) {
+  const n = useCountUp(to, run);
+
+  return (
+    <div className="flex flex-col-reverse gap-3 border-t border-line py-10 sm:grid sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8 sm:py-12">
+      <p className="max-w-md text-sm leading-snug text-fg-muted">{label}</p>
+      <p className="display text-[clamp(2.75rem,7vw,5rem)] tabular-nums sm:text-right">
+        {prefix}
+        {n.toFixed(decimals)}
+        {suffix}
+      </p>
+    </div>
+  );
+}
+
+/**
+ * `grid` is the homepage's bracketed two-over-three block. `rows` is the
+ * /customers list — heading hard right, then one hairline-separated row per
+ * figure, and no CTA (the page already ends on one).
+ */
+export function TrackRecord({
+  variant = "grid",
+}: {
+  variant?: "grid" | "rows";
+} = {}) {
   const ref = useRef<HTMLElement>(null);
   const [run, setRun] = useState(false);
 
@@ -128,6 +174,24 @@ export function TrackRecord() {
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  if (variant === "rows") {
+    return (
+      <section ref={ref} className="section-y bg-ground-deep">
+        <div className="shell">
+          <h2 className="display text-[clamp(1.875rem,4vw,2.75rem)] text-balance sm:text-right">
+            {trackRecord.title}
+          </h2>
+
+          <div className="mt-14 border-b border-line sm:mt-16">
+            {trackRecord.stats.map((s) => (
+              <StatRow key={s.label} {...s} run={run} />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section ref={ref} className="section-y">

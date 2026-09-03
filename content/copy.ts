@@ -39,7 +39,7 @@ export const site = {
 } as const;
 
 export const nav = [
-  { href: "/process", label: "Process" },
+  { href: "/solutions", label: "Solutions" },
   { href: "/customers", label: "Customers" },
   { href: "/team", label: "Team" },
 ] as const;
@@ -149,19 +149,27 @@ export const offerings = {
       title: "Growth Capital",
       body: "Primary capital for operating companies and funds with a raise in front of them. We work the round end to end: positioning the opportunity, building the mandate-specific investor list, running the outreach, and holding the process together through diligence to a signed term sheet.",
     },
-    {
-      n: "04",
-      // DRAFT
-      title: "Secondary Liquidity",
-      body: "Not every position should be held to the end of the fund's life. We work with GPs, LPs, and shareholders seeking liquidity ahead of a full exit — sourcing counterparties, framing the position for them, and running the process discreetly.",
-    },
   ],
 } as const;
 
-export const process = {
-  eyebrow: "Process",
-  title: "Dive Deeper Into Our Process",
-  accent: "Process",
+/**
+ * The Secondaries solution page. Deliberately thin — "Secondary Liquidity"
+ * below is the only copy Avalanche has ever published specifically about
+ * secondaries (it used to be offering 04, folded into the Process page). It
+ * is reused verbatim here rather than padded out with invented material. See
+ * docs/COPY-REVIEW.md.
+ */
+export const secondaries = {
+  eyebrow: "Secondaries",
+  title: "Secondary Liquidity",
+  // DRAFT
+  lede: "Not every position should be held to the end of the fund's life. We work with GPs, LPs, and shareholders seeking liquidity ahead of a full exit — sourcing counterparties, framing the position for them, and running the process discreetly.",
+} as const;
+
+export const fundraising = {
+  eyebrow: "Fundraising",
+  title: "Dive Deeper Into Our Fundraising Process",
+  accent: "Fundraising Process",
   lede: "A structured framework designed to deliver precision, momentum, and investor confidence.",
   steps: [
     {
@@ -272,6 +280,22 @@ export const customers = {
   gridLede:
     "We work across venture, private credit, real estate, and private equity — with clients from the US, Australia, and everywhere in between. Here's what that looks like in practice.",
   logoNote: "Client logos represent past engagements of Avalanche Capital.",
+  /**
+   * NOT CURRENTLY RENDERED — the strips were unlabelled by request on
+   * 3 Sep 2026. Kept because if a caption ever goes back under the venture
+   * strip at the foot of the /customers hero, it has to be this careful:
+   * those marks are firms active in the market, NOT Avalanche clients or
+   * partners. `logoNote` above is the client claim and belongs to the roster
+   * grid. Do not merge the two or let this one drift toward implying a
+   * relationship. DRAFT. See content/ecosystem-logos.ts.
+   */
+  ecosystemNote:
+    "Logos represent venture capital firms and institutional investors active in the ecosystem.",
+  trustedByEyebrow: "Trusted by",
+  // DRAFT — the only line on this page not lifted from an Avalanche property.
+  // It heads the client logo grid; the paragraph beside it is whoWeServe.lede,
+  // which is sourced. See docs/COPY-REVIEW.md.
+  trustedByTitle: "Trusted by top teams across private capital.",
 } as const;
 
 export const ctaBand = {

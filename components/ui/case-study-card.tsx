@@ -47,3 +47,35 @@ export function CaseStudyCard({
     </article>
   );
 }
+
+/**
+ * The /customers grid treatment: a square tile carrying the client's mark,
+ * with the result sentence set BELOW it rather than inside.
+ *
+ * No border and no metric pill. The tile's own ground is what separates it
+ * from the section, so this only reads as a tile while the section around it
+ * is darker than `card` — hence `bg-ground-deep` on that section rather than
+ * plain `ground`. The marks are white-on-transparent, so the tile must stay
+ * dark; do not put this grid in a `data-band="light"` section.
+ */
+export function CaseStudyTile({ study }: { study: CaseStudy }) {
+  return (
+    <article className="group min-w-0">
+      <div className="flex aspect-square items-center justify-center rounded-md bg-card p-10 transition-colors duration-300 group-hover:bg-card/60">
+        <div className="relative h-11 w-36 sm:w-40">
+          <Image
+            src={study.logo}
+            alt={study.name}
+            fill
+            sizes="(max-width: 640px) 144px, 160px"
+            className="object-contain"
+          />
+        </div>
+      </div>
+
+      <p className="mt-5 text-sm leading-relaxed text-fg-muted">
+        {study.result}
+      </p>
+    </article>
+  );
+}

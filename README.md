@@ -69,9 +69,16 @@ Homepage only, under Verticals. It is a native `<details>` accordion on purpose:
 
 ### Client logos appear once per page
 
-The marquee is in the hero on `/`, and as the "Trusted by" band on `/customers` — never both on the same page. `LogoBand` (the section) and `LogoMarquee` (the strip) are separate for exactly this reason: the hero needs the strip without the section's padding, heading and note.
+There are **two different logo sets**, and mixing them up makes a false claim.
 
-The `logoNote` disclaimer only renders inside `LogoBand`, so it is not on the homepage. That is fine — the footer's legal text carries a stronger equivalent on every page. Worth knowing before you move things around.
+- `content/client-logos.ts` — Avalanche's own client roster. White-on-transparent (`scripts/logos-to-alpha.mjs`), so every one carries `logo-mark` and `globals.css` inverts them on a light band. Shown as the scrolling `LogoMarquee` in the hero on `/`, and as the static ruled `LogoGrid` under "Trusted by" on `/customers`. The grid runs brighter than the strip because a roster has to be readable standing still.
+- `content/ecosystem-logos.ts` — venture firms active in the market, mirroring the strip fundraisr.ai runs at the foot of its customers hero. Full colour, so they pass `alphaMarks={false}` and must **never** get `logo-mark`; inverting them would blow them out to white. Fetched by `scripts/fetch-ecosystem-logos.mjs`.
+
+**These firms are not clients.** Both strips run unlabelled by request, so nothing on the page says so in words — the footer's legal text is what carries it. `customers.ecosystemNote` is the caption the venture strip used to have and is kept unrendered for whenever it goes back. The client disclaimer (`customers.logoNote`) is still printed, under the client grid, and belongs only there.
+
+`LogoBand`, the marquee wrapped in its own section, was deleted once `/customers` moved to the grid. Nothing rendered it any more.
+
+Neither disclaimer appears on the homepage. That is fine — the footer's legal text carries a stronger equivalent on every page. Worth knowing before you move things around.
 
 ### The bracketed grid
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useSyncExternalStore } from "react";
+import { useCallback, useState, useSyncExternalStore } from "react";
 import { nav, site } from "@/content/copy";
 import { CtaButton } from "@/components/ui/button";
 
@@ -44,6 +44,15 @@ function subscribeScroll(onChange: () => void) {
   return () => window.removeEventListener("scroll", onChange);
 }
 
+function subscribeViewport(onChange: () => void) {
+  window.addEventListener("scroll", onChange, { passive: true });
+  window.addEventListener("resize", onChange);
+  return () => {
+    window.removeEventListener("scroll", onChange);
+    window.removeEventListener("resize", onChange);
+  };
+}
+
 /** Scroll offset is external state — read directly rather than mirrored into
  *  a setState inside an effect. The server snapshot is `false`, which is the
  *  correct pre-hydration state (the page always starts at the top). */
@@ -55,10 +64,52 @@ function useScrolled() {
   );
 }
 
+/**
+ * Reads which band is currently passing under the header.
+ *
+ * The header is fixed and sits outside every section, so it cannot inherit a
+ * band's tokens the way shared components do — it has to look them up and
+ * re-point them on itself. Probing one pixel above its own bottom edge is
+ * what makes this work for any page without the nav knowing the routes.
+ *
+ * The server snapshot is "dark" because the server cannot measure anything.
+ * That is why globals.css carries a `:has()` rule for the first paint: it
+ * covers exactly the window between the server's guess and this measurement.
+ */
+function readBandTone(): "light" | "dark" {
+  const header = document.querySelector("header");
+  const y = (header?.getBoundingClientRect().bottom ?? 0) - 1;
+
+  for (const band of document.querySelectorAll<HTMLElement>(
+    '[data-band="light"]',
+  )) {
+    const box = band.getBoundingClientRect();
+    if (box.top <= y && box.bottom > y) return "light";
+  }
+  return "dark";
+}
+
+function useBandTone(pathname: string) {
+  // Re-subscribing is what forces a fresh read, and a route change needs one:
+  // the new page's bands sit somewhere else entirely, but if both pages start
+  // at the top then no scroll and no resize ever fires to prompt a re-read,
+  // and the header would keep the previous page's tone.
+  const subscribe = useCallback(
+    (onChange: () => void) => {
+      void pathname;
+      return subscribeViewport(onChange);
+    },
+    [pathname],
+  );
+
+  return useSyncExternalStore(subscribe, readBandTone, () => "dark" as const);
+}
+
 export function SiteNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const scrolled = useScrolled();
+  const tone = useBandTone(pathname);
 
   // Close the mobile sheet whenever the route changes. Adjusted during render
   // rather than in an effect — this is the documented pattern for resetting
@@ -71,9 +122,11 @@ export function SiteNav() {
   }
 
   return (
+    // Over a light band the header is never transparent: its type is `text-fg`
+    // against nothing, which on a white hero is nothing at all.
     <header
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
-        scrolled || open
+      className={`tone-${tone} fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
+        scrolled || open || tone === "light"
           ? "border-line bg-ground/85 backdrop-blur-md"
           : "border-transparent bg-transparent"
       }`}

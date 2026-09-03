@@ -51,14 +51,14 @@ export function Hero() {
       </div>
 
       {/* Scrim. The footage is warm and busy, so this pins the type to AA.
-          Four stops rather than three: it stays >=0.72 through the headline and
-          CTA, then eases to 0.86 at the foot so the video still reads behind
+          Four stops rather than three: it stays >=0.52 through the headline and
+          CTA, then eases to 0.68 at the foot so the video still reads behind
           the client strip instead of it sitting on solid black. It never
-          reaches 1 — at 0.86 over footage this dark the seam with the next
+          reaches 1 — at 0.68 over footage this dark the seam with the next
           section is imperceptible, and it is measured below. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgba(8,8,8,0.80)_0%,rgba(8,8,8,0.74)_42%,rgba(8,8,8,0.78)_74%,rgba(8,8,8,0.86)_100%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(to_bottom,rgba(8,8,8,0.58)_0%,rgba(8,8,8,0.52)_42%,rgba(8,8,8,0.56)_74%,rgba(8,8,8,0.68)_100%)]"
       />
 
       <div className="shell relative pt-40 pb-20 sm:pt-48 sm:pb-24">
@@ -99,11 +99,8 @@ export function Hero() {
           video is the background, which is the whole point. It breaks out of
           `shell` so the marquee runs the full width and its edge mask has room
           to work. */}
-      <div className="rise relative w-full border-t border-line pt-8 pb-10 [animation-delay:400ms]">
-        <div className="shell">
-          <p className="eyebrow text-center">Active clients</p>
-        </div>
-        <LogoMarquee className="mt-7" />
+      <div className="rise relative w-full border-t border-line py-10 [animation-delay:400ms]">
+        <LogoMarquee />
       </div>
     </section>
   );

@@ -62,8 +62,17 @@ Only three: `nav`, `track-record`, `case-study-grid`.
 - **The hero video stops at 9.3s.** The master hard-cuts into a bright plate at
   9.59s. Re-check the luma profile before changing the trim or the source.
 - **Client logos are pre-processed to white-on-transparent** by
-  `scripts/logos-to-alpha.mjs`. `logo-band.tsx` assumes this — do not add a blend
-  mode to compensate for something. Re-run the script after adding logos.
+  `scripts/logos-to-alpha.mjs`. `logo-marquee.tsx` and `logo-grid.tsx` both
+  assume this — do not add a blend mode to compensate for something. Re-run the
+  script after adding logos. On a light band they would disappear, so both mark
+  their images `logo-mark` and `globals.css` inverts them there. That is why
+  there is no second set of assets; keep the class if you move them.
+- **The fixed header adopts the tone of the band under it.** It sits outside
+  every section, so it cannot inherit one — `nav.tsx` measures the band at its
+  own bottom edge and re-points the tokens on itself, and it is never
+  transparent over a light band. The server cannot measure, so `globals.css`
+  covers the first paint with a `:has()` rule. If you give a page a light first
+  section, both halves are already handled.
 - **Team bios describe the role, not the person**, because no biographical facts
   were available. Do not invent career history for them.
 - **Dev runs on port 3200**, pinned. Port 3000 collides with another project on
