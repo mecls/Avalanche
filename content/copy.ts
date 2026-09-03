@@ -54,6 +54,7 @@ export const announce = {
 
 export const nav = [
   { href: "/solutions", label: "Solutions" },
+  { href: "/process", label: "Process" },
   { href: "/customers", label: "Customers" },
   { href: "/team", label: "Team" },
 ] as const;
@@ -212,10 +213,17 @@ export const secondaries = {
 } as const;
 
 export const fundraising = {
+  /** `eyebrow` labels the block on /solutions, where it is one of two
+   *  offerings. `pageEyebrow` labels the same copy on /process, where it is
+   *  the whole page — hence two words rather than one shared string. */
   eyebrow: "Fundraising",
+  pageEyebrow: "Process",
   title: "Dive Deeper Into Our Fundraising Process",
   accent: "Fundraising Process",
   lede: "A structured framework designed to deliver precision, momentum, and investor confidence.",
+  /** Shown twice on /process: beside the page heading, and again under the
+   *  last step. Both point at the closing band on the same page. */
+  cta: "Get started",
   steps: [
     {
       n: "01",

@@ -24,15 +24,22 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 
 ## Structure
 
-4 pages. There is no "get in touch" page — booking is the Calendly band (`components/site/cta-band.tsx`) at the foot of every page, and `#get-in-touch` is the anchor every CTA points to. The buttons are labelled **Book a call**.
+5 pages. There is no "get in touch" page — booking is the closing band (`components/site/cta-band.tsx`) at the foot of every page, and `#get-in-touch` is the anchor every CTA points to.
 
 ```
 /            Hero (video, full-screen, client strip) · Track record · Who we serve ·
              What we raise · Neurable case study + testimonial · Verticals · FAQ · Calendar
-/process     Three-phase process · Offerings
+/process     Page heading · three numbered step rows on a vertical progress rail
 /customers   Filterable grid of all 13 case studies
+/solutions   Secondaries · Fundraising
 /team        Five partners · Press
 ```
+
+`/process` was folded into `/solutions#fundraising` for a while and `next.config.ts`
+carried a **permanent** redirect to prove it. It is a real route again and the
+redirect is gone — but a 308 is cached by browsers and CDNs indefinitely, so
+purge the CDN on the next deploy. Anyone whose browser followed it while it was
+live will keep landing on `/solutions` and no response header can undo that.
 
 ### The hero
 
@@ -183,6 +190,60 @@ node scripts/logos-to-alpha.mjs
 ```
 
 `scripts/optimize-logos.mjs` is the earlier one-off that extracted these from SVG-wrapped base64 (9.5MB → 404KB). It has nothing left to do unless you add new `.svg` wrappers.
+
+## The process timeline
+
+`/process` is a measured clone of farahcap.com's. Everything below was checked
+against the rendered DOM at 1440×894 and matches to the second decimal.
+
+| | Spec | Built |
+|---|---|---|
+| Header wrapper | 1440 × 404.81 | 1440 × 404.80 |
+| Steps container | 1440 × 1998.25 | 1440 × 1998.25 |
+| Row pitch | 632.75 | 632.75 |
+| Row / media / rail / track | 612.75 / 644×612.75 / 40 / 3×552.75 | identical |
+| Text column | 644 × 218.81 | 644 × 218.80 |
+| Text top offset in row | 196.97 | 196.97 |
+
+**The card sizes the row, and that is the whole layout.** The media card is
+`flex:1 0 0` with `aspect-ratio: 1.05098/1`, so it resolves to 644 × 612.75 and
+the row inherits its height; `align-items: center` then centres the text against
+it. Copy length therefore cannot move anything — step 3 runs a line longer than
+the others and the rhythm is unchanged.
+
+**The rail's progress fill must be absolutely positioned.** In flow it is 580px
+of content inside a `flex: 1 1 0%` track, and a flex-grow item still contributes
+its content height to the column's intrinsic size — so the rail measured
+40 + 20 + 580 = 640px, became the tallest item in the row, and drove the row
+height instead of the card, putting the whole page 27px per row out. `min-height: 0`
+does **not** fix this; only taking the fill out of flow does. The fill is
+deliberately taller than the track that clips it, so a full sweep is one
+`translateY(-100%)` and nothing animates height.
+
+The spine breaks for 20px between rows because each rail is exactly as tall as
+its own row and the container's gap sits between them. That is correct.
+
+Below 1200px the rail is **deleted**, not stacked — the step number survives in
+the "Step n" label.
+
+### The reveal is CSS-only
+
+No fourth client component. Each row publishes `view-timeline-name`, and the
+rail fill and text column both read it, which is what keeps them in lockstep.
+
+The whole block sits inside `@supports (animation-timeline: view())` **and** a
+`prefers-reduced-motion: no-preference` query, and the un-animated base state is
+the *finished* state — rail filled, text visible. Firefox, or anyone with reduced
+motion on, gets a complete static section rather than an empty rail and invisible
+copy. The reduced-motion guard has to set `animation: none` explicitly: for a
+scroll-driven animation `animation-duration` is ignored, so the global 0.01ms
+override never reaches it.
+
+The two zero points are pinned to `entry 0%` and `exit 100%` — exactly the
+instants the row is wholly off-screen. Fully transparent text is therefore never
+text the reader could otherwise be reading. Pulling either inwards buys a
+punchier fade at the cost of that guarantee, and dims row 1 at first paint: it is
+already 75% on screen before a pixel is scrolled.
 
 ## Client-side code
 

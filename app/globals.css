@@ -49,6 +49,12 @@
      floor, so a light band swaps in --color-gold-ink below. */
   --color-gold: #ae9e77;
   --color-gold-light: #decfab;
+  /* The same hue, held CONSTANT across bands. --color-gold above is darkened
+     to #7c6c45 on a light band so that TEXT set in it clears 3:1; that
+     darkening is wrong for a decorative graphic, which carries no text and
+     no meaning of its own. The process rail is the only user: a 3px fill
+     whose step is also stated in words beside it. Never set type in this. */
+  --color-gold-deep: #ae9e77;
   --color-warm: #dfdad8;
 
   --color-line: rgba(255, 255, 255, 0.13);
@@ -114,6 +120,21 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
    changes after first paint. */
 body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
   color: var(--color-fg);
+}
+
+/* ...and the band it sits on has to be light too.
+   `main` reserves --header-h of PADDING for the chrome, and padding paints the
+   element's own background — which was nothing, so the reserved strip showed
+   the dark <body> ground through it. On a dark-first page that is invisible
+   and correct. On a light-first one it put a 79px black bar between the
+   announcement bar and the first section, with the rule above rendering the
+   whole nav in #151515 ink on top of it: wordmark, links and CTA all but gone.
+   It applied to /customers from the day the header went transparent.
+
+   --color-paper, NOT var(--color-ground): `main` is outside the light band, so
+   its own --color-ground still resolves to the dark value. */
+body:has(main > :first-child[data-band="light"]) main {
+  background-color: var(--color-paper);
 }
 
 /* Client marks are pre-processed to white-on-transparent
@@ -324,13 +345,100 @@ body {
   }
 }
 
-/* The one place a size lives in CSS rather than at the call site: the H1 has
-   an authored two-line break, so its phone size has to be a media query
-   rather than a clamp — a clamp would resize it into a three-line wrap. */
+/* Sizes live at the call site everywhere EXCEPT the two display sizes that
+   step down on a phone. The hero H1 has an authored two-line break, so a
+   clamp would resize it into a three-line wrap; the 80/58 pair on /process
+   steps down at the same 809px boundary and is kept here beside it so the two
+   cannot drift apart. */
 @media (max-width: 809px) {
-  .hero-h1 {
+  .hero-h1,
+  .display-80 {
     font-size: 44px;
     line-height: 44px;
     letter-spacing: -1.76px;
+  }
+
+  .display-58 {
+    font-size: 38px;
+    line-height: 38px;
+    letter-spacing: -1.52px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   The /process step timeline — scroll-linked reveal, with NO JS.
+
+   `view-timeline-name` on each row publishes that row's own progress
+   through the viewport; the rail fill and the text column both read it,
+   which is what keeps them in lockstep. The reference drives the same two
+   things from a scroll listener.
+
+   EVERYTHING here is inside @supports, and the un-animated base state is
+   the FINISHED state — rail filled, text visible. A browser without
+   scroll-driven animations therefore gets a complete, static section
+   rather than an empty rail and invisible copy. Same under reduced motion,
+   which is why the block below sets `animation: none` explicitly: for a
+   scroll-driven animation `animation-duration` is ignored, so the global
+   0.01ms override does not reach these.
+   --------------------------------------------------------------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .step-row {
+      view-timeline-name: --step-row;
+      view-timeline-axis: block;
+    }
+
+    /* The fill is deliberately TALLER than the track that clips it, so a
+       full sweep is one translate of its own height — no height animation,
+       which would relayout on every frame. */
+    @keyframes rail-fill {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    .rail-fill {
+      animation: rail-fill linear both;
+      animation-timeline: --step-row;
+      animation-range: entry 25% cover 55%;
+    }
+
+    /* Bidirectional: the column fades up on the way in and back down as the
+       row leaves past the top, which is what the reference measures.
+
+       The two ZERO points are pinned to `entry 0%` and `exit 100%` on
+       purpose. Those are exactly the instants the row is wholly off-screen —
+       its top at the bottom edge, its bottom at the top edge — so fully
+       transparent text is never text the reader could otherwise be reading.
+       Pulling either one inwards (entry 15% was the first attempt) buys a
+       punchier fade at the cost of that guarantee, and also dims the first
+       row at first paint: on /process row 1 is already 75% on screen before
+       a single pixel is scrolled, and it loaded at 58% opacity. */
+    @keyframes step-reveal {
+      entry 0% {
+        opacity: 0;
+        transform: translateY(60px);
+      }
+      entry 70% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      exit 55% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      exit 100% {
+        opacity: 0;
+        transform: translateY(60px);
+      }
+    }
+
+    .step-text {
+      animation: step-reveal linear both;
+      animation-timeline: --step-row;
+    }
   }
 }

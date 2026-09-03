@@ -103,6 +103,30 @@ vertical needs a matching glyph added there.
 
 ---
 
+## The /process media cards — illustrative, not data
+
+`components/ui/process-media.tsx` draws the three graphics inside the step
+cards. **Nothing in them is a figure, a result, or a claim about a real
+mandate**, and that is deliberate — every bar length, marker position and
+state is composition, chosen to depict the shape of the work described beside
+it. None of it carries a number.
+
+| Step | Graphic | Note |
+|---|---|---|
+| 01 Deal Readiness | Readiness board — five materials, each with a bar and a comparable-set marker | Material names are generic (deck, data room, model, cap table, diligence pack). Two read "below set"; that is a picture of the review, not a finding. |
+| 02 Investor Segment | `public/solutions/fundraising.webp` | **An existing asset**, already shipped on `/solutions`. Not new artwork. It contains a "14 matched" count — that count predates this page. |
+| 03 Conversion | Four-stage panel ending in a gold "Term sheet" bar | Bar length is stage width, not a conversion rate. The point is that the last row is a different *kind* of thing, not that it is small. |
+
+One thing to decide: the reference fills these cards with photography and
+bespoke chart art. These are drawn in the site's own tokens instead, because
+copying the reference's assets was not an option and no Avalanche photography
+exists for this page. **If you have real screenshots** — an actual dataroom
+review, a real segmentation view — they would be stronger than any of this, and
+swapping them in is a per-card change with no layout consequence (the card is
+`aspect-ratio`-sized and crops with `overflow: clip`).
+
+---
+
 ## Supplied by you — not drafted, but worth one check
 
 **The Neurable testimonial** (`testimonial` in `content/copy.ts`) — quote, name, role and photo all came from you, so none of it is drafted. One thing to confirm before launch: the portrait is paired with **Dr. Ramses Alcaide**'s name, and a photo attached to a named real person is a factual claim. If that image is a placeholder rather than them, swap it — it is the kind of mismatch that is very hard to spot later and awkward if a reader notices.
