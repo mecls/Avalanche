@@ -52,8 +52,38 @@ export const announce = {
   linkLabel: "Book a call",
 } as const;
 
+/**
+ * The header links.
+ *
+ * An item with a `menu` gets a dropdown. Solutions is the only one, and it has
+ * exactly TWO entries because /solutions has exactly two sections — they are
+ * the page's own anchors, so the menu cannot drift out of step with the page
+ * without the anchors breaking first. The parent stays a real link to the
+ * whole page; the menu is a shortcut into it, not a replacement for it.
+ *
+ * `blurb` lines are DRAFT — I wrote them. Each restates copy already on the
+ * site (`secondaries.lede`, and the three `fundraising.steps`) rather than
+ * making a new claim. See docs/COPY-REVIEW.md.
+ */
 export const nav = [
-  { href: "/solutions", label: "Solutions" },
+  {
+    href: "/solutions",
+    label: "Solutions",
+    menu: [
+      {
+        href: "/solutions#secondaries",
+        label: "Secondaries",
+        // DRAFT
+        blurb: "Liquidity for GPs, LPs, and shareholders ahead of a full exit.",
+      },
+      {
+        href: "/solutions#fundraising",
+        label: "Fundraising",
+        // DRAFT
+        blurb: "Primary raises run end to end, from readiness to term sheet.",
+      },
+    ],
+  },
   { href: "/process", label: "Process" },
   { href: "/customers", label: "Customers" },
   { href: "/team", label: "Team" },

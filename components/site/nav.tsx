@@ -44,6 +44,22 @@ function ArrowGlyph() {
   );
 }
 
+/** Marks a nav link that has a dropdown under it. Rotates when it opens. */
+function Chevron() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 16 16"
+      className="h-3 w-3 shrink-0 transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path d="M4 6.5l4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 export function SiteNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -102,17 +118,67 @@ export function SiteNav() {
           <div className="hidden shrink-0 items-center gap-1.5 md:flex">
             {nav.map((item) => {
               const active = pathname === item.href;
-              return (
+              const menu = "menu" in item ? item.menu : undefined;
+
+              const trigger = (
                 <Link
-                  key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex items-center rounded-full px-3.5 py-2 text-[14px] leading-[16.8px] transition-colors hover:bg-white/[0.08] ${
+                  className={`flex items-center gap-1.5 rounded-full px-3.5 py-2 text-[14px] leading-[16.8px] transition-colors hover:bg-white/[0.08] ${
                     active ? "bg-white/[0.08]" : ""
                   }`}
                 >
                   {item.label}
+                  {menu && <Chevron />}
                 </Link>
+              );
+
+              if (!menu) return <div key={item.href}>{trigger}</div>;
+
+              /*
+                Hover/focus dropdown with NO state — the fourth client
+                component this file is allowed is still zero.
+
+                `visibility` (not `display`) is what makes the keyboard path
+                work, and the order matters: the panel's links are untabbable
+                while hidden, so focus can only reach them via the TRIGGER.
+                Tab to "Solutions" -> :focus-within opens the panel -> its
+                links become tabbable -> tabbing through them keeps focus
+                inside the group. Tab past the last one and it closes.
+
+                No `aria-expanded`: nothing here is a button controlling the
+                panel, and claiming otherwise would misreport the widget. It
+                is a link with a shortcut list beneath it, and it degrades to
+                exactly that.
+              */
+              return (
+                <div key={item.href} className="group relative">
+                  {trigger}
+
+                  <div className="invisible absolute top-full left-1/2 z-10 -translate-x-1/2 pt-2 opacity-0 transition-[opacity,visibility] duration-150 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
+                    {/* `bg-ground` and `text-fg`, so the panel follows the
+                        band the header is already in: a #151515 panel with
+                        white type over the hero, a white panel with ink type
+                        on /process and /customers. Nothing to special-case. */}
+                    <ul className="w-[320px] overflow-hidden rounded-lg border border-line bg-ground p-1.5 shadow-[0_16px_40px_rgba(0,0,0,0.28)]">
+                      {menu.map((sub) => (
+                        <li key={sub.href}>
+                          <Link
+                            href={sub.href}
+                            className="block rounded-md px-3 py-2.5 transition-colors hover:bg-fg/[0.06]"
+                          >
+                            <span className="block text-[14px] leading-[16.8px] font-medium">
+                              {sub.label}
+                            </span>
+                            <span className="mt-1 block text-[13px] leading-[18px] text-fg-muted">
+                              {sub.blurb}
+                            </span>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               );
             })}
           </div>
@@ -155,15 +221,30 @@ export function SiteNav() {
           className="border-t border-line-soft bg-[#151515] md:hidden"
         >
           <div className="shell flex flex-col gap-1 py-4">
-            {nav.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="py-2.5 text-base text-white"
-              >
-                {item.label}
-              </Link>
-            ))}
+            {/* The sub-items are listed INLINE here rather than behind a
+                second disclosure. The desktop menu opens on hover, which a
+                touch device does not have, so hiding them would make them
+                unreachable on the only viewport that cannot hover. Two extra
+                rows is a cheaper answer than a second piece of state. */}
+            {nav.map((item) => {
+              const menu = "menu" in item ? item.menu : undefined;
+              return (
+                <div key={item.href} className="flex flex-col">
+                  <Link href={item.href} className="py-2.5 text-base text-white">
+                    {item.label}
+                  </Link>
+                  {menu?.map((sub) => (
+                    <Link
+                      key={sub.href}
+                      href={sub.href}
+                      className="border-l border-line-soft py-2 pl-4 text-[15px] text-white/70"
+                    >
+                      {sub.label}
+                    </Link>
+                  ))}
+                </div>
+              );
+            })}
             <div className="mt-3">
               <CtaButton href="#get-in-touch">{site.navCta}</CtaButton>
             </div>
