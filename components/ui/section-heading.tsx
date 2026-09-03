@@ -28,12 +28,12 @@ export function SectionHeading({
       className={`${centered ? "mx-auto max-w-3xl text-center" : "max-w-2xl"} ${className}`}
     >
       {eyebrow && <p className="eyebrow mb-5">{eyebrow}</p>}
-      <h2 className="display text-[clamp(2rem,4.4vw,3.25rem)] text-balance">
+      <h2 className="display text-[clamp(2.5rem,4.4vw,3.625rem)] text-balance">
         {title}
       </h2>
       {lede && (
         <p
-          className={`mt-5 text-[1.0625rem] leading-relaxed text-fg-muted ${
+          className={`mt-5 text-[18px] leading-[27px] text-fg-muted ${
             centered ? "mx-auto" : ""
           }`}
         >

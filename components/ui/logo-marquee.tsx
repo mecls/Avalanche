@@ -9,10 +9,12 @@ type Props = {
   /**
    * Whether these are the white-on-transparent marks from
    * scripts/logos-to-alpha.mjs. Those carry `logo-mark`, which globals.css
-   * inverts on a light band, and they run held back because they only have to
-   * register in passing. Full-colour marks must NOT be inverted — they would
-   * blow out to white on a white band — so they opt out and run at full
-   * strength, which is how their own artwork is already balanced.
+   * inverts on a light band. Full-colour marks must NOT be inverted — they
+   * would blow out to white on a white band — so they opt out.
+   *
+   * Neither set is held back any more: the reference runs its strip at full
+   * opacity, and the marks sit on a translucent blurred band rather than
+   * straight on the footage, which is what makes that legible.
    */
   alphaMarks?: boolean;
   /** Box each mark sits in. Wordmarks need more room than the client marks. */
@@ -64,9 +66,7 @@ export function LogoMarquee({
               alt=""
               fill
               sizes="160px"
-              className={`object-contain transition-opacity duration-300 hover:opacity-100 ${
-                alphaMarks ? "logo-mark opacity-65" : ""
-              }`}
+              className={`object-contain ${alphaMarks ? "logo-mark" : ""}`}
             />
           </div>
         ))}

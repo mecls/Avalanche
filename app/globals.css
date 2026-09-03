@@ -3,9 +3,13 @@
 /* ---------------------------------------------------------------
    Avalanche Capital design tokens
 
-   Matched to fundraisr.ai (same owner): a near-black ground, Satoshi
-   throughout, flat white type, hairline rules at low white alpha. No
-   serif, no accent colour — emphasis comes from weight and scale.
+   Matched to farahcap.com: a #151515 ground, Cormorant Garamond on
+   every heading, Inter on every UI run, and a gold accent.
+
+   This REPLACED a fundraisr.ai-derived system (Satoshi, flat white
+   type, no accent colour). If you find a comment or a doc still
+   claiming "no serif, no accent colour", it predates this and is
+   wrong — that includes older sections of docs/BUILD-NOTES.md.
 
    Tokens are named by ROLE, not by hue, so a section can re-point the
    whole set at once. See the [data-band="light"] block below: it swaps
@@ -13,59 +17,89 @@
    knowing anything about it.
    --------------------------------------------------------------- */
 @theme {
-  /* Ground — darkest to lightest */
-  --color-ground-deep: #050508;
-  --color-ground: #080808;
-  --color-ground-alt: #0f0e0d;
-  --color-card: #0e0e13;
+  /* Ground. The reference runs ONE dark value, not a three-step ramp, so
+     these are deliberately identical — components that reach for a
+     different ground must not reintroduce banding against it. */
+  --color-ground-deep: #151515;
+  --color-ground: #151515;
+  --color-ground-alt: #151515;
+  /* The ONE dark surface that is not the ground. Cards sit on top of a
+     #151515 band and have to read as raised, so this is deliberately a few
+     points lighter rather than equal to it — with `border-line` on top that
+     is enough lift without a shadow. fg-muted still measures 6.2:1 here. */
+  --color-card: #202020;
 
-  /* Foreground. Contrast on --color-ground (#080808):
-       fg        20.0:1  AAA
-       fg-muted   8.0:1  AAA
-       fg-faint   5.9:1  AA
+  /* Light surfaces, for the bands that invert. */
+  --color-paper: #ffffff;
+  --color-paper-2: #fafafa;
+  --color-paper-3: #f3f3f3;
+
+  /* Foreground. Contrast on --color-ground (#151515):
+       fg        17.9:1  AAA
+       fg-muted   6.5:1  AA
+       fg-faint   5.0:1  AA
      A previous palette shipped its faint token at 2.9:1 while it carried
      every eyebrow and all the footer legal text. Hence the numbers. */
   --color-fg: #ffffff;
-  --color-fg-muted: #a3a3ae;
-  --color-fg-faint: #8b8b96;
+  --color-fg-muted: #a8a8a8;
+  --color-fg-faint: #949494;
+
+  /* The accent: banner link and one section heading. #ae9e77 is 6.4:1 on
+     #151515. It is only 2.6:1 on white, which is under even the large-text
+     floor, so a light band swaps in --color-gold-ink below. */
+  --color-gold: #ae9e77;
+  --color-gold-light: #decfab;
+  --color-warm: #dfdad8;
 
   --color-line: rgba(255, 255, 255, 0.13);
   --color-line-soft: rgba(255, 255, 255, 0.09);
 
-  /* The only chromatic note in the palette: a live-status dot. Decorative —
-     it never carries meaning on its own, so it needs no contrast guarantee. */
+  /* The only chromatic note besides the accent: a live-status dot.
+     Decorative — it never carries meaning alone, so it needs no ratio. */
   --color-live: #4ade80;
 
-  --font-display: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
-  --font-sans: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-display-src), ui-serif, Georgia, serif;
+  --font-numeric: var(--font-numeric-src), ui-serif, Georgia, serif;
+  --font-sans: var(--font-ui-src), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* next/font publishes its variables on <html>. @theme is evaluated before
+   those cascade, so they are aliased through :root rather than referenced
+   directly above. */
+:root {
+  --font-display-src: var(--font-cormorant);
+  --font-numeric-src: var(--font-cormorant-infant);
+  --font-ui-src: var(--font-inter);
 }
 
 /* A light band. Re-points the role tokens for its whole subtree — shared
    components (buttons, headings, cards) invert automatically because they
    reference roles rather than colours.
-   Contrast on the light grounds (#fafaf9 / #f2f2f0 / #ffffff):
-     fg        14.7 / 13.7 / 15.3  AAA
-     fg-muted   6.4 /  6.0 /  6.7  AA
-     fg-faint   5.3 /  4.9 /  5.5  AA */
+   Contrast on the light grounds (#ffffff / #fafafa / #f3f3f3):
+     fg        17.0 / 16.4 / 15.2  AAA
+     fg-muted   5.5 /  5.3 /  4.9  AA */
 [data-band="light"],
 .tone-light,
 body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
-  --color-ground-deep: #f2f2f0;
-  --color-ground: #fafaf9;
-  --color-ground-alt: #f2f2f0;
+  --color-ground-deep: #f3f3f3;
+  --color-ground: #ffffff;
+  --color-ground-alt: #fafafa;
   --color-card: #ffffff;
 
-  --color-fg: #252525;
-  --color-fg-muted: #5b5b63;
-  /* #6f6f78 measured 4.44:1 on the #f2f2f0 grounds — under the AA floor,
-     and it carries every eyebrow. #686870 clears it on all three. */
-  --color-fg-faint: #686870;
+  --color-fg: #151515;
+  /* #686868 is the reference's muted grey; 5.5:1 on white. */
+  --color-fg-muted: #686868;
+  --color-fg-faint: #686868;
 
-  --color-line: rgba(0, 0, 0, 0.12);
-  --color-line-soft: rgba(0, 0, 0, 0.07);
+  /* Gold at #ae9e77 measures 2.6:1 on white — under the large-text floor of
+     3:1, and it carries a section heading. Darkened to 4.6:1 here. */
+  --color-gold: #7c6c45;
+
+  --color-line: #eeeeee;
+  --color-line-soft: #e0e0e0;
 }
 
-/* Only a band paints itself. The two header selectors above borrow the same
+/* Only a band paints itself. The header selector above borrows the same
    tokens WITHOUT the ground, because the header owns its own background — it
    has to be able to go fully transparent over the hero video. */
 [data-band="light"] {
@@ -73,14 +107,13 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
   color: var(--color-fg);
 }
 
-/* First paint on a page that opens on a light band, before nav.tsx has
-   measured anything. Without this the header renders its dark-band markup for
-   a frame — white type on a white hero, i.e. nothing at all. The moment the
-   nav hydrates it sets .tone-light / .tone-dark and takes over; `:not()` is
-   what lets .tone-dark win here despite this selector being heavier. */
+/* A page that opens on a light band. The header is transparent everywhere
+   now, so on a light first section its white type would vanish. This is pure
+   CSS because the header no longer moves relative to the bands — it is
+   absolutely positioned and scrolls away, so the band beneath it never
+   changes after first paint. */
 body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
-  background-color: color-mix(in srgb, var(--color-ground) 85%, transparent);
-  border-bottom-color: var(--color-line);
+  color: var(--color-fg);
 }
 
 /* Client marks are pre-processed to white-on-transparent
@@ -98,14 +131,15 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
 /* The way back out of a light band. Without this the switch is one-way and a
    dark island cannot be nested. Values mirror the @theme defaults. */
 [data-band="dark"] {
-  --color-ground-deep: #050508;
-  --color-ground: #080808;
-  --color-ground-alt: #0f0e0d;
-  --color-card: #0e0e13;
+  --color-ground-deep: #151515;
+  --color-ground: #151515;
+  --color-ground-alt: #151515;
+  --color-card: #202020;
 
   --color-fg: #ffffff;
-  --color-fg-muted: #a3a3ae;
-  --color-fg-faint: #8b8b96;
+  --color-fg-muted: #a8a8a8;
+  --color-fg-faint: #949494;
+  --color-gold: #ae9e77;
 
   --color-line: rgba(255, 255, 255, 0.13);
   --color-line-soft: rgba(255, 255, 255, 0.09);
@@ -116,8 +150,12 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
 
 :root {
   color-scheme: dark;
-  /* Published by the fixed header: `main` reserves it, the hero cancels it. */
-  --header-h: 6.0625rem;
+  /* The chrome is TWO elements: a fixed 37px announcement bar, and below it a
+     79.2px nav that is absolutely positioned and scrolls away with the page.
+     `main` reserves the pair and the hero cancels it. */
+  --header-bar-h: 37px;
+  --header-nav-h: 79.2px;
+  --header-h: 116.2px;
 }
 
 html {
@@ -132,14 +170,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Sits the footage in a neutral palette without regrading the file. This was
-   saturate(0.5), set against a warm amber clip that needed pulling back hard.
-   The current source is a backlit, already low-chroma shot, and at 0.5 it went
-   flat grey — the sky and the warm horizon both disappeared. 0.92 keeps it
-   restrained without draining it. Re-judge this when the footage changes. */
-.hero-video {
-  filter: saturate(0.92) contrast(1.03);
-}
+/* The hero video ships UNGRADED. It used to carry
+   `saturate(0.92) contrast(1.03)`, tuned against a five-stop near-black
+   scrim; the two-stop scrim replaces both, and the reference applies no
+   filter at all. Do not reintroduce one without re-deriving the scrim. */
 
 @media (prefers-reduced-motion: reduce) {
   html {
@@ -158,43 +192,110 @@ body {
   }
 }
 
+/* ---------------------------------------------------------------
+   Type. These carry family, weight, leading and tracking only —
+   sizes are set at the call site.
+   --------------------------------------------------------------- */
+
+/* Bare uppercase eyebrow. The hero uses the pill below instead. */
 @utility eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-fg-faint);
+  color: var(--color-fg-muted);
 }
 
-/* Display headings. Satoshi at medium weight, tight leading, negative
-   tracking — measured off fundraisr.ai (h1 72/75.6 w500; h2 44/48.4 w600
-   at -1.1px, which is -0.025em). */
+/* Display headings — Cormorant Garamond. The 80px H1 and 58px H2 are both
+   set SOLID (line-height 1) at -0.04em, which is what makes a two-line
+   headline read as one block rather than as two sentences. */
 @utility display {
   font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+/* 40px card headings and process steps: heavier, and with real leading
+   because they wrap to two and three lines. */
+@utility display-md {
+  font-family: var(--font-display);
   font-weight: 500;
-  line-height: 1.06;
-  letter-spacing: -0.025em;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
 }
 
-/* Section rhythm. The cap was 8rem, which put 256px of padding into every
-   band and meant no section on the site could share a screen with its
-   neighbour — the hero's client strip scrolled away before Track Record was
-   readable. 4.5rem holds the same rhythm and buys back 112px a section, which is
-   also what pays for the larger display sizes the bands now carry.
-
-   The target this was set against: the fixed header is --header-h tall and
-   covers the top of the page, so a band and the hero's client strip share a
-   screen only if stripH + bandH <= 100dvh - --header-h. Track Record is the
-   tallest band that has to clear it. */
-@utility section-y {
-  padding-block: clamp(3.25rem, 5.5vw, 4.5rem);
+/* 28px card headings. Tracking eases off as the size drops — -0.04em on a
+   28px serif closes the counters up. */
+@utility display-sm {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
+/* Figures only. Infant is a separate face from Garamond, not a weight of it:
+   its numerals are the ones the reference sets its stats in. */
+@utility numeral {
+  font-family: var(--font-numeric);
+  font-weight: 400;
+  letter-spacing: normal;
+}
+
+/* The eyebrow as a glass pill, which is how it sits over the hero video. The
+   blur is what separates it from the footage. */
+@utility eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 8px 12px;
+  border-radius: 60px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(5px);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+/* Two-line label that opens the hero logo band. The width is FIXED: the
+   marquee beside it has to start at the same x on every viewport, and a
+   shrink-to-fit label would move with its own copy. */
+@utility strip-label {
+  width: 231px;
+  flex-shrink: 0;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 19.6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-warm);
+}
+
+/* ---------------------------------------------------------------
+   Layout
+   --------------------------------------------------------------- */
+
+/* 1440 max with a FIXED 20px gutter, not a clamped one. The reference holds
+   20px at every width, so the content box is exactly 1400px on a 1440 window.
+   The previous 80rem/clamp(1.25rem,4vw,2.5rem) both capped narrower AND grew
+   its gutter on a large screen, which is what made the page feel pinched. */
 @utility shell {
   width: 100%;
-  max-width: 80rem;
+  max-width: 1440px;
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+  padding-inline: 20px;
+}
+
+/* Fixed 120px, not a clamp. The previous clamp resolved to 52-72px — roughly
+   half the reference rhythm — which is what made the page read cramped. */
+@utility section-y {
+  padding-block: 120px;
 }
 
 /* Scroll-reveal: opt-in, respects reduced motion via the block above */
@@ -220,5 +321,16 @@ body {
   }
   to {
     transform: translateX(-50%);
+  }
+}
+
+/* The one place a size lives in CSS rather than at the call site: the H1 has
+   an authored two-line break, so its phone size has to be a media query
+   rather than a clamp — a clamp would resize it into a three-line wrap. */
+@media (max-width: 809px) {
+  .hero-h1 {
+    font-size: 44px;
+    line-height: 44px;
+    letter-spacing: -1.76px;
   }
 }

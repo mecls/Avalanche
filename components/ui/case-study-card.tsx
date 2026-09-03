@@ -27,7 +27,7 @@ export function CaseStudyCard({
             alt={study.name}
             fill
             sizes="(max-width: 640px) 96px, 128px"
-            className="object-contain object-left"
+            className="logo-mark object-contain object-left"
           />
         </div>
         <span className="rounded-full bg-fg px-3 py-1 text-right text-[0.6875rem] font-medium text-balance text-ground">
@@ -68,7 +68,7 @@ export function CaseStudyTile({ study }: { study: CaseStudy }) {
             alt={study.name}
             fill
             sizes="(max-width: 640px) 144px, 160px"
-            className="object-contain"
+            className="logo-mark object-contain"
           />
         </div>
       </div>

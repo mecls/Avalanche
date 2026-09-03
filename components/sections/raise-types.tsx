@@ -7,7 +7,7 @@ import { raiseTypes } from "@/content/copy";
 export function RaiseTypes() {
 
   return (
-    <section className="section-y border-t border-line-soft">
+    <section data-band="light" className="section-y border-t border-line-soft">
       <div className="shell">
         <SectionHeading
           eyebrow={raiseTypes.eyebrow}

@@ -35,6 +35,21 @@ export const site = {
    */
   booking: "https://www.fundraisr.ai/book-demo",
   entity: "Avalanche Capital LDA (PT 517584271)",
+  /** The header's ghost button. Short by necessity — it sits in a 47.2px
+   *  glass rectangle beside the nav pills. */
+  navCta: "Book a call",
+} as const;
+
+/**
+ * The fixed announcement bar above the nav.
+ *
+ * `text` is set in italic and sentence case, and is followed by a gold
+ * underlined link. It is deliberately a claim about availability rather than
+ * about results — nothing here is a figure, so nothing here needs sourcing.
+ */
+export const announce = {
+  text: "Advising funds, founders, and operating companies · Intro call available",
+  linkLabel: "Book a call",
 } as const;
 
 export const nav = [
@@ -45,13 +60,44 @@ export const nav = [
 
 export const hero = {
   eyebrow: "Private capital advisory",
+  /** Kept for metadata and for anything that needs the headline as one
+   *  string. What the hero RENDERS is `titleLines` below. */
   title: "Private capital advisory with an edge",
+  /**
+   * The headline breaks on AUTHORED lines, not on wrapping, and the first
+   * word of each line is set in italic. Both are editorial decisions, so the
+   * break lives here rather than as a <br> buried in the component.
+   *
+   * `lead` is the italic word; `rest` completes the line. Re-balancing the
+   * lines means editing these two entries — do not add a third without
+   * checking the 80px size still holds two lines' worth of measure.
+   */
+  titleLines: [
+    { lead: "Private", rest: " capital" },
+    { lead: "advisory", rest: " with an edge" },
+  ],
   // the word rendered in the gold accent
   accent: "edge",
   lede: "Our unique edge is exposure — to the right capital sources, the right mandates, and the right counterparties.",
   cta: "Get started",
+  /**
+   * NOT RENDERED IN THE HERO. The reference pairs this line with its
+   * mid-page CTA blocks, not with the hero button, so the hero CTA now
+   * stands alone. `trackRecord.ctaNote` carries the same line where it is
+   * still shown; this is kept because the two could diverge.
+   */
   ctaNote: "Intro call · ~30 min · No commitment required",
-  // Sits on the right of the hero's CTA row, centred against the button.
+  /**
+   * Opens the hero's logo band, in a fixed 231px column.
+   *
+   * DELIBERATELY NOT the reference's "Representative investors & strategic
+   * partners". That strip carries CLIENT marks — `customers.logoNote` states
+   * they are past engagements — and calling past clients investors or
+   * partners would be a claim the site cannot support. Same shape, accurate
+   * words. See docs/COPY-REVIEW.md.
+   */
+  stripLabel: "Representative clients & engagements",
+  // Sits at the right of the hero's content row, bottom-aligned with the CTA.
   stat: { value: "$2B+", label: "in active mandates partners brought in for our clients" },
 } as const;
 
@@ -302,6 +348,9 @@ export const ctaBand = {
   title: "Start with a consultation",
   accent: "consultation",
   body: "Every successful raise begins with a clear strategy. Our consultation uncovers your goals, challenges, and positioning, so we can design an approach that reaches the right investors.",
+  /** The block's own button. It opens the scheduler in a new tab, which is
+   *  the job `components/sections/booking.tsx` used to do here. */
+  cta: "Book a meeting",
   note: "Intro call · No commitment required",
 } as const;
 

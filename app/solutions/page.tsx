@@ -88,7 +88,7 @@ export default function SolutionsPage() {
             />
             <Entry n="01">
               <p className="eyebrow">{secondaries.eyebrow}</p>
-              <h2 className="display mt-4 text-[clamp(2rem,4.4vw,3.25rem)]">
+              <h2 className="display mt-4 text-[clamp(2.5rem,4.4vw,3.625rem)]">
                 {secondaries.title}
               </h2>
               <p className="mt-5 max-w-xl text-[0.9375rem] leading-relaxed text-fg-muted">
@@ -107,7 +107,7 @@ export default function SolutionsPage() {
             />
             <Entry n="02">
               <p className="eyebrow">{fundraising.eyebrow}</p>
-              <h2 className="display mt-4 text-[clamp(2rem,4.4vw,3.25rem)]">
+              <h2 className="display mt-4 text-[clamp(2.5rem,4.4vw,3.625rem)]">
                 {fundraising.title}
               </h2>
               <p className="mt-5 max-w-xl text-[0.9375rem] leading-relaxed text-fg-muted">

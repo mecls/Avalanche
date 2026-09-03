@@ -4,7 +4,8 @@ import type { ComponentProps } from "react";
 type Props = {
   href: string;
   children: React.ReactNode;
-  /** `sm` is the nav button; `md` the in-page CTA. */
+  /** `sm` is the nav button; `md` the in-page CTA. Both are 47.2px tall in
+   *  the reference — `sm` exists now only for tighter in-card CTAs. */
   size?: "sm" | "md";
   variant?: "solid" | "ghost";
   className?: string;
@@ -17,8 +18,13 @@ type Props = {
  * black on white in a light one — because both tokens are re-pointed by
  * `[data-band]`. That is the whole reason the buttons need no variant prop.
  *
- * Measured off fundraisr.ai: 6px radius, 8/16 padding, 16px, weight 400. A
- * rectangle, not a pill, and no trailing glyph.
+ * `ghost` is the header button and is NOT a bordered outline: the reference
+ * uses an almost-invisible 1% white fill plus a 6px backdrop blur, so it
+ * reads as glass over the hero footage and as nothing at all over a flat
+ * band. It has no border precisely because the blur is doing the separating.
+ *
+ * Geometry measured from the reference: 4px radius, 14/20 padding, 47.2px
+ * tall, 16px/19.2px Inter 500. A rectangle, not a pill, and no trailing glyph.
  */
 export function CtaButton({
   href,
@@ -29,16 +35,18 @@ export function CtaButton({
   ...rest
 }: Props) {
   const sizing =
-    size === "sm" ? "px-4 py-2 text-[0.8125rem]" : "px-4 py-2 text-base";
+    size === "sm"
+      ? "px-4 py-2.5 text-sm"
+      : "h-[47.2px] px-5 py-3.5 text-base leading-[19.2px]";
   const look =
     variant === "solid"
-      ? "bg-fg text-ground hover:bg-fg/88"
-      : "border border-line text-fg hover:border-fg/35 hover:bg-fg/[0.06]";
+      ? "bg-fg text-ground tracking-[-0.01em] hover:bg-fg/88"
+      : "bg-white/[0.01] text-fg tracking-[-0.05em] backdrop-blur-[6px] hover:bg-white/[0.08]";
 
   return (
     <Link
       href={href}
-      className={`inline-flex items-center rounded-md transition-colors duration-200 ${sizing} ${look} ${className}`}
+      className={`inline-flex items-center justify-center gap-3 rounded-[4px] font-medium transition-colors duration-200 ${sizing} ${look} ${className}`}
       {...rest}
     >
       {children}

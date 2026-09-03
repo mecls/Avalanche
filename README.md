@@ -96,64 +96,79 @@ Laid out like fundraisr.ai's: wordmark left, links **centred on the viewport**, 
 
 ## Design system
 
-`app/globals.css` is the whole thing — there is no `tailwind.config`. Tokens are named by **role**, not by hue:
+The site is a **layout clone of farahcap.com**. It was previously matched to fundraisr.ai — Satoshi, flat white type, no accent colour — and that system is gone. Comments or docs still claiming "no serif, no accent" predate the rebuild.
 
-| Token | Dark (default) | Light band |
-|---|---|---|
-| `ground` / `ground-deep` / `ground-alt` | `#080808` / `#050508` / `#0f0e0d` | `#fafaf9` / `#f2f2f0` / `#f2f2f0` |
-| `card` | `#0e0e13` | `#ffffff` |
-| `fg` / `fg-muted` / `fg-faint` | `#ffffff` / `#a3a3ae` / `#8b8b96` | `#252525` / `#5b5b63` / `#686870` |
-| `line` / `line-soft` | white 13% / 9% | black 12% / 7% |
+`app/globals.css` is the whole design system. There is no `tailwind.config`; Tailwind v4 is used CSS-first.
 
-**Light sections**: put `data-band="light"` on a `<section>`. That's the whole API. The rule re-points every token for the subtree, so shared components (buttons, headings, cards) invert without knowing anything about it — `bg-fg text-ground` is a white button on dark and a black button on light, from the same markup. `data-band="dark"` goes back the other way for a nested dark island.
+**Three faces, each with one job.** Cormorant Garamond on every heading, Cormorant *Infant* on figures only (a separate face, not a weight — its numerals are the ones the reference sets stats in), Inter on every UI run. All three via `next/font/google`. Garamond loads its italic because the H1 sets the first word of each line in italic, and a synthesised slant on the largest type on the site is very visible.
 
-Contrast is documented in `globals.css` with real ratios. Every text/background pair on all four routes passes WCAG AA — verified, not assumed. A previous palette shipped its faint token at 2.9:1 while it carried every eyebrow and all the footer legal text, so this gets measured.
+Colour tokens are named by **role**, never by hue. A light section is `data-band="light"` on the `<section>` and that one attribute re-points every token for the subtree, which is why shared components take no `tone` prop — `bg-fg text-ground` is a white button on dark and a black button on light from the same markup.
 
-Type is **Satoshi** (fundraisr's face), self-hosted from `app/fonts/` — 42KB, roman only. It isn't on Google Fonts. The italic face was dropped because nothing on the site is set in italic.
+The three dark grounds are deliberately the same `#151515`; the reference runs one dark value rather than a ramp.
 
-## The hero video
+Contrast is documented in `globals.css` with real ratios, and every text/background pair is verified rather than assumed. **Gold is the trap**: `#ae9e77` is 6.4:1 on `#151515` but only 2.6:1 on white — under even the 3:1 large-text floor — so the light band swaps in a darkened `#7c6c45`. Do not unify the two.
 
-Full-bleed background behind the headline. `components/sections/hero.tsx` is a **server component with no JS**: the poster sits on the wrapper as a background image and the video paints over it, so `prefers-reduced-motion` just hides the video (`globals.css`) and the still is already in place.
+`.shell` is 1440px with a **fixed** 20px gutter and `.section-y` is a fixed 120px. Both used to be clamped, and both resolved much smaller, which is what made the page feel pinched on a large screen.
 
-`scripts/optimize-hero-video.mjs` rebuilds the assets from the master:
+## The chrome
+
+Two elements, not one:
+
+- a **fixed** 37px announcement bar that stays on screen — opaque `#151515`, a green live dot, italic body text and a gold underlined link;
+- an **absolute** 79.2px nav that scrolls away with the page — fully transparent, image-free wordmark, pill links, and a glass ghost button.
+
+Their sum is published as `--header-h`. `main` reserves it and the hero cancels it with a negative margin, so the hero still starts at y:0. The spec called for dropping both; that is right for a one-page reference and wrong here, because on the three routes without a hero an absolute nav with no reserved space lands on top of the first heading.
+
+The second half of that split is why `nav.tsx` lost a lot of machinery. A *fixed* nav passes over every band on the page, so it had to measure the one beneath it on every scroll and resize and re-point its own tokens. An absolute nav only ever sits over the first section, and that never changes after first paint — so the whole thing collapses to one `:has()` rule in `globals.css`. No scroll listener, no tone state, no hydration gap.
+
+## The hero
+
+`components/sections/hero.tsx` is a **server component with no JS**: the poster sits on the wrapper as a background image and the video paints over it, so `prefers-reduced-motion` just hides the video and the still is already in place.
+
+Height is an exact `h-dvh`, not a `min-h`. The composition depends on it — the content container is `calc(100% - 100px)`, reserving the logo band, and a min-height would let a long line push the band off the fold.
+
+**`items-end` on the content row is the composition.** It puts the bottom edge of the CTA button and the bottom edge of the stat label on one baseline (measured: both at y=842 on a 1440x986 window). Change it to `center` or `start` and the hero stops matching the reference.
+
+The headline breaks on **authored** lines with the first word of each in italic. That is content, not layout, so it lives in `hero.titleLines` rather than as a `<br>` in the component.
+
+### Background stack
+
+Three absolute layers: video, scrim, grain.
+
+The scrim is **two stops, 0.44 → 0.60, in `#151515`** — not black. It replaced a five-stop per-clip gradient that opened at 0.93, derived from measured band luma, which crushed the footage and took the sky with it. What makes two stops safe is that every text run in the hero is pure white and the type is large; the muted tokens are calibrated for flat grounds, and on a photograph contrast has to be measured against the brightest column each run crosses.
+
+**`public/grain.png` is load-bearing.** The scrim is one long gradient across the full viewport height, which is the textbook case for 8-bit banding; the grain dithers it, and is the reason the scrim can be this light without the footage looking digital. Regenerate with `scripts/make-grain.mjs`.
+
+It is a 256px tile, not the reference's 720px. Grain must render at 1:1 — scaling it blurs it into mush — so tile size only affects the file, and per-pixel random alpha is close to incompressible: 720px lands at 387KB, 256px at 30KB, and on structureless noise the shorter repeat is invisible. Keep `backgroundSize` in `hero.tsx` in step with `SIZE` in the script.
+
+### The video pipeline
 
 ```bash
 node scripts/optimize-hero-video.mjs [path/to/source.mp4]
 ```
 
-It strips audio and any stray data streams, downscales, debands, and emits `hero.mp4` (h264), `hero.webm` (VP9) and `hero-poster.webp`.
+The current source is a 2560x1440 / 13.8Mbps master — a wide, backlit view of the full span of the Ponte 25 de Abril. It is clean, so the script only downscales to 1600, debands, and encodes. Two things it does *not* do were both needed by earlier sources and would be wrong here:
 
-**The current source is a 2560×1440 / 13.8Mbps master** — a wide, backlit view of the full span of the Ponte 25 de Abril with the sun high over the Tagus. It is clean, so the script only downscales to 1600, debands, and encodes. Two things it does *not* do are worth knowing, because both were needed by earlier sources and would be wrong here:
-
-- **No restoration.** An earlier clip was only available as a 608×320 stock preview, so the script ran `hqdn3d` → `lanczos` → `unsharp` → `gradfun` to clean, enlarge and re-crisp it before `object-cover` magnified the artifacts. Denoising a 13.8Mbps master instead destroys real detail to fix artifacts that aren't there.
+- **No restoration.** An earlier clip existed only as a 608x320 preview and needed `hqdn3d` → `lanczos` → `unsharp` → `gradfun` to clean, enlarge and re-crisp it before `object-cover` magnified the artifacts. Denoising a 13.8Mbps master destroys real detail to fix artifacts that aren't there.
 - **No debar.** Another master shipped letterboxed — a 2020-tall picture inside a 2160-tall container. Run `cropdetect` on any new source rather than assuming.
 
 Both are in the git history if a future source needs them.
 
-**`gradfun` is not optional on this clip.** Most of the frame is one enormous smooth sky gradient running out of a blown highlight, which is the textbook case for 8-bit banding. With it the gradient holds clean at 1.5× nearest-neighbour zoom.
+`gradfun` is not optional: most of the frame is one enormous smooth sky gradient running out of a blown highlight.
 
-**The rates look high (crf 31 / VP9 46) and are deliberate.** The sun's specular path on the water is a field of fine glitter that changes completely every frame — it is enormously expensive and it alone drives the bitrate. At crf 27 this clip encodes to 4.16MB. Light denoise was tried to tame it and lost, costing more in detail than it saved in bits. VP9 does especially badly here: at crf 40 it is 3.54MB against the mp4's 2.18MB. Since VP9 is offered *first* in the markup it has to actually be the smaller file, so **always compare the two printed sizes after changing the source or either encoder** — there is no portable crf, and across the sources this hero has carried it has ranged from 32 to 46.
+**The rates look high (crf 31 / VP9 46) and are deliberate.** The sun's specular path on the water is fine glitter that changes completely every frame, and it alone drives the bitrate — at crf 27 this clip is 4.16MB. VP9 does especially badly here: crf 40 is 3.54MB against the mp4's 2.18MB, and 46 is where it finally wins. Since VP9 is offered *first* in the markup it has to actually be the smaller file, so **compare the two printed sizes after any change** — there is no portable crf, and across this hero's sources it has ranged from 32 to 46.
 
-**The whole 15s ships.** Mean luma is flat at 118.0–118.6 end to end with no cut, so the loop wraps invisibly. An earlier source had to be trimmed at 9.3s because it hard-cut into a blown plate and strobed on every wrap — measure a new source with `signalstats` rather than assuming.
+The whole 15s ships: mean luma is flat at 118.0–118.6 end to end with no cut, so the loop wraps invisibly. An earlier source had to be trimmed at 9.3s because it hard-cut into a blown plate and strobed on every wrap — measure a new source with `signalstats` rather than assuming.
 
-### The hero scrim
+## The closing band
 
-Not a uniform wash. It is a five-stop vertical gradient whose stops are derived from measured per-band luma and from what each band's text needs for AA, and **it has to be re-derived when the source changes** — these numbers are specific to this clip.
+`components/site/cta-band.tsx` — "Start with a consultation", directly above the footer and the anchor target for every CTA on the site.
 
-Two structural details that will bite anyone moving it:
+Full-bleed and image-backed. The background is the **hero poster, not a second video**: this block sits at the bottom of a long page, so an autoplaying video there would decode continuously for something most readers never reach, and the still already exists and is already cached from the hero's own poster.
 
-- The second stop is anchored to `var(--header-h)`, not a percentage, so the dark band tracks the header instead of riding up above the announcement strip on a short window.
-- The lower stops are anchored to the **bottom** (`calc(100% - 620px)`), because the text block is bottom-pinned by `justify-end`. Its distance from the foot is fixed while its percentage position slides with the viewport, so a percentage trough drifts up under the eyebrow on a short window and drops it below AA.
+It carries the same three-layer stack as the hero — image, scrim, grain — for the same reason: one long gradient over a wide box bands without grain to dither it. The scrim is **left-weighted** rather than vertical, because unlike the hero the type sits in a single left column and the right half of the frame can stay open. Verified by compositing the real poster against the real gradient: white clears AA on the worst column at 10.9:1 or better.
 
-### Scale
-
-Display type is deliberately large — h1 84px, section h2 52px, stat figures 72px — and section padding is capped at 4.5rem rather than 8rem. Both were set together against a reference where the type carries the page and the padding stays out of the way. The height the larger type needs was taken out of section padding and gaps, **not** out of the cells, which is what keeps the hero's client strip and the Track Record band on one screen together (`stripH + bandH <= 100dvh - --header-h`, clearing by 8px today).
-
-The hero's client strip sits inside `shell`, so its rule and logos align with the headline and CTA row instead of running full-bleed. `LogoMarquee` needs its `overflow-hidden` for that: the scrolling row is several times wider than its box and `mask-image` defaults to `mask-repeat: repeat`, so without clipping the fade gradient tiles and the strip reads as a few logos with holes between them.
-
-**Every text run in the hero is `fg`** — none is `fg-muted` or `fg-faint` as it would be anywhere else. That is one rule, not five exceptions. The muted tokens are calibrated against the flat grounds in `globals.css`, where the background is one known colour; here it is a photograph, so contrast is measured against the *brightest column each run crosses*, not the mean beneath it. This clip's sun reflection is blown to (253,254,251) and drifts under the text, which puts `#a3a3ae` at 1.8–3.7:1, and 2.3:1 on mobile where the crop lands squarely on the sun path. Holding those at AA with the scrim instead would need ~0.78 alpha across the text band, flattening the shot into a grey wash. White clears every run at 5.6:1 or better with the scrim at 0.60.
-
-Verified by compositing the real decoded frames against the real gradient at nine timestamps, on desktop and at a 390px viewport: all runs pass, tightest 4.7:1.
+`components/sections/booking.tsx` is no longer mounted — the reference's layout is single-column with one button, so the band's button goes straight to `site.booking`.
 
 ## Logos
 

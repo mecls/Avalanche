@@ -2,222 +2,174 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useCallback, useState, useSyncExternalStore } from "react";
-import { nav, site } from "@/content/copy";
+import { useState } from "react";
+import { announce, nav, site } from "@/content/copy";
 import { CtaButton } from "@/components/ui/button";
 
 /**
- * Fixed overlay header. It sits over the hero video at scroll-top with nothing
- * behind it, then takes a ground tint and a hairline on scroll so type stays
- * legible over whatever band is passing underneath.
+ * Site chrome, in TWO pieces.
  *
- * Height is published as `--header-h` (globals.css) — `main` reserves it, and
- * the hero cancels it with a negative margin so the video runs to the top of
- * the viewport.
- */
-/**
- * Visual placeholder for the Login entry point fundraisr.ai has. There is no
- * client area on this site yet, so it deliberately does nothing.
+ *   1. a 37px announcement bar, `fixed`, which stays on screen;
+ *   2. a 79.2px nav, `absolute` at top:37px, which scrolls away with the page.
  *
- * A <button> rather than an <a>: there is no destination, and a link to `#`
- * or a dead route would be a worse lie than a control that is honestly marked
- * unavailable. `aria-disabled` tells assistive tech it is inert while keeping
- * the muted look — `disabled` would grey it out and drop it from the tab order,
- * which is not the design. Wire it up by swapping this for a <Link>.
+ * That split is the reference's, and the second half of it is the reason this
+ * file lost a lot of machinery. The nav used to be `fixed`, which meant it
+ * passed over every band on the page and had to measure the one beneath it on
+ * every scroll and resize (`useSyncExternalStore` over scroll + resize, plus a
+ * pathname-keyed subscribe to catch route changes where no scroll fires) so it
+ * could re-point its own tokens and avoid white-on-white.
+ *
+ * An absolute nav only ever sits over the FIRST section, and that never
+ * changes after first paint — so the whole thing collapses to one `:has()`
+ * rule in globals.css. No scroll listener, no tone state, no hydration gap.
+ *
+ * The combined 116.2px is published as `--header-h`: `main` reserves it and
+ * the hero cancels it.
  */
-function LoginPlaceholder() {
+
+/** Arrow glyph closing the banner link. Inline so it inherits colour and
+ *  cannot fall out of sync with the text it trails. */
+function ArrowGlyph() {
   return (
-    <button
-      type="button"
-      aria-disabled="true"
-      title="Coming soon"
-      onClick={(e) => e.preventDefault()}
-      className="cursor-default text-sm text-fg-muted transition-colors hover:text-fg"
+    <svg
+      aria-hidden
+      viewBox="0 0 16 16"
+      className="ml-1 inline-block h-[0.7em] w-[0.7em] align-baseline"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
     >
-      Login
-    </button>
+      <path d="M2 8h12M9 3l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
-}
-
-function subscribeScroll(onChange: () => void) {
-  window.addEventListener("scroll", onChange, { passive: true });
-  return () => window.removeEventListener("scroll", onChange);
-}
-
-function subscribeViewport(onChange: () => void) {
-  window.addEventListener("scroll", onChange, { passive: true });
-  window.addEventListener("resize", onChange);
-  return () => {
-    window.removeEventListener("scroll", onChange);
-    window.removeEventListener("resize", onChange);
-  };
-}
-
-/** Scroll offset is external state — read directly rather than mirrored into
- *  a setState inside an effect. The server snapshot is `false`, which is the
- *  correct pre-hydration state (the page always starts at the top). */
-function useScrolled() {
-  return useSyncExternalStore(
-    subscribeScroll,
-    () => window.scrollY > 8,
-    () => false,
-  );
-}
-
-/**
- * Reads which band is currently passing under the header.
- *
- * The header is fixed and sits outside every section, so it cannot inherit a
- * band's tokens the way shared components do — it has to look them up and
- * re-point them on itself. Probing one pixel above its own bottom edge is
- * what makes this work for any page without the nav knowing the routes.
- *
- * The server snapshot is "dark" because the server cannot measure anything.
- * That is why globals.css carries a `:has()` rule for the first paint: it
- * covers exactly the window between the server's guess and this measurement.
- */
-function readBandTone(): "light" | "dark" {
-  const header = document.querySelector("header");
-  const y = (header?.getBoundingClientRect().bottom ?? 0) - 1;
-
-  for (const band of document.querySelectorAll<HTMLElement>(
-    '[data-band="light"]',
-  )) {
-    const box = band.getBoundingClientRect();
-    if (box.top <= y && box.bottom > y) return "light";
-  }
-  return "dark";
-}
-
-function useBandTone(pathname: string) {
-  // Re-subscribing is what forces a fresh read, and a route change needs one:
-  // the new page's bands sit somewhere else entirely, but if both pages start
-  // at the top then no scroll and no resize ever fires to prompt a re-read,
-  // and the header would keep the previous page's tone.
-  const subscribe = useCallback(
-    (onChange: () => void) => {
-      void pathname;
-      return subscribeViewport(onChange);
-    },
-    [pathname],
-  );
-
-  return useSyncExternalStore(subscribe, readBandTone, () => "dark" as const);
 }
 
 export function SiteNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const scrolled = useScrolled();
-  const tone = useBandTone(pathname);
 
-  // Close the mobile sheet whenever the route changes. Adjusted during render
-  // rather than in an effect — this is the documented pattern for resetting
-  // state when a prop changes, and it avoids a second render pass showing the
-  // sheet still open on the new page.
+  // Reset the mobile sheet on navigation DURING RENDER, not in an effect —
+  // an effect would paint one frame with the old route's sheet still open.
   const [lastPath, setLastPath] = useState(pathname);
-  if (lastPath !== pathname) {
+  if (pathname !== lastPath) {
     setLastPath(pathname);
     setOpen(false);
   }
 
   return (
-    // Over a light band the header is never transparent: its type is `text-fg`
-    // against nothing, which on a white hero is nothing at all.
-    <header
-      className={`tone-${tone} fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
-        scrolled || open || tone === "light"
-          ? "border-line bg-ground/85 backdrop-blur-md"
-          : "border-transparent bg-transparent"
-      }`}
-    >
-      <div className="border-b border-line-soft px-4 py-2 text-center text-[0.6875rem] tracking-[0.14em] text-fg-faint uppercase">
-        Advising funds, founders, and operating companies · Intro call available
+    <>
+      {/* 1. Announcement bar — fixed, opaque, always on top of the nav. */}
+      <div className="fixed inset-x-0 top-0 z-[2] flex h-[var(--header-bar-h)] items-center justify-center gap-2.5 bg-[#151515] py-2">
+        <div className="flex h-[21px] items-center gap-2 px-5">
+          <span
+            aria-hidden
+            className="h-3 w-3 shrink-0 rounded-full bg-live shadow-[0_0_8px_rgba(74,222,128,0.6)]"
+          />
+          <p className="truncate text-[14px] leading-[21px] font-medium text-white/80 italic">
+            {announce.text}
+          </p>
+          <Link
+            href="#get-in-touch"
+            className="hidden shrink-0 text-[14px] leading-[21px] font-medium text-gold underline italic underline-offset-2 sm:inline"
+          >
+            {announce.linkLabel}
+            <ArrowGlyph />
+          </Link>
+        </div>
       </div>
 
-      <nav className="shell relative flex h-16 items-center justify-between gap-6">
-        <Link
-          href="/"
-          className="display text-xl tracking-tight text-fg"
-          aria-label={`${site.name} home`}
-        >
-          {site.name}
-          <span className="text-fg-faint">.</span>
-        </Link>
+      {/*
+        2. Nav — ABSOLUTE, not fixed, so it scrolls away. `top` is the bar's
+        height. It is transparent at every scroll position and over every
+        band; the only thing that changes is its text colour, and that is the
+        `:has()` rule in globals.css for pages opening on a light band.
+      */}
+      <header className="absolute inset-x-0 top-[var(--header-bar-h)] z-[1] h-[var(--header-nav-h)] text-fg">
+        <nav className="shell flex h-full items-center justify-center gap-2.5 py-4">
+          {/* Left third. `flex-1` on both outer cells is what centres the
+              middle group on the VIEWPORT rather than in the space left over,
+              so the links stay put as the wordmark and button change width. */}
+          <div className="flex flex-1 items-center gap-2.5">
+            <Link
+              href="/"
+              aria-label={`${site.name} home`}
+              className="display text-[26px] whitespace-nowrap"
+            >
+              {site.name}
+            </Link>
+          </div>
 
-        {/* Centred on the VIEWPORT, not in the leftover space between the
-            wordmark and the buttons — so the links stay put as those two
-            change width. This is how fundraisr.ai sets its nav. */}
-        <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-9 md:flex">
-          {nav.map((item) => {
-            const active = pathname === item.href;
-            return (
+          <div className="hidden shrink-0 items-center gap-1.5 md:flex">
+            {nav.map((item) => {
+              const active = pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={active ? "page" : undefined}
+                  className={`flex items-center rounded-full px-3.5 py-2 text-[14px] leading-[16.8px] transition-colors hover:bg-white/[0.08] ${
+                    active ? "bg-white/[0.08]" : ""
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="flex flex-1 items-center justify-end gap-2.5">
+            <CtaButton
+              href="#get-in-touch"
+              variant="ghost"
+              className="hidden md:inline-flex"
+            >
+              {site.navCta}
+            </CtaButton>
+
+            <button
+              type="button"
+              onClick={() => setOpen((v) => !v)}
+              aria-expanded={open}
+              aria-controls="mobile-nav"
+              aria-label={open ? "Close menu" : "Open menu"}
+              className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] md:hidden"
+            >
+              <span
+                className={`h-px w-5 bg-current transition-transform duration-300 ${
+                  open ? "translate-y-[3px] rotate-45" : ""
+                }`}
+              />
+              <span
+                className={`h-px w-5 bg-current transition-transform duration-300 ${
+                  open ? "-translate-y-[3px] -rotate-45" : ""
+                }`}
+              />
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile sheet. Opaque, because it sits over the hero video. */}
+        <div
+          id="mobile-nav"
+          hidden={!open}
+          className="border-t border-line-soft bg-[#151515] md:hidden"
+        >
+          <div className="shell flex flex-col gap-1 py-4">
+            {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                aria-current={active ? "page" : undefined}
-                className={`relative text-sm transition-colors hover:text-fg ${
-                  active ? "text-fg" : "text-fg-muted"
-                }`}
+                className="py-2.5 text-base text-white"
               >
                 {item.label}
-                {active && (
-                  <span className="absolute -bottom-1.5 left-0 h-px w-full bg-fg" />
-                )}
               </Link>
-            );
-          })}
-        </div>
-
-        <div className="hidden items-center gap-5 md:flex">
-          <CtaButton href="#get-in-touch" size="sm">
-            Book a call
-          </CtaButton>
-          <LoginPlaceholder />
-        </div>
-
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls="mobile-nav"
-          aria-label={open ? "Close menu" : "Open menu"}
-          className="flex h-10 w-10 flex-col items-center justify-center gap-[5px] md:hidden"
-        >
-          <span
-            className={`h-px w-5 bg-fg transition-transform duration-300 ${
-              open ? "translate-y-[3px] rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`h-px w-5 bg-fg transition-transform duration-300 ${
-              open ? "-translate-y-[3px] -rotate-45" : ""
-            }`}
-          />
-        </button>
-      </nav>
-
-      <div
-        id="mobile-nav"
-        hidden={!open}
-        className="border-t border-line bg-ground md:hidden"
-      >
-        <div className="shell flex flex-col gap-1 py-4">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="py-2.5 text-base text-fg-muted"
-            >
-              {item.label}
-            </Link>
-          ))}
-          <div className="mt-3 flex items-center gap-5">
-            <CtaButton href="#get-in-touch">Book a call</CtaButton>
-            <LoginPlaceholder />
+            ))}
+            <div className="mt-3">
+              <CtaButton href="#get-in-touch">{site.navCta}</CtaButton>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </>
   );
 }

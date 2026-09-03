@@ -12,7 +12,7 @@ import { faqs } from "@/content/faqs";
  */
 export function Faqs() {
   return (
-    <section id="faq" className="section-y border-t border-line-soft">
+    <section id="faq" data-band="light" className="section-y border-t border-line-soft">
       <div className="shell grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:gap-20">
         <SectionHeading
           eyebrow="FAQ"

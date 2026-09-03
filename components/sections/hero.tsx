@@ -13,15 +13,28 @@ import { LogoMarquee } from "@/components/ui/logo-marquee";
  * `muted` and `playsInline` are both load-bearing: iOS Safari refuses to
  * autoplay without them. `poster` also covers the gap before first frame.
  *
- * Height is `min-h-svh`, not `vh`: on mobile the collapsing URL bar changes
- * `vh` mid-scroll and the hero would visibly resize under the reader.
+ * Height is an exact `h-dvh`, not a `min-h`. The composition depends on it:
+ * the content container is `calc(100% - 100px)`, reserving the logo band, and
+ * a min-height would let a long line push the band off the fold. `dvh` rather
+ * than `vh` because on mobile the collapsing URL bar changes `vh` mid-scroll
+ * and the hero would visibly resize under the reader.
+ *
+ * The negative margin cancels the padding `main` reserves for the chrome, so
+ * the hero starts at y:0 with the bar and nav floating over it.
  */
 export function Hero() {
   return (
-    <section className="relative isolate -mt-[var(--header-h)] flex min-h-svh flex-col justify-end overflow-hidden">
+    <section className="relative isolate -mt-[var(--header-h)] flex h-dvh flex-col items-center overflow-clip bg-ground">
+      {/* Background stack: video (0), scrim (1), grain (2), content (10).
+          POSITIVE z-indexes on purpose. These were -30/-20/-10 with the
+          content at auto, which renders identically but buries the video
+          three layers deep behind the section's own background — and Chrome
+          then treats it as occluded and stops decoding, so the hero silently
+          freezes on its poster while `currentTime` keeps advancing. Keep the
+          video in normal stacking order. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-ground bg-cover bg-center"
+        className="absolute inset-0 z-0 bg-ground bg-cover bg-center"
         style={{ backgroundImage: "url(/video/hero-poster.webp)" }}
       >
         <video
@@ -30,7 +43,7 @@ export function Hero() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           poster="/video/hero-poster.webp"
           tabIndex={-1}
         >
@@ -50,117 +63,108 @@ export function Hero() {
         </video>
       </div>
 
-      {/* Scrim. Not a uniform wash — it tracks the footage, and these numbers
-          are specific to THIS clip. Re-derive them if you swap the source.
+      {/* Scrim — TWO stops, 0.44 to 0.60, in the ground colour rather than in
+          black. This replaced a five-stop gradient that opened at 0.93 and was
+          derived per-clip from measured band luma; it crushed the footage and
+          the sky went with it.
 
-          Mean luma per band of the desktop crop, converted from the clip's
-          limited-range Y' to 8-bit sRGB:
-
-            0-11%    header     120   <- the fixed header sits in this
-            11-25%   sky        142
-            25-40%   sun        159
-            40-65%   water      142
-            65-80%   headline    98
-            80-100%  strip       87
-
-          Those are means, and the mean is not what binds. The sun's specular
-          path on the water is blown to (253,254,251) and drifts under the text
-          as the camera moves, so every run is measured against the brightest
-          COLUMN it crosses. That is why the text band sits at 0.60 rather than
-          the 0.42 the means would suggest, and why every run here is white
-          (see the block below).
-
-          Two anchors are deliberate and neither is a percentage:
-
-          - the second stop uses --header-h, so the dark band tracks the header
-            itself. At a fixed 11% it rides up above the announcement strip on
-            a short laptop window and leaves the nav links on bare sky.
-          - the lower stops are anchored to the BOTTOM. The text block is
-            bottom-pinned (`justify-end`), so its distance from the foot is
-            fixed while its percentage position slides with the viewport; a
-            percentage trough drifts up under the eyebrow on a short window and
-            drops it below AA. 730px is where the eyebrow starts — remeasure it
-            if the type sizes in this block change. */}
+          What makes two stops safe here is that nothing in the text block
+          relies on the scrim any more: every run in the hero is pure white,
+          the type is much larger than it was, and the reference sets it the
+          same way. If a future clip has a blown highlight drifting under the
+          text, re-derive rather than deepening this uniformly. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10"
+        className="absolute inset-0 z-[1]"
         style={{
           backgroundImage:
-            "linear-gradient(to bottom," +
-            "rgba(8,8,8,0.93) 0," +
-            "rgba(8,8,8,0.80) var(--header-h)," +
-            "rgba(8,8,8,0.60) max(calc(var(--header-h) + 40px), calc(100% - 730px))," +
-            "rgba(8,8,8,0.62) calc(100% - 110px)," +
-            "rgba(8,8,8,0.70) 100%)",
+            "linear-gradient(rgba(21,21,21,0.44) 0%, rgba(21,21,21,0.60) 105%)",
         }}
       />
 
-      <div className="shell relative pt-40 pb-20 sm:pt-48 sm:pb-24">
-        {/* EVERY text run in this hero is `fg`, and none of them is `fg-muted`
-            or `fg-faint` as it would be anywhere else on the site. That is one
-            rule, not five exceptions, and it is worth understanding before
-            "restoring" any of them.
+      {/* Grain. A 256px tile at low intensity, repeated. It is what stops the
+          scrim's long gradient from banding on a wide screen, and it is the
+          reason the scrim can be this light without the footage looking
+          digital. Generated by scripts/make-grain.mjs — not extractable from
+          the reference. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 z-[2]"
+        style={{
+          backgroundImage: "url(/grain.png)",
+          backgroundSize: "256px auto",
+          backgroundRepeat: "repeat",
+        }}
+      />
 
-            The muted and faint tokens are calibrated against the flat grounds
-            in globals.css, where the background is one known colour. Here the
-            background is a photograph, so contrast has to be measured against
-            the brightest column each run crosses, not the mean under it — and
-            this clip has the sun's specular reflection on the water blown to
-            (253,254,251), which drifts directly beneath the text. Measured
-            that way #a3a3ae lands at 1.8-3.7:1 depending on the run, and on
-            mobile, where the crop lands squarely on the sun path, the stat
-            label hits 2.3:1.
+      {/* Content container. `calc(100% - 100px)` reserves the logo band, and
+          `justify-between` against the spacer below drives the content row to
+          the bottom of the remaining space. */}
+      <div className="relative z-10 shell flex h-[calc(100%-100px)] w-full flex-col items-center justify-between pt-9 pb-11">
+        <div aria-hidden className="h-[71px] w-[110px] shrink-0" />
 
-            Holding those at AA with the scrim instead would need roughly 0.78
-            alpha across the whole text band, which flattens the shot into a
-            grey wash. White clears every run at 5.6:1 or better with the scrim
-            at 0.60. Hierarchy is carried by size, weight and measure — colour
-            hierarchy does not survive on a photograph. */}
-        <div className="max-w-4xl">
-          <p className="eyebrow rise text-fg">{hero.eyebrow}</p>
+        {/* Two equal columns, BOTTOM-aligned. `items-end` is the defining
+            detail of this composition: it puts the bottom edge of the CTA
+            button and the bottom edge of the stat label on one baseline. Swap
+            it for `items-center` or `items-start` and the whole hero stops
+            matching the reference. */}
+        <div className="flex w-full flex-col items-start justify-center gap-8 md:flex-row md:items-end md:gap-11">
+          <div className="flex w-full flex-col items-start justify-center gap-8 md:flex-1 md:gap-9">
+            <div className="flex flex-col items-start gap-4">
+              <span className="eyebrow-pill rise">{hero.eyebrow}</span>
 
-          <h1 className="display rise mt-6 text-[clamp(2.75rem,7vw,5.25rem)] text-balance [animation-delay:80ms]">
-            {hero.title}
-          </h1>
+              {/* Two AUTHORED lines, not organic wrapping, with the first
+                  word of each set in italic. The break is content, not
+                  layout — see hero.titleLines in content/copy.ts. `max-w`
+                  only guards against a wider viewport re-wrapping it. */}
+              <h1 className="display hero-h1 rise max-w-[600px] text-[80px] text-white [animation-delay:80ms]">
+                {hero.titleLines.map((line, i) => (
+                  <span key={line.lead} className="block">
+                    <em className="italic">{line.lead}</em>
+                    {line.rest}
+                    {i < hero.titleLines.length - 1 ? <br /> : null}
+                  </span>
+                ))}
+              </h1>
 
-          <p className="rise mt-7 max-w-xl text-[1.1875rem] leading-relaxed text-fg [animation-delay:160ms]">
-            {hero.lede}
-          </p>
-        </div>
+              {/* Full column width — no narrower measure. The reference lets
+                  this run the whole 678px column. */}
+              <p className="rise w-full text-[18px] leading-[27px] text-white [animation-delay:160ms]">
+                {hero.lede}
+              </p>
+            </div>
 
-        {/* The CTA row spans the full shell rather than the headline's
-            measure, so the stat can sit against the right edge. `items-center`
-            centres the stat block against the button, which is the alignment
-            the reference uses. Below `sm` they stack and the stat goes left. */}
-        <div className="rise mt-9 flex flex-wrap items-center justify-between gap-x-10 gap-y-8 [animation-delay:240ms]">
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
-            <CtaButton href="#get-in-touch">{hero.cta}</CtaButton>
-            <p className="text-sm text-fg">{hero.ctaNote}</p>
+            {/* No caption beside the hero CTA. `hero.ctaNote` still exists and
+                is rendered by the mid-page CTA blocks, which is where the
+                reference puts that line. */}
+            <CtaButton href="#get-in-touch" className="rise [animation-delay:240ms]">
+              {hero.cta}
+            </CtaButton>
           </div>
 
-          <div className="text-left sm:text-right">
-            <p className="display text-[clamp(2.25rem,4.4vw,3.5rem)] whitespace-nowrap">
-              {hero.stat.value}
-            </p>
-            <p className="mt-2 max-w-[18rem] text-[0.9375rem] leading-snug text-fg">
+          <div className="rise hidden flex-col items-end gap-1.5 md:flex md:flex-1 [animation-delay:320ms]">
+            <p className="numeral text-[40px] text-white">{hero.stat.value}</p>
+            <p className="text-right text-[14px] leading-[21px] text-white">
               {hero.stat.label}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Client strip at the foot of the hero. No background of its own — the
-          video is the background, which is the whole point.
-
-          It sits INSIDE `shell`, so its rule and its logos start and end on the
-          same margins as the headline and the CTA row above. It used to break
-          out to the full viewport width; aligning it to the text is what the
-          reference does, and full-bleed read as a separate band bolted on
-          rather than as the foot of this one. The marquee's edge mask is a
-          percentage, so it still has room to work in the narrower box. */}
-      <div className="rise shell [animation-delay:400ms]">
-        <div className="border-t border-line py-7">
-          <LogoMarquee />
+      {/* Logo band — full-bleed and OUTSIDE the shell, unlike the text above
+          it. 100px tall, its own translucent blurred ground rather than a
+          hairline rule. The label column is a fixed 231px so the marquee
+          starts at the same x whatever the label says. */}
+      <div
+        className="relative z-10 flex h-[100px] w-full shrink-0 items-center justify-center gap-2.5 overflow-clip p-5"
+        style={{
+          background: "rgba(21,21,21,0.24)",
+          backdropFilter: "blur(4px)",
+        }}
+      >
+        <div className="flex h-[60px] w-full max-w-[1400px] items-center gap-4">
+          <p className="strip-label hidden sm:block">{hero.stripLabel}</p>
+          <LogoMarquee itemClassName="h-7 w-24" />
         </div>
       </div>
     </section>

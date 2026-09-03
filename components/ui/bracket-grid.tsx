@@ -48,7 +48,7 @@ export function BracketCell({
     <div
       className={`relative flex flex-col justify-between border-r border-b border-line p-7 sm:p-8 ${minH} ${className}`}
     >
-      <span className="absolute top-6 right-6 text-[0.6875rem] tracking-[0.14em] text-fg-faint tabular-nums">
+      <span className="absolute top-6 right-6 text-sm text-fg-faint tabular-nums">
         {String(index + 1).padStart(2, "0")}
       </span>
       {children}
