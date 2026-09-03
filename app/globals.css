@@ -1,26 +1,182 @@
 @import "tailwindcss";
 
+/* ---------------------------------------------------------------
+   Avalanche Capital design tokens
+
+   Matched to fundraisr.ai (same owner): a near-black ground, Satoshi
+   throughout, flat white type, hairline rules at low white alpha. No
+   serif, no accent colour — emphasis comes from weight and scale.
+
+   Tokens are named by ROLE, not by hue, so a section can re-point the
+   whole set at once. See the [data-band="light"] block below: it swaps
+   ground and foreground, and every shared component follows without
+   knowing anything about it.
+   --------------------------------------------------------------- */
+@theme {
+  /* Ground — darkest to lightest */
+  --color-ground-deep: #050508;
+  --color-ground: #080808;
+  --color-ground-alt: #0f0e0d;
+  --color-card: #0e0e13;
+
+  /* Foreground. Contrast on --color-ground (#080808):
+       fg        20.0:1  AAA
+       fg-muted   8.0:1  AAA
+       fg-faint   5.9:1  AA
+     A previous palette shipped its faint token at 2.9:1 while it carried
+     every eyebrow and all the footer legal text. Hence the numbers. */
+  --color-fg: #ffffff;
+  --color-fg-muted: #a3a3ae;
+  --color-fg-faint: #8b8b96;
+
+  --color-line: rgba(255, 255, 255, 0.13);
+  --color-line-soft: rgba(255, 255, 255, 0.09);
+
+  /* The only chromatic note in the palette: a live-status dot. Decorative —
+     it never carries meaning on its own, so it needs no contrast guarantee. */
+  --color-live: #4ade80;
+
+  --font-display: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-satoshi), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* A light band. Re-points the role tokens for its whole subtree — shared
+   components (buttons, headings, cards) invert automatically because they
+   reference roles rather than colours.
+   Contrast on the light grounds (#fafaf9 / #f2f2f0 / #ffffff):
+     fg        14.7 / 13.7 / 15.3  AAA
+     fg-muted   6.4 /  6.0 /  6.7  AA
+     fg-faint   5.3 /  4.9 /  5.5  AA */
+[data-band="light"] {
+  --color-ground-deep: #f2f2f0;
+  --color-ground: #fafaf9;
+  --color-ground-alt: #f2f2f0;
+  --color-card: #ffffff;
+
+  --color-fg: #252525;
+  --color-fg-muted: #5b5b63;
+  /* #6f6f78 measured 4.44:1 on the #f2f2f0 grounds — under the AA floor,
+     and it carries every eyebrow. #686870 clears it on all three. */
+  --color-fg-faint: #686870;
+
+  --color-line: rgba(0, 0, 0, 0.12);
+  --color-line-soft: rgba(0, 0, 0, 0.07);
+
+  background-color: var(--color-ground);
+  color: var(--color-fg);
+}
+
+/* The way back out of a light band. Without this the switch is one-way and a
+   dark island cannot be nested. Values mirror the @theme defaults. */
+[data-band="dark"] {
+  --color-ground-deep: #050508;
+  --color-ground: #080808;
+  --color-ground-alt: #0f0e0d;
+  --color-card: #0e0e13;
+
+  --color-fg: #ffffff;
+  --color-fg-muted: #a3a3ae;
+  --color-fg-faint: #8b8b96;
+
+  --color-line: rgba(255, 255, 255, 0.13);
+  --color-line-soft: rgba(255, 255, 255, 0.09);
+
+  background-color: var(--color-ground);
+  color: var(--color-fg);
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+  /* Published by the fixed header: `main` reserves it, the hero cancels it. */
+  --header-h: 6.0625rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  background: var(--color-ground);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-ground);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The hero footage is warm and amber; the palette is neutral. Pulling the
+   saturation down sits it in the same world without regrading the file. */
+.hero-video {
+  filter: saturate(0.5) contrast(1.02);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  /* Drop the video; the poster behind it is already in place. */
+  .hero-video {
+    display: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@utility eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-fg-faint);
+}
+
+/* Display headings. Satoshi at medium weight, tight leading, negative
+   tracking — measured off fundraisr.ai (h1 72/75.6 w500; h2 44/48.4 w600
+   at -1.1px, which is -0.025em). */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+}
+
+@utility section-y {
+  padding-block: clamp(4rem, 8vw, 8rem);
+}
+
+@utility shell {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+}
+
+/* Scroll-reveal: opt-in, respects reduced motion via the block above */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@utility rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Marquee for the client logo band */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
