@@ -62,8 +62,8 @@ export type SolutionBlock = {
    * This says nothing about artwork. Whether a block gets a diagram or the
    * pending plate is decided solely by the MEDIA map in
    * components/sections/solutions-steps.tsx, keyed on `id` — a block can have
-   * real copy and no diagram (most of Fundraising) or, in principle, the
-   * reverse. Two different gaps, tracked in two different places, so closing
+   * real copy and no diagram, or real art and placeholder copy (Secondaries
+   * 03). Two different gaps, tracked in two different places, so closing
    * one does not silently claim the other is closed.
    */
   pending?: boolean;
@@ -91,11 +91,10 @@ export type SolutionView = {
  * 01 — Fundraising. fundraisr.ai/solutions, five steps, verbatim but for the
  * de-branding described above.
  *
- * Every body here is real, published copy. NONE of these blocks is `pending`.
- * Only block 02 has a diagram — the stage x sector grid genuinely draws
- * investor sourcing — and the other four render the pending plate because no
- * artwork exists for them yet. That is an ART gap, not a copy gap; see the
- * note on `pending` above for why the two are tracked separately.
+ * Every body here is real, published copy. NONE of these blocks is `pending`,
+ * and as of 4 Sep 2026 all five have their own diagram — the four that were
+ * showing the pending plate were drawn to finish the view. This side of
+ * /solutions has no outstanding gap of either kind.
  */
 export const fundraisingView: SolutionView = {
   eyebrow: "Solutions",

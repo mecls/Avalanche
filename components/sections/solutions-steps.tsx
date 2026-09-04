@@ -1,7 +1,11 @@
 import { ArrowGlyph, CtaButton } from "@/components/ui/button";
 import {
+  EngagementDiagram,
   FundraisingDiagram,
+  MeetingDiagram,
   PendingPlate,
+  PipelineDiagram,
+  PreMarketingDiagram,
   SecondariesDiagram,
 } from "@/components/ui/solutions-media";
 import { SolutionsToggle } from "@/components/ui/solutions-toggle";
@@ -84,10 +88,10 @@ function Plate({ children }: { children: React.ReactNode }) {
  * Which diagram a block gets, BY BLOCK ID rather than by index.
  *
  * It was a positional array while there was one view with two blocks. There
- * are now two views with five blocks each and only two diagrams, so position
- * says nothing — block 02 means investor sourcing on one view and pricing on
- * the other. Keying on the id means a block either has artwork that is
- * genuinely about it, or it renders the pending plate.
+ * are now two views of five, so position says nothing — block 02 means
+ * investor sourcing on one view and pricing on the other. Keying on the id
+ * means a block either has artwork that is genuinely about it, or it renders
+ * the pending plate.
  *
  * Both diagrams carry specific meaning (which route matched; which segment was
  * selected), so they must not be reused to fill a card they do not describe.
@@ -95,8 +99,19 @@ function Plate({ children }: { children: React.ReactNode }) {
  * flag in content/solutions.ts at the same time.
  */
 const MEDIA: Record<string, () => React.ReactElement> = {
+  // --- Fundraising: complete as of 4 Sep 2026 ---
+  /** Three raise inputs converging into one positioned package. */
+  "pre-marketing": PreMarketingDiagram,
   /** The stage x sector grid with a matched subset IS investor sourcing. */
   fundraising: FundraisingDiagram,
+  /** A multi-touch sequence branching on an engagement signal. */
+  engagement: EngagementDiagram,
+  /** Four stages, top-aligned, so the columns are the funnel. */
+  pipeline: PipelineDiagram,
+  /** One counterparty against the mandate parameters that align. */
+  meetings: MeetingDiagram,
+
+  // --- Secondaries: one of five, the rest awaiting both art and copy ---
   /** Holders routed to counterparties IS the counterparty search. */
   counterparties: SecondariesDiagram,
 };

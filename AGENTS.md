@@ -114,8 +114,9 @@ is half right by accident: the serif is gone again, the accent is real.
 - **The accent appears in FOUR places. That is the whole list.** The section
   eyebrows and page labels (`eyebrow`, plus `text-accent` on the two page-name
   `page-label` runs) — a block's own name, and the largest group; the
-  /solutions rail and its two diagrams (functional — the colour is the
-  diagram's only way of saying which route matched); the case-study metric
+  /solutions rail and its six diagrams (functional — the colour is the
+  diagram's only way of saying which route matched, which segment was
+  selected, which branch was taken); the case-study metric
   pill (one number, once per page); and the CTA band's chip (once per page, at
   the conversion point). Everything else is monochrome.
 - **The eyebrow rule has moved twice in one day — read this before moving it a
@@ -296,14 +297,21 @@ untabbable while closed and focus can only reach them through the trigger.
   blocks have it and no Fundraising block does. Whether a block gets a
   **diagram** is decided only by the `MEDIA` map, keyed on block `id`, and
   anything missing renders `PendingPlate`. A block can have real copy and no
-  art (most of Fundraising) or real art and placeholder copy (Secondaries 03).
-  Closing one gap must not silently claim the other is closed.
+  art, or real art and placeholder copy (Secondaries 03). Closing one gap must
+  not silently claim the other is closed. **Fundraising has now closed both** —
+  all five blocks have real copy and their own diagram. Secondaries has four
+  blocks still awaiting each.
 - **Do not reuse a diagram to fill a card it does not describe.** `MEDIA` is
   keyed on `id` rather than index precisely so it cannot happen by accident —
-  position means nothing now that two views share the layout. Both diagrams
-  carry a specific claim (which route matched, which segment was selected), so
-  putting the matching grid beside a pipeline block would illustrate the wrong
-  thing. An honest blank beats a plausible-looking wrong picture.
+  position means nothing now that two views share the layout. Each of the six
+  carries a specific claim (which route matched, which segment was selected,
+  which branch was taken), so putting the counterparty-routing picture beside a
+  pricing block would illustrate the wrong thing. An honest blank beats a
+  plausible-looking wrong picture.
+- **Every count in a diagram pill is DERIVED from the array drawn beside it**,
+  in the same render — "8 matched", "2 committed", "3 of 4 aligned". None is
+  typed twice, so a caption cannot drift from its own picture. Preserve that
+  when editing; it is the only thing stopping a diagram from lying.
 - **The `/customers` header is no longer the reference's full-height hero.**
   Its sections still follow fundraisr.ai/customers one for one, but the opening
   did too — a `min-h-[calc(100dvh-var(--header-h))]` statement built from its

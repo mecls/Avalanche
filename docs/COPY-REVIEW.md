@@ -152,21 +152,31 @@ secondaries mandate, not yours, and the first block says exactly that.
 **Send the copy and this is a paste job** — five titles and five bodies, then
 delete the `pending: true` flags.
 
-### The artwork gap is separate from the copy gap
+### The artwork — six schematics, and four cards still blank
 
-Ten blocks, two diagrams. `MEDIA` in `solutions-steps.tsx` is keyed on block
-id, so a diagram only appears on a block it genuinely describes:
+`MEDIA` in `solutions-steps.tsx` is keyed on block id, so a diagram only
+appears on a block it genuinely describes. **Fundraising is now drawn in
+full**; Secondaries has one of five.
 
 | Block | Graphic | Note |
 |---|---|---|
-| Fundraising 02, Investor sourcing | Stage × sector grid with a selection | The "8 matched" pill is **computed from the rectangle**, so the caption cannot disagree with the dots. Stage and sector names are standard market categories. |
-| Secondaries 03, Counterparties | Two columns of anonymous entries, one accent route | "Position 01–04" / "Buyer 01–04" are deliberately schematic so nothing reads as a real deal. |
-| The other eight | `PendingPlate` | A dashed frame reading "Artwork pending". |
+| Fundraising 01, Pre-marketing | Three raise inputs converging into one outlined package | The convergence *is* the claim — separate inputs resolving into positioned materials. |
+| Fundraising 02, Investor sourcing | Stage × sector grid with a selection | "8 matched" is **computed from the rectangle**, so the caption cannot disagree with the dots. Stage and sector names are standard categories. |
+| Fundraising 03, Engagement | A three-touch sequence branching on a signal | Two outcomes from one sequence, because the copy says follow-ups are sequenced *by* signal. Channels are Email / LinkedIn, as the copy says. |
+| Fundraising 04, Pipeline | Four top-aligned stage columns | The columns are the funnel. Counts (7/5/3/2) are schematic, and "2 committed" is read from the last column's own card count. |
+| Fundraising 05, Meeting intelligence | One anonymous counterparty against four mandate parameters | "3 of 4 aligned" is **counted** from the parameter list. "Investor 07 / Growth fund" is deliberately anonymous. |
+| Secondaries 03, Counterparties | Two columns of anonymous entries, one accent route | "Position 01–04" / "Buyer 01–04" are schematic so nothing reads as a real deal. |
+| Secondaries 01, 02, 04, 05 | `PendingPlate` | A dashed frame reading "Artwork pending". |
 
-The two diagrams are **not** reused to fill the other eight cards. Each one
-makes a specific claim — which route matched, which segment was selected — so
-showing the matching grid beside a pipeline-management block would illustrate
-the wrong thing. An obvious blank beats a plausible-looking wrong picture.
+**Nothing in these is a figure or a claim.** The counts, the stage names and
+the counterparties are all illustrative. Every number that appears in a pill is
+derived from the shape drawn beside it in the same render, never typed twice,
+so a diagram cannot contradict its own caption.
+
+Diagrams are **not** reused to fill a card they do not describe. Each makes a
+specific claim, so showing the counterparty-routing picture beside a pricing
+block would illustrate the wrong thing. An obvious blank beats a
+plausible-looking wrong picture.
 
 **If you have real screenshots**, they would beat either diagram, and swapping
 one in is a per-card change with no layout consequence.
