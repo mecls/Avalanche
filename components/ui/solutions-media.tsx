@@ -44,12 +44,22 @@
  * picture cannot contradict its own caption. Keep that property when editing.
  * See docs/COPY-REVIEW.md.
  *
- * KNOWN, PRE-DATING THESE FOUR: the 12px pill text renders at ~6.4px on a
- * 390px phone (a 620-unit viewBox squeezed into a ~330px card is a 0.53x
- * scale). That is below the range the rest of the site sets small type in, and
- * it affects all six equally — the two originals measure the same. The note
- * below about per-breakpoint widths was tuned for the 17px labels and does not
- * rescue the 12px runs. Fixing it means raising the floor across all six.
+ * TYPE SIZES ARE NOT SET HERE. Every run takes a rung — `dgm-xs` through
+ * `dgm-xl` — defined in globals.css, because the sizes have to change per
+ * breakpoint and a `<text>` in a viewBox is scaled by the frame. Do not put a
+ * `text-[Npx]` back on one of these; the whole point of the rungs is that a
+ * literal cannot be re-tuned when the frame changes. Take a rung, or add one.
+ *
+ * THE LEGEND IS A FIXED TWO-COLUMN GRID: first entry at x=5/22, second at
+ * x=320/337, identically in all six. It has to be, because SVG does not
+ * reflow. The positions were originally set per diagram to sit just past each
+ * one's own first label, which worked only at the size those labels happened
+ * to be — when the rungs grew the type for phones, the first label ran under
+ * the second entry's dot in every diagram at once. x=320 clears the longest
+ * first label ("Meets mandate criteria", ~286 units at the largest rung) with
+ * room left, and the longest second label still ends near 517 of 620. Keep
+ * both columns fixed, and re-check these two numbers if a legend label gets
+ * appreciably longer.
  */
 
 /**
@@ -67,7 +77,7 @@ function Frame({ children }: { children: React.ReactNode }) {
   return (
     <svg
       viewBox="0 0 620 508"
-      className="h-auto max-h-[86%] w-[84%] overflow-visible max-[1199px]:w-[68%] max-[809px]:w-[94%]"
+      className="h-auto max-h-[86%] w-[94%] max-w-[560px] overflow-visible"
       fill="none"
       aria-hidden
     >
@@ -77,17 +87,24 @@ function Frame({ children }: { children: React.ReactNode }) {
 }
 
 /*
- * Why the width changes per breakpoint, when the card already scales.
+ * Why `max-w-[560px]`, and why the width is no longer per-breakpoint.
  *
- * SVG type scales with the frame, so a single width means the labels render
- * at a different SIZE on every viewport. The card is 644 wide on desktop, 960
- * on tablet and ~460 on a phone — at a flat 84% that is a 0.87 / 1.30 / 0.62
- * scale, so a 17px label ships at 15px, 22px and 10.5px. The percentages
- * above pull those back to roughly 15 / 18 / 12, which is the range the rest
- * of the site sets small type in.
+ * SVG type scales with the frame, so the rendered size of every label is
+ * (frame width / 620) x its user-unit size. The card is fluid — 644px on a
+ * wide desktop, 524px at 1200, 960px when it goes full-width on a tablet, and
+ * 350px on a 390px phone — so a percentage width made that ratio swing by
+ * 2.2x and the labels with it.
  *
- * The phone value is the one that matters: 84% put the axis labels at ~8px,
- * which is not type, it is texture.
+ * This was three rules (84% / 68% at 1199 / 94% at 809) chosen to compensate
+ * per band. They were derived from card widths that are no longer true and
+ * they overshot: on a 1000px viewport the tablet card is 960px, and 68% of
+ * that is a 1.05x scale — the diagram rendered LARGER than its design size.
+ *
+ * One rule with a cap is both simpler and steadier. 94% keeps a margin inside
+ * the card; the 560px cap stops the tablet blow-up. From 600px to 1600px the
+ * scale now sits between 0.795 and 0.903. Below 600px the card is smaller than
+ * the cap and no width rule can help, so the rungs in globals.css raise the
+ * user-unit sizes instead. The derivation, with measurements, is there.
  */
 
 /** Section label, top-left of each diagram. */
@@ -103,7 +120,7 @@ function Caption({ x, y, anchor = "start", muted = true, children }: {
       x={x}
       y={y}
       textAnchor={anchor}
-      className={`font-sans text-[13px] font-medium tracking-[0.12em] uppercase ${
+      className={`font-sans dgm-sm font-medium tracking-[0.12em] uppercase ${
         muted ? "fill-fg-muted" : "fill-fg"
       }`}
     >
@@ -152,7 +169,7 @@ export function PendingPlate({ label }: { label?: string }) {
         x={310}
         y={330}
         textAnchor="middle"
-        className="fill-fg-muted font-sans text-[15px] tracking-[0.12em] uppercase"
+        className="fill-fg-muted font-sans dgm-md tracking-[0.12em] uppercase"
       >
         Artwork pending
       </text>
@@ -161,7 +178,7 @@ export function PendingPlate({ label }: { label?: string }) {
           x={310}
           y={358}
           textAnchor="middle"
-          className="fill-fg-faint font-sans text-[14px]"
+          className="fill-fg-faint font-sans dgm-sm"
         >
           {label}
         </text>
@@ -215,7 +232,7 @@ function Entry({
       <text
         x={x + 48}
         y={y + ROW_H / 2 + 5}
-        className={`font-sans text-[17px] ${active ? "fill-fg" : "fill-fg-muted"}`}
+        className={`font-sans dgm-lg ${active ? "fill-fg" : "fill-fg-muted"}`}
       >
         {label}
       </text>
@@ -312,7 +329,7 @@ export function SecondariesDiagram() {
           x={mid.x}
           y={mid.y + 4}
           textAnchor="middle"
-          className="fill-accent font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
+          className="fill-accent font-sans dgm-xs font-medium tracking-[0.08em] uppercase"
         >
           Matched
         </text>
@@ -320,11 +337,11 @@ export function SecondariesDiagram() {
 
       <g>
         <circle cx={5} cy={490} r={5} className="fill-accent" />
-        <text x={22} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <text x={22} y={495} className="fill-fg-muted font-sans dgm-md">
           Matched route
         </text>
-        <circle cx={190} cy={490} r={5} className="fill-fg-muted/50" />
-        <text x={207} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <circle cx={320} cy={490} r={5} className="fill-fg-muted/50" />
+        <text x={337} y={495} className="fill-fg-muted font-sans dgm-md">
           Unmatched
         </text>
       </g>
@@ -387,7 +404,7 @@ export function FundraisingDiagram() {
             x={84}
             y={cy + 5}
             textAnchor="end"
-            className="fill-fg-muted font-sans text-[15px]"
+            className="fill-fg-muted font-sans dgm-axis"
           >
             {STAGES[r]}
           </text>
@@ -413,7 +430,7 @@ export function FundraisingDiagram() {
           x={COL_X[c]}
           y={430}
           textAnchor="middle"
-          className="fill-fg-muted font-sans text-[15px]"
+          className="fill-fg-muted font-sans dgm-axis"
         >
           {s}
         </text>
@@ -435,7 +452,7 @@ export function FundraisingDiagram() {
           x={(x0 + x1) / 2}
           y={y0 + 4}
           textAnchor="middle"
-          className="fill-accent font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
+          className="fill-accent font-sans dgm-xs font-medium tracking-[0.08em] uppercase"
         >
           {MATCHED_COUNT} matched
         </text>
@@ -443,11 +460,11 @@ export function FundraisingDiagram() {
 
       <g>
         <circle cx={5} cy={490} r={5} className="fill-accent" />
-        <text x={22} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <text x={22} y={495} className="fill-fg-muted font-sans dgm-md">
           Meets mandate criteria
         </text>
-        <circle cx={252} cy={490} r={5} className="fill-fg-muted/35" />
-        <text x={269} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <circle cx={320} cy={490} r={5} className="fill-fg-muted/35" />
+        <text x={337} y={495} className="fill-fg-muted font-sans dgm-md">
           Out of scope
         </text>
       </g>
@@ -508,7 +525,7 @@ function Node({
         x={x + w / 2}
         y={y + h / 2 + 6}
         textAnchor="middle"
-        className={`font-sans text-[16px] ${active ? "fill-fg" : "fill-fg-muted"}`}
+        className={`font-sans dgm-md ${active ? "fill-fg" : "fill-fg-muted"}`}
       >
         {label}
       </text>
@@ -578,7 +595,7 @@ export function PreMarketingDiagram() {
           <text
             x={48}
             y={centre(i) + 6}
-            className="fill-fg-muted font-sans text-[17px]"
+            className="fill-fg-muted font-sans dgm-lg"
           >
             {label}
           </text>
@@ -622,7 +639,7 @@ export function PreMarketingDiagram() {
           x={pkg.x + pkg.w / 2}
           y={pkg.y + 4}
           textAnchor="middle"
-          className="fill-accent font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
+          className="fill-accent font-sans dgm-xs font-medium tracking-[0.08em] uppercase"
         >
           Positioned
         </text>
@@ -630,11 +647,11 @@ export function PreMarketingDiagram() {
 
       <g>
         <circle cx={5} cy={490} r={5} className="fill-accent" />
-        <text x={22} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <text x={22} y={495} className="fill-fg-muted font-sans dgm-md">
           Positioned material
         </text>
-        <circle cx={222} cy={490} r={5} className="fill-fg-muted/50" />
-        <text x={239} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <circle cx={320} cy={490} r={5} className="fill-fg-muted/50" />
+        <text x={337} y={495} className="fill-fg-muted font-sans dgm-md">
           Raise input
         </text>
       </g>
@@ -701,7 +718,7 @@ export function EngagementDiagram() {
             x={xs[i]! + nodeW / 2}
             y={trackY - 16}
             textAnchor="middle"
-            className="fill-fg-faint font-sans text-[13px] tracking-[0.12em] uppercase"
+            className="fill-fg-faint font-sans dgm-sm tracking-[0.12em] uppercase"
           >
             {`0${i + 1}`}
           </text>
@@ -728,7 +745,7 @@ export function EngagementDiagram() {
           x={outX + outW / 2}
           y={engagedY + 4}
           textAnchor="middle"
-          className="fill-accent font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
+          className="fill-accent font-sans dgm-xs font-medium tracking-[0.08em] uppercase"
         >
           Replied
         </text>
@@ -736,11 +753,11 @@ export function EngagementDiagram() {
 
       <g>
         <circle cx={5} cy={490} r={5} className="fill-accent" />
-        <text x={22} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <text x={22} y={495} className="fill-fg-muted font-sans dgm-md">
           Signal detected
         </text>
-        <circle cx={190} cy={490} r={5} className="fill-fg-muted/50" />
-        <text x={207} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <circle cx={320} cy={490} r={5} className="fill-fg-muted/50" />
+        <text x={337} y={495} className="fill-fg-muted font-sans dgm-md">
           Awaiting signal
         </text>
       </g>
@@ -766,8 +783,8 @@ const PIPELINE_STAGES = [
 ];
 
 export function PipelineDiagram() {
-  const colX = [0, 160, 320, 480];
-  const colW = 140;
+  const colX = [0, 150, 300, 450];
+  const colW = 130;
   const cardH = 34;
   const gap = 10;
   const top = 90;
@@ -823,7 +840,7 @@ export function PipelineDiagram() {
               x={colX[c]! + colW / 2}
               y={420}
               textAnchor="middle"
-              className="fill-fg-muted font-sans text-[15px]"
+              className="fill-fg-muted font-sans dgm-md"
             >
               {stage.label}
             </text>
@@ -835,9 +852,9 @@ export function PipelineDiagram() {
           card count. */}
       <g>
         <rect
-          x={colX[lastIndex]! + colW / 2 - 62}
+          x={colX[lastIndex]! + colW / 2 - 84}
           y={top - 27}
-          width={124}
+          width={168}
           height={30}
           rx={15}
           className="fill-ground stroke-accent"
@@ -847,7 +864,7 @@ export function PipelineDiagram() {
           x={colX[lastIndex]! + colW / 2}
           y={top - 8}
           textAnchor="middle"
-          className="fill-accent font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
+          className="fill-accent font-sans dgm-xs font-medium tracking-[0.08em] uppercase"
         >
           {committed} committed
         </text>
@@ -855,11 +872,11 @@ export function PipelineDiagram() {
 
       <g>
         <circle cx={5} cy={490} r={5} className="fill-accent" />
-        <text x={22} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <text x={22} y={495} className="fill-fg-muted font-sans dgm-md">
           Committed
         </text>
-        <circle cx={160} cy={490} r={5} className="fill-fg-muted/50" />
-        <text x={177} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <circle cx={320} cy={490} r={5} className="fill-fg-muted/50" />
+        <text x={337} y={495} className="fill-fg-muted font-sans dgm-md">
           In progress
         </text>
       </g>
@@ -894,7 +911,7 @@ export function MeetingDiagram() {
   const alignedCount = PARAMS.filter((p) => p.aligned).length;
   const boxTop = rowY(0) - 10;
   const boxBottom = rowY(alignedCount - 1) + rowH + 10;
-  const card = { x: 0, y: top, w: 280, h: rowY(PARAMS.length - 1) + rowH - top };
+  const card = { x: 0, y: top, w: 300, h: rowY(PARAMS.length - 1) + rowH - top };
 
   return (
     <Frame>
@@ -921,31 +938,31 @@ export function MeetingDiagram() {
         x={72}
         y={176}
         textAnchor="middle"
-        className="fill-fg-muted font-sans text-[20px]"
+        className="fill-fg-muted font-sans dgm-xl"
       >
         07
       </text>
-      <text x={130} y={162} className="fill-fg font-sans text-[19px]">
+      <text x={130} y={162} className="fill-fg font-sans dgm-xl">
         Investor 07
       </text>
-      <text x={130} y={188} className="fill-fg-muted font-sans text-[15px]">
+      <text x={130} y={188} className="fill-fg-muted font-sans dgm-md">
         Growth fund
       </text>
       <path
-        d={`M28,240 H252`}
+        d={`M28,240 H272`}
         className="stroke-line-soft"
         strokeWidth={1}
       />
-      <text x={28} y={278} className="fill-fg-muted font-sans text-[15px]">
+      <text x={28} y={278} className="fill-fg-muted font-sans dgm-sm">
         Last contact
       </text>
-      <text x={252} y={278} textAnchor="end" className="fill-fg font-sans text-[15px]">
+      <text x={272} y={278} textAnchor="end" className="fill-fg font-sans dgm-sm">
         6 days ago
       </text>
-      <text x={28} y={318} className="fill-fg-muted font-sans text-[15px]">
+      <text x={28} y={318} className="fill-fg-muted font-sans dgm-sm">
         Stage
       </text>
-      <text x={252} y={318} textAnchor="end" className="fill-fg font-sans text-[15px]">
+      <text x={272} y={318} textAnchor="end" className="fill-fg font-sans dgm-sm">
         Diligence
       </text>
 
@@ -971,7 +988,7 @@ export function MeetingDiagram() {
           <text
             x={colX + 44}
             y={rowY(i) + rowH / 2 + 6}
-            className={`font-sans text-[17px] ${p.aligned ? "fill-fg" : "fill-fg-muted"}`}
+            className={`font-sans dgm-lg ${p.aligned ? "fill-fg" : "fill-fg-muted"}`}
           >
             {p.label}
           </text>
@@ -992,7 +1009,7 @@ export function MeetingDiagram() {
           x={colX + colW / 2}
           y={boxTop + 4}
           textAnchor="middle"
-          className="fill-accent font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
+          className="fill-accent font-sans dgm-xs font-medium tracking-[0.08em] uppercase"
         >
           {alignedCount} of {PARAMS.length} aligned
         </text>
@@ -1000,11 +1017,11 @@ export function MeetingDiagram() {
 
       <g>
         <circle cx={5} cy={490} r={5} className="fill-accent" />
-        <text x={22} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <text x={22} y={495} className="fill-fg-muted font-sans dgm-md">
           Aligned
         </text>
-        <circle cx={130} cy={490} r={5} className="fill-fg-muted/35" />
-        <text x={147} y={495} className="fill-fg-muted font-sans text-[15px]">
+        <circle cx={320} cy={490} r={5} className="fill-fg-muted/35" />
+        <text x={337} y={495} className="fill-fg-muted font-sans dgm-md">
           Not a factor
         </text>
       </g>

@@ -514,6 +514,118 @@ body {
 }
 
 /* ---------------------------------------------------------------
+   The /solutions diagram type scale.
+
+   THESE SIZES ARE SVG USER UNITS, NOT PIXELS, and that is the whole
+   reason this block exists. A `<text>` inside a viewBox is scaled by
+   (rendered width / viewBox width), so one source size renders at a
+   different PHYSICAL size on every viewport. Measured before this was
+   added, with the old `w-[84%] / 68% / 94%` rules, a 12-unit run shipped
+   at:
+
+     1600  10.5px      810   10.1px
+     1280   9.2px      600   10.2px
+     1200   8.5px      430    7.1px
+     1000  12.6px      390    6.4px
+      900  11.3px      360    5.8px
+
+   — a 2.2x swing for one number, overshooting on tablet and collapsing
+   to texture on a phone. The file header used to claim the card was
+   ~460px on a phone and that the per-breakpoint widths held a 17px label
+   at ~12px. Both were wrong: the card is 350px at a 390px viewport and
+   that label shipped at 9px.
+
+   The fix is in two halves and needs both:
+
+   1. `Frame` is now `w-[94%] max-w-[560px]`. The cap is what stops the
+      scale RISING — a full-width card on a tablet was 960px, which blew
+      the diagram up past its design size. Everything from 600px to
+      1600px now sits between 0.795 and 0.903, near enough constant.
+   2. Below 600px the card is physically smaller than the cap, so the
+      scale keeps falling and no width rule can help. The two steps below
+      raise the user-unit size to compensate. They are deliberately NOT
+      one big step: a single 1.6x bump at 599px over-corrected the
+      480-599 band to ~16px.
+
+   Rendered result for the smallest rung, across the whole range:
+   9.2px (360) to 13.6px (599), against 5.8-12.6px before. The floor is
+   up 58% and the swing is halved.
+
+   Rungs, and what each is for. Eight ad-hoc sizes were collapsed into
+   five on the way through; if a diagram needs a size, take a rung rather
+   than adding a literal, or this drifts straight back.
+   --------------------------------------------------------------- */
+.dgm-xs {
+  font-size: 12px;
+} /* pill readouts */
+.dgm-sm {
+  font-size: 13px;
+} /* corner captions */
+.dgm-md {
+  font-size: 15px;
+} /* legends, axis labels, body */
+.dgm-lg {
+  font-size: 17px;
+} /* row and entry labels */
+.dgm-xl {
+  font-size: 19px;
+} /* the one name in the meeting brief */
+
+/* DENSITY-LIMITED, and the one rung that barely grows. The stage x sector
+   grid puts six labels on an 80-unit pitch, so its axis type is capped by the
+   COLUMN SPACING rather than by the frame: at the full phone rung "Consumer"
+   is 109 units against 80 of pitch, and DeepTech/Health and Climate/Consumer
+   physically overlap. 16 units is the largest that clears ("Consumer" ~73,
+   leaving 7), which lands at ~8.5px on a 390px phone rather than the ~10px
+   everything else gets. Raising it means re-pitching that grid or shortening
+   the sector names, not editing this number. */
+.dgm-axis {
+  font-size: 15px;
+}
+
+@media (max-width: 599px) {
+  .dgm-xs {
+    font-size: 16px;
+  }
+  .dgm-sm {
+    font-size: 17px;
+  }
+  .dgm-md {
+    font-size: 20px;
+  }
+  .dgm-lg {
+    font-size: 22px;
+  }
+  .dgm-xl {
+    font-size: 25px;
+  }
+  .dgm-axis {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  .dgm-xs {
+    font-size: 19px;
+  }
+  .dgm-sm {
+    font-size: 21px;
+  }
+  .dgm-md {
+    font-size: 24px;
+  }
+  .dgm-lg {
+    font-size: 27px;
+  }
+  .dgm-xl {
+    font-size: 30px;
+  }
+  .dgm-axis {
+    font-size: 16px;
+  }
+}
+
+/* ---------------------------------------------------------------
    The /solutions step timeline — scroll-linked reveal, with NO JS.
 
    `view-timeline-name` on each row publishes that row's own progress

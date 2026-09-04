@@ -53,12 +53,21 @@ import type { SolutionSlug, SolutionView } from "@/content/solutions";
  * out light-on-dark inside an otherwise white section. The grain is the hero's
  * tile, doing the same job: the radial below it is a long ramp over a wide
  * box, which is the case that bands on an 8-bit display.
+ *
+ * `max-w-[720px]` applies ONLY on the stacked layout, and only there is it
+ * safe: below 1199px the card is `w-full flex-none`, so capping it cannot
+ * affect the desktop row where `flex-1` plus the aspect ratio drives the row
+ * height. Without it a full-width card on a tablet was 1150x1094px — a plate
+ * taller than the viewport with a 560px diagram floating in the middle of it,
+ * 51% of the width empty. That was always slightly absurd; it only became
+ * visible when the diagram stopped growing to fill it. At 720px the card is
+ * 720x685 and the diagram fills 78% of it.
  */
 function Plate({ children }: { children: React.ReactNode }) {
   return (
     <div
       data-band="dark"
-      className="relative flex aspect-[1.05098/1] flex-1 items-center justify-center overflow-clip rounded-lg max-[1199px]:w-full max-[1199px]:flex-none"
+      className="relative flex aspect-[1.05098/1] flex-1 items-center justify-center overflow-clip rounded-lg max-[1199px]:w-full max-[1199px]:max-w-[720px] max-[1199px]:flex-none"
     >
       <div
         aria-hidden

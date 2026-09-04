@@ -55,7 +55,16 @@ That map is keyed on id rather than position on purpose. It was a positional arr
 
 **Every count in a diagram pill is derived from the array drawn beside it**, in the same render — "8 matched", "2 committed", "3 of 4 aligned". None is typed twice, so a caption cannot drift from its own picture. Keep that property when editing; it is the only thing stopping a diagram from lying.
 
-**A known limit, and it pre-dates the new four:** the 12px pill text renders at about **6.4px on a 390px phone**. A 620-unit viewBox squeezed into a ~330px card is a 0.53x scale, and the per-breakpoint widths in `Frame` were tuned for the 17px labels rather than the 12px runs. It affects all six equally — the two originals measure the same. Fixing it means raising the small-type floor across every diagram.
+**Diagram type is sized in rungs, and that is not decoration.** A `<text>` inside a viewBox is scaled by (rendered width / 620), so one source size renders at a different physical size on every viewport. Before this was fixed, a 12-unit run shipped anywhere between **5.8px and 12.6px** depending on width — overshooting on tablet and collapsing to texture on a phone. The fix has two halves and needs both:
+
+1. `Frame` is one rule, `w-[94%] max-w-[560px]`, replacing three per-breakpoint percentages that were derived from card widths no longer true. The cap is what stops the scale *rising*: a full-width tablet card is 960px, and the old 68% of that rendered the diagram larger than its design size. From 600px to 1600px the scale now sits between 0.795 and 0.903.
+2. Below 600px the card is physically smaller than the cap, so no width rule helps. The `dgm-xs` … `dgm-xl` rungs in `globals.css` raise the user-unit sizes at 599px and again at 479px, in two steps because a single 1.6× bump over-corrected the middle band.
+
+Result: every run except one now lands between **9.2px and 17.2px** at every width from 360 to 1600. Eight ad-hoc sizes were collapsed into five rungs on the way through — take a rung rather than adding a `text-[Npx]` literal, or this drifts straight back.
+
+**The one exception is `dgm-axis`**, the stage × sector grid's own axis labels, which sit on an 80-unit pitch: at the full phone rung "Consumer" is 109 units wide and physically overlaps its neighbour. It is capped at 16 units, so it renders at ~8.5px on a 390px phone against ~10px for everything else. Raising it means re-pitching that grid or shortening the sector names, not editing the number.
+
+Growing the type also broke three layouts that had been tuned around the old sizes, all now fixed: the legend's second entry ran under the first in **all six** diagrams (both columns are now fixed at x=5 and x=320), the pipeline pill overflowed the frame, and the meeting card's label/value rows collided.
 
 **`/solutions` and `/process` both redirect to `/solutions/fundraising`**, with a **307 and not a 308**. `/process` has now moved three times; an earlier 308 to `/solutions#fundraising` is still cached in any browser that followed it, and a 308 cannot be withdrawn — no response header un-caches one already issued. 307 keeps every one of these moves revisable. Both go straight to the destination rather than chaining through `/solutions`. Purge the CDN on the next deploy either way.
 

@@ -308,6 +308,25 @@ untabbable while closed and focus can only reach them through the trigger.
   which branch was taken), so putting the counterparty-routing picture beside a
   pricing block would illustrate the wrong thing. An honest blank beats a
   plausible-looking wrong picture.
+- **Diagram type takes a rung (`dgm-xs`…`dgm-xl`, `dgm-axis`), never a
+  `text-[Npx]` literal.** SVG text is scaled by the frame, so one source size
+  renders between 5.8px and 12.6px across viewports if left fixed. The rungs
+  live in `globals.css` and step up at 599px and 479px; `Frame` is one
+  `w-[94%] max-w-[560px]` rule rather than three per-breakpoint percentages.
+  Everything now lands 9.2-17.2px from 360px to 1600px. A literal here cannot
+  be re-tuned when the frame changes, which is the whole point.
+- **`dgm-axis` is capped and must stay capped.** The grid diagram's six axis
+  labels sit on an 80-unit pitch, so its type is limited by column spacing, not
+  by the frame — at the full phone rung "Consumer" overlaps its neighbour. It
+  renders ~8.5px on a phone against ~10px elsewhere. Fixing that means
+  re-pitching the grid or shortening the sector names.
+- **Diagram geometry is tuned around the type size, so changing a rung can
+  break a layout.** Growing the type for phones broke three at once: the
+  legend's second entry ran under the first in all six (both columns are now
+  fixed, x=5 and x=320), the pipeline pill overflowed the frame, and the
+  meeting card's label/value rows collided. After any rung change, re-check
+  every diagram for text that escapes the 620-unit frame or overlaps a
+  neighbour on the same baseline.
 - **Every count in a diagram pill is DERIVED from the array drawn beside it**,
   in the same render — "8 matched", "2 committed", "3 of 4 aligned". None is
   typed twice, so a caption cannot drift from its own picture. Preserve that
