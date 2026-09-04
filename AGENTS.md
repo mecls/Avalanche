@@ -174,14 +174,16 @@ not JS. Keep it that way; see "The solutions timeline" in `README.md` before tou
 it, including why the reduced-motion guard has to say
 `animation: none` rather than rely on the global duration override.
 
-**This is why the Fundraising/Secondaries switch is TWO ROUTES and not a tab.**
+**This is why the Fundraising/Secondaries views are TWO ROUTES and not a tab.**
 A stateful tab would have made the whole of `/solutions` a client component and
-restarted the view-timeline animations on every switch. `SolutionsToggle` is
-two `<Link>`s and takes its active view as a prop rather than calling
-`usePathname`, so it stays a server component too. If a third view is ever
+restarted the view-timeline animations on every switch. If a third view is ever
 added, add a route — do not reach for `useState` here.
 
-The nav's Solutions dropdown adds no state either: it opens on `:hover` and
+**Switching between them is the NAV DROPDOWN's job and only its job.** An
+on-page segmented toggle did the same thing for part of 4 Sep 2026 and was
+removed as redundant: the dropdown already lists both, from every page rather
+than only from these two. `git show 58684ea` has the toggle if it is ever
+wanted back. The dropdown adds no state either — it opens on `:hover` and
 `:focus-within`, and uses `visibility` rather than `display` so its links are
 untabbable while closed and focus can only reach them through the trigger.
 
@@ -285,12 +287,12 @@ untabbable while closed and focus can only reach them through the trigger.
   content height to the column's intrinsic size, the rail becomes the tallest
   item, and it drives the row height instead of the card. `min-height: 0` does
   not fix that.
-- **`/solutions` is TWO ROUTES behind a toggle**, `/solutions/fundraising` and
+- **`/solutions` is TWO ROUTES**, `/solutions/fundraising` and
   `/solutions/secondaries`, each an independent copy of the same layout fed by
   a content object in `content/solutions.ts`. Bare `/solutions` and the legacy
-  `/process` both 307 to Fundraising. The nav dropdown and the on-page toggle
-  must list the same pair in the same order — `solutionViews` owns it for the
-  toggle, `nav[0].menu` in `copy.ts` for the dropdown.
+  `/process` both 307 to Fundraising. `nav[0].menu` in `copy.ts` is now the
+  ONLY place the pair is listed — the on-page toggle that used to duplicate it
+  is gone — so a third view means a route, a content object and an entry there.
 - **Two DIFFERENT kinds of gap on `/solutions`, and they are tracked
   separately on purpose.** A block's `pending` flag means its **copy** is
   placeholder and renders a visible note on the page; all five Secondaries

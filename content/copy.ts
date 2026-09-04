@@ -58,21 +58,20 @@ export const announce = {
 } as const;
 
 /**
- * The header links. Flat — no dropdowns. /solutions carries Secondaries and
- * Fundraising as its own two blocks, so a menu duplicating them would be a
- * second copy of the same two names to keep in step.
- */
-/**
- * `menu` gives an item a hover/focus dropdown in the desktop nav and an inline
+ * The header links. `menu` gives an item a hover/focus dropdown in the desktop nav and an inline
  * sub-list in the mobile sheet. Only Solutions has one.
  *
  * It points at the two REAL ROUTES, not at anchors. The first version of this
  * menu (3 Sep 2026) linked to /solutions#secondaries and /solutions#fundraising
  * because both were sections of one page; they are separate routes now, so the
  * entries resolve to whole pages and the parent link redirects to the first of
- * them. Keep these in step with `solutionViews` in content/solutions.ts — that
- * file owns the order and the labels for the on-page toggle, and a reader who
- * sees a different pair here than there will not trust either.
+ * them.
+ *
+ * THIS IS NOW THE ONLY WAY TO SWITCH VIEWS. An on-page segmented toggle did
+ * the same job for part of 4 Sep 2026 and was removed as redundant, so this
+ * list is no longer one of two places the pair is written down — it is the
+ * only one. Adding a third view means adding a route, a content object in
+ * content/solutions.ts, and an entry here.
  */
 export const nav = [
   {

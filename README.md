@@ -30,17 +30,19 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 /                        Hero (video, full-screen, client strip) · Track record ·
                          Who we serve · What we raise · Neurable case study +
                          testimonial · Verticals · FAQ · Calendar
-/solutions/fundraising   Page heading · toggle · five numbered blocks on a rail
+/solutions/fundraising   Page heading · five numbered blocks on a rail
 /solutions/secondaries   Same layout, Secondaries content (COPY PENDING)
 /customers               Filterable grid of all 13 case studies
 /team                    Five partners · Press
 ```
 
-### /solutions is two views behind a toggle
+### /solutions is two views
 
-It was one page carrying a Secondaries block and a Fundraising block. Since 4 September 2026 it is **two routes**, each an independent copy of the same layout, with a segmented toggle at the head of the page and a two-entry dropdown on the nav pointing at both.
+It was one page carrying a Secondaries block and a Fundraising block. Since 4 September 2026 it is **two routes**, each an independent copy of the same layout.
 
-**Routes, not a client-side tab.** `/solutions` is the one page on the site with no client components — its rail and text reveal are CSS `view-timeline` — and a stateful tab would have made the whole page a client component and restarted those animations on every switch. Routes also keep both views deep-linkable, which the nav dropdown depends on. The toggle is two `<Link>`s; the active view is passed in as a prop, so `SolutionsToggle` stays a server component rather than reaching for `usePathname`.
+**The nav dropdown is the only switcher.** A segmented toggle sat at the head of the page for part of the same day and was removed as redundant — the two-entry dropdown under "Solutions" already lists both, from every page rather than only from these two. `git show 58684ea` has the toggle if it is ever wanted back.
+
+**Routes, not a client-side tab.** `/solutions` is the one page on the site with no client components — its rail and text reveal are CSS `view-timeline` — and a stateful tab would have made the whole page a client component and restarted those animations on every switch. Routes also keep both views deep-linkable, which the dropdown depends on.
 
 **Content lives in `content/solutions.ts`**, one object per view, and `SolutionsSteps` takes the view as a prop. Adding a third view is a content object plus a five-line route.
 

@@ -8,8 +8,7 @@ import {
   PreMarketingDiagram,
   SecondariesDiagram,
 } from "@/components/ui/solutions-media";
-import { SolutionsToggle } from "@/components/ui/solutions-toggle";
-import type { SolutionSlug, SolutionView } from "@/content/solutions";
+import type { SolutionView } from "@/content/solutions";
 
 /**
  * /solutions: a page heading, then two numbered rows of media card / rail /
@@ -125,13 +124,7 @@ const MEDIA: Record<string, () => React.ReactElement> = {
   counterparties: SecondariesDiagram,
 };
 
-export function SolutionsSteps({
-  view,
-  active,
-}: {
-  view: SolutionView;
-  active: SolutionSlug;
-}) {
+export function SolutionsSteps({ view }: { view: SolutionView }) {
   const blocks = view.blocks;
 
   return (
@@ -165,14 +158,6 @@ export function SolutionsSteps({
               <ArrowGlyph />
             </CtaButton>
           </div>
-        </div>
-
-        {/* The toggle sits BELOW the header rather than above the H1: it
-            switches the page's content, so it reads as a control over the
-            blocks it changes rather than as a second eyebrow above the title.
-            Full-width row so it stays left-aligned with the heading. */}
-        <div className="flex w-full pt-2">
-          <SolutionsToggle active={active} />
         </div>
       </div>
 

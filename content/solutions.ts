@@ -6,14 +6,20 @@ import { secondaries } from "@/content/copy";
  * The page used to be a single route carrying one Secondaries block and one
  * Fundraising block. On 4 Sep 2026 it became two routes, `/solutions/
  * fundraising` and `/solutions/secondaries`, each an independent copy of the
- * same layout, with a segmented toggle switching between them and the nav
- * dropdown pointing at both.
+ * same layout.
  *
- * Why routes rather than a client-side tab: `/solutions` is the one page on
- * the site with NO client components — its rail and text reveal are CSS
+ * SWITCHING BETWEEN THEM IS THE NAV DROPDOWN'S JOB AND ONLY ITS JOB. There was
+ * briefly a segmented toggle at the head of the page as well; it was removed
+ * the same day as redundant — the dropdown under "Solutions" already lists
+ * both, on every page rather than only on these two. One control, one place.
+ * If a switcher is ever wanted back on the page, `git show 58684ea` has it.
+ *
+ * The views are still separate ROUTES rather than a client-side tab, and that
+ * has not changed with the toggle going: `/solutions` is the one page on the
+ * site with NO client components — its rail and text reveal are CSS
  * `view-timeline` — and a stateful tab would have made the whole page a client
- * component and put that at risk. Two routes also stay deep-linkable, which
- * the nav dropdown depends on.
+ * component. Routes also keep both views deep-linkable, which the dropdown
+ * depends on.
  *
  * `/solutions` itself redirects to `/solutions/fundraising` (next.config.ts).
  *
@@ -40,14 +46,6 @@ import { secondaries } from "@/content/copy";
  * as final.
  * ---------------------------------------------------------------------------
  */
-
-/** The two toggle entries. Order is the order they render in. */
-export const solutionViews = [
-  { slug: "fundraising", label: "Fundraising", href: "/solutions/fundraising" },
-  { slug: "secondaries", label: "Secondaries", href: "/solutions/secondaries" },
-] as const;
-
-export type SolutionSlug = (typeof solutionViews)[number]["slug"];
 
 export type SolutionBlock = {
   n: string;
@@ -211,9 +209,3 @@ export const secondariesView: SolutionView = {
     },
   ],
 };
-
-/** Both views, by slug — the routes and the toggle read this. */
-export const solutionsBySlug = {
-  fundraising: fundraisingView,
-  secondaries: secondariesView,
-} as const;

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default function SolutionsSecondariesPage() {
   return (
     <>
-      <SolutionsSteps view={secondariesView} active="secondaries" />
+      <SolutionsSteps view={secondariesView} />
       <CtaBand />
     </>
   );

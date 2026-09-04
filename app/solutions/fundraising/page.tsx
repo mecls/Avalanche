@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 export default function SolutionsFundraisingPage() {
   return (
     <>
-      <SolutionsSteps view={fundraisingView} active="fundraising" />
+      <SolutionsSteps view={fundraisingView} />
       <CtaBand />
     </>
   );
