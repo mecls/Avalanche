@@ -74,11 +74,17 @@ export const hero = {
    *  string. What the hero RENDERS is `titleLines` below. */
   title: "Private capital advisory with an edge",
   /**
-   * The headline breaks on AUTHORED lines, not on wrapping, and the first
-   * word of each line is set in italic. Both are editorial decisions, so the
-   * break lives here rather than as a <br> buried in the component.
+   * The headline breaks on AUTHORED lines, not on wrapping. That is an
+   * editorial decision, so the break lives here rather than as a <br> buried
+   * in the component.
    *
-   * `lead` is the italic word; `rest` completes the line. Re-balancing the
+   * `lead` USED TO BE SET IN ITALIC and no longer is — the site moved to
+   * Satoshi on 4 Sep 2026 and this build of it has no italic face, so an <em>
+   * would be a fake slant on the biggest type on the site. The split is kept
+   * because it is still where the line breaks; the two halves just render
+   * identically now. `rest` carries its own leading space.
+   *
+   * Re-balancing the
    * lines means editing these two entries — do not add a third without
    * checking the 80px size still holds two lines' worth of measure.
    */

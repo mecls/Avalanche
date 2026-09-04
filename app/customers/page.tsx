@@ -41,10 +41,10 @@ export default function CustomersPage() {
   return (
     <>
       {/* The page header is the SAME construction as /solutions — same
-          `page-label` run, same 80px H1 on the same 809px step-down, same
+          `page-label` run, same 72px H1 on the same 809px step-down, same
           16/24 lede, same 720/680 measures, same `items-end` row with the CTA
           hard right. Both were separate builds until 4 Sep 2026 and had drifted
-          to three different values in every row: 64px vs 80px H1, a 600-weight
+          to three different values in every row: 64px vs 80px H1 (both now 72px), a 600-weight
           grey label against a 500-weight ink one, a 15px lede against a 16px
           one, a 576px column against 720. Keep them in step — if this header
           changes, /solutions changes with it.
@@ -60,10 +60,11 @@ export default function CustomersPage() {
         <div className="shell flex flex-col items-center justify-center gap-2.5 overflow-clip pt-[100px] pb-12 max-[809px]:pt-[60px] max-[809px]:pb-8">
           <div className="flex w-full flex-row items-end justify-center gap-6 max-[809px]:flex-col max-[809px]:items-start max-[809px]:gap-8">
             <div className="flex flex-1 flex-col items-start justify-center gap-4 overflow-clip max-[809px]:w-full max-[809px]:flex-none">
-              <p className="page-label">{customers.eyebrow}</p>
+              {/* Accented like /solutions' and like every section eyebrow. */}
+              <p className="page-label text-accent">{customers.eyebrow}</p>
 
               <div className="max-w-[720px]">
-                <h1 className="display display-80 text-[80px]">
+                <h1 className="display display-72 text-[72px]">
                   {customers.title}
                 </h1>
               </div>
@@ -128,7 +129,7 @@ export default function CustomersPage() {
           <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
             <div>
               <p className="eyebrow mb-5">{customers.trustedByEyebrow}</p>
-              <h2 className="display text-[clamp(2.5rem,4.4vw,3.625rem)] text-balance">
+              <h2 className="display text-[clamp(2.25rem,4vw,3.25rem)] text-balance">
                 {customers.trustedByTitle}
               </h2>
             </div>

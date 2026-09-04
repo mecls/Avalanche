@@ -109,18 +109,68 @@ export function Hero() {
             it for `items-center` or `items-start` and the whole hero stops
             matching the reference. */}
         <div className="flex w-full flex-col items-start justify-center gap-8 md:flex-row md:items-end md:gap-11">
-          <div className="flex w-full flex-col items-start justify-center gap-8 md:flex-1 md:gap-9">
+          {/* `@container` makes this column the reference for the H1's `cqw`
+              size — see the note on the h1. It is inline-size containment
+              only, so it constrains nothing this column was relying on. */}
+          <div className="@container flex w-full flex-col items-start justify-center gap-8 md:flex-1 md:gap-9">
             <div className="flex flex-col items-start gap-4">
               <span className="eyebrow-pill rise">{hero.eyebrow}</span>
 
-              {/* Two AUTHORED lines, not organic wrapping, with the first
-                  word of each set in italic. The break is content, not
-                  layout — see hero.titleLines in content/copy.ts. `max-w`
-                  only guards against a wider viewport re-wrapping it. */}
-              <h1 className="display hero-h1 rise max-w-[600px] text-[80px] text-white [animation-delay:80ms]">
+              {/* Two AUTHORED lines, not organic wrapping. The break is
+                  content, not layout — see hero.titleLines in
+                  content/copy.ts.
+
+                  THE SIZE IS DERIVED FROM THE LINE, NOT CHOSEN.
+                  "advisory with an edge" is the longer authored line and it
+                  must never wrap — a third line is the bug this whole
+                  expression exists to prevent. Measured in the browser at the
+                  real weight and tracking:
+
+                    Cormorant 80px / -0.04em  ->  607px   (old face)
+                    Satoshi   72px / -0.025em ->  674px   wraps
+                    Satoshi   64px / -0.025em ->  599px   fits
+
+                  Satoshi is ~12% wider than Cormorant at the SAME nominal
+                  size, so holding the break costs more size than the optical
+                  match alone suggests: the rest of the display scale moved
+                  80->72, this one had to go to 64. Hence its own `hero-h1`
+                  class rather than `display-72`.
+
+                  WHY cqw AND NOT A FIXED 64px. This column is `flex-1` of a
+                  two-column row from 768px up, so it is only 342px wide at
+                  768 and 598px at 1280 — a fixed 64px line (599px) wraps
+                  everywhere below ~1282px. `cqw` is 1% of THIS COLUMN, so the
+                  headline is sized by the space it actually has instead of by
+                  the viewport. The ratio is the measurement: the line is
+                  599/64 = 9.36x the font size, so it fits while
+                  size <= colW/9.36, i.e. 10.68cqw. 10.4 is that with margin.
+
+                  This is the clamp the note in globals.css warns against — an
+                  arbitrary one reflows the authored break. This one is
+                  derived FROM the break and is the thing keeping it. The
+                  809px step-down was removed with it; it is no longer needed
+                  and would fight this.
+
+                  `max-w-[660px]` caps the measure once the column is wider
+                  than the line needs. It was 600px, and Cormorant's 607px
+                  line had been overflowing it by 7px — the break was
+                  surviving on the browser's willingness to overflow rather
+                  than by fitting. If the headline copy changes, re-measure
+                  the longest line and re-derive; do not nudge the numbers.
+
+                  THE LEAD WORDS ARE NO LONGER ITALIC. They were, under
+                  Cormorant, which carried a real drawn italic. Satoshi is
+                  roman-only here — no `ital` or `slnt` axis — so an <em> would
+                  render as a browser-synthesised slant on the largest type on
+                  the site. The site's earlier Satoshi build set nothing in
+                  italic for exactly this reason. `lead` and `rest` are kept
+                  apart because they are still the authored line break; they
+                  simply no longer differ in style. Do not put the <em> back
+                  without shipping Satoshi-VariableItalic.woff2. */}
+              <h1 className="display hero-h1 rise max-w-[660px] text-[clamp(1.75rem,10.4cqw,64px)] text-white [animation-delay:80ms]">
                 {hero.titleLines.map((line, i) => (
                   <span key={line.lead} className="block">
-                    <em className="italic">{line.lead}</em>
+                    {line.lead}
                     {line.rest}
                     {i < hero.titleLines.length - 1 ? <br /> : null}
                   </span>
@@ -143,7 +193,7 @@ export function Hero() {
           </div>
 
           <div className="rise hidden flex-col items-end gap-1.5 md:flex md:flex-1 [animation-delay:320ms]">
-            <p className="numeral text-[40px] text-white">{hero.stat.value}</p>
+            <p className="numeral text-[36px] text-white">{hero.stat.value}</p>
             <p className="text-right text-[14px] leading-[21px] text-white">
               {hero.stat.label}
             </p>

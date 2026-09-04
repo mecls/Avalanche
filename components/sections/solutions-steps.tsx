@@ -93,10 +93,15 @@ export function SolutionsSteps() {
       <div className="shell flex flex-col items-center justify-center gap-2.5 overflow-clip pt-[100px] pb-12 max-[809px]:pt-[60px] max-[809px]:pb-8">
         <div className="flex w-full flex-row items-end justify-center gap-6 max-[809px]:flex-col max-[809px]:items-start max-[809px]:gap-8">
           <div className="flex flex-1 flex-col items-start justify-center gap-4 overflow-clip max-[809px]:w-full max-[809px]:flex-none">
-            <p className="page-label">{solutions.eyebrow}</p>
+            {/* Accented, matching the section eyebrows — this is the page's
+                own name and does the same job. The BLOCK labels and rail
+                numbers below stay ink: they sit right beside the accent rail
+                and both diagrams, and colouring them too would put the accent
+                on six runs on the one page that already carries most of it. */}
+            <p className="page-label text-accent">{solutions.eyebrow}</p>
 
             <div className="max-w-[720px]">
-              <h1 className="display display-80 text-[80px]">
+              <h1 className="display display-72 text-[72px]">
                 {solutions.title}
               </h1>
             </div>
@@ -169,7 +174,7 @@ export function SolutionsSteps() {
               <div className="step-text flex max-w-[1160px] flex-1 flex-col items-start justify-start gap-6 max-[1199px]:w-full max-[1199px]:max-w-none max-[1199px]:flex-none">
                 <p className="page-label">{block.label}</p>
 
-                <h2 className="display display-58 text-[58px]">{block.title}</h2>
+                <h2 className="display display-52 text-[52px]">{block.title}</h2>
 
                 <div className="max-w-[680px]">
                   <p className="text-[16px] leading-6 text-fg-muted">

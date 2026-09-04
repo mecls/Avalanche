@@ -91,7 +91,7 @@ export function CtaBand() {
           </p>
         </div>
 
-        <h2 className="display mt-10 max-w-[16ch] text-[clamp(2.5rem,4.4vw,3.625rem)] text-white">
+        <h2 className="display mt-10 max-w-[16ch] text-[clamp(2.25rem,4vw,3.25rem)] text-white">
           {ctaBand.title}
         </h2>
 
@@ -107,7 +107,10 @@ export function CtaBand() {
             {ctaBand.cta}
           </CtaButton>
 
-          <p className="flex items-center gap-2.5 text-[14px] leading-[21px] text-white italic">
+          {/* Roman, not italic. It was italic under Inter; Satoshi ships no
+              italic face here, so the class came off rather than leaving the
+              browser to fake a slant. */}
+          <p className="flex items-center gap-2.5 text-[14px] leading-[21px] text-white">
             <span
               aria-hidden
               className="h-2 w-2 shrink-0 rounded-full bg-live shadow-[0_0_8px_rgba(74,222,128,0.6)]"

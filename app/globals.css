@@ -3,14 +3,24 @@
 /* ---------------------------------------------------------------
    Avalanche Capital design tokens
 
-   Matched to farahcap.com: a #151515 ground, Cormorant Garamond on
-   every heading, Inter on every UI run, and — since 4 Sep 2026 — the
-   brand blue (#3056EE) where the reference runs gold.
+   LAYOUT is farahcap.com: a #151515 ground, its measured geometry and
+   its section rhythm, with the brand blue (#3056EE) where the
+   reference runs gold.
 
-   This REPLACED a fundraisr.ai-derived system (Satoshi, flat white
-   type, no accent colour). If you find a comment or a doc still
-   claiming "no serif, no accent colour", it predates this and is
-   wrong — that includes older sections of docs/BUILD-NOTES.md.
+   TYPE is not. The reference's Cormorant Garamond / Cormorant Infant /
+   Inter trio was replaced on 4 Sep 2026 by Satoshi alone, on
+   everything — headings, figures, body, buttons, nav. There is no
+   serif on the site and no secondary display face. Satoshi is self-
+   hosted from app/fonts/ (it is a Fontshare release, not on Google
+   Fonts); app/layout.tsx has the loading notes, including why nothing
+   here may be set in italic.
+
+   So the site has now run BOTH systems and back: a fundraisr.ai-
+   derived one (Satoshi, flat white type, no accent), then the
+   farahcap serif rebuild, and now farahcap's layout carrying
+   fundraisr's face. A doc claiming "no serif, no accent colour" is
+   half right by accident — the serif is indeed gone again, but the
+   accent is real. Trust this file over docs/BUILD-NOTES.md.
 
    Tokens are named by ROLE, not by hue, so a section can re-point the
    whole set at once. See the [data-band="light"] block below: it swaps
@@ -106,18 +116,26 @@
      Decorative — it never carries meaning alone, so it needs no ratio. */
   --color-live: #4ade80;
 
-  --font-display: var(--font-display-src), ui-serif, Georgia, serif;
-  --font-numeric: var(--font-numeric-src), ui-serif, Georgia, serif;
-  --font-sans: var(--font-ui-src), ui-sans-serif, system-ui, sans-serif;
+  /* ONE face, three roles. Satoshi carries headings, figures and every UI run;
+     there is no secondary display face and no serif anywhere on the site.
+
+     The three tokens are KEPT rather than collapsed to one, and they all
+     resolve to the same stack on purpose: they name the JOB, not the file, and
+     the `display` / `numeral` utilities below still differ from each other in
+     weight, leading and tracking. Collapsing them would throw that away and
+     make a second face expensive to reintroduce. */
+  --font-display: var(--font-display-src), system-ui, sans-serif;
+  --font-numeric: var(--font-numeric-src), system-ui, sans-serif;
+  --font-sans: var(--font-ui-src), system-ui, sans-serif;
 }
 
 /* next/font publishes its variables on <html>. @theme is evaluated before
    those cascade, so they are aliased through :root rather than referenced
    directly above. */
 :root {
-  --font-display-src: var(--font-cormorant);
-  --font-numeric-src: var(--font-cormorant-infant);
-  --font-ui-src: var(--font-inter);
+  --font-display-src: var(--font-satoshi);
+  --font-numeric-src: var(--font-satoshi);
+  --font-ui-src: var(--font-satoshi);
 }
 
 /* A light band. Re-points the role tokens for its whole subtree — shared
@@ -275,27 +293,38 @@ body {
 
 /* Bare uppercase eyebrow. The hero uses the pill below instead.
 
-   THIS IS MONOCHROME ON PURPOSE, and it is the first thing to reach for if
-   the accent is ever asked to spread again. It carried the accent for one
-   commit on 4 Sep 2026 — one rule here colours the section eyebrows, the
-   who-we-serve ordinals, case-study categories and the footer column heads
-   at once, which is twelve accent marks on the homepage alone. That is far
-   too many for a colour that is supposed to mark the one thing worth acting
-   on in a block, so it came back off the same day.
+   THIS CARRIES THE ACCENT, by request on 4 Sep 2026 — "Verticals", "What we
+   raise" and every label like them. It is the block's name, and colouring it
+   is what makes a section announce itself before the heading does.
 
-   If it does go back: 14px/600 is NOT large text, so it needs the full
-   4.5:1, and it would be the only place the accent carries small type.
-   Both current band values clear it (5.7:1 on white, 7.7:1 on #151515). */
+   Note the history, because this rule has moved twice in one day: it was
+   accented, judged too much across the site, reverted to `fg-muted`, then
+   asked for again specifically. The middle step was a judgement about the
+   accent being EVERYWHERE — corner brackets, grid icons, FAQ glyphs, team
+   monograms — not about the eyebrow itself. Those all stayed monochrome; only
+   this one came back. If it is ever pulled again, pull it alone.
+
+   ONE RULE, MANY MARKS. This colours the section eyebrows, the thesis
+   ordinals, the who-we-serve labels, case-study categories, media outlets and
+   the footer column heads — around a dozen on the homepage. That is the
+   intended reading now, but it is why this utility is the first place to look
+   if the page ever feels loud again.
+
+   CONTRAST: 14px/600 is NOT large text, so this needs the full 4.5:1 rather
+   than the 3:1 large-text floor, and it is the only place the accent carries
+   small type. Both band values clear it — 5.7:1 on white, 5.1:1 on the
+   #f3f3f3 band, 7.7:1 on #151515, 6.9:1 on the #202020 card. Any future
+   accent has to hold 4.5:1 on ALL FOUR before it can land here. */
 @utility eyebrow {
   font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-fg-muted);
+  color: var(--color-accent);
 }
 
-/* The PAGE-level label, above an 80px H1 — a different run from `eyebrow`
+/* The PAGE-level label, above the 72px H1 — a different run from `eyebrow`
    above, which labels a section inside a page.
 
    Lighter (500, not 600) and set in full-strength ink rather than `fg-muted`,
@@ -318,40 +347,61 @@ body {
   text-transform: uppercase;
 }
 
-/* Display headings — Cormorant Garamond. The 80px H1 and 58px H2 are both
-   set SOLID (line-height 1) at -0.04em, which is what makes a two-line
-   headline read as one block rather than as two sentences. */
+/* Display headings — Satoshi at MEDIUM, 1.05 leading, -0.025em.
+   All three values changed with the face on 4 Sep 2026 and none of them is
+   arbitrary:
+
+   - WEIGHT 500, not 400. Cormorant needed 400 because a high-contrast serif
+     at 72px is already emphatic; a grotesque at Regular reads as body copy
+     set large. 500 is also the weight fundraisr.ai sets its own H1 in.
+   - TRACKING -0.025em, not -0.04em. -0.04em is a serif-display value. On a
+     grotesque with these counters it closes the letterfit up, worst on the
+     round-to-round pairs. -0.025em is the measured fundraisr value.
+   - LEADING 1.05, not solid. Cormorant's short x-height leaves air inside a
+     solid line box; Satoshi's does not, so a two-line headline set solid
+     touches. 72 x 1.05 = 75.6, again the measured value.
+
+   SIZES CAME DOWN ~10% WITH THE FACE, and that is the part that looks like a
+   mistake and is not. Satoshi's x-height is 0.500em against Cormorant's
+   0.386em (+30%) and its cap height 0.740 against 0.625 (+18%), so the same
+   number renders a visibly bigger heading. 80 -> 72 and 58 -> 52 hold the
+   OPTICAL size the page had. Setting these back to 80/58 does not restore the
+   old design, it enlarges it. */
 @utility display {
   font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  font-weight: 500;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
 }
 
-/* 40px card headings and process steps: heavier, and with real leading
-   because they wrap to two and three lines. */
+/* 40px card headings and process steps: real leading, because they wrap to
+   two and three lines. NOTE: currently unused — nothing on the site renders
+   `display-md` or `display-sm`. Kept as the rungs between `display` and body
+   for whatever needs them next; delete both if that never comes. */
 @utility display-md {
   font-family: var(--font-display);
   font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.025em;
 }
 
-/* 28px card headings. Tracking eases off as the size drops — -0.04em on a
-   28px serif closes the counters up. */
+/* 28px card headings. Tracking eases off as the size drops. */
 @utility display-sm {
   font-family: var(--font-display);
   font-weight: 500;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
 }
 
-/* Figures only. Infant is a separate face from Garamond, not a weight of it:
-   its numerals are the ones the reference sets its stats in. */
+/* Figures. This was Cormorant *Infant* — a separate face from the heading
+   Garamond, carried purely for its numerals. Satoshi has one set of figures
+   and they are the heading's, so `numeral` no longer switches face; it stays
+   a distinct utility because a figure still wants its own weight and normal
+   tracking, and because every stat on the site already calls it. */
 @utility numeral {
   font-family: var(--font-numeric);
-  font-weight: 400;
-  letter-spacing: normal;
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 /* The eyebrow as a glass pill, which is how it sits over the hero video. The
@@ -436,22 +486,30 @@ body {
 }
 
 /* Sizes live at the call site everywhere EXCEPT the two display sizes that
-   step down on a phone. The hero H1 has an authored two-line break, so a
-   clamp would resize it into a three-line wrap; the 80/58 pair on /solutions
-   steps down at the same 809px boundary and is kept here beside it so the two
-   cannot drift apart. */
+   step down on a phone: the 72/52 pair used by the /solutions and /customers
+   page headers, kept together here so the two cannot drift apart.
+
+   These were `.display-80` / `.display-58` and were RENAMED with the values
+   when the face changed on 4 Sep 2026 — a class called `display-80` that sets
+   72px is a trap for the next reader.
+
+   Only `font-size` is overridden. `display` sets its leading and tracking in
+   relative units (1.05 and -0.025em), so both follow the size down on their
+   own; the px line-height and px letter-spacing that used to be repeated here
+   were two more values that could fall out of step with the utility.
+
+   THE HERO H1 USED TO BE IN THIS RULE AND DELIBERATELY IS NOT ANY MORE. It
+   sizes itself in `cqw` off its own column now (see components/sections/
+   hero.tsx), which holds its authored two-line break at every width instead
+   of only on either side of one breakpoint. A fixed size here would win over
+   that and put the third line back. */
 @media (max-width: 809px) {
-  .hero-h1,
-  .display-80 {
-    font-size: 44px;
-    line-height: 44px;
-    letter-spacing: -1.76px;
+  .display-72 {
+    font-size: 40px;
   }
 
-  .display-58 {
-    font-size: 38px;
-    line-height: 38px;
-    letter-spacing: -1.52px;
+  .display-52 {
+    font-size: 34px;
   }
 }
 

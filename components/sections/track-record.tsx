@@ -91,7 +91,7 @@ function Stat({
 
   return (
     <BracketCell index={index} minH="min-h-[12rem] lg:min-h-[13rem]" className={className}>
-      <p className="numeral text-[clamp(3.5rem,4.6vw,4.5rem)]">
+      <p className="numeral text-[clamp(3rem,4.1vw,4rem)]">
         {prefix}
         {n.toFixed(decimals)}
         {suffix}
@@ -132,7 +132,7 @@ function StatRow({
   return (
     <div className="flex flex-col-reverse gap-3 border-t border-line py-10 sm:grid sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-8 sm:py-12">
       <p className="max-w-md text-sm leading-snug text-fg-muted">{label}</p>
-      <p className="numeral text-[clamp(3.5rem,7vw,5rem)] sm:text-right">
+      <p className="numeral text-[clamp(3rem,6.3vw,4.5rem)] sm:text-right">
         {prefix}
         {n.toFixed(decimals)}
         {suffix}
@@ -184,7 +184,7 @@ export function TrackRecord({
               accent, then removed with it — the reference's rows treatment
               opens on the heading, and a layout change made to host a colour
               has no reason to outlive the colour. */}
-          <h2 className="display text-[clamp(2.5rem,4.4vw,3.625rem)] text-balance sm:text-right">
+          <h2 className="display text-[clamp(2.25rem,4vw,3.25rem)] text-balance sm:text-right">
             {trackRecord.title}
           </h2>
 

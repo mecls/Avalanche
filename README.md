@@ -108,15 +108,19 @@ Laid out like fundraisr.ai's: wordmark left, links **centred on the viewport**, 
 
 ## Design system
 
-The site is a **layout clone of farahcap.com**. It was previously matched to fundraisr.ai — Satoshi, flat white type, no accent colour — and that system is gone. Comments or docs still claiming "no serif, no accent" predate the rebuild.
+The **layout** is a clone of farahcap.com. The **type** is fundraisr.ai's. The site has been through both systems and back: fundraisr's first (Satoshi, flat type, no accent), then the farahcap serif rebuild, and since 4 September 2026 farahcap's layout carrying fundraisr's face plus the brand accent. A comment or doc claiming "no serif, no accent" is half right by accident — the serif is gone again, the accent is real.
 
 `app/globals.css` is the whole design system. There is no `tailwind.config`; Tailwind v4 is used CSS-first.
 
-**Three faces, each with one job.** Cormorant Garamond on every heading, Cormorant *Infant* on figures only (a separate face, not a weight — its numerals are the ones the reference sets stats in), Inter on every UI run. All three via `next/font/google`. Garamond loads its italic because the H1 sets the first word of each line in italic, and a synthesised slant on the largest type on the site is very visible.
+**One face, self-hosted.** Satoshi on every heading, figure, body run, button and nav item — no secondary display face, no serif anywhere. It is a Fontshare release and is not on Google Fonts, so it loads through `next/font/local` from `app/fonts/Satoshi-Variable.woff2`: one 42KB variable file, no third-party connection, nothing render-blocking. `weight: "300 900"` declares the file's real `wght` axis so 400/500/600 interpolate from it.
 
-**Two small-uppercase runs, and they do different jobs.** `eyebrow` (14/600, `fg-muted`) labels a section *inside* a page and renders a dozen times on the homepage. `page-label` (14/500, inheriting `fg`, so full-strength ink) labels the *page itself*, above the 80px H1, and renders once per route — a heavier grey run under the largest heading on a route reads as a caption rather than as the page's name. `page-label` also carries the `/solutions` block labels and rail numbers. Neither folds into the other.
+**Nothing is set in italic, and nothing may be.** This build carries no `ital` or `slnt` axis and reports `italicAngle: 0`, so any `italic` class is a browser-synthesised slant. The hero H1's lead words and the closing note both dropped theirs when the face landed. An italic means shipping `Satoshi-VariableItalic.woff2` (~43KB) alongside the roman.
 
-**`/solutions` and `/customers` share one page-header construction:** the same label run, the same `display display-80 text-[80px]` stepping down to 44px at 809px, the same 16/24 lede, the same 720px/680px measures, and the same `items-end` row that sets the CTA's bottom edge on the lede's last baseline with a trailing arrow. They were built separately and had drifted to a different value in *every* row — 64px vs 80px H1, a 600-weight grey label against a 500-weight ink one, a 15px lede against 16px, a 576px column against 720px — which is what made `/customers` read as a different site. Verified identical at 1440 / 900 / 800 / 390px. Change one, change the other.
+**The display sizes came down with the face.** Satoshi's x-height is 0.500em against Cormorant's 0.386em (+30%) and its cap height 0.740 against 0.625 (+18%), so the same number renders a visibly bigger heading; 80→72 and 58→52 hold the optical size the pages had. The `display` utility moved with them — weight 400→500, tracking -0.04em→-0.025em, leading solid→1.05 — because a grotesque at Regular reads as body copy set large and -0.04em is a serif-display tracking that closes a grotesque's letterfit up.
+
+**Two small-uppercase runs, and they do different jobs.** `eyebrow` (14/600, **accent**) labels a section *inside* a page and renders a dozen times on the homepage. `page-label` (14/500, no colour of its own) labels the *page itself*, above the 72px H1 — a heavier run under the largest heading on a route reads as a caption rather than as the page's name. The page-name use takes `text-accent` at the call site so it matches the eyebrows; the `/solutions` block labels and rail numbers share the utility and deliberately stay ink, because they sit against the accent rail and both diagrams. Neither utility folds into the other, and the colour stays out of `page-label` itself.
+
+**`/solutions` and `/customers` share one page-header construction:** the same label run, the same `display display-72 text-[72px]` stepping down to 40px at 809px, the same 16/24 lede, the same 720px/680px measures, and the same `items-end` row that sets the CTA's bottom edge on the lede's last baseline with a trailing arrow. They were built separately and had drifted to a different value in *every* row — 64px vs 80px H1, a 600-weight grey label against a 500-weight ink one, a 15px lede against 16px, a 576px column against 720px — which is what made `/customers` read as a different site. Verified identical at 1440 / 900 / 800 / 390px. Change one, change the other.
 
 Colour tokens are named by **role**, never by hue. A light section is `data-band="light"` on the `<section>` and that one attribute re-points every token for the subtree, which is why shared components take no `tone` prop — `bg-fg text-ground` is a white button on dark and a black button on light from the same markup.
 
@@ -130,25 +134,28 @@ Contrast is documented in `globals.css` with real ratios, and every text/backgro
 
 So a dark band gets a true *lightening* of the same colour — hue held at 227°, saturation at 100%, lightness 56% → 77%, giving `#8aa4ff`: 7.7:1 on `#151515`, a 2.4:1 step down from `fg` so it reads as its own colour rather than as white, and a 2.7:1 step up from a ghost dot. A light band swaps the specified value straight back in at 5.7:1 on white. **Darkening the dark-band value toward `#3056EE` is the tempting mistake** — it looks more on-brand in isolation and quietly breaks the diagrams.
 
-### Where the accent appears — three places, and that is the whole list
+### Where the accent appears — four places, and that is the whole list
 
 The site is monochrome except for these:
 
 | Where | Renders | Why it earns the colour |
 |---|---|---|
+| Section eyebrows + page labels | ~12 per page | A block's own name — "Verticals", "What we raise", "Who we serve". The colour is what makes a section announce itself before the heading does. The two page-name `page-label` runs take `text-accent` at the call site to match. |
 | `/solutions` rail + both diagrams | once, on one page | **Functional.** The accent is the diagram's only means of saying which route matched. Remove it and the picture stops working. |
 | Case-study metric pill | once per page | The single number on a card, and the thing a reader should land on. The `/customers` grid uses the tile treatment and carries no pill. |
 | CTA band chip | once per page | The conversion point of every page. Decorative — the label beside it is white and carries the meaning. |
 
-**This list was longer for one commit and was cut back deliberately.** On 4 Sep 2026 the accent went into every block: the `eyebrow` utility (which alone is twelve marks on the homepage — section eyebrows, who-we-serve ordinals, case-study categories, footer column heads), the `BracketGrid` corner brackets, the raise-types and verticals icons, the FAQ `+`, the `/customers` search and filter glyphs, the team monograms and the `/solutions` `LABEL` run. All of it came back off the same day. The rule that survives is **an accent marks the one thing worth acting on in a block, not every label in it** — and anything rendering five, eight or twelve times in a column is by definition not that.
+**The eyebrow rule moved twice in one day, so read the history before moving it a third time.** On 4 Sep 2026 the accent first went into every block at once: `eyebrow`, the `BracketGrid` corner brackets, the raise-types and verticals icons, the FAQ `+`, the `/customers` search and filter glyphs, the team monograms and the `/solutions` block labels. That was judged too much and all of it came off. It was then asked for again, specifically for the eyebrows — and only the eyebrows went back. Everything else in that list is still monochrome and each site carries a comment saying why.
 
-Two layout changes made purely to host the colour were unwound with it: the eyebrow added to `TrackRecord`'s `rows` variant, and `customers.gridEyebrow`, a string that existed only because that band had no eyebrow to colour. A layout change made to host a colour has no reason to outlive the colour.
+The distinction that survived: an accent marks **what a reader should act on or navigate by**, not every mark on a page. An eyebrow passes because it names the block. A corner bracket, an icon in a twelve-row grid and a placeholder monogram do not. **If the accent has to be pulled back again, pull those first and the eyebrow last.**
+
+One layout change made purely to host the colour was unwound and has stayed unwound even though the colour returned: the eyebrow added to `TrackRecord`'s `rows` variant, and `customers.gridEyebrow`, a string that existed only because that band had no eyebrow to colour.
 
 **The hero is exempt and stays monochrome** whatever happens above. It uses `eyebrow-pill` and `strip-label`, separate utilities precisely so an `eyebrow` rule cannot reach it: their contrast is measured against moving footage rather than a flat band. Don't fold them together.
 
 Headings stay monochrome too. The `accent` prop on `SectionHeading` — a trailing substring of each title — is still accepted and ignored, and every heading on the site is flat.
 
-One contrast note for anyone re-expanding this: `eyebrow` would be the only place the accent carries *small* type (14px/600), so it needs the full 4.5:1 rather than the 3:1 large-text floor. Both current band values clear it, but a future accent has to hold 4.5:1 on **both** grounds before that rule goes back on.
+**`eyebrow` is the only place the accent carries small type** (14px/600), so it needs the full 4.5:1 rather than the 3:1 large-text floor — and it lands on five different grounds. Measured: `#3056EE` is 5.69:1 on `#ffffff`, 5.45:1 on `#fafafa`, 5.13:1 on `#f3f3f3`; `#8aa4ff` is 7.68:1 on `#151515` and 6.85:1 on the `#202020` card. A future accent has to clear 4.5:1 on **all five** before it can go here — a much harder test than the diagram pills alone imposed.
 
 `--color-accent-light` / `--color-accent-deep` are the rail gradient's two stops, held constant across bands because a decorative graphic carries no text and shouldn't follow a text-contrast flip. Both are calibrated for the light `#eeeeee` track they live on and would be invisible on a dark ground. `--color-accent-deep` is the brand value exactly, so the rail terminates in it; it happens to coincide with the light-band `--color-accent` right now, which is a property of this palette and not a rule.
 
@@ -172,7 +179,9 @@ Height is an exact `h-dvh`, not a `min-h`. The composition depends on it — the
 
 **`items-end` on the content row is the composition.** It puts the bottom edge of the CTA button and the bottom edge of the stat label on one baseline (measured: both at y=842 on a 1440x986 window). Change it to `center` or `start` and the hero stops matching the reference.
 
-The headline breaks on **authored** lines with the first word of each in italic. That is content, not layout, so it lives in `hero.titleLines` rather than as a `<br>` in the component.
+The headline breaks on **authored** lines. That is content, not layout, so it lives in `hero.titleLines` rather than as a `<br>` in the component. The first word of each line used to be italic and is not any more — Satoshi ships no italic here.
+
+**The H1 is sized in `cqw`, off its own column, and that is the only thing holding the break.** It reads `clamp(1.75rem,10.4cqw,64px)` against an `@container` on the text column. The ratio is a measurement: `"advisory with an edge"` is 9.36x the font size wide, so it fits while size is at most colW/9.36 = 10.68cqw, and 10.4 is that with margin. A fixed size cannot work — the column is `flex-1` of a two-column row from 768px up, so it is 342px wide at 768 and 598px at 1280, and a flat 64px (a 599px line) wraps to three lines everywhere below ~1282px. Satoshi is ~12% wider than Cormorant at the same nominal size, which is why this line needed 64px when the rest of the scale went to 72px. Verified at 2 lines from 360px to 1920px; the old 809px step-down was removed and must not come back.
 
 ### Background stack
 

@@ -24,7 +24,7 @@ type Props = {
  * band. It has no border precisely because the blur is doing the separating.
  *
  * Geometry measured from the reference: 4px radius, 14/20 padding, 47.2px
- * tall, 16px/19.2px Inter 500. A rectangle, not a pill, and no trailing glyph.
+ * tall, 16px/19.2px Satoshi 500. A rectangle, not a pill, and no trailing glyph.
  */
 export function CtaButton({
   href,
