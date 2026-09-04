@@ -30,7 +30,7 @@ export function RaiseTypes() {
                 i === raiseTypes.items.length - 1 ? "sm:col-span-2" : ""
               }`}
             >
-              <Icon name={item.icon as IconName} className="h-6 w-6 text-fg-faint" />
+              <Icon name={item.icon as IconName} className="h-6 w-6 text-accent" />
               <div className="mt-auto pt-12">
                 <h3 className="text-base font-medium">{item.name}</h3>
                 <p className="mt-2 max-w-sm text-sm leading-relaxed text-fg-muted">

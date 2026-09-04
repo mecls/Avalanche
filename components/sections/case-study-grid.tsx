@@ -12,7 +12,7 @@ function SearchGlyph() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.4"
-      className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-fg-faint"
+      className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-accent"
     >
       <circle cx="7" cy="7" r="4.5" />
       <path d="M10.5 10.5 14 14" strokeLinecap="round" />
@@ -28,7 +28,7 @@ function ChevronGlyph() {
       fill="none"
       stroke="currentColor"
       strokeWidth="1.4"
-      className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-fg-faint"
+      className="pointer-events-none absolute top-1/2 right-4 h-4 w-4 -translate-y-1/2 text-accent"
     >
       <path d="m4 6 4 4 4-4" strokeLinecap="round" strokeLinejoin="round" />
     </svg>

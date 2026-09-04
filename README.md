@@ -126,6 +126,18 @@ Contrast is documented in `globals.css` with real ratios, and every text/backgro
 
 So a dark band gets a true *lightening* of the same colour — hue held at 227°, saturation at 100%, lightness 56% → 77%, giving `#8aa4ff`: 7.7:1 on `#151515`, a 2.4:1 step down from `fg` so it reads as its own colour rather than as white, and a 2.7:1 step up from a ghost dot. A light band swaps the specified value straight back in at 5.7:1 on white. **Darkening the dark-band value toward `#3056EE` is the tempting mistake** — it looks more on-brand in isolation and quietly breaks the diagrams.
 
+### Where the accent appears
+
+Every block on every page carries a note of it, and the main carrier is the **`eyebrow` utility** — one rule in `globals.css` colours the section eyebrows, the who-we-serve ordinals, the case-study categories and the footer's column heads. That is what puts the accent in each section without touching a component.
+
+Beyond that, per block: the `BracketGrid` corner brackets (track record, raise types, verticals), the raise-types and verticals icons, the FAQ `+`, the `/customers` search and filter glyphs, the case-study metric pill, the team monograms, the CTA band's chip, and the whole `/solutions` rail, `LABEL` run and diagram set. The `/customers` track-record rows gained the eyebrow the grid variant always had — it was the one section on the page opening with a bare heading.
+
+**The hero is deliberately exempt and stays monochrome.** It uses `eyebrow-pill` and `strip-label`, which are separate utilities precisely so the `eyebrow` rule cannot reach it: their contrast is measured against moving footage rather than a flat band. Don't fold them together.
+
+Headings stay monochrome too. The `accent` prop on `SectionHeading` — a trailing substring of each title — is still accepted and ignored, and every heading on the site is flat. That's what keeps the accent reading as a system rather than as emphasis.
+
+Note that `eyebrow` is the only place the accent carries *small* type (14px/600), which makes it the binding contrast constraint on the token: it needs the full 4.5:1, and both band values clear it. A future accent has to hold 4.5:1 on both grounds or that rule has to come off it.
+
 `--color-accent-light` / `--color-accent-deep` are the rail gradient's two stops, held constant across bands because a decorative graphic carries no text and shouldn't follow a text-contrast flip. Both are calibrated for the light `#eeeeee` track they live on and would be invisible on a dark ground. `--color-accent-deep` is the brand value exactly, so the rail terminates in it; it happens to coincide with the light-band `--color-accent` right now, which is a property of this palette and not a rule.
 
 `.shell` is 1440px with a **fixed** 20px gutter and `.section-y` is a fixed 120px. Both used to be clamped, and both resolved much smaller, which is what made the page feel pinched on a large screen.

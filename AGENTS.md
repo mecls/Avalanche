@@ -76,6 +76,23 @@ comment claiming "no serif, no accent colour", it predates the rebuild.
   2.7:1 step up from a ghost dot. Hue does most of the signalling now, the way
   gold's did; the luminance step is the fallback for readers who cannot use
   the hue. Keep both.
+- **Where the accent appears, and the one place it must not.** As of
+  4 Sep 2026 every block on every page carries a note of it, and the carrier
+  is the **`eyebrow` utility** — one rule in globals.css colours the section
+  eyebrows, the who-we-serve ordinals, case-study categories and the footer's
+  column heads. Beyond that: the `BracketGrid` corner brackets, the
+  raise-types and verticals icons, the FAQ `+`, the /customers search and
+  filter glyphs, the case-study metric pill, the team monograms, the CTA
+  band's chip, and the whole /solutions rail, `LABEL` run and diagram set.
+  **The HERO is deliberately exempt and must stay monochrome** — it uses
+  `eyebrow-pill` and `strip-label`, which are separate utilities precisely so
+  this rule cannot reach it. Their contrast is measured against moving
+  footage, not a flat band. Do not fold them into `eyebrow`.
+- The `eyebrow` utility is the only place the accent carries SMALL type
+  (14px/600), so it is the binding contrast constraint on the whole token: it
+  needs the full 4.5:1, and both band values clear it (5.7:1 on white, 7.7:1
+  on #151515). Any future accent has to hold 4.5:1 on **both** grounds, or
+  that rule has to come off it.
 - `--color-accent-light` / `--color-accent-deep` are the rail gradient's stops,
   **held constant across bands**, decorative only. `--color-accent` follows the
   band so type set in it clears contrast either way; that flip is wrong for a
@@ -126,12 +143,11 @@ it, including why the reduced-motion guard has to say
   reservation**: the spec said to drop it too, which is right for a one-page
   reference and wrong here — on the three routes without a hero, an absolute
   nav with no reserved space lands on top of the first heading.
-- **`accent` keys in `content/copy.ts` are still ignored.** The accent carries
-  graphics — the solutions rail and the two diagrams — not a word inside a
-  headline. Kept, not rendered. It carried the announcement bar's link too
-  until that bar was removed, which leaves the light-band accent value with no
-  consumer at all today; it is defined anyway, because an undefined one is how
-  a future light-band accent ends up hardcoded.
+- **`accent` keys in `content/copy.ts` are still ignored**, even now that the
+  accent is everywhere else. It carries eyebrows, graphics and glyphs — not a
+  word inside a headline. Every heading on the site stays monochrome, which is
+  what keeps the accent reading as a system rather than as emphasis. Kept, not
+  rendered; the emphasis points are editorial information worth keeping.
 - **The hero H1 breaks on authored lines.** `hero.titleLines` in
   `content/copy.ts` holds two entries, each an italic `lead` plus a roman
   `rest`. It is content, not layout, which is why the break is not a `<br>` in

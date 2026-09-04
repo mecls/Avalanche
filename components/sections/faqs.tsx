@@ -31,9 +31,13 @@ export function Faqs() {
             >
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[0.9375rem] font-medium [&::-webkit-details-marker]:hidden">
                 {f.q}
+                {/* Accent, like the other interactive affordances on the site
+                    (the /customers search and filter glyphs). It is the only
+                    thing in the row that changes on open, so colour here reads
+                    as the control rather than as decoration. */}
                 <span
                   aria-hidden
-                  className="shrink-0 text-xl leading-none text-fg-faint transition-transform duration-300 group-open:rotate-45"
+                  className="shrink-0 text-xl leading-none text-accent transition-transform duration-300 group-open:rotate-45"
                 >
                   +
                 </span>

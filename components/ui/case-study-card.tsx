@@ -30,7 +30,11 @@ export function CaseStudyCard({
             className="logo-mark object-contain object-left"
           />
         </div>
-        <span className="rounded-full bg-fg px-3 py-1 text-right text-[0.6875rem] font-medium text-balance text-ground">
+        {/* The metric is the one number on a card, so it takes the accent
+            rather than the fg/ground inversion the buttons use. `text-ground`
+            still does the work: white on #3056EE in a light band (5.7:1),
+            #151515 on #8aa4ff in a dark one (7.7:1). */}
+        <span className="rounded-full bg-accent px-3 py-1 text-right text-[0.6875rem] font-medium text-balance text-ground">
           {study.metric}
         </span>
       </div>

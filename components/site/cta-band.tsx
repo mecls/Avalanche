@@ -55,11 +55,18 @@ export function CtaBand() {
 
       <div className="shell relative z-10">
         {/* Eyebrow as a glyph + label, the way the reference opens the block.
-            The glyph is a square chip so the row reads as one unit. */}
+            The glyph is a square chip so the row reads as one unit.
+
+            The chip is this block's note of accent. It stays DECORATIVE — the
+            label beside it is pure white and carries the meaning — because
+            contrast here is measured against a photograph, not a flat band,
+            and the accent is not calibrated for that. This section is not
+            inside a `data-band`, so it takes the root (dark) accent, which is
+            correct: the scrim is always dark. */}
         <div className="flex items-center gap-3">
           <span
             aria-hidden
-            className="flex h-9 w-9 shrink-0 items-center justify-center bg-white/10 backdrop-blur-[5px]"
+            className="flex h-9 w-9 shrink-0 items-center justify-center bg-accent/15 text-accent backdrop-blur-[5px]"
           >
             <svg
               viewBox="0 0 16 16"

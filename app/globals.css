@@ -273,14 +273,30 @@ body {
    sizes are set at the call site.
    --------------------------------------------------------------- */
 
-/* Bare uppercase eyebrow. The hero uses the pill below instead. */
+/* Bare uppercase eyebrow, and the site's main carrier of the accent.
+   Every block opens with one, so colouring it here is what puts a note of
+   the accent in each section from a single rule — section headings, the
+   ordinals in who-we-serve, case-study categories, the footer's column
+   heads. It was fg-muted until 4 Sep 2026.
+
+   14px/600 is NOT large text, so this needs the full 4.5:1, and it is the
+   only place the accent carries small type. Both band values clear it:
+     #3056EE on #ffffff  5.7:1   on #f3f3f3  5.1:1
+     #8aa4ff on #151515  7.7:1   on #202020  6.9:1  (cards)
+   Any future accent has to hold 4.5:1 on BOTH grounds or this rule has to
+   come off it.
+
+   THE HERO IS DELIBERATELY EXCLUDED and stays monochrome: it uses
+   `eyebrow-pill` and `strip-label` below, which are separate utilities for
+   exactly this reason. Do not fold them into this one — their contrast is
+   measured against moving footage, not a flat band. */
 @utility eyebrow {
   font-family: var(--font-sans);
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-fg-muted);
+  color: var(--color-accent);
 }
 
 /* Display headings — Cormorant Garamond. The 80px H1 and 58px H2 are both
