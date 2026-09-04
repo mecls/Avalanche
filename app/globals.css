@@ -295,6 +295,29 @@ body {
   color: var(--color-fg-muted);
 }
 
+/* The PAGE-level label, above an 80px H1 — a different run from `eyebrow`
+   above, which labels a section inside a page.
+
+   Lighter (500, not 600) and set in full-strength ink rather than `fg-muted`,
+   because it sits under the largest heading on the route and a heavier grey
+   run reads as a caption rather than as the page's own name. It is also the
+   /solutions rail number and block label, so all three of that page's small
+   uppercase runs are one definition.
+
+   It lived as a `LABEL` const inside solutions-steps.tsx until /customers
+   needed the same run on 4 Sep 2026. Two copies of a type spec drift; this is
+   the one place to change it. Do NOT fold it into `eyebrow` — that utility
+   renders twelve times on the homepage and this one renders once per page,
+   which is exactly why they are allowed to differ. */
+@utility page-label {
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.8px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 /* Display headings — Cormorant Garamond. The 80px H1 and 58px H2 are both
    set SOLID (line-height 1) at -0.04em, which is what makes a two-line
    headline read as one block rather than as two sentences. */

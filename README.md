@@ -114,6 +114,10 @@ The site is a **layout clone of farahcap.com**. It was previously matched to fun
 
 **Three faces, each with one job.** Cormorant Garamond on every heading, Cormorant *Infant* on figures only (a separate face, not a weight — its numerals are the ones the reference sets stats in), Inter on every UI run. All three via `next/font/google`. Garamond loads its italic because the H1 sets the first word of each line in italic, and a synthesised slant on the largest type on the site is very visible.
 
+**Two small-uppercase runs, and they do different jobs.** `eyebrow` (14/600, `fg-muted`) labels a section *inside* a page and renders a dozen times on the homepage. `page-label` (14/500, inheriting `fg`, so full-strength ink) labels the *page itself*, above the 80px H1, and renders once per route — a heavier grey run under the largest heading on a route reads as a caption rather than as the page's name. `page-label` also carries the `/solutions` block labels and rail numbers. Neither folds into the other.
+
+**`/solutions` and `/customers` share one page-header construction:** the same label run, the same `display display-80 text-[80px]` stepping down to 44px at 809px, the same 16/24 lede, the same 720px/680px measures, and the same `items-end` row that sets the CTA's bottom edge on the lede's last baseline with a trailing arrow. They were built separately and had drifted to a different value in *every* row — 64px vs 80px H1, a 600-weight grey label against a 500-weight ink one, a 15px lede against 16px, a 576px column against 720px — which is what made `/customers` read as a different site. Verified identical at 1440 / 900 / 800 / 390px. Change one, change the other.
+
 Colour tokens are named by **role**, never by hue. A light section is `data-band="light"` on the `<section>` and that one attribute re-points every token for the subtree, which is why shared components take no `tone` prop — `bg-fg text-ground` is a white button on dark and a black button on light from the same markup.
 
 The three dark grounds are deliberately the same `#151515`; the reference runs one dark value rather than a ramp.

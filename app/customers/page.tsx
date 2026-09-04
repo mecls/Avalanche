@@ -3,7 +3,7 @@ import { CaseStudyGrid } from "@/components/sections/case-study-grid";
 import { LogoGrid } from "@/components/sections/logo-grid";
 import { TrackRecord } from "@/components/sections/track-record";
 import { CtaBand } from "@/components/site/cta-band";
-import { CtaButton } from "@/components/ui/button";
+import { ArrowGlyph, CtaButton } from "@/components/ui/button";
 import { LogoMarquee } from "@/components/ui/logo-marquee";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { customers, whoWeServe } from "@/content/copy";
@@ -16,9 +16,14 @@ export const metadata: Metadata = {
 };
 
 /**
- * Modelled on fundraisr.ai/customers, section for section: a full-height
- * statement hero, a short framing band, the searchable case-study tiles, the
- * figures as ruled rows, then the client roster as a ruled grid.
+ * Sections follow fundraisr.ai/customers: a page header, a short framing band,
+ * the searchable case-study tiles, the figures as ruled rows, then the client
+ * roster as a ruled grid.
+ *
+ * The HEADER no longer does. It was a full-height statement hero built from its
+ * own parts, and it was the only page on the site whose opening was not made of
+ * the shared ones — see the comment on the section itself. Reference fidelity
+ * lost to house consistency there on purpose.
  *
  * Bands alternate light / light / dark / dark / light, as the reference does.
  * Two things had to be built before that was safe, and both will bite anyone
@@ -35,23 +40,46 @@ export const metadata: Metadata = {
 export default function CustomersPage() {
   return (
     <>
-      {/* Full height less the header, so the statement holds the fold on its
-          own the way the reference's does. */}
-      <section
-        data-band="light"
-        className="flex min-h-[calc(100dvh-var(--header-h))] flex-col overflow-hidden"
-      >
-        <div className="shell flex flex-1 items-center py-20">
-          <div className="max-w-xl">
-            <p className="eyebrow">{customers.eyebrow}</p>
-            <h1 className="display mt-6 text-[clamp(2.5rem,6vw,4rem)] text-balance">
-              {customers.title}
-            </h1>
-            <p className="mt-7 text-[0.9375rem] leading-relaxed text-fg-muted">
-              {customers.lede}
-            </p>
-            <div className="mt-10">
-              <CtaButton href="#get-in-touch">Book a call</CtaButton>
+      {/* The page header is the SAME construction as /solutions — same
+          `page-label` run, same 80px H1 on the same 809px step-down, same
+          16/24 lede, same 720/680 measures, same `items-end` row with the CTA
+          hard right. Both were separate builds until 4 Sep 2026 and had drifted
+          to three different values in every row: 64px vs 80px H1, a 600-weight
+          grey label against a 500-weight ink one, a 15px lede against a 16px
+          one, a 576px column against 720. Keep them in step — if this header
+          changes, /solutions changes with it.
+
+          This is also why the section is no longer
+          `min-h-[calc(100dvh-var(--header-h))]`. That full-height statement
+          came from matching fundraisr.ai/customers section for section, and it
+          is what left ~950px with the whole right half empty: nothing sat
+          opposite the heading, where the hero puts its stat and /solutions its
+          button. The CTA moved up into that column and the fixed
+          100/48 rhythm replaced the fold. */}
+      <section data-band="light" className="flex flex-col overflow-hidden">
+        <div className="shell flex flex-col items-center justify-center gap-2.5 overflow-clip pt-[100px] pb-12 max-[809px]:pt-[60px] max-[809px]:pb-8">
+          <div className="flex w-full flex-row items-end justify-center gap-6 max-[809px]:flex-col max-[809px]:items-start max-[809px]:gap-8">
+            <div className="flex flex-1 flex-col items-start justify-center gap-4 overflow-clip max-[809px]:w-full max-[809px]:flex-none">
+              <p className="page-label">{customers.eyebrow}</p>
+
+              <div className="max-w-[720px]">
+                <h1 className="display display-80 text-[80px]">
+                  {customers.title}
+                </h1>
+              </div>
+
+              <div className="max-w-[680px]">
+                <p className="text-[16px] leading-6 text-fg-muted">
+                  {customers.lede}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex shrink-0 items-center">
+              <CtaButton href="#get-in-touch" className="group">
+                Book a call
+                <ArrowGlyph />
+              </CtaButton>
             </div>
           </div>
         </div>

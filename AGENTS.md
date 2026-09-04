@@ -40,6 +40,22 @@ comment claiming "no serif, no accent colour", it predates the rebuild.
   via `next/font/google` in `app/layout.tsx`. Garamond carries its italic
   because the H1 sets the first word of each line in italic; drop it and the
   browser synthesises a slant on the most visible type on the site.
+- **Two small-uppercase runs, and they are not interchangeable.** `eyebrow`
+  (14px/**600**, `fg-muted`) labels a section *inside* a page and renders a
+  dozen times on the homepage. `page-label` (14px/**500**, inherits `fg`, so
+  full-strength ink) labels the *page itself*, above the 80px H1, and renders
+  once per route. A heavier grey run under the largest heading on a route reads
+  as a caption rather than as the page's name, which is the whole reason the
+  second one exists. `page-label` is also the `/solutions` block labels and
+  rail numbers. Do not fold either into the other.
+- **`/solutions` and `/customers` share ONE page-header construction.** Same
+  `page-label`, same `display display-80 text-[80px]` on the same 809px
+  step-down to 44px, same 16/24 lede, same 720px/680px measures, same
+  `items-end` row with the CTA hard right and a trailing `ArrowGlyph`. They
+  were separate builds until 4 Sep 2026 and had drifted to a *different value
+  in every row* — 64px vs 80px H1, 600-weight grey label vs 500-weight ink,
+  15px lede vs 16px, a 576px column vs 720px. Change one and change the other;
+  the type spec itself lives in `globals.css`, not in either component.
 - Colour tokens are named by **role**, never by hue: `ground`, `ground-deep`,
   `ground-alt`, `card`, `fg`, `fg-muted`, `fg-faint`, `line`, `line-soft`,
   `accent`. Do not reintroduce hue names, and do not hardcode a hex or
@@ -217,6 +233,15 @@ it, including why the reduced-motion guard has to say
   content height to the column's intrinsic size, the rail becomes the tallest
   item, and it drives the row height instead of the card. `min-height: 0` does
   not fix that.
+- **The `/customers` header is no longer the reference's full-height hero.**
+  Its sections still follow fundraisr.ai/customers one for one, but the opening
+  did too — a `min-h-[calc(100dvh-var(--header-h))]` statement built from its
+  own parts, and the only page opening on the site not made of the shared ones.
+  It left a ~950px band with the entire right half empty: nothing sat opposite
+  the heading, where the homepage hero puts its stat and `/solutions` its
+  button. The CTA moved up into that column and the fixed 100/48 rhythm
+  replaced the fold. Reference fidelity lost to house consistency on purpose —
+  do not restore the full height without something to fill the right column.
 - **Team bios describe the role, not the person**, because no biographical
   facts were available. Do not invent career history for them.
 - **Dev runs on port 3200**, pinned. Port 3000 collides with another project on

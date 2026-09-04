@@ -53,3 +53,31 @@ export function CtaButton({
     </Link>
   );
 }
+
+/**
+ * Trailing arrow for a page-header CTA. Slides right on hover, which is why
+ * the button it sits in needs `className="group"` — without that the
+ * transition never fires and it reads as a static glyph.
+ *
+ * NOT in components/ui/icons.tsx: that file is a uniform set of 24-viewBox,
+ * 1.25-stroke grid glyphs, and this is a 16-viewBox, 1.5-stroke run that only
+ * ever appears inside a CtaButton. It lives here so the two import together.
+ *
+ * Deliberately NOT folded into CtaButton as a prop. Most CTAs on the site
+ * carry no glyph — the reference's button is a bare rectangle — and the two
+ * page headers that do use it are the exception, not the default.
+ */
+export function ArrowGlyph() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 16 16"
+      className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:translate-x-1"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+    >
+      <path d="M2 8h12M9 3l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}

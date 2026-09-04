@@ -1,4 +1,4 @@
-import { CtaButton } from "@/components/ui/button";
+import { ArrowGlyph, CtaButton } from "@/components/ui/button";
 import {
   FundraisingDiagram,
   SecondariesDiagram,
@@ -29,39 +29,15 @@ import { solutions } from "@/content/copy";
  * The spine visibly breaks for 20px between rows — each rail is exactly as
  * tall as its own row, and the container's gap sits between them. That gap is
  * correct, not a bug.
- */
-
-/**
- * Eyebrow, block label and rail number are one typographic run at three call
- * sites: Inter 500, 14/16.8, 0.06em, uppercase, inheriting `fg`.
  *
- * NOT the site's `eyebrow` utility, which is 600 and `fg-muted`. This section
- * sets all three in full-strength ink at 500, and matching the utility instead
- * would quietly change two of the three.
- *
- * Ink rather than accent, even though the rail beneath these numbers is the
- * accent's own gradient: this page already carries more of the colour than any
- * other, in the rail and both diagrams, and colouring six labels on top of
- * that was what tipped it.
+ * The page label, block label and rail number are ONE typographic run at three
+ * call sites — the `page-label` utility, not the site's `eyebrow`. It was a
+ * local const in this file until /customers took the same run for its own page
+ * header on 4 Sep 2026; the spec and the reasoning are in globals.css now, so
+ * the two headers cannot drift. Ink rather than accent even though the rail
+ * beneath these numbers is the accent's own gradient: this page already
+ * carries more of the colour than any other.
  */
-const LABEL =
-  "text-[14px] font-medium leading-[16.8px] tracking-[0.06em] uppercase";
-
-/** Trails both CTAs. Slides on hover from the button's `group`. */
-function ArrowGlyph() {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 16 16"
-      className="h-3.5 w-3.5 shrink-0 transition-transform duration-200 group-hover:translate-x-1"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <path d="M2 8h12M9 3l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 /**
  * The dark textured plate every card sits on.
@@ -117,7 +93,7 @@ export function SolutionsSteps() {
       <div className="shell flex flex-col items-center justify-center gap-2.5 overflow-clip pt-[100px] pb-12 max-[809px]:pt-[60px] max-[809px]:pb-8">
         <div className="flex w-full flex-row items-end justify-center gap-6 max-[809px]:flex-col max-[809px]:items-start max-[809px]:gap-8">
           <div className="flex flex-1 flex-col items-start justify-center gap-4 overflow-clip max-[809px]:w-full max-[809px]:flex-none">
-            <p className={LABEL}>{solutions.eyebrow}</p>
+            <p className="page-label">{solutions.eyebrow}</p>
 
             <div className="max-w-[720px]">
               <h1 className="display display-80 text-[80px]">
@@ -168,7 +144,7 @@ export function SolutionsSteps() {
                 className="flex w-10 shrink-0 flex-col items-center justify-center gap-5 self-stretch overflow-hidden max-[1199px]:hidden"
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[36px] border-2 border-line">
-                  <p className={LABEL}>{block.n}</p>
+                  <p className="page-label">{block.n}</p>
                 </div>
 
                 {/* The fill is ABSOLUTE, and that is load-bearing rather than
@@ -191,7 +167,7 @@ export function SolutionsSteps() {
               </div>
 
               <div className="step-text flex max-w-[1160px] flex-1 flex-col items-start justify-start gap-6 max-[1199px]:w-full max-[1199px]:max-w-none max-[1199px]:flex-none">
-                <p className={LABEL}>{block.label}</p>
+                <p className="page-label">{block.label}</p>
 
                 <h2 className="display display-58 text-[58px]">{block.title}</h2>
 
