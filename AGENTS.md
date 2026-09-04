@@ -61,24 +61,29 @@ comment claiming "no serif, no accent colour", it predates the rebuild.
   that flips the header's colour. It must use `--color-paper`, not
   `var(--color-ground)`: `main` is outside the light band, so its own
   `--color-ground` still resolves dark.
-- **The accent is OBSIDIAN, and it is a brightness accent, not a hue one.**
-  `#b9c1c9` (cool silver) on a dark band, `#39424c` (deep slate) on a light
-  one — obsidian is black glass, so on a dark ground the accent has to be the
-  sheen rather than the stone. The cool cast is deliberately slight (R/B
-  spread of 16): the raster diagrams this replaced were rejected partly for
-  carrying a real blue, so do not saturate it back toward one.
-- Because gold had a hue to signal with and this does not, the accent signals
-  with **luminance**, and its distances are load-bearing: 10.0:1 on `#151515`,
-  a 1.8:1 step down from `fg` (so it does not read as white), and a 3.6:1 step
-  up from a 50%-opacity `fg-muted` dot. That last one is the entire reason the
-  `/solutions` diagrams are legible at a glance. Do not dim it toward
-  `fg-muted`.
+- **The accent is the brand blue `#3056EE`** — but the DARK-band value is
+  `#8aa4ff` and that is not an oversight. At full strength the brand blue is
+  3.2:1 on `#151515` (under the 4.5:1 floor the diagram pills need) and 1.14:1
+  against the 50%-opacity `fg-muted` ghost dots the `/solutions` diagrams draw
+  matched routes against — equal luminance separated only by hue, which is
+  what disappears for a colour-blind reader. So a dark band takes a true
+  lightening of the same colour: hue 227 held, saturation 100%, lightness
+  56% → 77%. A light band swaps `#3056EE` itself back in at 5.7:1 on white.
+  **Darkening the dark value toward the brand value is the tempting mistake**
+  — more on-brand in isolation, and it quietly breaks the media cards.
+- The measured distances that keep it working: 7.7:1 on `#151515`, a 2.4:1
+  step down from `fg` (so it reads as its own colour, not as white), and a
+  2.7:1 step up from a ghost dot. Hue does most of the signalling now, the way
+  gold's did; the luminance step is the fallback for readers who cannot use
+  the hue. Keep both.
 - `--color-accent-light` / `--color-accent-deep` are the rail gradient's stops,
   **held constant across bands**, decorative only. `--color-accent` follows the
   band so type set in it clears contrast either way; that flip is wrong for a
   graphic carrying no text. Both are calibrated for the light `#eeeeee` track
   that is their only home and would be invisible on dark. Never set type in
-  either.
+  either. `accent-deep` is the brand value exactly, so the rail terminates in
+  it — it therefore coincides with the light-band `accent` today, which is a
+  property of this palette rather than a rule. Do not collapse the two.
 - `bg-fg text-ground` is a white button on dark and a black button on light
   **from the same markup**. Preserve that property.
 - **The three dark grounds are deliberately the same `#151515`.** The reference
