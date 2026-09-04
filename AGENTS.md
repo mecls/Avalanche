@@ -76,23 +76,33 @@ comment claiming "no serif, no accent colour", it predates the rebuild.
   2.7:1 step up from a ghost dot. Hue does most of the signalling now, the way
   gold's did; the luminance step is the fallback for readers who cannot use
   the hue. Keep both.
-- **Where the accent appears, and the one place it must not.** As of
-  4 Sep 2026 every block on every page carries a note of it, and the carrier
-  is the **`eyebrow` utility** — one rule in globals.css colours the section
-  eyebrows, the who-we-serve ordinals, case-study categories and the footer's
-  column heads. Beyond that: the `BracketGrid` corner brackets, the
-  raise-types and verticals icons, the FAQ `+`, the /customers search and
-  filter glyphs, the case-study metric pill, the team monograms, the CTA
-  band's chip, and the whole /solutions rail, `LABEL` run and diagram set.
-  **The HERO is deliberately exempt and must stay monochrome** — it uses
-  `eyebrow-pill` and `strip-label`, which are separate utilities precisely so
-  this rule cannot reach it. Their contrast is measured against moving
+- **The accent appears in exactly THREE places. That is the whole list, and
+  it is deliberate.** The /solutions rail and its two diagrams (functional —
+  the colour is the diagram's only way of saying which route matched); the
+  case-study metric pill (one number, once per page); and the CTA band's chip
+  (once per page, at the conversion point). Everything else on the site is
+  monochrome.
+- **Do not spread it.** For one commit on 4 Sep 2026 it went into every block
+  — the `eyebrow` utility, the `BracketGrid` corner brackets, the raise-types
+  and verticals icons, the FAQ `+`, the /customers search and filter glyphs,
+  the team monograms, the /solutions `LABEL` run — and was cut back the same
+  day. The rule that came out of it: **an accent marks the one thing worth
+  acting on in a block, not every label in it.** Anything that renders five,
+  eight or twelve times in a column fails that test — `eyebrow` alone is
+  twelve marks on the homepage. Each of those sites now carries a comment
+  saying why it is monochrome; read it before re-colouring one.
+- Two layout changes made purely to host the colour were unwound with it: the
+  eyebrow added to `TrackRecord`'s `rows` variant and `customers.gridEyebrow`.
+  A layout change made to host a colour should not outlive the colour.
+- **The HERO is exempt whatever happens above and must stay monochrome.** It
+  uses `eyebrow-pill` and `strip-label`, separate utilities precisely so an
+  `eyebrow` rule cannot reach it. Their contrast is measured against moving
   footage, not a flat band. Do not fold them into `eyebrow`.
-- The `eyebrow` utility is the only place the accent carries SMALL type
-  (14px/600), so it is the binding contrast constraint on the whole token: it
-  needs the full 4.5:1, and both band values clear it (5.7:1 on white, 7.7:1
-  on #151515). Any future accent has to hold 4.5:1 on **both** grounds, or
-  that rule has to come off it.
+- If `eyebrow` is ever re-accented it becomes the only place the accent
+  carries SMALL type (14px/600), so it needs the full 4.5:1 rather than the
+  3:1 large-text floor. Both current values clear it (5.7:1 on white, 7.7:1
+  on #151515), but any future accent has to hold 4.5:1 on **both** grounds
+  first.
 - `--color-accent-light` / `--color-accent-deep` are the rail gradient's stops,
   **held constant across bands**, decorative only. `--color-accent` follows the
   band so type set in it clears contrast either way; that flip is wrong for a

@@ -24,7 +24,7 @@ export function Industries() {
         <BracketGrid className="mt-14 sm:mt-16 lg:[&>div:first-child]:grid-cols-4">
           {industries.items.map((item, i) => (
             <BracketCell key={item.name} index={i} className={SPAN[spans[i]]}>
-              <Icon name={item.icon as IconName} className="h-6 w-6 text-accent" />
+              <Icon name={item.icon as IconName} className="h-6 w-6 text-fg-faint" />
               <h3 className="mt-auto pt-12 text-[0.9375rem] font-medium">
                 {item.name}
               </h3>

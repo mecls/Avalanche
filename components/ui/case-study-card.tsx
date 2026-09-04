@@ -30,10 +30,14 @@ export function CaseStudyCard({
             className="logo-mark object-contain object-left"
           />
         </div>
-        {/* The metric is the one number on a card, so it takes the accent
-            rather than the fg/ground inversion the buttons use. `text-ground`
-            still does the work: white on #3056EE in a light band (5.7:1),
-            #151515 on #8aa4ff in a dark one (7.7:1). */}
+        {/* ONE OF THREE ACCENTS LEFT ON THE SITE — see the accent section in
+            README. The metric is the single number on a card and the thing a
+            reader should land on, which is what an accent is for; it also
+            renders once per page, since the /customers grid uses the tile
+            below and carries no pill. Both are why it survived the cut.
+
+            `text-ground` still does the inverting: white on #3056EE in a light
+            band (5.7:1), #151515 on #8aa4ff in a dark one (7.7:1). */}
         <span className="rounded-full bg-accent px-3 py-1 text-right text-[0.6875rem] font-medium text-balance text-ground">
           {study.metric}
         </span>

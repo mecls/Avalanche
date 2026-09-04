@@ -33,19 +33,19 @@ import { solutions } from "@/content/copy";
 
 /**
  * Eyebrow, block label and rail number are one typographic run at three call
- * sites: Inter 500, 14/16.8, 0.06em, uppercase, in the ACCENT.
+ * sites: Inter 500, 14/16.8, 0.06em, uppercase, inheriting `fg`.
  *
- * Still NOT the site's `eyebrow` utility, which is 600 — the measured weight
- * here is 500 and matching the utility would quietly change all three. They
- * take the accent's colour because every other block on the site opens in it,
- * and because the rail number sits in a ring directly above an accent fill;
- * leaving it in ink read as an unrelated element sitting on the spine.
+ * NOT the site's `eyebrow` utility, which is 600 and `fg-muted`. This section
+ * sets all three in full-strength ink at 500, and matching the utility instead
+ * would quietly change two of the three.
  *
- * Contrast: this page is one light band, so all three resolve to #3056EE at
- * 5.7:1 on white — the same floor the `eyebrow` utility clears.
+ * Ink rather than accent, even though the rail beneath these numbers is the
+ * accent's own gradient: this page already carries more of the colour than any
+ * other, in the rail and both diagrams, and colouring six labels on top of
+ * that was what tipped it.
  */
 const LABEL =
-  "text-accent text-[14px] font-medium leading-[16.8px] tracking-[0.06em] uppercase";
+  "text-[14px] font-medium leading-[16.8px] tracking-[0.06em] uppercase";
 
 /** Trails both CTAs. Slides on hover from the button's `group`. */
 function ArrowGlyph() {

@@ -32,12 +32,11 @@ export default function TeamPage() {
                 className="flex flex-col rounded-lg border border-line bg-card p-8 transition-colors duration-300 hover:border-fg/20"
               >
                 {/* TODO(miguel): supply headshots; monogram stands in for now.
-                    Set in the accent — five of them down the grid is this
-                    block's note of colour, and it is the one element on the
-                    card that is not type. Swap the whole div for the portrait
-                    when headshots arrive; the colour goes with it. */}
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-accent/35 bg-accent/10">
-                  <span className="display text-xl text-accent">
+                    Monochrome — these are placeholders for photographs, and
+                    accenting five of them made the stand-in the loudest thing
+                    on the page. */}
+                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-line bg-ground-alt">
+                  <span className="display text-xl text-fg-muted">
                     {m.name
                       .split(" ")
                       .map((w) => w[0])

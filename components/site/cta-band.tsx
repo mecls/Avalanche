@@ -57,12 +57,16 @@ export function CtaBand() {
         {/* Eyebrow as a glyph + label, the way the reference opens the block.
             The glyph is a square chip so the row reads as one unit.
 
-            The chip is this block's note of accent. It stays DECORATIVE — the
-            label beside it is pure white and carries the meaning — because
-            contrast here is measured against a photograph, not a flat band,
-            and the accent is not calibrated for that. This section is not
-            inside a `data-band`, so it takes the root (dark) accent, which is
-            correct: the scrim is always dark. */}
+            ONE OF THREE ACCENTS LEFT ON THE SITE — see the accent section in
+            README. It survived the cut because this block is the conversion
+            point of every page and the chip renders exactly once on each, so
+            the colour lands where a reader is meant to act.
+
+            It stays DECORATIVE — the label beside it is pure white and carries
+            the meaning — because contrast here is measured against a
+            photograph, not a flat band, and the accent is not calibrated for
+            that. This section is not inside a `data-band`, so it takes the
+            root (dark) accent, which is correct: the scrim is always dark. */}
         <div className="flex items-center gap-3">
           <span
             aria-hidden

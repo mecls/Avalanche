@@ -20,19 +20,16 @@ export function BracketGrid({ children, className = "" }: GridProps) {
       </div>
 
       {/* Decorative frame, drawn outside the grid's own rules so it reads as a
-          bracket rather than a thicker border.
-
-          Set in the ACCENT rather than the old fg/45, which is what gives the
-          three bracketed sections (track record, raise types, verticals) their
-          note of colour. Safe to saturate because it is `aria-hidden` and
-          carries nothing — it is a frame, not a mark of state. */}
+          bracket rather than a thicker border. Monochrome: this renders in
+          three sections, so an accent here is six marks on the homepage for
+          something that is a frame rather than a focal point. */}
       <span
         aria-hidden
-        className="pointer-events-none absolute -top-1.5 -left-1.5 h-9 w-9 border-t border-l border-accent"
+        className="pointer-events-none absolute -top-1.5 -left-1.5 h-9 w-9 border-t border-l border-fg/45"
       />
       <span
         aria-hidden
-        className="pointer-events-none absolute -right-1.5 -bottom-1.5 h-9 w-9 border-r border-b border-accent"
+        className="pointer-events-none absolute -right-1.5 -bottom-1.5 h-9 w-9 border-r border-b border-fg/45"
       />
     </div>
   );

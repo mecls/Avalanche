@@ -179,12 +179,11 @@ export function TrackRecord({
     return (
       <section ref={ref} className="section-y bg-ground-deep">
         <div className="shell">
-          {/* The eyebrow the `grid` variant has always carried. Added here on
-              4 Sep 2026 so this block opens in the accent like every other one
-              on the page — it is the only section on /customers that had no
-              eyebrow at all, and a bare h2 was the one place the colour broke
-              its rhythm. Same copy, right-aligned to sit over the heading. */}
-          <p className="eyebrow mb-5 sm:text-right">{trackRecord.eyebrow}</p>
+          {/* No eyebrow here, unlike the `grid` variant. One was added on
+              4 Sep 2026 purely to give this block something to carry the
+              accent, then removed with it — the reference's rows treatment
+              opens on the heading, and a layout change made to host a colour
+              has no reason to outlive the colour. */}
           <h2 className="display text-[clamp(2.5rem,4.4vw,3.625rem)] text-balance sm:text-right">
             {trackRecord.title}
           </h2>

@@ -126,17 +126,25 @@ Contrast is documented in `globals.css` with real ratios, and every text/backgro
 
 So a dark band gets a true *lightening* of the same colour — hue held at 227°, saturation at 100%, lightness 56% → 77%, giving `#8aa4ff`: 7.7:1 on `#151515`, a 2.4:1 step down from `fg` so it reads as its own colour rather than as white, and a 2.7:1 step up from a ghost dot. A light band swaps the specified value straight back in at 5.7:1 on white. **Darkening the dark-band value toward `#3056EE` is the tempting mistake** — it looks more on-brand in isolation and quietly breaks the diagrams.
 
-### Where the accent appears
+### Where the accent appears — three places, and that is the whole list
 
-Every block on every page carries a note of it, and the main carrier is the **`eyebrow` utility** — one rule in `globals.css` colours the section eyebrows, the who-we-serve ordinals, the case-study categories and the footer's column heads. That is what puts the accent in each section without touching a component.
+The site is monochrome except for these:
 
-Beyond that, per block: the `BracketGrid` corner brackets (track record, raise types, verticals), the raise-types and verticals icons, the FAQ `+`, the `/customers` search and filter glyphs, the case-study metric pill, the team monograms, the CTA band's chip, and the whole `/solutions` rail, `LABEL` run and diagram set. The `/customers` track-record rows gained the eyebrow the grid variant always had — it was the one section on the page opening with a bare heading.
+| Where | Renders | Why it earns the colour |
+|---|---|---|
+| `/solutions` rail + both diagrams | once, on one page | **Functional.** The accent is the diagram's only means of saying which route matched. Remove it and the picture stops working. |
+| Case-study metric pill | once per page | The single number on a card, and the thing a reader should land on. The `/customers` grid uses the tile treatment and carries no pill. |
+| CTA band chip | once per page | The conversion point of every page. Decorative — the label beside it is white and carries the meaning. |
 
-**The hero is deliberately exempt and stays monochrome.** It uses `eyebrow-pill` and `strip-label`, which are separate utilities precisely so the `eyebrow` rule cannot reach it: their contrast is measured against moving footage rather than a flat band. Don't fold them together.
+**This list was longer for one commit and was cut back deliberately.** On 4 Sep 2026 the accent went into every block: the `eyebrow` utility (which alone is twelve marks on the homepage — section eyebrows, who-we-serve ordinals, case-study categories, footer column heads), the `BracketGrid` corner brackets, the raise-types and verticals icons, the FAQ `+`, the `/customers` search and filter glyphs, the team monograms and the `/solutions` `LABEL` run. All of it came back off the same day. The rule that survives is **an accent marks the one thing worth acting on in a block, not every label in it** — and anything rendering five, eight or twelve times in a column is by definition not that.
 
-Headings stay monochrome too. The `accent` prop on `SectionHeading` — a trailing substring of each title — is still accepted and ignored, and every heading on the site is flat. That's what keeps the accent reading as a system rather than as emphasis.
+Two layout changes made purely to host the colour were unwound with it: the eyebrow added to `TrackRecord`'s `rows` variant, and `customers.gridEyebrow`, a string that existed only because that band had no eyebrow to colour. A layout change made to host a colour has no reason to outlive the colour.
 
-Note that `eyebrow` is the only place the accent carries *small* type (14px/600), which makes it the binding contrast constraint on the token: it needs the full 4.5:1, and both band values clear it. A future accent has to hold 4.5:1 on both grounds or that rule has to come off it.
+**The hero is exempt and stays monochrome** whatever happens above. It uses `eyebrow-pill` and `strip-label`, separate utilities precisely so an `eyebrow` rule cannot reach it: their contrast is measured against moving footage rather than a flat band. Don't fold them together.
+
+Headings stay monochrome too. The `accent` prop on `SectionHeading` — a trailing substring of each title — is still accepted and ignored, and every heading on the site is flat.
+
+One contrast note for anyone re-expanding this: `eyebrow` would be the only place the accent carries *small* type (14px/600), so it needs the full 4.5:1 rather than the 3:1 large-text floor. Both current band values clear it, but a future accent has to hold 4.5:1 on **both** grounds before that rule goes back on.
 
 `--color-accent-light` / `--color-accent-deep` are the rail gradient's two stops, held constant across bands because a decorative graphic carries no text and shouldn't follow a text-contrast flip. Both are calibrated for the light `#eeeeee` track they live on and would be invisible on a dark ground. `--color-accent-deep` is the brand value exactly, so the rail terminates in it; it happens to coincide with the light-band `--color-accent` right now, which is a property of this palette and not a rule.
 

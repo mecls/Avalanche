@@ -388,13 +388,6 @@ export const customers = {
   title: "Built for the firms and GPs moving private capital.",
   accent: "moving private capital.",
   lede: "Used by placement agents, boutique investment banks, emerging fund managers, and founding teams raising capital from HNWIs, family offices, and institutional investors. Our clients don't need another CRM — they need infrastructure that makes their fundraise executable.",
-  /**
-   * DRAFT, but a trivial one: a navigational label for the band above the
-   * case-study grid, added 4 Sep 2026 because that was the only block on the
-   * page opening with a bare heading and no eyebrow to carry the accent. It
-   * names the section below it and claims nothing. Replace freely.
-   */
-  gridEyebrow: "Case studies",
   gridTitle: "From first mandate to billion-dollar deal books.",
   gridLede:
     "We work across venture, private credit, real estate, and private equity — with clients from the US, Australia, and everywhere in between. Here's what that looks like in practice.",

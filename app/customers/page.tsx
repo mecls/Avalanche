@@ -78,7 +78,6 @@ export default function CustomersPage() {
       <section data-band="light" className="section-y border-t border-line">
         <div className="shell">
           <SectionHeading
-            eyebrow={customers.gridEyebrow}
             title={customers.gridTitle}
             accent="billion-dollar deal books."
             lede={customers.gridLede}

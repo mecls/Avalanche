@@ -56,15 +56,6 @@ Seven of eight answers are drafted. **Three need your attention:**
 | **"What is the cost to work with Avalanche Capital?"** | I found no fee information on any Avalanche property, so the answer routes to the intro call. Inventing a number here would be a liability, not a placeholder. Fill in if you want it public. |
 | **"Do you guarantee clients raise?"** | Answered **no**, in the language of your own footer disclaimer. Any softer answer would contradict the legal notice further down the same site. I'd leave this one as it is. |
 
-## 4b. One new label — `customers.gridEyebrow`
-
-**"Case studies."** Added 4 Sep 2026, when the accent was rolled out across
-every block: the band above the case-study grid was the only section on
-`/customers` opening with a bare heading and no eyebrow to carry it. The string
-names the section directly below it and claims nothing, so it is a drafted
-label rather than drafted copy — but it is still a string nobody at Avalanche
-wrote. Replace it freely, or say the word and the eyebrow comes back off.
-
 ## 5. Team bios — `content/team.ts`
 
 **These describe the role, not the person — on purpose.**

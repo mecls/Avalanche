@@ -23,6 +23,11 @@
  * obsidian, then this, and not one value in this file has changed for any of
  * it. That is the whole point of naming by role.
  *
+ * ONE OF THREE ACCENTS LEFT ON THE SITE — see the accent section in README.
+ * This one survived the cut on different grounds from the other two: here the
+ * colour is not decoration but the diagram's only means of saying which route
+ * matched. Take it out and the picture stops working.
+ *
  * STILL ILLUSTRATIVE. Both are schematics — anonymous positions, generic
  * sector names, no real counterparties. The one count that appears ("8
  * matched") is exactly the number of highlighted dots drawn beside it, so the
