@@ -351,15 +351,42 @@ export function SecondariesDiagram() {
 
 /* ---------------------------------------------------------------- 02 */
 
+/**
+ * THE AXES ARE TRANSPOSED, and that is what lets this diagram carry the same
+ * type size as the other five.
+ *
+ * Sectors used to run along the BOTTOM on an 80-unit pitch. Six of them, and
+ * the longest ("Consumer") is 109 units wide at the phone rung — so the labels
+ * physically overlapped, and the only fix available was a capped `dgm-axis`
+ * rung that rendered ~8.5px against ~10px everywhere else. Six horizontal
+ * labels need about 700 units of pitch; the frame is 620, and the stage-label
+ * gutter was competing for the same space. No pitch fits.
+ *
+ * Sectors are now ROWS. A vertical list costs nothing per character — the
+ * labels are right-aligned into a 110-unit gutter and only have to clear each
+ * other vertically, where the pitch is set by line height rather than by word
+ * length. Stages take the horizontal axis instead: five instead of six, and
+ * shorter ("Pre-Seed", 98 units, is the widest), on a 110-unit pitch that
+ * clears it with room.
+ *
+ * The measurements this rests on, at the largest rung: sector gutter 110 vs
+ * "Consumer" 109; stage pitch 110 vs "Pre-Seed" 98; rightmost stage label ends
+ * at 611 of 620. Re-check these three if either list changes.
+ */
 const STAGES = ["Series B", "Series A", "Seed", "Pre-Seed", "Angel"];
 const SECTORS = ["Fintech", "SaaS", "DeepTech", "Health", "Climate", "Consumer"];
 
-const COL_X = [116, 196, 276, 356, 436, 516];
-const ROW_YY = [90, 162, 234, 306, 378];
+/** X = stage (5, pitch 110). Y = sector (6, pitch 55). */
+const COL_X = [140, 250, 360, 470, 580];
+const ROW_YY = [100, 155, 210, 265, 320, 375];
+/** Right edge of the sector-label gutter. */
+const LABEL_X = 110;
 
-/** The selected block: columns 1-4 x rows 1-2. Eight dots, and the pill says
- *  eight — the caption is derived from the geometry, not written beside it. */
-const SEL = { c0: 1, c1: 4, r0: 1, r1: 2 };
+/** The selected block: stages 1-2 x sectors 1-4. Eight dots, and the pill says
+ *  eight — the caption is derived from the geometry, not written beside it.
+ *  It was 4 stages x 2 sectors before the transpose; still eight, because the
+ *  count is read off the rectangle rather than typed. */
+const SEL = { c0: 1, c1: 2, r0: 1, r1: 4 };
 const MATCHED_COUNT = (SEL.c1 - SEL.c0 + 1) * (SEL.r1 - SEL.r0 + 1);
 
 /**
@@ -368,15 +395,14 @@ const MATCHED_COUNT = (SEL.c1 - SEL.c0 + 1) * (SEL.r1 - SEL.r0 + 1);
  *
  * This is the same idea as the asset it replaces, drawn properly: the
  * selection is the site's own accent token rather than a literal, the axis
- * labels are real type rather
- * than resampled pixels, and the count is computed from the rectangle so the
- * two can never disagree.
+ * labels are real type rather than resampled pixels, and the count is computed
+ * from the rectangle so the two can never disagree.
  */
 export function FundraisingDiagram() {
-  const x0 = COL_X[SEL.c0]! - 30;
-  const x1 = COL_X[SEL.c1]! + 30;
-  const y0 = ROW_YY[SEL.r0]! - 26;
-  const y1 = ROW_YY[SEL.r1]! + 26;
+  const x0 = COL_X[SEL.c0]! - 36;
+  const x1 = COL_X[SEL.c1]! + 36;
+  const y0 = ROW_YY[SEL.r0]! - 22;
+  const y1 = ROW_YY[SEL.r1]! + 22;
 
   return (
     <Frame>
@@ -398,15 +424,17 @@ export function FundraisingDiagram() {
         strokeWidth={1}
       />
 
+      {/* One row per SECTOR: the label right-aligned into the gutter, then a
+          dot per stage across it. */}
       {ROW_YY.map((cy, r) => (
         <g key={cy}>
           <text
-            x={84}
-            y={cy + 5}
+            x={LABEL_X}
+            y={cy + 6}
             textAnchor="end"
-            className="fill-fg-muted font-sans dgm-axis"
+            className="fill-fg-muted font-sans dgm-md"
           >
-            {STAGES[r]}
+            {SECTORS[r]}
           </text>
           {COL_X.map((cx, c) => {
             const inSel =
@@ -424,13 +452,14 @@ export function FundraisingDiagram() {
         </g>
       ))}
 
-      {SECTORS.map((s, c) => (
+      {/* Stages along the bottom. */}
+      {STAGES.map((s, c) => (
         <text
           key={s}
           x={COL_X[c]}
           y={430}
           textAnchor="middle"
-          className="fill-fg-muted font-sans dgm-axis"
+          className="fill-fg-muted font-sans dgm-md"
         >
           {s}
         </text>

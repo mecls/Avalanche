@@ -161,7 +161,7 @@ full**; Secondaries has one of five.
 | Block | Graphic | Note |
 |---|---|---|
 | Fundraising 01, Pre-marketing | Three raise inputs converging into one outlined package | The convergence *is* the claim — separate inputs resolving into positioned materials. |
-| Fundraising 02, Investor sourcing | Stage × sector grid with a selection | "8 matched" is **computed from the rectangle**, so the caption cannot disagree with the dots. Stage and sector names are standard categories. |
+| Fundraising 02, Investor sourcing | Sector × stage grid with a selection | "8 matched" is **computed from the rectangle**, so the caption cannot disagree with the dots. Sectors run down the left, stages along the bottom. Both lists are standard market categories. |
 | Fundraising 03, Engagement | A three-touch sequence branching on a signal | Two outcomes from one sequence, because the copy says follow-ups are sequenced *by* signal. Channels are Email / LinkedIn, as the copy says. |
 | Fundraising 04, Pipeline | Four top-aligned stage columns | The columns are the funnel. Counts (7/5/3/2) are schematic, and "2 committed" is read from the last column's own card count. |
 | Fundraising 05, Meeting intelligence | One anonymous counterparty against four mandate parameters | "3 of 4 aligned" is **counted** from the parameter list. "Investor 07 / Growth fund" is deliberately anonymous. |

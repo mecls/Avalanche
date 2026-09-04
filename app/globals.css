@@ -554,6 +554,13 @@ body {
    Rungs, and what each is for. Eight ad-hoc sizes were collapsed into
    five on the way through; if a diagram needs a size, take a rung rather
    than adding a literal, or this drifts straight back.
+
+   There was briefly a sixth, `dgm-axis`, capped at 16 so the stage x
+   sector grid's six bottom labels would not overlap on an 80-unit pitch.
+   It is gone: that grid was transposed instead, putting the long sector
+   names on the vertical axis where word length costs nothing, so every
+   run on every diagram now takes a full rung. Do NOT reintroduce a
+   capped rung to rescue a dense axis — re-pitch the axis.
    --------------------------------------------------------------- */
 .dgm-xs {
   font-size: 12px;
@@ -571,17 +578,6 @@ body {
   font-size: 19px;
 } /* the one name in the meeting brief */
 
-/* DENSITY-LIMITED, and the one rung that barely grows. The stage x sector
-   grid puts six labels on an 80-unit pitch, so its axis type is capped by the
-   COLUMN SPACING rather than by the frame: at the full phone rung "Consumer"
-   is 109 units against 80 of pitch, and DeepTech/Health and Climate/Consumer
-   physically overlap. 16 units is the largest that clears ("Consumer" ~73,
-   leaving 7), which lands at ~8.5px on a 390px phone rather than the ~10px
-   everything else gets. Raising it means re-pitching that grid or shortening
-   the sector names, not editing this number. */
-.dgm-axis {
-  font-size: 15px;
-}
 
 @media (max-width: 599px) {
   .dgm-xs {
@@ -598,9 +594,6 @@ body {
   }
   .dgm-xl {
     font-size: 25px;
-  }
-  .dgm-axis {
-    font-size: 16px;
   }
 }
 
@@ -619,9 +612,6 @@ body {
   }
   .dgm-xl {
     font-size: 30px;
-  }
-  .dgm-axis {
-    font-size: 16px;
   }
 }
 

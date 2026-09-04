@@ -62,7 +62,7 @@ That map is keyed on id rather than position on purpose. It was a positional arr
 
 Result: every run except one now lands between **9.2px and 17.2px** at every width from 360 to 1600. Eight ad-hoc sizes were collapsed into five rungs on the way through — take a rung rather than adding a `text-[Npx]` literal, or this drifts straight back.
 
-**The one exception is `dgm-axis`**, the stage × sector grid's own axis labels, which sit on an 80-unit pitch: at the full phone rung "Consumer" is 109 units wide and physically overlaps its neighbour. It is capped at 16 units, so it renders at ~8.5px on a 390px phone against ~10px for everything else. Raising it means re-pitching that grid or shortening the sector names, not editing the number.
+**There is no capped rung, and there should never be one.** There was briefly a sixth, `dgm-axis`, holding the stage × sector grid's labels at 16 units so its six bottom labels would not collide on an 80-unit pitch — it rendered ~8.5px on a phone against ~10px everywhere else. The grid was **transposed** instead: sectors moved to the vertical axis, where word length costs nothing because labels only have to clear each other by line height, and the shorter stage names took the horizontal axis on a 110-unit pitch. Every run on every diagram now takes a full rung. If a dense axis ever fights the type again, re-pitch the axis; do not reintroduce a capped rung.
 
 Growing the type also broke three layouts that had been tuned around the old sizes, all now fixed: the legend's second entry ran under the first in **all six** diagrams (both columns are now fixed at x=5 and x=320), the pipeline pill overflowed the frame, and the meeting card's label/value rows collided.
 

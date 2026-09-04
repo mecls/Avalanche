@@ -308,18 +308,21 @@ untabbable while closed and focus can only reach them through the trigger.
   which branch was taken), so putting the counterparty-routing picture beside a
   pricing block would illustrate the wrong thing. An honest blank beats a
   plausible-looking wrong picture.
-- **Diagram type takes a rung (`dgm-xs`…`dgm-xl`, `dgm-axis`), never a
+- **Diagram type takes a rung (`dgm-xs`…`dgm-xl`), never a
   `text-[Npx]` literal.** SVG text is scaled by the frame, so one source size
   renders between 5.8px and 12.6px across viewports if left fixed. The rungs
   live in `globals.css` and step up at 599px and 479px; `Frame` is one
   `w-[94%] max-w-[560px]` rule rather than three per-breakpoint percentages.
   Everything now lands 9.2-17.2px from 360px to 1600px. A literal here cannot
   be re-tuned when the frame changes, which is the whole point.
-- **`dgm-axis` is capped and must stay capped.** The grid diagram's six axis
-  labels sit on an 80-unit pitch, so its type is limited by column spacing, not
-  by the frame — at the full phone rung "Consumer" overlaps its neighbour. It
-  renders ~8.5px on a phone against ~10px elsewhere. Fixing that means
-  re-pitching the grid or shortening the sector names.
+- **No rung is capped, and none should be.** A sixth, `dgm-axis`, briefly held
+  the stage x sector grid at 16 units so its six bottom labels would not
+  collide on an 80-unit pitch. The grid was TRANSPOSED instead — sectors to the
+  vertical axis where word length costs nothing, the shorter stage names
+  horizontal on a 110-unit pitch — and the rung was deleted. If a dense axis
+  fights the type again, re-pitch the axis rather than capping a rung: a capped
+  rung fixes the collision by making one diagram quietly less legible than the
+  other five.
 - **Diagram geometry is tuned around the type size, so changing a rung can
   break a layout.** Growing the type for phones broke three at once: the
   legend's second entry ran under the first in all six (both columns are now
