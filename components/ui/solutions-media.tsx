@@ -92,6 +92,62 @@ function Caption({ x, y, anchor = "start", muted = true, children }: {
   );
 }
 
+/**
+ * Stand-in for a block that has no diagram yet.
+ *
+ * /solutions grew from two blocks to five per view on 4 Sep 2026 and only two
+ * schematics exist. The choice was to leave the extra cards empty, to repeat
+ * the two we have, or to say plainly that the artwork is pending — this is the
+ * third. A repeated diagram is worse than an obvious blank: the two we have
+ * MEAN something specific (which route matched, which segment was selected),
+ * so showing the matching grid beside a pipeline-management block would be
+ * illustrating the wrong claim.
+ *
+ * Deliberately quiet and deliberately not mistakable for finished art: a
+ * dashed frame, a hairline cross, and a label. It carries NO accent — the
+ * accent marks something real, and there is nothing real here yet.
+ *
+ * Delete a block's `pending` flag and give it a diagram in MEDIA to replace
+ * this. When every block has one, delete this component.
+ */
+export function PendingPlate({ label }: { label?: string }) {
+  return (
+    <Frame>
+      <rect
+        x={1}
+        y={1}
+        width={618}
+        height={506}
+        rx={12}
+        className="stroke-line-soft"
+        strokeWidth={2}
+        strokeDasharray="10 10"
+      />
+      <g className="stroke-line" strokeWidth={1}>
+        <path d="M310 214v80M270 254h80" strokeLinecap="round" />
+      </g>
+      <text
+        x={310}
+        y={330}
+        textAnchor="middle"
+        className="fill-fg-muted font-sans text-[15px] tracking-[0.12em] uppercase"
+      >
+        Artwork pending
+      </text>
+      {label ? (
+        <text
+          x={310}
+          y={358}
+          textAnchor="middle"
+          className="fill-fg-faint font-sans text-[14px]"
+        >
+          {label}
+        </text>
+      ) : null}
+    </Frame>
+  );
+}
+
 /* ---------------------------------------------------------------- 01 */
 
 /** Left column reads as held positions, right column as counterparties. */

@@ -103,34 +103,83 @@ vertical needs a matching glyph added there.
 
 ---
 
-## The /solutions page — two blocks
+## The /solutions page — two views, and only one of them has copy
 
-The page shows **Secondaries** and **Fundraising**. Where each string came from:
+**Restructured 4 Sep 2026.** It was one page with a Secondaries block and a
+Fundraising block. It is now two routes behind a toggle, five blocks each, and
+the copy situation is very different on either side. All of it is in
+`content/solutions.ts`.
 
-| Slot | Text | Source |
+### /solutions/fundraising — lifted, and this needs a decision
+
+Structure and copy are **fundraisr.ai/solutions**, captured 4 Sep 2026: the
+same five steps, in the same order, with their own headings and bodies. It is
+published copy from a property you own, so it is not invented and not DRAFT.
+
+**One change was made throughout, and it is the thing to sign off.** The source
+names the product in almost every paragraph — "Fundraisr's pre-marketing
+agent", "Fundraisr generates personalised messaging", "Fundraisr doesn't just
+give you data". Those read as "our" and "we" here. No claim was altered; only
+the brand attached to it.
+
+That was the cautious choice, but it is still a choice, and it cuts both ways:
+
+- As written now, the Avalanche site describes these capabilities as
+  Avalanche's own. **Confirm Avalanche actually delivers them** — the copy
+  describes software (agents, campaign sequencing, a 1.2M-profile database).
+  If the answer is "Fundraisr delivers it and Avalanche resells it", the
+  wording should say so.
+- If you would rather name Fundraisr explicitly, that is a one-pass edit — but
+  it is the same positioning decision already flagged under the track-record
+  figures below, and the two should be answered together.
+
+The headline figure **"1.2 million investors"** is fundraisr's own stat and now
+appears on this page as well as in the track record. Same sourcing question.
+
+### /solutions/secondaries — PLACEHOLDER, awaiting your copy
+
+Only the heading and lede are real: `secondaries.title` and `secondaries.lede`,
+both already DRAFT at source. **All five blocks are placeholder** and say so on
+the page, in a visible note under each body, so this cannot ship unnoticed.
+
+Nothing here was invented, deliberately. Avalanche publishes no secondaries
+process copy anywhere I could find, and writing five plausible steps for a live
+financial service would be fabricating a capability — the same reason the team
+bios describe roles rather than careers. The five stage names (Position review,
+Pricing, Counterparties, Process, Close) describe the general shape of a
+secondaries mandate, not yours, and the first block says exactly that.
+
+**Send the copy and this is a paste job** — five titles and five bodies, then
+delete the `pending: true` flags.
+
+### The artwork gap is separate from the copy gap
+
+Ten blocks, two diagrams. `MEDIA` in `solutions-steps.tsx` is keyed on block
+id, so a diagram only appears on a block it genuinely describes:
+
+| Block | Graphic | Note |
 |---|---|---|
-| Eyebrow | "Solutions" | The page name. |
-| H1 | "Dive Deeper Into Our Offerings" | `offerings.title` — existing Avalanche copy. |
-| Lede | "Across venture and private equity…" | `thesis.lede` — existing, and it happens to name both blocks ("capital, deal flow, or secondary liquidity"). |
-| 01 title | "Secondary Liquidity" | `secondaries.title` — existing. |
-| 01 body | — | `secondaries.lede`, already marked DRAFT at source. |
-| 02 title | **"Primary Capital"** | **Authored here.** A standard category name, set opposite "Secondary Liquidity". No claim in it, but it is the one string on the page I wrote. |
-| 02 body | — | The Growth Capital offering verbatim (`offerings.items[2].body`), already marked DRAFT at source. |
+| Fundraising 02, Investor sourcing | Stage × sector grid with a selection | The "8 matched" pill is **computed from the rectangle**, so the caption cannot disagree with the dots. Stage and sector names are standard market categories. |
+| Secondaries 03, Counterparties | Two columns of anonymous entries, one accent route | "Position 01–04" / "Buyer 01–04" are deliberately schematic so nothing reads as a real deal. |
+| The other eight | `PendingPlate` | A dashed frame reading "Artwork pending". |
 
-**They are labelled by name, not "Step 1" and "Step 2".** The rail numbers them
-01 and 02, but these are two parallel offerings, not a sequence — a shareholder
-selling a position does not then run a primary raise. Labelling them as steps
-would claim a progression the business does not run.
+The two diagrams are **not** reused to fill the other eight cards. Each one
+makes a specific claim — which route matched, which segment was selected — so
+showing the matching grid beside a pipeline-management block would illustrate
+the wrong thing. An obvious blank beats a plausible-looking wrong picture.
+
+**If you have real screenshots**, they would beat either diagram, and swapping
+one in is a per-card change with no layout consequence.
+
+**Blocks are labelled by name, not "Step 1" and "Step 2".** The rail numbers
+them, but on Secondaries especially these are stages rather than a promise of
+sequence.
 
 ### The diagrams — illustrative, not data
 
 `components/ui/solutions-media.tsx`. Both are schematics: anonymous positions,
-generic sector names, no real counterparties, no figures.
-
-| Block | Graphic | Note |
-|---|---|---|
-| 01 Secondaries | Two columns of anonymous entries, one accent route connecting a matched pair | "Position 01–04" / "Buyer 01–04" are deliberately schematic so nothing reads as a real deal. |
-| 02 Fundraising | Stage × sector grid with an accent selection over the matched subset | The "8 matched" pill is **computed from the rectangle**, so the caption cannot disagree with the dots drawn under it. Stage and sector names are standard market categories. |
+generic sector names, no real counterparties, no figures. Which block each one
+sits on, and why the other eight cards are blank, is in the section above.
 
 Both were drawn in gold, and have since followed the palette through obsidian
 to the brand blue `#3056EE` without a single value in `solutions-media.tsx`
@@ -142,11 +191,6 @@ accent is itself blue now, which does not make that art right: the objection
 was the one-off literal, not the hue.
 Both files have been **deleted** — they are recoverable from `d797028^` if the
 old artwork is ever wanted back.
-
-**If you have real screenshots** — an actual matching view, a real segmentation
-screen — they would beat either of these, and swapping one in is a per-card
-change with no layout consequence (the card is `aspect-ratio`-sized and crops
-with `overflow: clip`).
 
 ---
 

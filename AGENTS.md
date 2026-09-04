@@ -173,6 +173,17 @@ not JS. Keep it that way; see "The solutions timeline" in `README.md` before tou
 it, including why the reduced-motion guard has to say
 `animation: none` rather than rely on the global duration override.
 
+**This is why the Fundraising/Secondaries switch is TWO ROUTES and not a tab.**
+A stateful tab would have made the whole of `/solutions` a client component and
+restarted the view-timeline animations on every switch. `SolutionsToggle` is
+two `<Link>`s and takes its active view as a prop rather than calling
+`usePathname`, so it stays a server component too. If a third view is ever
+added, add a route — do not reach for `useState` here.
+
+The nav's Solutions dropdown adds no state either: it opens on `:hover` and
+`:focus-within`, and uses `visibility` rather than `display` so its links are
+untabbable while closed and focus can only reach them through the trigger.
+
 - **External state is read with `useSyncExternalStore`**, never mirrored into a
   `useState` + `useEffect`.
 - Reset-state-on-prop-change is done **during render**, not in an effect (see
@@ -273,6 +284,26 @@ it, including why the reduced-motion guard has to say
   content height to the column's intrinsic size, the rail becomes the tallest
   item, and it drives the row height instead of the card. `min-height: 0` does
   not fix that.
+- **`/solutions` is TWO ROUTES behind a toggle**, `/solutions/fundraising` and
+  `/solutions/secondaries`, each an independent copy of the same layout fed by
+  a content object in `content/solutions.ts`. Bare `/solutions` and the legacy
+  `/process` both 307 to Fundraising. The nav dropdown and the on-page toggle
+  must list the same pair in the same order — `solutionViews` owns it for the
+  toggle, `nav[0].menu` in `copy.ts` for the dropdown.
+- **Two DIFFERENT kinds of gap on `/solutions`, and they are tracked
+  separately on purpose.** A block's `pending` flag means its **copy** is
+  placeholder and renders a visible note on the page; all five Secondaries
+  blocks have it and no Fundraising block does. Whether a block gets a
+  **diagram** is decided only by the `MEDIA` map, keyed on block `id`, and
+  anything missing renders `PendingPlate`. A block can have real copy and no
+  art (most of Fundraising) or real art and placeholder copy (Secondaries 03).
+  Closing one gap must not silently claim the other is closed.
+- **Do not reuse a diagram to fill a card it does not describe.** `MEDIA` is
+  keyed on `id` rather than index precisely so it cannot happen by accident —
+  position means nothing now that two views share the layout. Both diagrams
+  carry a specific claim (which route matched, which segment was selected), so
+  putting the matching grid beside a pipeline block would illustrate the wrong
+  thing. An honest blank beats a plausible-looking wrong picture.
 - **The `/customers` header is no longer the reference's full-height hero.**
   Its sections still follow fundraisr.ai/customers one for one, but the opening
   did too — a `min-h-[calc(100dvh-var(--header-h))]` statement built from its

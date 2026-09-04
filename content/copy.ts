@@ -62,8 +62,37 @@ export const announce = {
  * Fundraising as its own two blocks, so a menu duplicating them would be a
  * second copy of the same two names to keep in step.
  */
+/**
+ * `menu` gives an item a hover/focus dropdown in the desktop nav and an inline
+ * sub-list in the mobile sheet. Only Solutions has one.
+ *
+ * It points at the two REAL ROUTES, not at anchors. The first version of this
+ * menu (3 Sep 2026) linked to /solutions#secondaries and /solutions#fundraising
+ * because both were sections of one page; they are separate routes now, so the
+ * entries resolve to whole pages and the parent link redirects to the first of
+ * them. Keep these in step with `solutionViews` in content/solutions.ts — that
+ * file owns the order and the labels for the on-page toggle, and a reader who
+ * sees a different pair here than there will not trust either.
+ */
 export const nav = [
-  { href: "/solutions", label: "Solutions" },
+  {
+    href: "/solutions",
+    label: "Solutions",
+    menu: [
+      {
+        href: "/solutions/fundraising",
+        label: "Fundraising",
+        // DRAFT
+        blurb: "Primary raises run end to end, from readiness to term sheet.",
+      },
+      {
+        href: "/solutions/secondaries",
+        label: "Secondaries",
+        // DRAFT
+        blurb: "Liquidity for GPs, LPs, and shareholders ahead of a full exit.",
+      },
+    ],
+  },
   { href: "/customers", label: "Customers" },
   { href: "/team", label: "Team" },
 ] as const;

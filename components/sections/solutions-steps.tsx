@@ -1,9 +1,11 @@
 import { ArrowGlyph, CtaButton } from "@/components/ui/button";
 import {
   FundraisingDiagram,
+  PendingPlate,
   SecondariesDiagram,
 } from "@/components/ui/solutions-media";
-import { solutions } from "@/content/copy";
+import { SolutionsToggle } from "@/components/ui/solutions-toggle";
+import type { SolutionSlug, SolutionView } from "@/content/solutions";
 
 /**
  * /solutions: a page heading, then two numbered rows of media card / rail /
@@ -78,11 +80,35 @@ function Plate({ children }: { children: React.ReactNode }) {
   );
 }
 
-/** One graphic per block, in order. */
-const MEDIA = [SecondariesDiagram, FundraisingDiagram] as const;
+/**
+ * Which diagram a block gets, BY BLOCK ID rather than by index.
+ *
+ * It was a positional array while there was one view with two blocks. There
+ * are now two views with five blocks each and only two diagrams, so position
+ * says nothing — block 02 means investor sourcing on one view and pricing on
+ * the other. Keying on the id means a block either has artwork that is
+ * genuinely about it, or it renders the pending plate.
+ *
+ * Both diagrams carry specific meaning (which route matched; which segment was
+ * selected), so they must not be reused to fill a card they do not describe.
+ * Add an entry here when new artwork exists, and drop that block's `pending`
+ * flag in content/solutions.ts at the same time.
+ */
+const MEDIA: Record<string, () => React.ReactElement> = {
+  /** The stage x sector grid with a matched subset IS investor sourcing. */
+  fundraising: FundraisingDiagram,
+  /** Holders routed to counterparties IS the counterparty search. */
+  counterparties: SecondariesDiagram,
+};
 
-export function SolutionsSteps() {
-  const blocks = solutions.blocks;
+export function SolutionsSteps({
+  view,
+  active,
+}: {
+  view: SolutionView;
+  active: SolutionSlug;
+}) {
+  const blocks = view.blocks;
 
   return (
     <section data-band="light">
@@ -98,38 +124,41 @@ export function SolutionsSteps() {
                 numbers below stay ink: they sit right beside the accent rail
                 and both diagrams, and colouring them too would put the accent
                 on six runs on the one page that already carries most of it. */}
-            <p className="page-label text-accent">{solutions.eyebrow}</p>
+            <p className="page-label text-accent">{view.eyebrow}</p>
 
             <div className="max-w-[720px]">
-              <h1 className="display display-72 text-[72px]">
-                {solutions.title}
-              </h1>
+              <h1 className="display display-72 text-[72px]">{view.title}</h1>
             </div>
 
             <div className="max-w-[680px]">
-              <p className="text-[16px] leading-6 text-fg-muted">
-                {solutions.lede}
-              </p>
+              <p className="text-[16px] leading-6 text-fg-muted">{view.lede}</p>
             </div>
           </div>
 
           <div className="flex shrink-0 items-center">
             <CtaButton href="#get-in-touch" className="group">
-              {solutions.cta}
+              {view.cta}
               <ArrowGlyph />
             </CtaButton>
           </div>
+        </div>
+
+        {/* The toggle sits BELOW the header rather than above the H1: it
+            switches the page's content, so it reads as a control over the
+            blocks it changes rather than as a second eyebrow above the title.
+            Full-width row so it stays left-aligned with the heading. */}
+        <div className="flex w-full pt-2">
+          <SolutionsToggle active={active} />
         </div>
       </div>
 
       {/* An <ol> because the rail numbers them and a screen reader should hear
           the same count. It is an ordered LIST, not a sequence of steps — see
-          the note on `solutions.blocks` in content/copy.ts for why the labels
-          say "Secondaries" and "Fundraising" rather than "Step 1" and
-          "Step 2". */}
+          the note in content/solutions.ts for why the labels are named stages
+          rather than "Step 1" and "Step 2". */}
       <ol className="shell flex list-none flex-col items-center justify-center gap-5 overflow-clip pt-5 pb-[100px] max-[1199px]:gap-[60px] max-[809px]:gap-[54px] max-[809px]:pb-[60px]">
         {blocks.map((block, i) => {
-          const Media = MEDIA[i];
+          const Media = MEDIA[block.id];
           const last = i === blocks.length - 1;
 
           return (
@@ -138,7 +167,9 @@ export function SolutionsSteps() {
               id={block.id}
               className="step-row flex w-full scroll-mt-32 flex-row items-center justify-center gap-9 overflow-clip max-[1199px]:flex-col"
             >
-              <Plate>{Media ? <Media /> : null}</Plate>
+              <Plate>
+                {Media ? <Media /> : <PendingPlate label={block.label} />}
+              </Plate>
 
               {/* Rail. `self-stretch` rather than a height: the row is sized
                   by the card, so a percentage height here would resolve
@@ -182,9 +213,19 @@ export function SolutionsSteps() {
                   </p>
                 </div>
 
+                {/* Visible, on the page, not just a source comment. A block
+                    whose copy is a placeholder has to LOOK unfinished to
+                    anyone reviewing the site, or it ships. Drop the `pending`
+                    flag in content/solutions.ts and this goes with it. */}
+                {block.pending && (
+                  <p className="border-l-2 border-line pl-3 text-[13px] leading-5 text-fg-faint">
+                    Placeholder — awaiting approved copy.
+                  </p>
+                )}
+
                 {last && (
                   <CtaButton href="#get-in-touch" className="group">
-                    {solutions.cta}
+                    {view.cta}
                     <ArrowGlyph />
                   </CtaButton>
                 )}

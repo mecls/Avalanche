@@ -24,27 +24,36 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 
 ## Structure
 
-4 pages. There is no "get in touch" page — booking is the closing band (`components/site/cta-band.tsx`) at the foot of every page, and `#get-in-touch` is the anchor every CTA points to.
+5 routes. There is no "get in touch" page — booking is the closing band (`components/site/cta-band.tsx`) at the foot of every page, and `#get-in-touch` is the anchor every CTA points to.
 
 ```
-/            Hero (video, full-screen, client strip) · Track record · Who we serve ·
-             What we raise · Neurable case study + testimonial · Verticals · FAQ · Calendar
-/solutions   Page heading · two numbered blocks — Secondaries, Fundraising — on a
-             vertical progress rail
-/customers   Filterable grid of all 13 case studies
-/team        Five partners · Press
+/                        Hero (video, full-screen, client strip) · Track record ·
+                         Who we serve · What we raise · Neurable case study +
+                         testimonial · Verticals · FAQ · Calendar
+/solutions/fundraising   Page heading · toggle · five numbered blocks on a rail
+/solutions/secondaries   Same layout, Secondaries content (COPY PENDING)
+/customers               Filterable grid of all 13 case studies
+/team                    Five partners · Press
 ```
 
-**`/process` no longer exists.** The step timeline it carried is now `/solutions`,
-cut back from three steps to two blocks. `next.config.ts` redirects the old
-route, deliberately with a **307 and not a 308**: this route has moved twice,
-an earlier 308 to `/solutions#fundraising` is still cached in any browser that
-followed it, and a 308 cannot be withdrawn — no response header un-caches one
-already issued. A 307 keeps this move revisable. Purge the CDN on the next
-deploy either way.
+### /solutions is two views behind a toggle
 
-The `#secondaries` and `#fundraising` anchors were kept on the two blocks, so
-the old deep links still land in the right place.
+It was one page carrying a Secondaries block and a Fundraising block. Since 4 September 2026 it is **two routes**, each an independent copy of the same layout, with a segmented toggle at the head of the page and a two-entry dropdown on the nav pointing at both.
+
+**Routes, not a client-side tab.** `/solutions` is the one page on the site with no client components — its rail and text reveal are CSS `view-timeline` — and a stateful tab would have made the whole page a client component and restarted those animations on every switch. Routes also keep both views deep-linkable, which the nav dropdown depends on. The toggle is two `<Link>`s; the active view is passed in as a prop, so `SolutionsToggle` stays a server component rather than reaching for `usePathname`.
+
+**Content lives in `content/solutions.ts`**, one object per view, and `SolutionsSteps` takes the view as a prop. Adding a third view is a content object plus a five-line route.
+
+**Two separate gaps, tracked in two places, and they do not mean the same thing:**
+
+- A block's `pending` flag means its **copy** is placeholder. It renders a visible "awaiting approved copy" note on the page so it cannot ship unnoticed. All five Secondaries blocks carry it; no Fundraising block does.
+- Whether a block gets a **diagram** is decided only by the `MEDIA` map in `components/sections/solutions-steps.tsx`, keyed on block `id`. Anything without an entry renders `PendingPlate`.
+
+That map is keyed on id rather than position on purpose. It was a positional array when there was one view with two blocks; with two views of five, position means nothing — block 02 is investor sourcing on one and pricing on the other. Both existing diagrams carry specific meaning (which route matched, which segment was selected), so they are **not** reused to fill a card they do not describe: the stage × sector grid sits on Investor Sourcing, the holders-to-counterparties routing sits on Counterparties, and the other eight blocks show the pending plate.
+
+**`/solutions` and `/process` both redirect to `/solutions/fundraising`**, with a **307 and not a 308**. `/process` has now moved three times; an earlier 308 to `/solutions#fundraising` is still cached in any browser that followed it, and a 308 cannot be withdrawn — no response header un-caches one already issued. 307 keeps every one of these moves revisable. Both go straight to the destination rather than chaining through `/solutions`. Purge the CDN on the next deploy either way.
+
+The old `#secondaries` and `#fundraising` fragments survive as block ids, so a deep link still lands on a real block — on whichever of the two views now owns it.
 
 ### The hero
 
