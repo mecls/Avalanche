@@ -259,11 +259,21 @@ untabbable while closed and focus can only reach them through the trigger.
   moment their section became a light band. `globals.css` inverts anything with
   that class inside `[data-band="light"]`. Do not add a blend mode instead, and
   re-run the script after adding logos.
-- **The hero logo band is full-bleed, outside `.shell`.** 100px tall on its own
-  translucent blurred ground rather than a hairline rule. `logo-marquee.tsx`
-  needs its `overflow-hidden`: the scrolling row is far wider than the box and
-  `mask-image` defaults to `mask-repeat: repeat`, so without clipping the fade
-  gradient tiles and the strip reads as a few logos with holes.
+- **The two logo strips are DIFFERENT widths, and each is right.** The hero's
+  is full-bleed, outside `.shell`, 100px tall on its own translucent blurred
+  ground over the video — running edge to edge is the point there. The
+  `/customers` venture strip is INSIDE `.shell`, so its rule and its marks line
+  up with the page label, the H1 and the CTA above them. It was full-bleed
+  until 4 Sep 2026 and was the only thing on that page not aligning with the
+  text. Do not "unify" them: one sits on footage, the other on the same flat
+  white as the heading it belongs to.
+- `logo-marquee.tsx` needs its `overflow-hidden` at either width: the scrolling
+  row is far wider than the box and `mask-image` defaults to
+  `mask-repeat: repeat`, so without clipping the fade gradient tiles and the
+  strip reads as a few logos with holes. Its 8%/92% mask and its scroll
+  distance are both independent of the container — the mask is a percentage of
+  its own box, the distance is set by the content — so narrowing it changes
+  neither the fade nor the speed.
 - **The hero strip label is not the reference's wording.** The reference says
   "Representative investors & strategic partners"; that strip carries CLIENT
   marks, and `customers.logoNote` states they are past engagements. Calling

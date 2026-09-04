@@ -85,9 +85,22 @@ export default function CustomersPage() {
           </div>
         </div>
 
-        {/* Venture strip across the foot of the hero, as the reference has it.
-            It breaks out of `shell` so the marquee runs the full width and its
-            edge mask has room to work.
+        {/* Venture strip across the foot of the header.
+
+            INSIDE `shell`, unlike the hero's strip on the homepage. That one
+            is full-bleed on purpose — it sits on its own translucent band over
+            the video, where running edge to edge is the point. This one sits
+            on the same flat white as the heading above it, and full-bleed left
+            it as the only thing on the page not lining up with the text: the
+            marks started at the viewport edge while "CUSTOMERS" and the H1
+            started at the shell. Both the rule and the marks are now shell
+            width, so the strip reads as part of the header rather than as a
+            band under it.
+
+            The marquee does not care. Its `overflow-hidden` clip and its
+            8%/92% mask are both relative to its own box, and the scroll
+            distance is set by the content rather than the container, so
+            narrowing it changes neither the fade nor the speed.
 
             These are the ecosystem marks, NOT the client roster: full colour,
             and no `logo-mark`, since inverting them would blow them out to
@@ -95,12 +108,14 @@ export default function CustomersPage() {
 
             The strip runs unlabelled by request. `customers.ecosystemNote` is
             the caption it used to carry, kept in place should it come back. */}
-        <div className="w-full border-t border-line-soft py-10">
-          <LogoMarquee
-            logos={ecosystemLogos}
-            alphaMarks={false}
-            itemClassName="h-9 w-32"
-          />
+        <div className="shell">
+          <div className="border-t border-line-soft py-10">
+            <LogoMarquee
+              logos={ecosystemLogos}
+              alphaMarks={false}
+              itemClassName="h-9 w-32"
+            />
+          </div>
         </div>
       </section>
 
