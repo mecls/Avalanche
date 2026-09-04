@@ -118,20 +118,27 @@ Colour tokens are named by **role**, never by hue. A light section is `data-band
 
 The three dark grounds are deliberately the same `#151515`; the reference runs one dark value rather than a ramp.
 
-Contrast is documented in `globals.css` with real ratios, and every text/background pair is verified rather than assumed. **Gold is the trap**: `#ae9e77` is 6.4:1 on `#151515` but only 2.6:1 on white — under even the 3:1 large-text floor — so the light band swaps in a darkened `#7c6c45`. Do not unify the two.
+Contrast is documented in `globals.css` with real ratios, and every text/background pair is verified rather than assumed.
+
+**The accent is obsidian**, and it replaced the reference's gold on 4 Sep 2026. The tokens were renamed off the hue at the same time — there is no `--color-gold` and no `text-gold`; `git log -S "--color-gold"` has the old values.
+
+Obsidian is black glass, so on a dark ground the accent can't be the stone — it has to be the sheen. Hence `#b9c1c9`, a cool silver, on dark, and `#39424c`, a deep slate, on a light band: one material lit from two sides. The cool cast is deliberately slight (an R/B spread of 16) so it reads as polished rather than as blue — the `.webp` diagrams this palette replaced were rejected partly for carrying a real blue, and drifting back there would undo that.
+
+**The trap is different from gold's.** Gold could sit at a mid luminance because its hue did the signalling; a neutral accent has none to spend, so it signals with brightness and sits at measured steps from its neighbours — 10.0:1 on `#151515`, a 1.8:1 step down from `fg` so it doesn't read as white, and a 3.6:1 step up from a 50%-opacity `fg-muted` dot, which is the whole of what separates matched from unmatched in the `/solutions` diagrams. Dim it toward `fg-muted` and those diagrams stop being readable at a glance.
+
+`--color-accent-light` / `--color-accent-deep` are the rail gradient's two stops, held constant across bands because a decorative graphic carries no text and shouldn't follow a text-contrast flip. Both are calibrated for the light `#eeeeee` track they live on and would be invisible on a dark ground — the gold pair they replaced had the same restriction.
 
 `.shell` is 1440px with a **fixed** 20px gutter and `.section-y` is a fixed 120px. Both used to be clamped, and both resolved much smaller, which is what made the page feel pinched on a large screen.
 
 ## The chrome
 
-Two elements, not one:
+One element: an **absolute** 79.2px nav at `top:0` that scrolls away with the page — fully transparent, image-free wordmark, pill links, and a glass ghost button.
 
-- a **fixed** 37px announcement bar that stays on screen — opaque `#151515`, a green live dot, italic body text and a gold underlined link;
-- an **absolute** 79.2px nav that scrolls away with the page — fully transparent, image-free wordmark, pill links, and a glass ghost button.
+It was two. A **fixed** 37px announcement bar (opaque `#151515`, green live dot, italic text, underlined accent link) sat above the nav until 4 Sep 2026, and `--header-h` published the 116.2px sum. The bar is gone; `--header-bar-h` and `--header-nav-h` went with it, since one number with one consumer doesn't need three names, and **nothing on the site is `fixed` any more.** The copy is kept but unrendered as `announce` in `content/copy.ts`.
 
-Their sum is published as `--header-h`. `main` reserves it and the hero cancels it with a negative margin, so the hero still starts at y:0. The spec called for dropping both; that is right for a one-page reference and wrong here, because on the three routes without a hero an absolute nav with no reserved space lands on top of the first heading.
+`--header-h` is still the contract: `main` reserves it and the hero cancels it with a negative margin, so the hero still starts at y:0 and still measures exactly `100dvh`. The spec called for dropping the reservation too; that is right for a one-page reference and wrong here, because on the three routes without a hero an absolute nav with no reserved space lands on top of the first heading.
 
-The second half of that split is why `nav.tsx` lost a lot of machinery. A *fixed* nav passes over every band on the page, so it had to measure the one beneath it on every scroll and resize and re-point its own tokens. An absolute nav only ever sits over the first section, and that never changes after first paint — so the whole thing collapses to one `:has()` rule in `globals.css`. No scroll listener, no tone state, no hydration gap.
+Absolute rather than fixed is why `nav.tsx` has so little machinery. A *fixed* nav passes over every band on the page, so it had to measure the one beneath it on every scroll and resize and re-point its own tokens. An absolute nav only ever sits over the first section, and that never changes after first paint — so the whole thing collapses to one `:has()` rule in `globals.css`. No scroll listener, no tone state, no hydration gap.
 
 ## The hero
 

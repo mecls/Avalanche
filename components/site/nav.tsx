@@ -3,46 +3,32 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { announce, nav, site } from "@/content/copy";
+import { nav, site } from "@/content/copy";
 import { CtaButton } from "@/components/ui/button";
 
 /**
- * Site chrome, in TWO pieces.
+ * Site chrome: ONE element — a 79.2px nav, `absolute` at top:0, which scrolls
+ * away with the page.
  *
- *   1. a 37px announcement bar, `fixed`, which stays on screen;
- *   2. a 79.2px nav, `absolute` at top:37px, which scrolls away with the page.
+ * It was two. A `fixed` 37px announcement bar sat above this ("Advising funds,
+ * founders, and operating companies · Intro call available"), and the nav was
+ * offset below it. The bar is gone; its copy is kept but unrendered in
+ * `content/copy.ts` as `announce`. Nothing on the site is `fixed` any more.
  *
- * That split is the reference's, and the second half of it is the reason this
- * file lost a lot of machinery. The nav used to be `fixed`, which meant it
- * passed over every band on the page and had to measure the one beneath it on
- * every scroll and resize (`useSyncExternalStore` over scroll + resize, plus a
- * pathname-keyed subscribe to catch route changes where no scroll fires) so it
- * could re-point its own tokens and avoid white-on-white.
+ * Absolute rather than fixed is the reason this file has so little machinery.
+ * The nav used to be `fixed`, which meant it passed over every band on the
+ * page and had to measure the one beneath it on every scroll and resize
+ * (`useSyncExternalStore` over scroll + resize, plus a pathname-keyed
+ * subscribe to catch route changes where no scroll fires) so it could
+ * re-point its own tokens and avoid white-on-white.
  *
  * An absolute nav only ever sits over the FIRST section, and that never
  * changes after first paint — so the whole thing collapses to one `:has()`
  * rule in globals.css. No scroll listener, no tone state, no hydration gap.
  *
- * The combined 116.2px is published as `--header-h`: `main` reserves it and
- * the hero cancels it.
+ * Its height is published as `--header-h`: `main` reserves it and the hero
+ * cancels it.
  */
-
-/** Arrow glyph closing the banner link. Inline so it inherits colour and
- *  cannot fall out of sync with the text it trails. */
-function ArrowGlyph() {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 16 16"
-      className="ml-1 inline-block h-[0.7em] w-[0.7em] align-baseline"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <path d="M2 8h12M9 3l5 5-5 5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
 
 export function SiteNav() {
   const pathname = usePathname();
@@ -56,36 +42,13 @@ export function SiteNav() {
     setOpen(false);
   }
 
+  // ABSOLUTE, not fixed, so it scrolls away — and now at top:0, since the bar
+  // that used to offset it is gone. It is transparent at every scroll position
+  // and over every band; the only thing that changes is its text colour, and
+  // that is the `:has()` rule in globals.css for pages opening on a light band.
   return (
-    <>
-      {/* 1. Announcement bar — fixed, opaque, always on top of the nav. */}
-      <div className="fixed inset-x-0 top-0 z-[2] flex h-[var(--header-bar-h)] items-center justify-center gap-2.5 bg-[#151515] py-2">
-        <div className="flex h-[21px] items-center gap-2 px-5">
-          <span
-            aria-hidden
-            className="h-3 w-3 shrink-0 rounded-full bg-live shadow-[0_0_8px_rgba(74,222,128,0.6)]"
-          />
-          <p className="truncate text-[14px] leading-[21px] font-medium text-white/80 italic">
-            {announce.text}
-          </p>
-          <Link
-            href="#get-in-touch"
-            className="hidden shrink-0 text-[14px] leading-[21px] font-medium text-gold underline italic underline-offset-2 sm:inline"
-          >
-            {announce.linkLabel}
-            <ArrowGlyph />
-          </Link>
-        </div>
-      </div>
-
-      {/*
-        2. Nav — ABSOLUTE, not fixed, so it scrolls away. `top` is the bar's
-        height. It is transparent at every scroll position and over every
-        band; the only thing that changes is its text colour, and that is the
-        `:has()` rule in globals.css for pages opening on a light band.
-      */}
-      <header className="absolute inset-x-0 top-[var(--header-bar-h)] z-[1] h-[var(--header-nav-h)] text-fg">
-        <nav className="shell flex h-full items-center justify-center gap-2.5 py-4">
+    <header className="absolute inset-x-0 top-0 z-[1] h-[var(--header-h)] text-fg">
+      <nav className="shell flex h-full items-center justify-center gap-2.5 py-4">
           {/* Left third. `flex-1` on both outer cells is what centres the
               middle group on the VIEWPORT rather than in the space left over,
               so the links stay put as the wordmark and button change width. */}
@@ -170,6 +133,5 @@ export function SiteNav() {
           </div>
         </div>
       </header>
-    </>
   );
 }

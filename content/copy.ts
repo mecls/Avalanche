@@ -41,11 +41,16 @@ export const site = {
 } as const;
 
 /**
- * The fixed announcement bar above the nav.
+ * NOT CURRENTLY RENDERED. Kept, like the other unmounted blocks.
  *
- * `text` is set in italic and sentence case, and is followed by a gold
- * underlined link. It is deliberately a claim about availability rather than
- * about results — nothing here is a figure, so nothing here needs sourcing.
+ * This was the fixed bar above the nav — a live-dot, the line below in italic,
+ * and an underlined accent link to the booking anchor. It was removed on
+ * 4 Sep 2026; `components/site/nav.tsx` is now the nav alone and nothing on
+ * the site is `fixed`.
+ *
+ * The copy itself is still good if the bar ever comes back: it is deliberately
+ * a claim about availability rather than about results, so nothing here is a
+ * figure and nothing here needs sourcing.
  */
 export const announce = {
   text: "Advising funds, founders, and operating companies · Intro call available",
@@ -81,7 +86,7 @@ export const hero = {
     { lead: "Private", rest: " capital" },
     { lead: "advisory", rest: " with an edge" },
   ],
-  // the word rendered in the gold accent
+  // the word that would carry the accent. Still ignored — see section-heading.
   accent: "edge",
   lede: "Our unique edge is exposure — to the right capital sources, the right mandates, and the right counterparties.",
   cta: "Get started",

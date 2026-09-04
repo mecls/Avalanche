@@ -62,7 +62,7 @@ function ArrowGlyph() {
  * The dark textured plate every card sits on.
  *
  * `data-band="dark"` re-points the tokens for the card's subtree, which is
- * what lets its contents be written against `fg` / `line` / `gold` and come
+ * what lets its contents be written against `fg` / `line` / `accent` and come
  * out light-on-dark inside an otherwise white section. The grain is the hero's
  * tile, doing the same job: the radial below it is a long ramp over a wide
  * box, which is the case that bands on an 8-bit display.
@@ -179,7 +179,7 @@ export function SolutionsSteps() {
                     className="rail-fill absolute inset-x-0 top-0 h-[580px] rounded-[10px]"
                     style={{
                       backgroundImage:
-                        "linear-gradient(var(--color-gold-light) 66.8813%, var(--color-gold-deep) 100%)",
+                        "linear-gradient(var(--color-accent-light) 66.8813%, var(--color-accent-deep) 100%)",
                     }}
                   />
                 </div>

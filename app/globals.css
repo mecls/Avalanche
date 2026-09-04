@@ -4,7 +4,8 @@
    Avalanche Capital design tokens
 
    Matched to farahcap.com: a #151515 ground, Cormorant Garamond on
-   every heading, Inter on every UI run, and a gold accent.
+   every heading, Inter on every UI run, and — since 4 Sep 2026 — an
+   obsidian accent where the reference runs gold.
 
    This REPLACED a fundraisr.ai-derived system (Satoshi, flat white
    type, no accent colour). If you find a comment or a doc still
@@ -44,17 +45,46 @@
   --color-fg-muted: #a8a8a8;
   --color-fg-faint: #949494;
 
-  /* The accent: banner link and one section heading. #ae9e77 is 6.4:1 on
-     #151515. It is only 2.6:1 on white, which is under even the large-text
-     floor, so a light band swaps in --color-gold-ink below. */
-  --color-gold: #ae9e77;
-  --color-gold-light: #decfab;
-  /* The same hue, held CONSTANT across bands. --color-gold above is darkened
-     to #7c6c45 on a light band so that TEXT set in it clears 3:1; that
-     darkening is wrong for a decorative graphic, which carries no text and
-     no meaning of its own. The solutions rail is the only user: a 3px fill
-     whose step is also stated in words beside it. Never set type in this. */
-  --color-gold-deep: #ae9e77;
+  /* The accent — OBSIDIAN, replacing the gold (#ae9e77 / #decfab / #7c6c45)
+     this palette shipped with. Renamed off the hue at the same time, per the
+     role-naming rule at the top of this file; `text-gold` and friends are gone
+     and `git log -S "--color-gold"` has the old values if they are ever wanted.
+
+     Obsidian is black glass, so on a DARK ground the accent cannot be the
+     stone — it has to be the sheen coming off it. Hence a cool silver here and
+     a deep slate on a light band: one material, lit from two sides. The cast
+     is deliberately slight (R/B spread of 16) — enough to read as polished
+     rather than as flat grey, not enough to read as blue. The .webp diagrams
+     this replaced were rejected for carrying a real blue; don't drift there.
+
+     A neutral accent cannot signal with hue the way gold did, so it signals
+     with BRIGHTNESS instead, and sits at a measured step from its neighbours:
+       on #151515            10.0:1
+       on #202020 (card)      9.0:1
+       step down from fg      1.8:1  — reads as its own tone, not as white
+       step up from a 50%
+         fg-muted dot         3.6:1  — what separates matched from unmatched
+                                       in the /solutions diagrams
+     Drop it toward fg-muted and those diagrams stop being legible at a
+     glance. A light band swaps in the deep value further down. */
+  --color-accent: #b9c1c9;
+
+  /* The rail gradient's two stops, held CONSTANT across bands: decorative
+     graphics only, never type. --color-accent above follows the band so that
+     TEXT set in it clears contrast either way, and that flip is wrong for a
+     graphic that carries no text and no meaning of its own.
+
+     Their one user is the /solutions rail, a 3px fill on an #eeeeee track, so
+     both are calibrated for a LIGHT ground: 5.5:1 at the head falling to
+     13.2:1 at the foot. That 2.4x swing is the gold gradient's own ratio,
+     which is what keeps the line reading as one thread deepening toward the
+     marker rather than as two colours meeting. On a dark ground they would be
+     invisible — the gold they replaced had the same restriction. */
+  --color-accent-light: #55606c;
+  --color-accent-deep: #1f262d;
+
+  /* Off-white for the hero strip label. Left warm on purpose: at 13:1 the
+     cast is imperceptible, so cooling it with the accent would be churn. */
   --color-warm: #dfdad8;
 
   --color-line: rgba(255, 255, 255, 0.13);
@@ -97,9 +127,16 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
   --color-fg-muted: #686868;
   --color-fg-faint: #686868;
 
-  /* Gold at #ae9e77 measures 2.6:1 on white — under the large-text floor of
-     3:1, and it carries a section heading. Darkened to 4.6:1 here. */
-  --color-gold: #7c6c45;
+  /* The obsidian itself, rather than the sheen: on a light ground the stone
+     is what you can actually see. 10.2:1 on white, 9.2:1 on #f3f3f3, and a
+     1.8:1 step down from the ink — the same separation the dark band gives
+     it, inverted.
+
+     It has no consumer today (the accent's only text run was the announcement
+     bar's link, and that bar is gone; the /solutions diagrams sit on nested
+     dark plates and take the value above). Kept because a light-band accent
+     with no definition is how a future one ends up hardcoded. */
+  --color-accent: #39424c;
 
   --color-line: #eeeeee;
   --color-line-soft: #e0e0e0;
@@ -160,7 +197,7 @@ body:has(main > :first-child[data-band="light"]) main {
   --color-fg: #ffffff;
   --color-fg-muted: #a8a8a8;
   --color-fg-faint: #949494;
-  --color-gold: #ae9e77;
+  --color-accent: #b9c1c9;
 
   --color-line: rgba(255, 255, 255, 0.13);
   --color-line-soft: rgba(255, 255, 255, 0.09);
@@ -171,12 +208,15 @@ body:has(main > :first-child[data-band="light"]) main {
 
 :root {
   color-scheme: dark;
-  /* The chrome is TWO elements: a fixed 37px announcement bar, and below it a
-     79.2px nav that is absolutely positioned and scrolls away with the page.
-     `main` reserves the pair and the hero cancels it. */
-  --header-bar-h: 37px;
-  --header-nav-h: 79.2px;
-  --header-h: 116.2px;
+  /* The chrome is ONE element: a 79.2px nav, absolutely positioned, which
+     scrolls away with the page. `main` reserves it and the hero cancels it.
+
+     It used to be two — a `fixed` 37px announcement bar sat above the nav and
+     --header-h published the 116.2px sum. The bar is gone, so the sum is just
+     the nav, and --header-bar-h / --header-nav-h went with it: one number with
+     one consumer does not need three names. Nothing on the site is `fixed`
+     any more. */
+  --header-h: 79.2px;
 }
 
 html {

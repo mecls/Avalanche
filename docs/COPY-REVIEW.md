@@ -129,11 +129,16 @@ generic sector names, no real counterparties, no figures.
 
 | Block | Graphic | Note |
 |---|---|---|
-| 01 Secondaries | Two columns of anonymous entries, one gold route connecting a matched pair | "Position 01–04" / "Buyer 01–04" are deliberately schematic so nothing reads as a real deal. |
-| 02 Fundraising | Stage × sector grid with a gold selection over the matched subset | The "8 matched" pill is **computed from the rectangle**, so the caption cannot disagree with the dots drawn under it. Stage and sector names are standard market categories. |
+| 01 Secondaries | Two columns of anonymous entries, one accent route connecting a matched pair | "Position 01–04" / "Buyer 01–04" are deliberately schematic so nothing reads as a real deal. |
+| 02 Fundraising | Stage × sector grid with an accent selection over the matched subset | The "8 matched" pill is **computed from the rectangle**, so the caption cannot disagree with the dots drawn under it. Stage and sector names are standard market categories. |
+
+Both were drawn in gold and went cool when the palette's accent became obsidian
+on 4 Sep 2026. Not one value in `solutions-media.tsx` changed for that — they
+are written against the `accent` role, not a colour.
 
 These replaced `public/solutions/{secondaries,fundraising}.webp`, which carried
-a blue accent found nowhere else on the site and rendered soft at display size.
+a saturated blue found nowhere else on the site and rendered soft at display
+size.
 Both files have been **deleted** — they are recoverable from `d797028^` if the
 old artwork is ever wanted back.
 

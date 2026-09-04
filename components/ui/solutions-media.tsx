@@ -6,16 +6,18 @@
  * things were wrong with them, and all three were structural rather than
  * matters of taste:
  *
- *  1. They carried a BLUE accent (#2d6a9f-ish) that appears nowhere else on
- *     this site. The palette has exactly one accent and it is gold.
+ *  1. They carried a saturated BLUE accent (#2d6a9f-ish) that appears nowhere
+ *     else on this site. The palette has exactly one accent.
  *  2. They were light plates on a dark card, so they read as a screenshot
  *     pasted on rather than as part of the composition.
  *  3. They were fixed-resolution art displayed at ~550px, so their labels
  *     rendered soft and undersized. Vector text does not.
  *
  * Drawn in SVG against the site's own tokens, so they follow the band like
- * everything else: on the `data-band="dark"` plate `fg` is white, `gold` is
- * #ae9e77 and `line` is a white hairline. Nothing here is hardcoded.
+ * everything else: on the `data-band="dark"` plate `fg` is white, `accent` is
+ * the obsidian sheen (#b9c1c9) and `line` is a white hairline. Nothing here is
+ * hardcoded — the accent was gold until 4 Sep 2026 and not one value in this
+ * file changed when it went cool, which is the point of naming by role.
  *
  * STILL ILLUSTRATIVE. Both are schematics — anonymous positions, generic
  * sector names, no real counterparties. The one count that appears ("8
@@ -114,14 +116,14 @@ function Entry({
         width={248}
         height={ROW_H}
         rx={8}
-        className={active ? "fill-gold/[0.07] stroke-gold" : "stroke-line"}
+        className={active ? "fill-accent/[0.07] stroke-accent" : "stroke-line"}
         strokeWidth={1}
       />
       <circle
         cx={x + 26}
         cy={y + ROW_H / 2}
         r={5}
-        className={active ? "fill-gold" : "fill-fg-muted/50"}
+        className={active ? "fill-accent" : "fill-fg-muted/50"}
       />
       <text
         x={x + 48}
@@ -138,8 +140,11 @@ function Entry({
  * 01 — Secondaries. A held position routed straight to one counterparty, with
  * the unmatched routes it bypasses drawn faintly behind it.
  *
- * The gold curve is the only saturated thing in the frame, which is what makes
- * the single match legible at a glance rather than needing the caption.
+ * The accent curve is the only BRIGHT thing in the frame, which is what makes
+ * the single match legible at a glance rather than needing the caption. It was
+ * the only saturated thing when the accent was gold; a cool accent has no hue
+ * to spend, so the separation is carried by luminance instead — 3.6:1 over a
+ * 50%-opacity fg-muted ghost. Dimming the accent breaks the diagram.
  */
 export function SecondariesDiagram() {
   const L = 252;
@@ -180,7 +185,7 @@ export function SecondariesDiagram() {
 
       <path
         d={`M${L},${my} C${mid.x},${my} ${mid.x},${ny} ${R},${ny}`}
-        className="stroke-gold"
+        className="stroke-accent"
         strokeWidth={2}
       />
 
@@ -212,21 +217,21 @@ export function SecondariesDiagram() {
           width={112}
           height={30}
           rx={15}
-          className="fill-ground stroke-gold"
+          className="fill-ground stroke-accent"
           strokeWidth={1}
         />
         <text
           x={mid.x}
           y={mid.y + 4}
           textAnchor="middle"
-          className="fill-gold font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
+          className="fill-accent font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
         >
           Matched
         </text>
       </g>
 
       <g>
-        <circle cx={5} cy={490} r={5} className="fill-gold" />
+        <circle cx={5} cy={490} r={5} className="fill-accent" />
         <text x={22} y={495} className="fill-fg-muted font-sans text-[15px]">
           Matched route
         </text>
@@ -257,7 +262,8 @@ const MATCHED_COUNT = (SEL.c1 - SEL.c0 + 1) * (SEL.r1 - SEL.r0 + 1);
  * the subset matching the mandate's criteria selected.
  *
  * This is the same idea as the asset it replaces, drawn properly: the
- * selection is gold rather than blue, the axis labels are real type rather
+ * selection is the site's own accent rather than a stray blue, the axis
+ * labels are real type rather
  * than resampled pixels, and the count is computed from the rectangle so the
  * two can never disagree.
  */
@@ -283,7 +289,7 @@ export function FundraisingDiagram() {
         width={x1 - x0}
         height={y1 - y0}
         rx={10}
-        className="fill-gold/[0.07] stroke-gold"
+        className="fill-accent/[0.07] stroke-accent"
         strokeWidth={1}
       />
 
@@ -306,7 +312,7 @@ export function FundraisingDiagram() {
                 cx={cx}
                 cy={cy}
                 r={inSel ? 6 : 5}
-                className={inSel ? "fill-gold" : "fill-fg-muted/35"}
+                className={inSel ? "fill-accent" : "fill-fg-muted/35"}
               />
             );
           })}
@@ -334,21 +340,21 @@ export function FundraisingDiagram() {
           width={124}
           height={30}
           rx={15}
-          className="fill-ground stroke-gold"
+          className="fill-ground stroke-accent"
           strokeWidth={1}
         />
         <text
           x={(x0 + x1) / 2}
           y={y0 + 4}
           textAnchor="middle"
-          className="fill-gold font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
+          className="fill-accent font-sans text-[12px] font-medium tracking-[0.08em] uppercase"
         >
           {MATCHED_COUNT} matched
         </text>
       </g>
 
       <g>
-        <circle cx={5} cy={490} r={5} className="fill-gold" />
+        <circle cx={5} cy={490} r={5} className="fill-accent" />
         <text x={22} y={495} className="fill-fg-muted font-sans text-[15px]">
           Meets mandate criteria
         </text>

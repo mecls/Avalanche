@@ -42,8 +42,10 @@ comment claiming "no serif, no accent colour", it predates the rebuild.
   browser synthesises a slant on the most visible type on the site.
 - Colour tokens are named by **role**, never by hue: `ground`, `ground-deep`,
   `ground-alt`, `card`, `fg`, `fg-muted`, `fg-faint`, `line`, `line-soft`,
-  `gold`. Do not reintroduce hue names, and do not hardcode a hex or `bg-white`
-  in a component — a light band would break it.
+  `accent`. Do not reintroduce hue names, and do not hardcode a hex or
+  `bg-white` in a component — a light band would break it. `accent` was
+  `gold` until 4 Sep 2026 and was renamed with the colour; `git log -S
+  "--color-gold"` has the old values.
 - A light section is `data-band="light"` on the `<section>`. That single
   attribute re-points every token for the subtree, which is why shared
   components take no `tone` prop. `data-band="dark"` goes back the other way,
@@ -59,20 +61,34 @@ comment claiming "no serif, no accent colour", it predates the rebuild.
   that flips the header's colour. It must use `--color-paper`, not
   `var(--color-ground)`: `main` is outside the light band, so its own
   `--color-ground` still resolves dark.
-- `--color-gold-deep` is the accent **held constant across bands**, for
-  decorative graphics only. `--color-gold` darkens to `#7c6c45` on a light band
-  so text set in it clears 3:1; that darkening is wrong for the solutions rail,
-  which carries no text. Never set type in `gold-deep`.
-- Because of this, `bg-fg text-ground` is a white button on dark and a black
-  button on light **from the same markup**. Preserve that property.
+- **The accent is OBSIDIAN, and it is a brightness accent, not a hue one.**
+  `#b9c1c9` (cool silver) on a dark band, `#39424c` (deep slate) on a light
+  one — obsidian is black glass, so on a dark ground the accent has to be the
+  sheen rather than the stone. The cool cast is deliberately slight (R/B
+  spread of 16): the raster diagrams this replaced were rejected partly for
+  carrying a real blue, so do not saturate it back toward one.
+- Because gold had a hue to signal with and this does not, the accent signals
+  with **luminance**, and its distances are load-bearing: 10.0:1 on `#151515`,
+  a 1.8:1 step down from `fg` (so it does not read as white), and a 3.6:1 step
+  up from a 50%-opacity `fg-muted` dot. That last one is the entire reason the
+  `/solutions` diagrams are legible at a glance. Do not dim it toward
+  `fg-muted`.
+- `--color-accent-light` / `--color-accent-deep` are the rail gradient's stops,
+  **held constant across bands**, decorative only. `--color-accent` follows the
+  band so type set in it clears contrast either way; that flip is wrong for a
+  graphic carrying no text. Both are calibrated for the light `#eeeeee` track
+  that is their only home and would be invisible on dark. Never set type in
+  either.
+- `bg-fg text-ground` is a white button on dark and a black button on light
+  **from the same markup**. Preserve that property.
 - **The three dark grounds are deliberately the same `#151515`.** The reference
   runs one dark value, not a ramp. Components that reach for `ground-deep` or
   `ground-alt` still work; they just no longer band against each other.
 - Check contrast when changing a token. A previous palette shipped its faint
   token at 2.9:1 while it carried every eyebrow and all the footer legal text.
-  **Gold is the trap here**: `#ae9e77` is 6.4:1 on `#151515` but only 2.6:1 on
-  white, under even the 3:1 large-text floor. The light band swaps in a
-  darkened `#7c6c45`; do not "unify" the two.
+  The **accent** is the trap here, for the reasons two bullets up: the dark and
+  light values are not the same colour and must not be "unified", and its
+  distance from its neighbours matters as much as its distance from the ground.
 
 ## Client components
 
@@ -95,15 +111,22 @@ it, including why the reduced-motion guard has to say
 
 ## Things that look wrong but are deliberate
 
-- **The chrome is two elements, not one.** A `fixed` 37px announcement bar that
-  stays, and an `absolute` 79.2px nav that scrolls away. Their sum is published
-  as `--header-h`; `main` reserves it and the hero cancels it with a negative
-  margin. The spec said to drop both, which is right for a one-page reference
-  and wrong here — on the three routes without a hero, an absolute nav with no
-  reserved space lands on top of the first heading.
-- **`accent` keys in `content/copy.ts` are still ignored.** Gold is back, but
-  it carries the banner link and (per the reference) one section heading — not
-  a word inside a headline. Kept, not rendered.
+- **The chrome is ONE element and nothing on the site is `fixed`.** An
+  `absolute` 79.2px nav at `top:0` that scrolls away, published as
+  `--header-h`; `main` reserves it and the hero cancels it with a negative
+  margin. It used to be two — a `fixed` 37px announcement bar sat above the
+  nav, and `--header-h` was the 116.2px sum — but the bar was removed on
+  4 Sep 2026, taking `--header-bar-h` and `--header-nav-h` with it. Its copy
+  is kept but unrendered as `announce` in `content/copy.ts`. **Keep the
+  reservation**: the spec said to drop it too, which is right for a one-page
+  reference and wrong here — on the three routes without a hero, an absolute
+  nav with no reserved space lands on top of the first heading.
+- **`accent` keys in `content/copy.ts` are still ignored.** The accent carries
+  graphics — the solutions rail and the two diagrams — not a word inside a
+  headline. Kept, not rendered. It carried the announcement bar's link too
+  until that bar was removed, which leaves the light-band accent value with no
+  consumer at all today; it is defined anyway, because an undefined one is how
+  a future light-band accent ends up hardcoded.
 - **The hero H1 breaks on authored lines.** `hero.titleLines` in
   `content/copy.ts` holds two entries, each an italic `lead` plus a roman
   `rest`. It is content, not layout, which is why the break is not a `<br>` in

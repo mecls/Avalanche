@@ -2,10 +2,11 @@ type Props = {
   eyebrow?: string;
   title: string;
   /**
-   * Trailing substring of `title` that used to be rendered in a gold italic
-   * accent. The Fundraisr design has no accent motif — headings are flat — so
-   * this is currently accepted and ignored. Kept because the emphasis points
-   * are editorial information worth not throwing away.
+   * Trailing substring of `title` that used to be rendered in an italic
+   * accent. Headings are flat in this design — the accent carries graphics,
+   * not a word inside a headline — so this is accepted and ignored. Kept
+   * because the emphasis points are editorial information worth not throwing
+   * away.
    */
   accent?: string;
   lede?: string;
