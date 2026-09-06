@@ -204,6 +204,146 @@ old artwork is ever wanted back.
 
 ---
 
+## /manifesto — a whole page, and all of it drafted
+
+**Added 5 September 2026.** Every string on this route is in
+`content/manifesto.ts` and every block in it is marked `// DRAFT`. None of it
+came from an Avalanche property. It was condensed from a thesis document you
+supplied on the day.
+
+### What was cut, and why that matters more than what was kept
+
+The source ran to seven sections: five tenets, four data charts with a stat
+grid, a competitor 2x2, an eight-row requirement matrix comparing us to
+advisors and platforms, and a protocol architecture with three phases. Four
+sections shipped. The rest was dropped, deliberately:
+
+| Cut | Why |
+|---|---|
+| The four data charts and the stat grid | See below — roughly twenty unverifiable figures. |
+| The competitor 2x2 and the requirement matrix | Adversarial toward named categories, and it is sales rather than belief. It also makes claims about how *other* firms are paid. |
+| The protocol architecture and its three phases | That is `/solutions`, which already has five blocks and six diagrams. |
+| The named allocator chips (ADQ, Mubadala, PIF, Rothschild, 8VC, …) | Naming institutions that have "reviewed our dealbook" is a checkable claim about third parties. If you want it, it needs to be true and probably needs their agreement. |
+| The name **"the Capital Formation Protocol"** | It appears nowhere else on the site or in `content/`. Using it would be inventing a proprietary brand asset, not describing one. The page links to Solutions without naming a method. **Tell me if this is real and I will thread it through.** |
+
+### THERE ARE NO FIGURES ON THE PAGE. This was a decision, not an oversight.
+
+The source carried roughly twenty cited statistics — US listed-company counts,
+private-backed counts, median age at IPO, single-family-office growth to 2030,
+alternatives AUM, mega-fund share of committed capital, first-time fund closes,
+secondary volume. Every one had a source attached and **not one could be
+verified from here.**
+
+The track-record figures are already the most load-bearing claims on the site
+and are still awaiting your confirmation. Adding twenty more unverified ones —
+to state a set of *opinions* — would spend the site's credibility to say
+something that does not need a number to be true.
+
+So the page argues from position. Every directional claim ("the listed universe
+has been shrinking for a generation", "concentration has risen for a decade") is
+a widely-documented shape stated **without a figure attached**, and both
+diagrams are shape-only: no axis values, no units, no counts. Nothing on the
+page can be factually wrong.
+
+**If you want the data version, that is a different page and it needs a sourcing
+pass first.** Send the sources and it is a build, not a rewrite.
+
+### What needs your eye
+
+| Block | Note |
+|---|---|
+| **H1 — "Capital is not scarce. Access is."** | Straight from the source and the best line in it. It is a strong, opinionated claim to lead a page with; confirm you want to make it. |
+| **Belief 05 — "Access is infrastructure, not a rolodex."** | The body ends "That distinction is the whole of how this firm is built" — a claim about how Avalanche actually operates, not a market observation. The source went further and described the fee model (one-time engagement fee plus success fee, no retainers); **that was cut** because it is a commercial fact I cannot confirm. Add it back if it is right. |
+| **Belief 04 — "No allocator has ever wired money because of a scoring model."** | Rhetorical, and it cuts at the software category. Fine if you are comfortable being that pointed. |
+| **The three layers** | The framing (your network → extended network → addressable universe) is the source's and it is good. Confirm it matches how you actually describe the problem on a call. |
+| **"Reaching the third layer predictably is the whole discipline."** | The bridge into `/solutions`. It promises the method delivers layer three. |
+
+### The two diagrams
+
+`components/ui/manifesto-media.tsx`. Both are schematics with **no figures**,
+drawn in the same system as the `/solutions` six.
+
+| Diagram | What it claims |
+|---|---|
+| **The divergence** | Two lines starting together and separating, with the space between them shaded and labelled "Access gap". One array drives both lines *and* the wash, so the shaded region is by construction the area between them. The values are a direction, not a quantity. |
+| **The three layers** | Three concentric rects, the outer band accented and labelled "Addressable". The accent is knocked out by the inner two, so what shows is exactly the layer that is not being reached. |
+
+Note that on these two the accent marks what is **not** reached, which inverts
+its meaning on the `/solutions` six (where it marks what matched). Both pills
+say so in words. The file carries a comment so a future reader does not
+"correct" it.
+
+---
+
+## /get-in-touch — the questionnaire
+
+**Added 5 September 2026.** Everything is in `content/contact.ts`.
+
+**The nine questions and every one of their options are YOURS** — they are the
+only strings on the new page that are not drafted, and the order is exactly as
+supplied. Three things were changed to them, and nothing else. Each is one edit
+to undo:
+
+| Change | Example | Why |
+|---|---|---|
+| A typo | `"Three to six måonths"` → `"Three to six months"` | Stray character in the supplied list. |
+| Sentence case on option labels | `"Investment Fund"` → `"Investment fund"` | Matches every other list on the site. Say the word and they go back to title case. |
+| En dash in ranges | `"$1m - $5m"` → `"$1m – $5m"` | Matches the typography everywhere else. |
+
+The count in "Question n of 9" is read from the array rather than typed, so the
+two cannot disagree.
+
+### Drafted, and needing your eye
+
+| Block | Note |
+|---|---|
+| **"Get in touch" / the lede** | Taken from the reference you sent, which is Farah Capital's page. The words are generic enough that this is not really lifting, but it is not yours either — replace it if you want your own. |
+| **Question phrasings** | Your list gave short labels (`Name:`, `Company:`). They are asked as full questions here — "What is your name?" — because one field per screen with a bare label reads as a form fragment. The *options* are untouched. |
+| **The success panel** | "We read every submission ourselves. If there is a fit you will hear from one of us within two business days." **That is a promise about your response time and I invented it.** Change or remove it. |
+| **"Prefer to reach us directly?"** | Sits above the LinkedIn link, see below. |
+
+### Two things you need to supply
+
+1. **Where submissions go.** The form does not send anywhere. It validates,
+   collects and shows the success panel; that is all. This was deliberate so
+   you could see and approve the flow before a destination was picked. Whatever
+   goes in must not put the answers in a URL — they include a name and an email
+   address.
+2. **An email address and a phone number.** The reference's left column has
+   both. Neither exists anywhere in this repo, so nothing was invented: the
+   column offers LinkedIn and the form. Send them and they go into `site`
+   beside the booking link, and the mail/phone rows go back in.
+
+### Four labels now point at one page, and two of them promise the wrong thing
+
+Renaming the CTA to **"Get in touch"** (5 Sep 2026) covered the nav and the
+`/customers` and `/manifesto` page headers. It did not cover the other two
+labels that also lead to the questionnaire, and those two now say something the
+page does not do:
+
+| Label | Where | Goes to | Problem |
+|---|---|---|---|
+| **Get in touch** | Nav, /customers and /manifesto headers | the form | Correct. |
+| **Get started** | Hero, /solutions headers, four homepage sections | the form | Fine — neutral enough. |
+| **Book a meeting** | The closing band, every page | the form | **Promises a calendar and delivers a nine-question form.** |
+| **Book an intro call** | Footer | the form | Same. |
+
+The last two were accurate when they went straight to the scheduler. They no
+longer do. My suggestion is "Get in touch" for the closing band and "Get in
+touch" or "Start a conversation" for the footer, but this is a copy decision
+and I have not made it for you — **say the word and it is two strings.**
+
+### What changed elsewhere because of this page
+
+Every CTA on the site now points at `/get-in-touch` instead of scrolling to the
+closing band, and the band's own button goes there too rather than straight to
+the scheduler. **`site.booking` is now reached from exactly one place** — the
+success panel at the end of the form. That is the only remaining scheduler link
+on the site, so the outstanding question about which calendar to use now
+affects one button instead of nine.
+
+---
+
 ## Supplied by you — not drafted, but worth one check
 
 **The Neurable testimonial** (`testimonial` in `content/copy.ts`) — quote, name, role and photo all came from you, so none of it is drafted. One thing to confirm before launch: the portrait is paired with **Dr. Ramses Alcaide**'s name, and a photo attached to a named real person is a factual claim. If that image is a placeholder rather than them, swap it — it is the kind of mismatch that is very hard to spot later and awkward if a reader notices.

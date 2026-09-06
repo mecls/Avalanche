@@ -18,10 +18,16 @@ type Props = {
  * black on white in a light one — because both tokens are re-pointed by
  * `[data-band]`. That is the whole reason the buttons need no variant prop.
  *
- * `ghost` is the header button and is NOT a bordered outline: the reference
- * uses an almost-invisible 1% white fill plus a 6px backdrop blur, so it
- * reads as glass over the hero footage and as nothing at all over a flat
- * band. It has no border precisely because the blur is doing the separating.
+ * `ghost` is the header button. It is a 1% white fill plus a 6px backdrop
+ * blur — glass — and it NOW CARRIES A BORDER, which the reference's does not.
+ *
+ * Without one it reads as glass over the hero footage and as nothing at all
+ * over a flat band: the blur has nothing to separate against, so on every page
+ * but the homepage the site's most-repeated CTA was bare text. The border is
+ * `border-fg/70`, so it inverts with the band exactly as `solid`'s fill does —
+ * white over the hero video and over a dark first section, ink over a light
+ * one — from the same markup and with no `tone` prop. `box-border` is
+ * Tailwind's default, so it costs no height against the fixed 47.2px.
  *
  * Geometry measured from the reference: 4px radius, 14/20 padding, 47.2px
  * tall, 16px/19.2px Satoshi 500. A rectangle, not a pill, and no trailing glyph.
@@ -34,6 +40,27 @@ export function CtaButton({
   className = "",
   ...rest
 }: Props) {
+  return (
+    <Link href={href} className={ctaClass(size, variant, className)} {...rest}>
+      {children}
+    </Link>
+  );
+}
+
+/**
+ * The button look, in one place, because there are now two elements wearing it.
+ *
+ * Everything on the site that navigates is a `CtaButton`, i.e. a `Link`. The
+ * questionnaire on /get-in-touch needs a real `<button type="submit">` — an
+ * anchor with `href="#"` and a click handler would break middle-click, break
+ * Enter-to-submit, and put a bogus destination in the DOM. Both call this so
+ * the two cannot drift apart.
+ */
+function ctaClass(
+  size: "sm" | "md",
+  variant: "solid" | "ghost",
+  className: string,
+) {
   const sizing =
     size === "sm"
       ? "px-4 py-2.5 text-sm"
@@ -41,16 +68,28 @@ export function CtaButton({
   const look =
     variant === "solid"
       ? "bg-fg text-ground tracking-[-0.01em] hover:bg-fg/88"
-      : "bg-white/[0.01] text-fg tracking-[-0.05em] backdrop-blur-[6px] hover:bg-white/[0.08]";
+      : "border border-fg/70 bg-white/[0.01] text-fg tracking-[-0.05em] backdrop-blur-[6px] hover:border-fg hover:bg-white/[0.08]";
 
+  return `inline-flex items-center justify-center gap-3 rounded-[4px] font-medium transition-colors duration-200 disabled:pointer-events-none disabled:opacity-40 ${sizing} ${look} ${className}`;
+}
+
+/** A `CtaButton` that submits a form instead of navigating. Same geometry. */
+export function CtaSubmit({
+  children,
+  size = "md",
+  variant = "solid",
+  className = "",
+  ...rest
+}: {
+  children: React.ReactNode;
+  size?: "sm" | "md";
+  variant?: "solid" | "ghost";
+  className?: string;
+} & Omit<ComponentProps<"button">, "className">) {
   return (
-    <Link
-      href={href}
-      className={`inline-flex items-center justify-center gap-3 rounded-[4px] font-medium transition-colors duration-200 ${sizing} ${look} ${className}`}
-      {...rest}
-    >
+    <button className={ctaClass(size, variant, className)} {...rest}>
       {children}
-    </Link>
+    </button>
   );
 }
 

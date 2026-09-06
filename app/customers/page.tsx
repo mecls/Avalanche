@@ -3,7 +3,7 @@ import { CaseStudyGrid } from "@/components/sections/case-study-grid";
 import { LogoGrid } from "@/components/sections/logo-grid";
 import { TrackRecord } from "@/components/sections/track-record";
 import { CtaBand } from "@/components/site/cta-band";
-import { ArrowGlyph, CtaButton } from "@/components/ui/button";
+import { PageHeader } from "@/components/site/page-header";
 import { LogoMarquee } from "@/components/ui/logo-marquee";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { customers, whoWeServe } from "@/content/copy";
@@ -40,50 +40,24 @@ export const metadata: Metadata = {
 export default function CustomersPage() {
   return (
     <>
-      {/* The page header is the SAME construction as /solutions — same
-          `page-label` run, same 72px H1 on the same 809px step-down, same
-          16/24 lede, same 720/680 measures, same `items-end` row with the CTA
-          hard right. Both were separate builds until 4 Sep 2026 and had drifted
-          to three different values in every row: 64px vs 80px H1 (both now 72px), a 600-weight
-          grey label against a 500-weight ink one, a 15px lede against a 16px
-          one, a 576px column against 720. Keep them in step — if this header
-          changes, /solutions changes with it.
+      {/* The page header is the shared construction — see
+          components/site/page-header.tsx, which carries the drift history
+          that is the reason it is a component.
 
-          This is also why the section is no longer
+          This section is no longer
           `min-h-[calc(100dvh-var(--header-h))]`. That full-height statement
-          came from matching fundraisr.ai/customers section for section, and it
-          is what left ~950px with the whole right half empty: nothing sat
-          opposite the heading, where the hero puts its stat and /solutions its
-          button. The CTA moved up into that column and the fixed
+          came from matching fundraisr.ai/customers section for section, and
+          it is what left ~950px with the whole right half empty: nothing sat
+          opposite the heading, where the hero puts its stat and /solutions
+          its button. The CTA moved up into that column and the fixed
           100/48 rhythm replaced the fold. */}
       <section data-band="light" className="flex flex-col overflow-hidden">
-        <div className="shell flex flex-col items-center justify-center gap-2.5 overflow-clip pt-[100px] pb-12 max-[809px]:pt-[60px] max-[809px]:pb-8">
-          <div className="flex w-full flex-row items-end justify-center gap-6 max-[809px]:flex-col max-[809px]:items-start max-[809px]:gap-8">
-            <div className="flex flex-1 flex-col items-start justify-center gap-4 overflow-clip max-[809px]:w-full max-[809px]:flex-none">
-              {/* Accented like /solutions' and like every section eyebrow. */}
-              <p className="page-label text-accent">{customers.eyebrow}</p>
-
-              <div className="max-w-[720px]">
-                <h1 className="display display-72 text-[72px]">
-                  {customers.title}
-                </h1>
-              </div>
-
-              <div className="max-w-[680px]">
-                <p className="text-[16px] leading-6 text-fg-muted">
-                  {customers.lede}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex shrink-0 items-center">
-              <CtaButton href="#get-in-touch" className="group">
-                Book a call
-                <ArrowGlyph />
-              </CtaButton>
-            </div>
-          </div>
-        </div>
+        <PageHeader
+          eyebrow={customers.eyebrow}
+          title={customers.title}
+          lede={customers.lede}
+          cta={customers.cta}
+        />
 
         {/* Venture strip across the foot of the header.
 

@@ -62,72 +62,7 @@
  * appreciably longer.
  */
 
-/**
- * Shared canvas.
- *
- * The height is set so the drawn content ENDS at ~499 in every diagram — the
- * legend baseline — leaving an even margin top and bottom. Get this wrong and
- * the artwork centres on the box rather than on its own content, which reads
- * as the whole card being bottom-heavy. All six share the bound so they sit at
- * the same height down the page, which matters now that five stack in a
- * column: one odd frame reads as a broken row rather than as a different
- * picture.
- */
-function Frame({ children }: { children: React.ReactNode }) {
-  return (
-    <svg
-      viewBox="0 0 620 508"
-      className="h-auto max-h-[86%] w-[94%] max-w-[560px] overflow-visible"
-      fill="none"
-      aria-hidden
-    >
-      {children}
-    </svg>
-  );
-}
-
-/*
- * Why `max-w-[560px]`, and why the width is no longer per-breakpoint.
- *
- * SVG type scales with the frame, so the rendered size of every label is
- * (frame width / 620) x its user-unit size. The card is fluid — 644px on a
- * wide desktop, 524px at 1200, 960px when it goes full-width on a tablet, and
- * 350px on a 390px phone — so a percentage width made that ratio swing by
- * 2.2x and the labels with it.
- *
- * This was three rules (84% / 68% at 1199 / 94% at 809) chosen to compensate
- * per band. They were derived from card widths that are no longer true and
- * they overshot: on a 1000px viewport the tablet card is 960px, and 68% of
- * that is a 1.05x scale — the diagram rendered LARGER than its design size.
- *
- * One rule with a cap is both simpler and steadier. 94% keeps a margin inside
- * the card; the 560px cap stops the tablet blow-up. From 600px to 1600px the
- * scale now sits between 0.795 and 0.903. Below 600px the card is smaller than
- * the cap and no width rule can help, so the rungs in globals.css raise the
- * user-unit sizes instead. The derivation, with measurements, is there.
- */
-
-/** Section label, top-left of each diagram. */
-function Caption({ x, y, anchor = "start", muted = true, children }: {
-  x: number;
-  y: number;
-  anchor?: "start" | "middle" | "end";
-  muted?: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <text
-      x={x}
-      y={y}
-      textAnchor={anchor}
-      className={`font-sans dgm-sm font-medium tracking-[0.12em] uppercase ${
-        muted ? "fill-fg-muted" : "fill-fg"
-      }`}
-    >
-      {children}
-    </text>
-  );
-}
+import { Caption, Frame } from "@/components/ui/diagram";
 
 /**
  * Stand-in for a block that has no diagram yet.

@@ -24,7 +24,7 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 
 ## Structure
 
-5 routes. There is no "get in touch" page — booking is the closing band (`components/site/cta-band.tsx`) at the foot of every page, and `#get-in-touch` is the anchor every CTA points to.
+7 routes. **`/get-in-touch` is now a real page** and every CTA on the site points at it. It used to be an anchor: `#get-in-touch` was the id on the closing band (`components/site/cta-band.tsx`), CTAs scrolled to it, and the band's button went to an external scheduler. The band still sits at the foot of **every** page — it is the ending, not the mechanism — and keeps its id so an old `/#get-in-touch` link still lands somewhere. It shipped off `/get-in-touch`, on the reasoning that its button would point at the page you are already on; that was overruled on 6 Sep 2026, because the ending is furniture and the site should not have one page that stops differently. The band takes a `ctaHref` prop now, defaulting to `/get-in-touch`, and that page passes `#questionnaire` so the button scrolls back up to the form instead of reloading the route.
 
 ```
 /                        Hero (video, full-screen, client strip) · Track record ·
@@ -34,6 +34,8 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 /solutions/secondaries   Same layout, Secondaries content (COPY PENDING)
 /customers               Filterable grid of all 13 case studies
 /team                    Five partners · Press
+/manifesto               The divergence · five beliefs · the three access layers
+/get-in-touch            Nine-step qualification form · FAQ · CTA band
 ```
 
 ### /solutions is two views
@@ -55,7 +57,11 @@ It was one page carrying a Secondaries block and a Fundraising block. Since 4 Se
 
 That map is keyed on id rather than position on purpose. It was a positional array when there was one view with two blocks; with two views of five, position means nothing — block 02 is investor sourcing on one and pricing on the other. Each diagram makes a **specific** claim (which route matched, which segment was selected, which branch was taken), so none is reused to fill a card it does not describe. An honest blank beats a plausible-looking wrong picture.
 
+**The ghost value measures 2.8:1 against the plate, under the 3:1 floor for a meaningful graphic, and it stays.** `fg-muted` at 50% is 2.82:1 on `#151515` and 2.75:1 on the `#202020` card centre, against 7.7:1 for the accent. Raising it collapses the other end: at 70% the ghost is 3.9:1 against the ground but only 1.8:1 against the accent, which is precisely the equal-luminance-separated-only-by-hue failure the accent section is written about. The frame is `aria-hidden` and the copy beside every diagram states its claim in words, so the pictures are formally decorative. **If this ever changes it changes for all eight diagrams at once, not for one.** `/manifesto`'s falling line, which carries more weight than a ghost dot does, buys back the margin with a dash pattern and an opposite direction — two channels that survive a luminance failure.
+
 **Every count in a diagram pill is derived from the array drawn beside it**, in the same render — "8 matched", "2 committed", "3 of 4 aligned". None is typed twice, so a caption cannot drift from its own picture. Keep that property when editing; it is the only thing stopping a diagram from lying.
+
+**The diagram scaffolding is shared.** `components/ui/diagram.tsx` holds `Frame`, `Caption` and `Plate`. They were private to `solutions-media.tsx` and `solutions-steps.tsx` until `/manifesto` drew two of its own; each carries an invariant that only works if it is literally shared rather than copied — `Frame` fixes the viewBox and the 560px cap, `Caption` fixes the corner run at one rung, and `Plate` carries the `data-band="dark"` that makes art written against `fg` come out light-on-dark inside a white section. The authoring rules stay in `solutions-media.tsx`'s header.
 
 **Diagram type is sized in rungs, and that is not decoration.** A `<text>` inside a viewBox is scaled by (rendered width / 620), so one source size renders at a different physical size on every viewport. Before this was fixed, a 12-unit run shipped anywhere between **5.8px and 12.6px** depending on width — overshooting on tablet and collapsing to texture on a phone. The fix has two halves and needs both:
 
@@ -71,6 +77,175 @@ Growing the type also broke three layouts that had been tuned around the old siz
 **`/solutions` and `/process` both redirect to `/solutions/fundraising`**, with a **307 and not a 308**. `/process` has now moved three times; an earlier 308 to `/solutions#fundraising` is still cached in any browser that followed it, and a 308 cannot be withdrawn — no response header un-caches one already issued. 307 keeps every one of these moves revisable. Both go straight to the destination rather than chaining through `/solutions`. Purge the CDN on the next deploy either way.
 
 The old `#secondaries` and `#fundraising` fragments survive as block ids, so a deep link still lands on a real block — on whichever of the two views now owns it.
+
+### /manifesto
+
+Added 5 September 2026. Condensed from a much longer thesis document — five
+tenets, four data charts, a competitor 2x2, an eight-row requirement matrix and
+a protocol architecture. Four sections survived: the claim, the picture that
+shows it, the five positions that follow, and where the gap actually sits.
+
+Most of what was cut was cut for a reason worth knowing. The competitor matrix
+and the protocol architecture are `/solutions` material, and `/solutions`
+already has five blocks and six diagrams. The name "the Capital Formation
+Protocol" was dropped because it appears nowhere else on the site or in
+`content/`, so shipping it would have been inventing a proprietary brand asset
+rather than describing one.
+
+**There are no figures anywhere on the page, and that is the design.** The
+source carried roughly twenty cited statistics — listed-company counts, family
+offices, median age at IPO, mega-fund share of committed capital. Not one could
+be verified, and the track-record figures are already the most load-bearing
+claims on the site; adding twenty more unverified ones to state a set of
+*opinions* would be spending credibility to say something that does not need a
+number to be true. Every directional claim is stated without a figure attached
+and both diagrams are shape-only. The full reasoning is in the header of
+`content/manifesto.ts`.
+
+The five beliefs reuse `WhoWeServe`'s ruled `<dl>` verbatim — accent ordinal and
+statement left, argument right. The two media rows are the `/solutions` row with
+the rail taken out. Nothing here needed new CSS.
+
+**The beliefs section is `data-band="dark"` and that is load-bearing.** The page
+opens light, so the `:has()` rule paints `main` with `--color-paper` — a section
+that does not paint *itself* sits on white while still inheriting the root's
+dark text tokens, i.e. white type on a white ground. This was the first thing
+that broke. `/customers` hits the same trap and answers it with
+`bg-ground-deep`; this page says `data-band="dark"` because it means the band,
+not just the colour.
+
+**The H1 breaks on authored lines**, like the hero's. `manifesto.titleLines`
+holds `["Capital is not scarce.", "Access is."]`. It has to be authored: the
+full line wraps either way inside the header's 720px measure, and left to itself
+it breaks as "…scarce. Access / is.", which strands the second sentence's verb.
+
+**It is in the footer and nowhere else.** The header keeps its three primary
+destinations; `/manifesto` is listed only in the footer's Overview column. It
+is still one entry in the one `nav` array in `content/copy.ts`, carrying a
+`footerOnly` flag — `components/site/nav.tsx` derives `headerNav` by filtering
+that flag out, `components/site/footer.tsx` renders the array whole. A second
+list would have been the obvious alternative and is the wrong one: that array
+is the only place the site's routes are written down, and a route missing from
+it is a route nothing links to.
+
+Worth knowing if it ever goes back in the header: it was there briefly, and it
+fits, but only just. Four links need 691px of the 728px available at the 768px
+`md` breakpoint — 37px of slack against 130px for three — and between 768 and
+~830px they sit up to 11px right of centre because the wordmark cell hits its
+min-content width. No collision or overflow at 784 / 800 / 820 / 860 / 900 /
+1024 / 1200. **A fifth link will not fit at all**; that is when the nav's
+breakpoint moves from `md:` to `lg:`.
+
+### /get-in-touch
+
+Added 5 September 2026. Left column is the heading and lede; right column is a
+nine-step qualification form; the homepage FAQ and then the closing band end
+the page, the same two blocks in the same order as everywhere else. **The nine
+questions and their options were supplied**, and the order is exactly as given.
+Three things were changed: a typo, sentence case on the option labels, and en
+dashes in the ranges — all three listed in `docs/COPY-REVIEW.md`. The count in
+"Question n of 9" is read from the array rather than typed, so the label cannot
+drift from the number of steps.
+
+**IT DOES NOT SUBMIT ANYWHERE YET.** `send()` in
+`components/sections/contact-form.tsx` validates, logs and shows the success
+panel, and that is the whole of it — no route handler, no email service, no
+third-party endpoint. That was a deliberate decision: the flow can be seen and
+approved before a destination is chosen. Whatever is wired in must **not** put
+the answers in a URL; they include a name and an email address.
+
+**The fourth client component, and the first whose state is its own.** The
+other three read EXTERNAL state — scroll offset, reduced motion, a route change
+— which is why the rule for them is `useSyncExternalStore` rather than
+`useState` + `useEffect`. Nothing in the form is external, so plain `useState`
+is correct and `react-hooks/set-state-in-effect` is not in play. Its single
+effect moves focus and sets no state.
+
+One question per screen. Choosing an option advances — **except on the ninth**,
+where it only selects, because submitting the instant someone touches the last
+option gives them no moment to change their mind. Focus moves with the step:
+into the input on a text step, onto the `aria-live` count on a choice step, so
+a keyboard user is never dropped at the top of the document when the button
+they just pressed unmounts. `autoFocus` cannot do that job here — it is applied
+during commit and the focus effect would immediately override it.
+
+**The card centres its content rather than pinning the button to the foot.** A
+`mt-auto` against the min-height holds the button at a constant height, which
+sounds better and looks worse: a one-field step then leaves it marooned under a
+third of a card of nothing. Centring spends the same slack as symmetric
+padding.
+
+**The section tint is on an inner wrapper, not on the `<section>`.**
+`[data-band="light"]` sets `background-color` as a plain unlayered rule in
+globals.css, so it outranks a `bg-*` utility on the same element — a
+`data-band="light"` section classed `bg-ground-deep` stays white. The wrapper
+is not the band, so the utility applies there. The card is `bg-card` on
+`ground-deep`, which is the `/customers` tile idiom inverted for a light band:
+#ffffff on #f3f3f3, so the card reads as raised.
+
+**It is image-backed, so the section is DARK and carries no `data-band`.** It
+opened `data-band="light"` on a flat tint until 6 Sep 2026, which made the nav
+flip to ink and painted `main` white; both are driven by the same `:has()`
+rule, so removing the attribute is the whole fix. `-mt-[var(--header-h)]` pulls
+the section under the transparent nav for a full-bleed frame, exactly as the
+hero does, and the header height is added back to the content's top padding.
+The stack is the hero's minus the `<video>`: image (0), scrim (1), grain (2),
+content (10).
+
+It carried a real background video for part of that day. It is a still now, by
+request — `scripts/optimize-bg-video.mjs` keeps the measurements that video
+needed, because the source cannot loop on a straight cut.
+
+**`min-h-dvh`, not the hero's exact `h-dvh`, and the difference is the point.**
+The hero's composition depends on an exact height: its content box is
+`calc(100% - 100px)` reserving the logo band, so a min-height would push that
+band off the fold. This section reserves nothing and its card *grows* — the
+six-option question is taller than the one-field one, and on a short laptop
+that can exceed the viewport, where an exact height would clip it.
+`justify-center` then centres the content, and the padding is asymmetric
+(header height plus 100 above, 100 below) so it reads centred **below** the
+chrome rather than behind it.
+
+**The form card is a `data-band="light"` island**, the same nesting the
+/solutions media plates use in reverse. Verified white on all nine questions
+and on the success panel — `rgb(255,255,255)` with ink type, driven entirely by
+that one attribute.
+
+**The page label is white, not `text-accent`**, unlike the other three page
+headers. That follows the hero's rule rather than breaking the page-label one:
+contrast over a photographic ground has to be measured against the brightest
+column each run crosses, and the accent is the one place the palette puts small
+type in colour. The other three sit on flat bands and keep it.
+
+**TWO SCRIMS, SWITCHED AT THE SAME BREAKPOINT AS THE LAYOUT.** From `lg` up the
+type is in the left column and the right half carries an opaque card, so the
+gradient is left-weighted and lets the image come up on the right. Below `lg`
+the layout stacks and the type spans the full width, so its right end lands in
+the light end of that same gradient — measured at **4.23:1 on a 390px phone and
+2.93:1 on a 768px tablet** against a 4.5 floor. The stacked layout therefore
+gets a vertical scrim (0.82 → 0.70) instead.
+
+The horizontal stops hold the dark to 72% rather than 66%, and that is about
+the still rather than the video: the last frame puts open sky exactly where the
+text sits. **The tightest case is a 1024px laptop** — the two-column grid is
+live but each column is only 460px, so the run reaches 47% of the width, right
+where the old gradient was already lightening. It measured 4.84:1 there:
+passing, but too thin to leave.
+
+Contrast was measured the way the hero's was — compositing the real image
+against the real gradient with the foreground hidden, taking the **brightest 2%
+of pixels each run crosses**. Worst run at each width, against a 4.5 floor:
+
+| 390 | 768 | 1024 | 1180 | 1440 | 1700 | 2328 |
+|---|---|---|---|---|---|---|
+| 5.47 | 5.55 | 5.64 | 5.67 | 6.20 | 7.65 | 7.42 |
+
+Re-measure if the image, either gradient, or the breakpoint changes.
+
+`CtaSubmit` was added to `components/ui/button.tsx` for the Next/Send button.
+It shares `ctaClass()` with `CtaButton` so the two cannot drift. A `Link` with
+`href="#"` and a click handler would have been the lazy option and breaks
+middle-click, breaks Enter-to-submit, and puts a bogus destination in the DOM.
 
 ### The hero
 
@@ -95,7 +270,7 @@ The figures count up on scroll. Two things there are deliberate and worth not un
 
 ### Booking is a placeholder
 
-The scheduler at the foot of every page is **not a real embed yet**. `components/sections/booking.tsx` renders a panel with a "Book a meeting" button pointing at `site.booking` in `content/copy.ts` — currently the Fundraisr booking page, which is live and ours, so it works today.
+`site.booking` in `content/copy.ts` points at the Fundraisr booking page — live and ours, so it works today. Since `/get-in-touch` exists it is reached from **one place only**: the success panel at the end of the questionnaire, offered to anyone who has just filled the form and would rather book than wait. Nothing else on the site links to a scheduler.
 
 **Swap that one string when the real calendar link arrives.** If the new scheduler is embeddable, replace the panel body and keep the plain link as a fallback.
 
@@ -146,7 +321,11 @@ The **layout** is a clone of farahcap.com. The **type** is fundraisr.ai's. The s
 
 **Two small-uppercase runs, and they do different jobs.** `eyebrow` (14/600, **accent**) labels a section *inside* a page and renders a dozen times on the homepage. `page-label` (14/500, no colour of its own) labels the *page itself*, above the 72px H1 — a heavier run under the largest heading on a route reads as a caption rather than as the page's name. The page-name use takes `text-accent` at the call site so it matches the eyebrows; the `/solutions` block labels and rail numbers share the utility and deliberately stay ink, because they sit against the accent rail and both diagrams. Neither utility folds into the other, and the colour stays out of `page-label` itself.
 
-**`/solutions` and `/customers` share one page-header construction:** the same label run, the same `display display-72 text-[72px]` stepping down to 40px at 809px, the same 16/24 lede, the same 720px/680px measures, and the same `items-end` row that sets the CTA's bottom edge on the lede's last baseline with a trailing arrow. They were built separately and had drifted to a different value in *every* row — 64px vs 80px H1, a 600-weight grey label against a 500-weight ink one, a 15px lede against 16px, a 576px column against 720px — which is what made `/customers` read as a different site. Verified identical at 1440 / 900 / 800 / 390px. Change one, change the other.
+**`/solutions`, `/customers` and `/manifesto` share one page header, and it is now a component.** `components/site/page-header.tsx`: the same label run, the same `display display-72 text-[72px]` stepping down to 40px at 809px, the same 16/24 lede, the same 720px/680px measures, and the same `items-end` row that sets the CTA's bottom edge on the lede's last baseline with a trailing arrow.
+
+It was duplicated JSX in two places. They had been built separately and had drifted to a different value in *every* row — 64px vs 80px H1, a 600-weight grey label against a 500-weight ink one, a 15px lede against 16px, a 576px column against 720px — which is what made `/customers` read as a different site. They were hand-aligned on 4 Sep 2026 and both carried a "keep them in step" comment. `/manifesto` would have made a third copy, so the copies were collapsed instead. **Verified byte-identical**: the rendered `<main>` of all three pages was diffed before and after the extraction and did not change by a character.
+
+It renders only the inner `shell` div — the `<section>` stays with the caller, because `/customers` adds `flex flex-col overflow-hidden` for the logo strip it hangs below the header and `/solutions` does not. `title` is a `ReactNode` so `/manifesto` can pass its own authored line breaks.
 
 Colour tokens are named by **role**, never by hue. A light section is `data-band="light"` on the `<section>` and that one attribute re-points every token for the subtree, which is why shared components take no `tone` prop — `bg-fg text-ground` is a white button on dark and a black button on light from the same markup.
 
@@ -167,7 +346,7 @@ The site is monochrome except for these:
 | Where | Renders | Why it earns the colour |
 |---|---|---|
 | Section eyebrows + page labels | ~12 per page | A block's own name — "Verticals", "What we raise", "Who we serve". The colour is what makes a section announce itself before the heading does. The two page-name `page-label` runs take `text-accent` at the call site to match. |
-| `/solutions` rail + both diagrams | once, on one page | **Functional.** The accent is the diagram's only means of saying which route matched. Remove it and the picture stops working. |
+| `/solutions` rail + all eight diagrams | six on `/solutions`, two on `/manifesto` | **Functional.** The accent is the diagram's only means of saying which route matched, which region is the subject. Remove it and the pictures stop working. On `/manifesto` it marks what is *not* being reached — the gap, and the outer layer — which is an inversion of the /solutions six and is called out in the file. |
 | Case-study metric pill | once per page | The single number on a card, and the thing a reader should land on. The `/customers` grid uses the tile treatment and carries no pill. |
 | CTA band chip | once per page | The conversion point of every page. Decorative — the label beside it is white and carries the meaning. |
 
@@ -190,6 +369,10 @@ Headings stay monochrome too. The `accent` prop on `SectionHeading` — a traili
 ## The chrome
 
 One element: an **absolute** 79.2px nav at `top:0` that scrolls away with the page — fully transparent, image-free wordmark, pill links, and a glass ghost button.
+
+**The ghost button now carries a BORDER, and the reference's does not.** It is glass — a 1% white fill over a 6px backdrop blur — which separates beautifully against the hero footage and against nothing at all on a flat band. On every page but the homepage the site's most-repeated CTA was reading as bare text. The border is `border-fg/70`, so it inverts with the band exactly as `solid`'s fill does: white at 70% over the hero video and over any dark first section, ink over a light one, **from the same markup and with no `tone` prop**. `box-border` is Tailwind's default, so it costs nothing against the fixed 47.2px height. Verified on both consumers — the nav button and `FeaturedCaseStudy`'s "See more customer stories" — on a dark first band (`/`, `/get-in-touch`) and a light one (`/customers`, `/solutions/*`).
+
+**The ghost button says "Get in touch", and it has said that before.** It was "Get in touch", was relabelled "Book a call", and went back on 5 Sep 2026 — `docs/BUILD-NOTES.md` records the middle step. The difference this time is the destination: it was an anchor to the closing band, and it is now `/get-in-touch`, a page. The label lives in `site.navCta`, and `customers.cta` and `manifesto.cta` carry the same string for their page headers. `/customers` had it hardcoded in the page file until this rename, which is exactly how a label drifts.
 
 It was two. A **fixed** 37px announcement bar (opaque `#151515`, green live dot, italic text, underlined accent link) sat above the nav until 4 Sep 2026, and `--header-h` published the 116.2px sum. The bar is gone; `--header-bar-h` and `--header-nav-h` went with it, since one number with one consumer doesn't need three names, and **nothing on the site is `fixed` any more.** The copy is kept but unrendered as `announce` in `content/copy.ts`.
 
@@ -219,10 +402,42 @@ The scrim is **two stops, 0.44 → 0.60, in `#151515`** — not black. It replac
 
 It is a 256px tile, not the reference's 720px. Grain must render at 1:1 — scaling it blurs it into mush — so tile size only affects the file, and per-pixel random alpha is close to incompressible: 720px lands at 387KB, 256px at 30KB, and on structureless noise the shorter repeat is invisible. Keep `backgroundSize` in `hero.tsx` in step with `SIZE` in the script.
 
-### The video pipeline
+### Background media — one video, one still, one script
+
+`scripts/optimize-bg-video.mjs` (was `optimize-hero-video.mjs`). Per-clip
+decisions live in `PRESETS`; the shared machinery is the lanczos downscale,
+`gradfun` and the webp encode. **Almost nothing about an encode is portable
+between sources, crf least of all** — read the preset you are touching rather
+than copying the other one.
+
+`node scripts/optimize-bg-video.mjs hero` builds the homepage's mp4 + webm +
+poster. `node scripts/optimize-bg-video.mjs contact` builds a single webp.
+
+**`/get-in-touch` is a STILL, and the video it briefly replaced is documented
+in the preset on purpose.** It shipped as a background video on 6 Sep 2026 and
+became a still the same day, by request. The measurements are kept because the
+next person to reach for a video there will need them:
+
+> The source camera travels continuously and never returns. Boundary-frame
+> SSIM for every candidate window from 10s to 18s, started every 4s across the
+> clip, lands between **0.16 and 0.26** — no cut point in this source loops, so
+> a straight `loop` visibly jumps every wrap. Concatenating the clip with its
+> own reverse, minus the duplicated join frame, took that seam to **0.983**.
+
+The still is **the last frame of the source**, taken with an end-relative seek
+so it cannot drift if the source is ever re-cut. By then the camera has pulled
+fully back onto the lift's viewing platform against the Carmo ruins, and the
+blown sun flare that dominates the first half of the clip has gone — which is
+what makes white type over the left of it work.
+
+2000px rather than the video's 1600: a single still has none of a video's
+per-frame budget, and at 1600 it upscales visibly on a wide monitor. 213KB at
+q80, against the 3.6MB of mp4 + webm it replaced.
+
+### The hero video pipeline
 
 ```bash
-node scripts/optimize-hero-video.mjs [path/to/source.mp4]
+node scripts/optimize-bg-video.mjs <hero|contact> [path/to/source.mp4]
 ```
 
 The current source is a 2560x1440 / 13.8Mbps master — a wide, backlit view of the full span of the Ponte 25 de Abril. It is clean, so the script only downscales to 1600, debands, and encodes. Two things it does *not* do were both needed by earlier sources and would be wrong here:
@@ -240,7 +455,9 @@ The whole 15s ships: mean luma is flat at 118.0–118.6 end to end with no cut, 
 
 ## The closing band
 
-`components/site/cta-band.tsx` — "Start with a consultation", directly above the footer and the anchor target for every CTA on the site.
+`components/site/cta-band.tsx` — "Start with a consultation", directly above the footer on **all seven routes**.
+
+It used to be the anchor target for every CTA on the site. Since `/get-in-touch` is a page the CTAs go there instead, and so does this button — via a `ctaHref` prop that defaults to `/get-in-touch`. The one override is on `/get-in-touch` itself, which passes `#questionnaire`: same block, same "Book a meeting" label, but the button scrolls up to the form rather than reloading the route. **Do not special-case the copy** — "Book a meeting" reads correctly in both places, which is the reason the destination is the only thing that varies.
 
 Full-bleed and image-backed. The background is the **hero poster, not a second video**: this block sits at the bottom of a long page, so an autoplaying video there would decode continuously for something most readers never reach, and the still already exists and is already cached from the hero's own poster.
 
@@ -323,7 +540,7 @@ already 75% on screen before a pixel is scrolled.
 
 ## Client-side code
 
-There are only three client components — `nav`, `track-record`, `case-study-grid` — and one rule about them: **external state is read with `useSyncExternalStore`, not mirrored into an effect.** Scroll offset (`nav`) and `prefers-reduced-motion` (`track-record`) both work that way, with a `false` server snapshot that matches the pre-hydration markup. The nav closes its mobile sheet on route change by adjusting state during render, not in an effect.
+There are four client components — `nav`, `track-record`, `case-study-grid`, `contact-form` — and one rule about the first three: **external state is read with `useSyncExternalStore`, not mirrored into an effect.** `contact-form` is exempt because none of its state is external; see the `/get-in-touch` section above. Scroll offset (`nav`) and `prefers-reduced-motion` (`track-record`) both work that way, with a `false` server snapshot that matches the pre-hydration markup. The nav closes its mobile sheet on route change by adjusting state during render, not in an effect.
 
 That isn't stylistic — `npm run lint` enforces it via `react-hooks/set-state-in-effect`, and lint is clean. Keep it that way.
 

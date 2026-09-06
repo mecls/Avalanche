@@ -187,7 +187,7 @@ export function Hero() {
             {/* No caption beside the hero CTA. `hero.ctaNote` still exists and
                 is rendered by the mid-page CTA blocks, which is where the
                 reference puts that line. */}
-            <CtaButton href="#get-in-touch" className="rise [animation-delay:240ms]">
+            <CtaButton href="/get-in-touch" className="rise [animation-delay:240ms]">
               {hero.cta}
             </CtaButton>
           </div>

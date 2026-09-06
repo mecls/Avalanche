@@ -35,9 +35,13 @@ export const site = {
    */
   booking: "https://www.fundraisr.ai/book-demo",
   entity: "Avalanche Capital LDA (PT 517584271)",
+  /** The only public contact channel this repo has. There is no email address
+   *  and no phone number anywhere in it — /get-in-touch offers this and the
+   *  form, and nothing else, until real ones arrive. */
+  linkedin: "https://www.linkedin.com/company/avalanche-capital-advisory",
   /** The header's ghost button. Short by necessity — it sits in a 47.2px
    *  glass rectangle beside the nav pills. */
-  navCta: "Book a call",
+  navCta: "Get in touch",
 } as const;
 
 /**
@@ -54,11 +58,20 @@ export const site = {
  */
 export const announce = {
   text: "Advising funds, founders, and operating companies · Intro call available",
-  linkLabel: "Book a call",
+  linkLabel: "Get in touch",
 } as const;
 
 /**
- * The header links. `menu` gives an item a hover/focus dropdown in the desktop nav and an inline
+ * The site's routes, in one list, feeding BOTH the header and the footer.
+ *
+ * `components/site/footer.tsx` renders it whole in the Overview column.
+ * `components/site/nav.tsx` derives `headerNav` from it by dropping anything
+ * flagged `footerOnly` — so an entry can be reachable and indexed without
+ * taking one of the header's three primary slots. /manifesto is the only one
+ * today. Keep new routes in here either way: a route missing from this array
+ * is a route nothing on the site links to.
+ *
+ * `menu` gives an item a hover/focus dropdown in the desktop nav and an inline
  * sub-list in the mobile sheet. Only Solutions has one.
  *
  * It points at the two REAL ROUTES, not at anchors. The first version of this
@@ -94,6 +107,18 @@ export const nav = [
   },
   { href: "/customers", label: "Customers" },
   { href: "/team", label: "Team" },
+  /**
+   * FOOTER ONLY. The route is real and is meant to be found, but it is not one
+   * of the three places we send people first — so it is listed in the footer's
+   * Overview column and nowhere in the header, neither in the desktop pills nor
+   * in the mobile sheet.
+   *
+   * It lives in THIS array rather than in a second list because this is the one
+   * place the site's routes are written down, and a route that is missing from
+   * it is a route nothing links to. `components/site/nav.tsx` filters the flag
+   * out; `components/site/footer.tsx` does not.
+   */
+  { href: "/manifesto", label: "Manifesto", footerOnly: true },
 ] as const;
 
 export const hero = {
@@ -422,6 +447,10 @@ export const customers = {
   title: "Built for the firms and GPs moving private capital.",
   accent: "moving private capital.",
   lede: "Used by placement agents, boutique investment banks, emerging fund managers, and founding teams raising capital from HNWIs, family offices, and institutional investors. Our clients don't need another CRM — they need infrastructure that makes their fundraise executable.",
+  /** The page-header CTA. It was hardcoded in app/customers/page.tsx while
+   *  every other page header read its label from content — which is exactly
+   *  how a label drifts when it is renamed. */
+  cta: "Get in touch",
   gridTitle: "From first mandate to billion-dollar deal books.",
   gridLede:
     "We work across venture, private credit, real estate, and private equity — with clients from the US, Australia, and everywhere in between. Here's what that looks like in practice.",

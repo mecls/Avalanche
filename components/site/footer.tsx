@@ -42,7 +42,7 @@ export function SiteFooter() {
             <ul className="space-y-2.5 text-sm text-fg-muted">
               <li>
                 <Link
-                  href="#get-in-touch"
+                  href="/get-in-touch"
                   className="transition-colors hover:text-fg"
                 >
                   Book an intro call
@@ -50,7 +50,7 @@ export function SiteFooter() {
               </li>
               <li>
                 <a
-                  href="https://www.linkedin.com/company/avalanche-capital-advisory"
+                  href={site.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="transition-colors hover:text-fg"

@@ -228,7 +228,7 @@ export function TrackRecord({
         </BracketGrid>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
-          <CtaButton href="#get-in-touch">{trackRecord.cta}</CtaButton>
+          <CtaButton href="/get-in-touch">{trackRecord.cta}</CtaButton>
           <p className="flex items-center gap-2.5 text-[0.8125rem] text-fg-faint">
             <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-live" />
             {trackRecord.ctaNote}

@@ -1,9 +1,26 @@
 import { CtaButton } from "@/components/ui/button";
-import { ctaBand, site } from "@/content/copy";
+import { ctaBand } from "@/content/copy";
 
 /**
- * "Start with a consultation" — the closing block, directly above the footer,
- * and the anchor target for every CTA on the site.
+ * "Start with a consultation" — the closing block, directly above the footer.
+ *
+ * It used to be the anchor target for every CTA on the site, and its button
+ * went straight to an external scheduler. Since /get-in-touch exists (5 Sep
+ * 2026) the CTAs go there and so does this button. The band stays because it
+ * is the page's ending, not because it is the conversion mechanism.
+ *
+ * IT IS ON EVERY ROUTE, /get-in-touch INCLUDED. That page shipped without it
+ * on the reasoning that the button would point at the page you are already
+ * on; the ending is furniture and every page is meant to close the same way,
+ * so it was put back (6 Sep 2026) and the destination made a prop instead.
+ * `ctaHref` defaults to /get-in-touch and that page passes its own anchor, so
+ * the button scrolls up to the questionnaire rather than reloading the route.
+ * The label is "Book a meeting" either way, which reads correctly in both
+ * places — do not special-case the copy.
+ *
+ * `id="get-in-touch"` is kept although nothing on the site targets it now, so
+ * that an old `/#get-in-touch` link from outside still lands on the closing
+ * band rather than nowhere. Free to keep, silently broken to remove.
  *
  * Full-bleed and image-backed, matching the reference. The background is the
  * HERO POSTER, not a second <video>: this block sits at the very bottom of a
@@ -19,7 +36,12 @@ import { ctaBand, site } from "@/content/copy";
  * hero the text sits in a single left column and the right half of the frame
  * is free to stay open.
  */
-export function CtaBand() {
+export function CtaBand({
+  ctaHref = "/get-in-touch",
+}: {
+  /** Where the band's button goes. Overridden only on /get-in-touch. */
+  ctaHref?: string;
+} = {}) {
   return (
     <section
       id="get-in-touch"
@@ -103,9 +125,12 @@ export function CtaBand() {
             same bottom-aligned pairing the hero uses. They stack below `sm`,
             where there is no room to read across. */}
         <div className="mt-14 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-10">
-          <CtaButton href={site.booking} target="_blank" rel="noreferrer">
-            {ctaBand.cta}
-          </CtaButton>
+          {/* Goes to /get-in-touch, not straight to the scheduler. Every CTA
+              on the site now lands on the questionnaire; the direct scheduler
+              link survives at the end of that form, for anyone who has just
+              filled it in and would rather book than wait. On the
+              questionnaire itself this is an anchor back up to the form. */}
+          <CtaButton href={ctaHref}>{ctaBand.cta}</CtaButton>
 
           {/* Roman, not italic. It was italic under Inter; Satoshi ships no
               italic face here, so the class came off rather than leaving the

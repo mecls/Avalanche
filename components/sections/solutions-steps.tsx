@@ -1,4 +1,6 @@
+import { PageHeader } from "@/components/site/page-header";
 import { ArrowGlyph, CtaButton } from "@/components/ui/button";
+import { Plate } from "@/components/ui/diagram";
 import {
   EngagementDiagram,
   FundraisingDiagram,
@@ -45,54 +47,6 @@ import type { SolutionView } from "@/content/solutions";
  */
 
 /**
- * The dark textured plate every card sits on.
- *
- * `data-band="dark"` re-points the tokens for the card's subtree, which is
- * what lets its contents be written against `fg` / `line` / `accent` and come
- * out light-on-dark inside an otherwise white section. The grain is the hero's
- * tile, doing the same job: the radial below it is a long ramp over a wide
- * box, which is the case that bands on an 8-bit display.
- *
- * `max-w-[720px]` applies ONLY on the stacked layout, and only there is it
- * safe: below 1199px the card is `w-full flex-none`, so capping it cannot
- * affect the desktop row where `flex-1` plus the aspect ratio drives the row
- * height. Without it a full-width card on a tablet was 1150x1094px — a plate
- * taller than the viewport with a 560px diagram floating in the middle of it,
- * 51% of the width empty. That was always slightly absurd; it only became
- * visible when the diagram stopped growing to fill it. At 720px the card is
- * 720x685 and the diagram fills 78% of it.
- */
-function Plate({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      data-band="dark"
-      className="relative flex aspect-[1.05098/1] flex-1 items-center justify-center overflow-clip rounded-lg max-[1199px]:w-full max-[1199px]:max-w-[720px] max-[1199px]:flex-none"
-    >
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "radial-gradient(120% 90% at 50% 0%, var(--color-card) 0%, var(--color-ground) 62%)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/grain.png)",
-          backgroundSize: "256px auto",
-          backgroundRepeat: "repeat",
-        }}
-      />
-      <div className="relative flex h-full w-full items-center justify-center">
-        {children}
-      </div>
-    </div>
-  );
-}
-
-/**
  * Which diagram a block gets, BY BLOCK ID rather than by index.
  *
  * It was a positional array while there was one view with two blocks. There
@@ -129,37 +83,12 @@ export function SolutionsSteps({ view }: { view: SolutionView }) {
 
   return (
     <section data-band="light">
-      {/* Header. `items-end` bottom-aligns the CTA with the last line of the
-          description — the same pairing the hero uses. It stacks below 809px,
-          where a 146px button beside a 44px heading leaves the heading no
-          measure to wrap in. */}
-      <div className="shell flex flex-col items-center justify-center gap-2.5 overflow-clip pt-[100px] pb-12 max-[809px]:pt-[60px] max-[809px]:pb-8">
-        <div className="flex w-full flex-row items-end justify-center gap-6 max-[809px]:flex-col max-[809px]:items-start max-[809px]:gap-8">
-          <div className="flex flex-1 flex-col items-start justify-center gap-4 overflow-clip max-[809px]:w-full max-[809px]:flex-none">
-            {/* Accented, matching the section eyebrows — this is the page's
-                own name and does the same job. The BLOCK labels and rail
-                numbers below stay ink: they sit right beside the accent rail
-                and both diagrams, and colouring them too would put the accent
-                on six runs on the one page that already carries most of it. */}
-            <p className="page-label text-accent">{view.eyebrow}</p>
-
-            <div className="max-w-[720px]">
-              <h1 className="display display-72 text-[72px]">{view.title}</h1>
-            </div>
-
-            <div className="max-w-[680px]">
-              <p className="text-[16px] leading-6 text-fg-muted">{view.lede}</p>
-            </div>
-          </div>
-
-          <div className="flex shrink-0 items-center">
-            <CtaButton href="#get-in-touch" className="group">
-              {view.cta}
-              <ArrowGlyph />
-            </CtaButton>
-          </div>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow={view.eyebrow}
+        title={view.title}
+        lede={view.lede}
+        cta={view.cta}
+      />
 
       {/* An <ol> because the rail numbers them and a screen reader should hear
           the same count. It is an ordered LIST, not a sequence of steps — see
@@ -233,7 +162,7 @@ export function SolutionsSteps({ view }: { view: SolutionView }) {
                 )}
 
                 {last && (
-                  <CtaButton href="#get-in-touch" className="group">
+                  <CtaButton href="/get-in-touch" className="group">
                     {view.cta}
                     <ArrowGlyph />
                   </CtaButton>
