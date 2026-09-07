@@ -37,22 +37,33 @@
  *     different occasions.
  *  2. Matched the dress: both square-on in a dark jacket over a white shirt,
  *     which is what Lev and Lucas were already wearing.
- *  3. Bernardo's is a SEATED three-quarter shot — leaning on a table, hand to
- *     chin — where everyone else is tight head-and-shoulders, so it matched
- *     the dress and missed the CROP DISTANCE. Bruno's third simply replaced
- *     his second and needed no re-tuning at all.
+ *  3. Matched the dress and missed the CROP DISTANCE. Bernardo's third is a
+ *     SEATED three-quarter shot, leaning on a table with a hand to his chin;
+ *     Bruno's third replaced his second cleanly and needed no re-tuning.
+ *  4. Bruno again, and wider still: a STANDING three-quarter shot holding a
+ *     notebook, looking off-camera.
  *
- * Bernardo's is why `zoom` is no longer Tatjana's alone. At `zoom: 1` his head
- * filled about a quarter of the card against the others' third, and the table
- * edge showed along the bottom. 0.88 crops in to head-and-shoulders and puts
- * him back on their scale, at no cost in resolution — 0.88 of 1254 still lands
- * above the 640px output width.
+ * Passes 3 and 4 are why `zoom` is no longer Tatjana's alone. Left at
+ * `zoom: 1`, Bernardo's head filled about a quarter of the card against the
+ * others' third and the table edge showed along the bottom; Bruno's fourth was
+ * wider again at roughly a quarter. 0.88 and 0.65 crop each of them back to
+ * head-and-shoulders on the others' scale.
+ *
+ * **THREE OF THE FIVE NOW ZOOM, AND ALL THREE ZOOM THE SAME WAY** — see the
+ * note below. There is no entry that zooms out; `zoom` only ever crops in,
+ * because the failure it fixes is always the same one, a master shot wider
+ * than the head-and-shoulders standard the set is built on.
  *
  * So: **match the dress, the angle AND the crop distance.** The backdrop alone
- * does not make a set, and neither does the wardrobe. Note also that likeness
- * is not stable across passes — Bruno wore glasses in his second frame and
- * does not in his third — which is the whole reason docs/COPY-REVIEW.md asks
- * for each subject's sign-off on the version that actually ships.
+ * does not make a set, and neither does the wardrobe. Two things no crop can
+ * fix, both live in Bruno's fourth frame and both are worth a look before
+ * launch: he is the only one not looking at the lens, and a corner of the
+ * notebook sits in the bottom of the card.
+ *
+ * Note also that likeness is not stable across passes — Bruno wore glasses in
+ * his second frame and does not in his third or fourth — which is the whole
+ * reason docs/COPY-REVIEW.md asks for each subject's sign-off on the version
+ * that actually ships.
  *
  * The name-to-file mapping for the originals was not guessed: the filenames
  * carried no names, so it was read out of avalanche-capital.com's own page
@@ -67,14 +78,19 @@
  * square, so top and bottom are kept whole and `faceX` decides which side
  * loses more of the trim.
  *
- * **Tatjana also zooms, for the opposite reason to Bernardo.** Hers is a
- * wider shot than the generated ones — her head fills about 32% of the
- * frame against their ~40% — so at the same crop she read as standing further
- * back than everyone else, which is the one thing still breaking the row. A
- * 0.8 zoom pulls her in to match. It costs resolution rather than inventing
- * any: the crop lands at 512x640 and `withoutEnlargement` leaves it there,
- * about 6% under the card's 2x DPR ideal. A re-shoot of hers would close it
- * properly; upscaling here would only fake it.
+ * **Tatjana zooms for the SAME reason as the other two, not a different one.**
+ * An earlier revision of this comment called hers "the opposite reason" and
+ * that was simply wrong: every `zoom` here is below 1 and every one of them
+ * crops IN. Hers is a wider shot than the generated ones — her head fills
+ * about 32% of the frame against their ~40% — so at the same crop she read as
+ * standing further back than everyone else. A 0.8 pulls her in to match.
+ *
+ * Hers is the only one that costs resolution, and it costs it rather than
+ * inventing any: her master is 800x800 where the generated ones are 1254, so
+ * the crop lands at 512x640 and `withoutEnlargement` leaves it there, about 6%
+ * under the card's 2x DPR ideal. Bernardo's 0.88 and Bruno's 0.65 both still
+ * clear 640px wide. A re-shoot of hers would close the gap properly;
+ * upscaling here would only fake it.
  *
  * **EVERY OUTPUT IS GREYSCALE**, set here rather than by a CSS filter on the
  * page, so what ships is what renders and it keeps applying if a master is
@@ -105,16 +121,18 @@ const HEAD_Y = 0.3;
 
 /** `faceX` / `faceY` are the centre of the head as a fraction of the master;
  *  `zoom` is how much of the master's height to keep, 1 being all of it. */
-// Lev, Bruno and Lucas frame square-on and near-centred, so they take a plain
-// 0.5. Measured rather than eyeballed: the centroid of the dark pixels in the
-// hair band (y 15-32% of the master) sits at 0.485 / 0.491 / 0.539 of the
-// width, which 0.5 centres to within a couple of percent of the crop.
+// Lev and Lucas frame square-on and head-and-shoulders, so they take a plain
+// 0.5 and nothing else. Measured rather than eyeballed: the centroid of the
+// dark pixels in the hair band (y 15-32% of the master) sits at 0.485 and
+// 0.539 of the width, which 0.5 centres to within a couple of percent.
 //
-// Bernardo is the one that does not, and his numbers are the third set he has
-// had. He carried 0.51 against his first re-shoot and 0.5 against his second;
-// his third master is a seated, leaning frame, so it needs all three knobs —
-// see the note above. Bruno has had three masters too and 0.5 has survived
-// the last two of them, which is what a square-on frame buys you. **Re-measure when a master is replaced; do not carry the
+// The other three all zoom, and every zoom here crops IN — there is no entry
+// that zooms out. Bernardo and Bruno are on their third and fourth masters
+// respectively, and between them they have carried five different sets of
+// numbers: 0.51, then 0.5, then a seated frame needing all three knobs; 0.55,
+// then 0.5, then a standing frame needing all three. **Re-measure every time
+// a master is replaced.** Every value in this list has been wrong at least
+// once because someone carried the previous one over. **Re-measure when a master is replaced; do not carry the
 // old number over.** Every value here has been wrong at least once because
 // someone did.
 const PEOPLE = [
@@ -123,7 +141,11 @@ const PEOPLE = [
   // alone: 0.88 puts his head on the same scale as the other four.
   { slug: "bernardo-almeida", faceX: 0.43, faceY: 0.25, zoom: 0.88 },
   { slug: "lev-valestkiy", faceX: 0.5 },
-  { slug: "bruno-erckmam", faceX: 0.5 },
+  // Standing, holding a notebook, looking off-camera — the widest master in
+  // the set. 0.65 is the tightest crop that still clears 640px wide, and it
+  // is what puts his head on the others' scale; it also takes most of the
+  // notebook out of the frame, though a corner of it stays.
+  { slug: "bruno-erckmam", faceX: 0.486, faceY: 0.215, zoom: 0.65 },
   // The untouched photograph. See above.
   { slug: "tatjana-sotirovik", faceX: 0.45, faceY: 0.36, zoom: 0.8 },
   { slug: "lucas-barrozo", faceX: 0.5 },
