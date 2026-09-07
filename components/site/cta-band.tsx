@@ -38,14 +38,19 @@ import { ctaBand } from "@/content/copy";
  */
 export function CtaBand({
   ctaHref = "/get-in-touch",
+  className = "",
 }: {
   /** Where the band's button goes. Overridden only on /get-in-touch. */
   ctaHref?: string;
+  /** Extra classes on the band's own `<section>`. Only /about passes any —
+   *  every block on that page is a full screen and this is its last one. The
+   *  four other routes pass nothing and render exactly as before. */
+  className?: string;
 } = {}) {
   return (
     <section
       id="get-in-touch"
-      className="relative isolate flex scroll-mt-28 flex-col justify-center overflow-clip py-24 sm:py-28"
+      className={`relative isolate flex scroll-mt-28 flex-col justify-center overflow-clip py-24 sm:py-28 ${className}`}
     >
       <div
         aria-hidden

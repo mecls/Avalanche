@@ -76,9 +76,17 @@ export function ThresholdDiagram() {
         strokeWidth={1}
         strokeDasharray="5 5"
       />
+      {/* LEFT of the rule, ranged right, because there is no room on the
+          other side. `cut` is derived — it is the midpoint between the last
+          in-mandate stage and the first one outside — and with five steps it
+          lands at 526, leaving 94 units to the frame edge for a 27-character
+          run. "THE INSTITUTIONAL THRESHOLD" ran to about 840 and was cut off
+          mid-word at every viewport. Abutting the rule from the left names
+          the same line and has 500 units to do it in. */}
       <text
-        x={cut + 14}
+        x={cut - 14}
         y={392}
+        textAnchor="end"
         className="fill-fg-muted font-sans dgm-sm tracking-[0.1em] uppercase"
       >
         {threshold}

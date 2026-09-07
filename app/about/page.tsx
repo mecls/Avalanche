@@ -92,10 +92,59 @@ export const metadata: Metadata = {
  * see the comment on the section itself.
  */
 /**
- * EVERY BLOCK AFTER THE FIRST TWO FILLS THE SCREEN, by request on
- * 7 Sep 2026 — the header and the thesis keep their natural height, and
- * everything from the track record down is at least one viewport tall with
- * its content centred in it.
+ * WHICH PICTURE EACH LAYER PANEL GETS, BY LAYER ORDINAL rather than by
+ * position — the same reason /solutions keys its `MEDIA` on a block id. A
+ * lookup by index says nothing about what the picture is of, and these three
+ * are not interchangeable.
+ *
+ * The three panels used to share ONE picture, the access rings drawn three
+ * times with a different ring emphasised. It read as a repeat rather than as
+ * a sequence, and the two firm diagrams were sitting in a grid at the bottom
+ * of the section doing nothing — so they moved up here.
+ *
+ * **THE FIRST TWO ARE NOT PICTURES OF THEIR LAYER, AND THEY SAY SO.** The
+ * threshold is about which issuers sit inside the segment; both sides is
+ * about the same counterparties coming back. Each therefore keeps its own
+ * claim line under it, which is what stops the pairing from reading as a
+ * caption for the copy beside it. The rings ARE layer three — its accent band
+ * is that layer and the exposure-gap callout is that layer's claim — so it
+ * carries no caption: the copy beside it already is one.
+ *
+ * That asymmetry is the honest state of this section, not an oversight. If a
+ * picture is ever drawn FOR layer one or layer two, it takes the caption off
+ * with it. Until then, do not retitle these two to fit the layer they sit
+ * beside — that would make a picture claim something it does not show.
+ */
+const LAYER_MEDIA: Record<
+  string,
+  { Diagram: () => React.ReactElement; claim?: string; source?: string }
+> = {
+  "01": {
+    Diagram: ThresholdDiagram,
+    claim: mandate.note,
+    source: `${mandate.inside} — ${mandate.threshold}`,
+  },
+  "02": {
+    Diagram: BothSidesDiagram,
+    claim: bothSidesCopy.note,
+    source: bothSidesCopy.buy.detail,
+  },
+  "03": { Diagram: AccessLayersDiagram },
+};
+
+/**
+ * EVERY BLOCK ON THIS PAGE FILLS THE SCREEN EXCEPT THE PAGE HEADER, by
+ * request on 7 Sep 2026 — the thesis, the track record, the team, the
+ * divergence, the beliefs, the layer heading, each of the three layer panels
+ * and the closing band. The page is read a screen at a time from there down.
+ *
+ * The exemption list took three passes to settle and the header is the whole
+ * of it. It went in as "everything after the first two", which left the
+ * thesis band ending mid-screen with white above and below — exactly what a
+ * band that does not fill looks like when its neighbours do. Everything got
+ * the floor; the header alone came back off it. It is a label, a two-line
+ * H1, a lede and a button, and a screen of white around them reads as an
+ * empty page rather than as a composition.
  *
  * It is a FLOOR, not a height. The team grid, the beliefs list and the layer
  * sequence are all taller than a viewport on their own and this changes
@@ -114,6 +163,15 @@ export const metadata: Metadata = {
  * breathing room, and the leftover space is split above and below.
  */
 const FULL_SCREEN = "flex min-h-svh flex-col justify-center";
+
+/*
+ * IF THE HEADER EVER TAKES THE FLOOR AGAIN, IT NEEDS ITS OWN VALUE:
+ * `min-h-[calc(100svh-var(--header-h))]`, not `min-h-svh`. `main` reserves
+ * `--header-h` of padding for the absolute nav, so a plain `svh` on the
+ * section under it makes the opening screen 100svh + 79.2px — the one block
+ * every reader sees would be the one block that does not fit. Every later
+ * section starts below the reservation and takes the full `svh`.
+ */
 
 export default function AboutPage() {
   const { divergence, beliefs, layers } = manifesto;
@@ -136,7 +194,7 @@ export default function AboutPage() {
         />
       </section>
 
-      <Thesis />
+      <Thesis className={FULL_SCREEN} />
 
       {/* THE PAGE'S ONLY PROOF SURFACE. /about argued entirely from position
           and carried no figures and no client marks anywhere, where the
@@ -387,6 +445,10 @@ export default function AboutPage() {
           so a browser without scroll-driven animations reads three ordinary
           full-height panels.
 
+          Three DIFFERENT pictures, one per panel, keyed on the layer's own
+          ordinal — see `LAYER_MEDIA` for which, and for why two of them keep
+          their own caption and the third does not.
+
           Text FIRST in the document with `flex-row-reverse` putting it on the
           right: image left, text right on a wide screen, and a phone still
           reads the claim before the picture. */}
@@ -401,17 +463,47 @@ export default function AboutPage() {
           {/* An <ol> because the layers are numbered and the order is the
               argument — the first two are exhausted before the third is
               reached. */}
-          <ol className="mt-16 flex list-none flex-col">
+          <ol className="mt-10 flex list-none flex-col">
             {layers.items.map((l, i) => {
               const last = i === layers.items.length - 1;
+              const media = LAYER_MEDIA[l.n];
 
+              // TOP-ALIGNED, NOT CENTRED, and that is what puts the first
+              // picture directly under the section heading. A panel is a
+              // full screen holding ~650px of content, so centring it parked
+              // 170px of white above every panel — under the heading that
+              // read as the heading having been abandoned, and it could not
+              // be tuned away for the first panel alone without moving its
+              // picture out of line with the other two. Top-aligning spends
+              // the same white at the BOTTOM of each panel, where the next
+              // one is already fading in, and every panel keeps the
+              // identical top offset that makes the three pictures land in
+              // the same place.
+              //
+              // A heading on its own screen was tried in between and was
+              // worse: it moved the picture a whole screen away from the
+              // words introducing it.
               return (
                 <li
                   key={l.n}
-                  className="layer-panel flex min-h-svh flex-col justify-center py-16"
+                  className="layer-panel flex min-h-svh flex-col justify-start pb-16"
                 >
                   <div className="layer-panel-in flex w-full flex-row-reverse items-center justify-center gap-9 max-[1199px]:flex-col">
-                    <div className="flex flex-1 flex-col items-start gap-6 max-[1199px]:w-full max-[1199px]:flex-none">
+                    {/* THE 300px FLOOR IS WHAT ALIGNS THE THREE TEXT BLOCKS,
+                        and it is the second half of the caption trick above.
+                        `items-center` centres each column against the plate,
+                        so a column's own height decides where its first line
+                        lands: measured 151 / 175 / 294 here, which put "01",
+                        "02" and "03" at three different heights — 72px apart
+                        between the first panel and the last. A floor above
+                        the tallest makes all three columns the same box, so
+                        every panel's ordinal, heading and body start on the
+                        same line as the last one's. Raise it if the copy ever
+                        grows past it; below that the panels drift apart
+                        again. Off below 1199px, where the column sits above
+                        the plate rather than beside it and the floor would
+                        only add dead space. */}
+                    <div className="flex min-h-[300px] flex-1 flex-col items-start gap-6 max-[1199px]:w-full max-[1199px]:min-h-0 max-[1199px]:flex-none">
                       <p className="page-label text-fg-faint">{l.n}</p>
 
                       <h3 className="display text-[28px] md:text-[36px]">
@@ -439,49 +531,29 @@ export default function AboutPage() {
                       )}
                     </div>
 
-                    {/* ONE diagram, three states, and `focus` is DERIVED from
-                        the layer's own ordinal rather than typed a second
-                        time — the picture cannot end up pointing at a
-                        different layer from the text beside it. The accent
-                        deliberately does not move with it; see the note on
-                        the component. */}
-                    <Plate>
-                      <AccessLayersDiagram focus={Number(l.n)} />
-                    </Plate>
+                    {/* Captioned or bare, decided by whether the picture is
+                        of this layer — see `LAYER_MEDIA`. `Figure` and `Plate`
+                        take the same share of the row, so the two forms sit
+                        identically and the panels stay the same height. */}
+                    {media &&
+                      (media.claim && media.source ? (
+                        <Figure claim={media.claim} source={media.source}>
+                          <media.Diagram />
+                        </Figure>
+                      ) : (
+                        <Plate>
+                          <media.Diagram />
+                        </Plate>
+                      ))}
                   </div>
                 </li>
               );
             })}
           </ol>
-
-          {/* The two firm diagrams sit here rather than beside "Why
-              Avalanche", because both are answers to THIS section's question.
-              The threshold is where the gap actually bites — everything left
-              of it is where distribution is the binding constraint — and both
-              sides is how the third layer gets reached more than once.
-
-              Neither carries a market figure, so their caption lines are the
-              claim itself rather than a citation. */}
-          <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-14 lg:grid-cols-2">
-            <Figure
-              claim={mandate.note}
-              source={`${mandate.inside} — ${mandate.threshold}`}
-              size="aspect-[1.35/1] w-full"
-            >
-              <ThresholdDiagram />
-            </Figure>
-            <Figure
-              claim={bothSidesCopy.note}
-              source={bothSidesCopy.buy.detail}
-              size="aspect-[1.35/1] w-full"
-            >
-              <BothSidesDiagram />
-            </Figure>
-          </div>
         </div>
       </section>
 
-      <CtaBand />
+      <CtaBand className={FULL_SCREEN} />
     </>
   );
 }

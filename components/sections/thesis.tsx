@@ -52,12 +52,12 @@ import { thesis } from "@/content/copy";
  * points that token at the translucent-white value. It also paints `ground`
  * underneath, which is the fallback if the image ever 404s.
  */
-export function Thesis() {
+export function Thesis({ className = "" }: { className?: string } = {}) {
   return (
     <section
       id="thesis"
       data-band="dark"
-      className="relative isolate overflow-clip py-28 sm:py-32"
+      className={`relative isolate overflow-clip py-28 sm:py-32 ${className}`}
     >
       {/* The same three-layer stack the hero and the closing band use — image,
           scrim, grain — and it needs all three for the same reasons. The grain

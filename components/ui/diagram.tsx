@@ -115,9 +115,16 @@ export function Caption({
  * The default sizing: `flex:1 0 0` on the media rows, where the card's aspect
  * ratio gives the ROW its height and `items-center` centres the text against
  * it, so copy length cannot move the layout.
+ *
+ * The row's share of the WIDTH is split out from the aspect ratio so `Figure`
+ * can take the same share while sizing its plate separately — a captioned
+ * picture is a plate PLUS a caption, so the two cannot carry one class between
+ * them and still sit in a row the way a bare plate does.
  */
-const PLATE_SIZING =
-  "aspect-[1.05098/1] flex-1 max-[1199px]:w-full max-[1199px]:max-w-[720px] max-[1199px]:flex-none";
+const ROW_SIZING =
+  "flex-1 max-[1199px]:w-full max-[1199px]:max-w-[720px] max-[1199px]:flex-none";
+
+const PLATE_SIZING = `aspect-[1.05098/1] ${ROW_SIZING}`;
 
 /**
  * `className` REPLACES the sizing and only the sizing — the surface (wash,
@@ -167,25 +174,37 @@ export function Plate({
  * part of these diagrams a screen reader can reach — `Frame` is `aria-hidden`,
  * which is correct for the picture and would not be for its source.
  *
- * `size` overrides the plate's aspect for the grids: the default 1.05098/1 is
- * near-square, which is right for one plate beside a column of text and too
- * tall for three in a row.
+ * `size` overrides the plate's aspect, and `className` the figure's share of
+ * the row. Both default to the media row's own values, so a captioned picture
+ * drops into a row beside a text column exactly where a bare `Plate` would —
+ * that is how the layer panels on /about carry a picture that states its own
+ * subject while the layer's copy sits beside it.
  */
 export function Figure({
   claim,
   source,
-  size,
+  size = "aspect-[1.05098/1] w-full",
+  className = ROW_SIZING,
   children,
 }: {
   claim: string;
   source: string;
   size?: string;
+  className?: string;
   children: React.ReactNode;
 }) {
   return (
-    <figure className="flex flex-col">
+    <figure className={`relative flex flex-col ${className}`}>
       <Plate className={size}>{children}</Plate>
-      <figcaption className="mt-5">
+      {/* OUT OF FLOW on the desktop row, so the FIGURE is exactly as tall as
+          its plate and a captioned picture lines up with an uncaptioned one.
+          The /about layer panels tile the viewport and the whole point is
+          that each picture lands where the last one was; in flow, a two-line
+          claim against a one-line claim moved the plate 12px between panels
+          and a panel with no caption at all moved it 30px. Below 1199px the
+          row stacks and there is something underneath to collide with, so it
+          goes back into flow there. */}
+      <figcaption className="absolute inset-x-0 top-full mt-5 max-[1199px]:static">
         <p className="text-[15px] leading-6 text-fg">{claim}</p>
         <p className="mt-2 text-[13px] leading-5 text-fg-faint">{source}</p>
       </figcaption>
