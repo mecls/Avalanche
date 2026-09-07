@@ -112,6 +112,25 @@ is half right by accident: the serif is gone again, the accent is real.
   may go without an icon (`TrackRecord` and `Thesis` do); `components/ui/
   icons.tsx` is a set of SECTOR marks, so do not force one onto an abstract
   block.
+- **EVERY BLOCK ON `/about` AFTER THE FIRST TWO IS `min-h-svh`** (7 Sep 2026,
+  by request). The header and the thesis keep their natural height; the track
+  record, the team, the divergence, the beliefs and each of the three layer
+  panels are at least one viewport tall with their content centred. It is a
+  FLOOR — the team grid and the beliefs list were already taller and did not
+  move. `svh`, not `dvh` (remeasures as a phone's URL bar hides, relaying out
+  mid-scroll) and not `vh` (the LARGE viewport on iOS, so the last line starts
+  under the browser chrome). The rule is one `FULL_SCREEN` const in
+  `app/about/page.tsx` so the call sites cannot drift.
+- **THE THREE ACCESS LAYERS ARE THREE FULL SCREENS, NOT A `<dl>`.** They were
+  a ruled three-row list beside one static plate until 7 Sep 2026. Each panel
+  now tiles the viewport exactly, so scrolling one screen lands the next
+  layer's text and picture where the last one's were — that is the whole point
+  of the layout and it is why the panels must stay the same height as each
+  other. The plate's fixed aspect ratio is what guarantees that; copy length
+  cannot move a row it does not size. `AccessLayersDiagram` takes a `focus`
+  prop and is drawn three times, and **`focus` is derived from the layer's own
+  `n`** rather than typed a second time. The accent deliberately does NOT move
+  with the focus — see the note on the component.
 - **`/about` IS `/team` AND `/manifesto` MERGED** (7 Sep 2026, by request).
   One route: the thesis, then the three manifesto sections, then the portraits
   and the press. Both old paths 307 to it in `next.config.ts` — `/manifesto` to
@@ -242,6 +261,12 @@ none** — its scroll-linked rail and text reveal are CSS `view-timeline`,
 not JS. Keep it that way; see "The solutions timeline" in `README.md` before touching
 it, including why the reduced-motion guard has to say
 `animation: none` rather than rely on the global duration override.
+
+**`/about`'s layer sequence adds none either, for the same reason.** The three
+access layers are three full-screen panels that fade one into the next on
+scroll — `.layer-panel` / `.layer-panel-in` in `globals.css`, `view-timeline`
+again, no JS. `/about` has exactly one client component and it is
+`TrackRecord`'s count-up.
 
 **This is why the Fundraising/Secondaries views are TWO ROUTES and not a tab.**
 A stateful tab would have made the whole of `/solutions` a client component and

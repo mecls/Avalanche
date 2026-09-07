@@ -485,18 +485,28 @@ body {
  * the reason this exists at all.
  *
  * `will-change: transform` IS LOAD-BEARING, NOT A MICRO-OPTIMISATION.
- * Measured on a production build of /about, which carries six of these: the
- * first frame after a scroll took **42 seconds**, and hiding the grain layers
- * took the same frame to 2.9ms. A repeated semi-transparent noise bitmap over
- * several large areas was being re-rastered as part of one enormous paint
- * instead of composited. Promoting each layer makes it its own texture,
- * rastered once and reused — the same frames then measure 7-42ms.
+ * Measured on a production build of /about, which carried six of these at the
+ * time: the first frame after a scroll took **42 seconds**, and hiding the
+ * grain layers took the same frame to 2.9ms. A repeated semi-transparent
+ * noise bitmap over several large areas was being re-rastered as part of one
+ * enormous paint instead of composited. Promoting each layer makes it its own
+ * texture, rastered once and reused — the same frames then measure 7-42ms.
  *
  * These layers never move or change, so promotion costs one texture each and
- * nothing per frame. **Do not remove it, and do not add a sixth grain layer
- * without re-measuring** — the cost scales with total grain area, which is
- * also why /about froze at 900px wide before it froze at 1440: the plates go
- * full-width below 1200 and each one's grain gets bigger.
+ * nothing per frame. **Do not remove it, and re-measure before adding
+ * another** — the cost scales with total grain area, which is also why /about
+ * froze at 900px wide before it froze at 1440: the plates go full-width below
+ * 1200 and each one's grain gets bigger.
+ *
+ * /about is at EIGHT now — the layer sequence turned one plate into three on
+ * 7 Sep 2026 — and was re-measured on a production build at that count:
+ * worst frame 17ms over 72 frames scrolling the whole sequence, with the
+ * crossfade running. Promotion holds.
+ *
+ * **A frame time measured in an automated browser tab is worthless unless
+ * `document.visibilityState` is "visible" for the whole run.** A hidden tab
+ * suspends rAF entirely, and the gap shows up as a single 15-25 second
+ * "frame" that looks exactly like the bug above. Assert it, do not assume it.
  */
 @utility grain {
   background-image: url(/grain.png);
@@ -719,6 +729,67 @@ body {
     .step-text {
       animation: step-reveal linear both;
       animation-timeline: --step-row;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------
+   The /about access-layer sequence — three full-screen panels, read
+   one at a time.
+
+   Same machinery as the block above and a DIFFERENT curve, for a
+   different job. `.step-row` fades a row that shares the screen with
+   its neighbours; each `.layer-panel` here is `min-h-svh`, so the
+   panels tile the viewport exactly and the next one lands where the
+   last one was. The fade's only job is to keep two of them from being
+   half-readable at once at the seam.
+
+   THE ZERO POINTS ARE PULLED INWARDS ON PURPOSE, which is the thing
+   `step-reveal` warns against. There it would have made text
+   transparent that a reader could otherwise be reading; here the
+   panels are exactly one screen tall, so `entry 30%` is the moment
+   only the top 30% of a panel is on screen — its content is centred,
+   so nothing but its upper margin has appeared yet.
+
+   The crossfade is symmetric BY CONSTRUCTION. Two stacked panels of
+   equal height share one progress value: panel N at `exit q%` puts
+   panel N+1 at exactly `entry q%`. Out over 10-70 against in over
+   30-90 therefore meets at q=0.5 with both at 0.33 — enough overlap
+   to read as one replacing the other, not enough for two to compete.
+   Change one range and change the other, or the seam goes lopsided.
+
+   Base state is again the FINISHED state: no support, or reduced
+   motion, gives three fully-visible panels and nothing else.
+   --------------------------------------------------------------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .layer-panel {
+      view-timeline-name: --layer-panel;
+      view-timeline-axis: block;
+    }
+
+    @keyframes layer-reveal {
+      entry 30% {
+        opacity: 0;
+        transform: translateY(48px);
+      }
+      entry 90% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      exit 10% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      exit 70% {
+        opacity: 0;
+        transform: translateY(-48px);
+      }
+    }
+
+    .layer-panel-in {
+      animation: layer-reveal linear both;
+      animation-timeline: --layer-panel;
     }
   }
 }

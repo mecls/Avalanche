@@ -229,6 +229,7 @@ export function DivergenceDiagram() {
  */
 const RINGS = [
   {
+    layer: 3,
     n: "Layer three",
     label: "The addressable universe",
     r: 200,
@@ -236,13 +237,21 @@ const RINGS = [
     outer: true,
   },
   {
+    layer: 2,
     n: "Layer two",
     label: "Extended network",
     r: 136,
     labelY: 332,
     outer: false,
   },
-  { n: "Layer one", label: "Your network", r: 76, labelY: 239, outer: false },
+  {
+    layer: 1,
+    n: "Layer one",
+    label: "Your network",
+    r: 76,
+    labelY: 239,
+    outer: false,
+  },
 ];
 
 const CX = 310;
@@ -271,7 +280,27 @@ const CY = 245;
  * being true.
  */
 
-export function AccessLayersDiagram() {
+/**
+ * THE ACCENT DOES NOT MOVE WITH `focus`, AND THAT IS THE POINT.
+ *
+ * The three panels on /about walk out through the layers one at a time, so
+ * this diagram is drawn three times with a different `focus` — the layer that
+ * panel is about. What changes is a NEUTRAL emphasis: a heavier stroke on that
+ * ring, a faint wash over its own band, and its name at full strength while
+ * the other two sit muted.
+ *
+ * The accent stays on the outer band in all three, because that band is the
+ * diagram's claim rather than its cursor (see the file header — the inversion
+ * is deliberate and load-bearing). Lighting "Your network" in the accent on
+ * panel one would say the first layer is the thing being missed, which is the
+ * opposite of what the copy beside it says.
+ *
+ * The wash has to be drawn AFTER its own ring's opaque `fill-ground` and
+ * BEFORE the next ring in, so the ring inside knocks it back out and what
+ * survives is exactly that layer's band — the same knock-out the accent uses.
+ * That ordering is why it renders inside the map rather than as a second pass.
+ */
+export function AccessLayersDiagram({ focus = 3 }: { focus?: number }) {
   const outer = RINGS[0]!;
   const mid = RINGS[1]!;
 
@@ -287,26 +316,36 @@ export function AccessLayersDiagram() {
       {/* Outermost first. Each inner circle is `fill-ground`, so it knocks the
           wash back out and leaves the accent showing as the outer band only —
           the layer that is NOT being reached. */}
-      {RINGS.map((ring) => (
-        <circle
-          key={ring.n}
-          cx={CX}
-          cy={CY}
-          r={ring.r}
-          className={
-            ring.outer
-              ? "fill-accent/[0.07] stroke-accent"
-              : "fill-ground stroke-line"
-          }
-          strokeWidth={1}
-        />
-      ))}
+      {RINGS.map((ring) => {
+        const focused = ring.layer === focus;
+        return (
+          <g key={ring.n}>
+            <circle
+              cx={CX}
+              cy={CY}
+              r={ring.r}
+              className={
+                ring.outer
+                  ? "fill-accent/[0.07] stroke-accent"
+                  : focused
+                    ? "fill-ground stroke-fg-muted"
+                    : "fill-ground stroke-line"
+              }
+              strokeWidth={focused ? 2 : 1}
+            />
+            {focused && !ring.outer && (
+              <circle cx={CX} cy={CY} r={ring.r} className="fill-fg/[0.05]" />
+            )}
+          </g>
+        );
+      })}
 
       {/* Each label sits centred in its own band — see `bandLabelY`. The
           ordinal takes the smaller rung and the name the middle one; `dgm-lg`
           here was what made the pair too tall for a 60-unit band. */}
       {RINGS.map((ring) => {
         const y = ring.labelY;
+        const focused = ring.layer === focus;
         return (
           <g key={`t-${ring.n}`}>
             <text
@@ -324,7 +363,7 @@ export function AccessLayersDiagram() {
               y={y + 22}
               textAnchor="middle"
               className={`font-sans dgm-md ${
-                ring.outer ? "fill-fg" : "fill-fg-muted"
+                focused ? "fill-fg" : "fill-fg-muted"
               }`}
             >
               {ring.label}

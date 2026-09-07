@@ -80,14 +80,41 @@ export const metadata: Metadata = {
  * tokens — white type on a white ground. Every dark section on this page says
  * `data-band="dark"` for that reason, not for the colour alone.
  *
- * The two media rows are the /solutions row with the rail taken out: the
- * `Plate` is `flex:1 0 0` on a fixed aspect ratio, so it sizes the row and
+ * The media rows are the /solutions row with the rail taken out: the `Plate`
+ * is `flex:1 0 0` on a fixed aspect ratio, so it sizes the row and
  * `items-center` centres the text against it. Copy length cannot move the
- * layout. Text comes FIRST in the document in both, so a phone always reads
- * the claim before the picture; the second row sets `flex-row-reverse` to put
- * its plate on the left on a wide screen, which `flex-col` overrides below
- * 1200px.
+ * layout. Text comes FIRST in the document in every one of them, so a phone
+ * always reads the claim before the picture; the layer panels set
+ * `flex-row-reverse` to put their plate on the left on a wide screen, which
+ * `flex-col` overrides below 1200px.
+ *
+ * The layer sequence turns that same row into three of them, one per screen —
+ * see the comment on the section itself.
  */
+/**
+ * EVERY BLOCK AFTER THE FIRST TWO FILLS THE SCREEN, by request on
+ * 7 Sep 2026 — the header and the thesis keep their natural height, and
+ * everything from the track record down is at least one viewport tall with
+ * its content centred in it.
+ *
+ * It is a FLOOR, not a height. The team grid, the beliefs list and the layer
+ * sequence are all taller than a viewport on their own and this changes
+ * nothing about them; what it fixes is the short blocks between them, which
+ * used to leave a band of the next section showing under a section that had
+ * only half a screen of content in it.
+ *
+ * `svh` rather than `dvh` or `vh`: `dvh` remeasures as a phone's URL bar
+ * hides and relayouts the block mid-scroll, and `vh` on iOS is the LARGE
+ * viewport, so a "full screen" block starts life with its last line under the
+ * browser chrome. `svh` is the one of the three that is both stable and
+ * wholly visible.
+ *
+ * `justify-center` is what makes the extra height read as composition rather
+ * than as padding — the section's own `section-y` still sets the minimum
+ * breathing room, and the leftover space is split above and below.
+ */
+const FULL_SCREEN = "flex min-h-svh flex-col justify-center";
+
 export default function AboutPage() {
   const { divergence, beliefs, layers } = manifesto;
 
@@ -126,9 +153,12 @@ export default function AboutPage() {
           It is also the page's first client component. /about had none until
           now; the count-up is the whole point of the block, so it comes with
           one. See "Client components" in AGENTS.md. */}
-      <TrackRecord band="light" className="border-t border-line-soft" />
+      <TrackRecord
+        band="light"
+        className={`border-t border-line-soft ${FULL_SCREEN}`}
+      />
 
-      <section data-band="dark" className="section-y">
+      <section data-band="dark" className={`section-y ${FULL_SCREEN}`}>
         <div className="shell">
           <SectionHeading
             eyebrow={about.team.eyebrow}
@@ -272,7 +302,7 @@ export default function AboutPage() {
       <section
         id="manifesto"
         data-band="light"
-        className="section-y scroll-mt-24"
+        className={`section-y scroll-mt-24 ${FULL_SCREEN}`}
       >
         <div className="shell">
           <div className="flex w-full flex-row items-center justify-center gap-9 max-[1199px]:flex-col">
@@ -301,7 +331,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section data-band="dark" className="section-y">
+      <section data-band="dark" className={`section-y ${FULL_SCREEN}`}>
         <div className="shell">
           <SectionHeading
             eyebrow={beliefs.eyebrow}
@@ -336,48 +366,93 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* THE THREE LAYERS ARE THREE FULL SCREENS, one read at a time, by
+          request on 7 Sep 2026. They were a ruled <dl> of three rows beside a
+          single plate — the whole argument in one row, with the picture doing
+          nothing while the reader worked down the list.
+
+          Each panel is `min-h-svh` with its content centred, so the panels
+          TILE the viewport: scroll exactly one screen and the next layer's
+          text lands where the last one's was, and so does its picture. That
+          is the property the request turns on, and it is why the panels must
+          stay the same height as each other — the plate's fixed aspect ratio
+          is what guarantees it, since copy length cannot move a row it does
+          not size. `svh` rather than `dvh`: a panel measured against the
+          shrinking viewport would relayout under a phone's disappearing URL
+          bar, mid-scroll, on every panel.
+
+          The crossfade between them is `.layer-panel` / `.layer-panel-in` in
+          globals.css — scroll-linked CSS, NO client component, the same rule
+          /solutions lives under. The un-animated state is all three visible,
+          so a browser without scroll-driven animations reads three ordinary
+          full-height panels.
+
+          Text FIRST in the document with `flex-row-reverse` putting it on the
+          right: image left, text right on a wide screen, and a phone still
+          reads the claim before the picture. */}
       <section data-band="light" className="section-y">
         <div className="shell">
-          <div className="flex w-full flex-row-reverse items-center justify-center gap-9 max-[1199px]:flex-col">
-            <div className="flex flex-1 flex-col items-start gap-6 max-[1199px]:w-full max-[1199px]:flex-none">
-              <SectionHeading
-                eyebrow={layers.eyebrow}
-                title={layers.title}
-                lede={layers.lede}
-              />
+          <SectionHeading
+            eyebrow={layers.eyebrow}
+            title={layers.title}
+            lede={layers.lede}
+          />
 
-              <dl className="w-full max-w-[680px] divide-y divide-line border-y border-line">
-                {layers.items.map((l) => (
-                  <div key={l.n} className="py-6">
-                    <dt className="flex items-baseline gap-4">
-                      <span className="page-label shrink-0 text-fg-faint">
-                        {l.n}
-                      </span>
-                      <span className="text-[16px] leading-6 font-medium">
+          {/* An <ol> because the layers are numbered and the order is the
+              argument — the first two are exhausted before the third is
+              reached. */}
+          <ol className="mt-16 flex list-none flex-col">
+            {layers.items.map((l, i) => {
+              const last = i === layers.items.length - 1;
+
+              return (
+                <li
+                  key={l.n}
+                  className="layer-panel flex min-h-svh flex-col justify-center py-16"
+                >
+                  <div className="layer-panel-in flex w-full flex-row-reverse items-center justify-center gap-9 max-[1199px]:flex-col">
+                    <div className="flex flex-1 flex-col items-start gap-6 max-[1199px]:w-full max-[1199px]:flex-none">
+                      <p className="page-label text-fg-faint">{l.n}</p>
+
+                      <h3 className="display text-[28px] md:text-[36px]">
                         {l.title}
-                      </span>
-                    </dt>
-                    <dd className="mt-2 pl-[42px] text-sm leading-relaxed text-fg-muted">
-                      {l.body}
-                    </dd>
+                      </h3>
+
+                      <p className="max-w-[560px] text-[16px] leading-6 text-fg-muted">
+                        {l.body}
+                      </p>
+
+                      {last && (
+                        <>
+                          <p className="max-w-[560px] text-[16px] leading-6 text-fg">
+                            {layers.note}
+                          </p>
+
+                          {/* Solid rather than ghost: the ghost variant is a
+                              1%-white fill with no border — legible over the
+                              hero footage and over a dark band, all but
+                              invisible on a white one. */}
+                          <CtaButton href="/solutions/fundraising">
+                            {layers.cta}
+                          </CtaButton>
+                        </>
+                      )}
+                    </div>
+
+                    {/* ONE diagram, three states, and `focus` is DERIVED from
+                        the layer's own ordinal rather than typed a second
+                        time — the picture cannot end up pointing at a
+                        different layer from the text beside it. The accent
+                        deliberately does not move with it; see the note on
+                        the component. */}
+                    <Plate>
+                      <AccessLayersDiagram focus={Number(l.n)} />
+                    </Plate>
                   </div>
-                ))}
-              </dl>
-
-              <p className="max-w-[680px] text-[16px] leading-6 text-fg">
-                {layers.note}
-              </p>
-
-              {/* Solid rather than ghost: the ghost variant is a 1%-white fill
-                  with no border — legible over the hero footage and over a dark
-                  band, all but invisible on a white one. */}
-              <CtaButton href="/solutions/fundraising">{layers.cta}</CtaButton>
-            </div>
-
-            <Plate>
-              <AccessLayersDiagram />
-            </Plate>
-          </div>
+                </li>
+              );
+            })}
+          </ol>
 
           {/* The two firm diagrams sit here rather than beside "Why
               Avalanche", because both are answers to THIS section's question.
