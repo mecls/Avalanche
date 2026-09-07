@@ -39,18 +39,32 @@ is half right by accident: the serif is gone again, the accent is real.
 
 - **The logo is `components/ui/logo.tsx`, and it is INLINE SVG for a reason.**
   Supplied 7 Sep 2026 as `avalanche-logo.svg`; it replaced the 26px Satoshi
-  wordmark in the nav and the 30px one in the footer. Its wordmark path is
-  `currentColor`, which is the whole trick — the nav is transparent over
-  whatever band opens the page, so on `/customers` and `/solutions/*` a
-  hardcoded white wordmark is invisible. An `<img>` cannot do that, which is
-  why it is not one. **Do not put `logo-mark` on it**: that class inverts the
-  whole element and would turn the mark's blue orange. The mark keeps its
-  gradient on both bands — it is the brand asset, not a fifth accent use.
-  The artwork says "Avalanche", not "Avalanche Capital"; the footer carries
-  the full name in an `sr-only` run and the nav in its `aria-label`.
-- **`patternId` is a required prop and must be unique per instance.** Each
-  lockup carries its own `<defs>`, and two elements sharing an id is invalid
-  HTML. There is deliberately no default value.
+  wordmark in the nav and the 30px one in the footer. **BOTH paths are
+  `currentColor`** — wordmark and mark — which is the whole trick: the nav is
+  transparent over whatever band opens the page, so on `/customers`, `/about`
+  and `/solutions/*` a hardcoded white lockup is invisible. An `<img>` cannot
+  do that, which is why it is not one. The artwork says "Avalanche", not
+  "Avalanche Capital"; the footer carries the full name in an `sr-only` run and
+  the nav in its `aria-label`.
+- **Nav `h-7`, footer `h-9`, and only the second one is a measurement.** `h-8`
+  was the derived match — a 19.35/32 wordmark against 26px Satoshi's 19.24px
+  cap height — and the nav was shrunk off it by request on 7 Sep 2026. The
+  footer's `h-9` still sits on that page's own 30px display text. Do not
+  "restore" the nav to `h-8` for consistency with the derivation; it is smaller
+  on purpose.
+- **The mark is FLAT, and it used to carry a blue gradient.** Changed by
+  request on 7 Sep 2026 — totally black or totally white, following the page.
+  It went with a `<pattern>`, a `<defs>`, 7KB of base64 inline on every page
+  and the `patternId` prop, which existed only to keep two instances' ids
+  apart. **Do not reintroduce a `patternId` or a `<defs>` without the colour
+  coming back too.** The original artwork is kept at
+  `docs/assets/avalanche-logo.svg` and `git log -S MARK_TEXTURE` has the
+  downsampled texture, if it ever does.
+- **Still do not put `logo-mark` on it.** The reason changed but the rule did
+  not: that class inverts an element inside a light band, which is how the
+  pre-flattened client marks survive one. This lockup already inverts through
+  `currentColor` — inverting it twice makes it wrong on both bands rather than
+  right on either.
 - **`CtaButton` sets its own `display`, so `className="hidden"` does not hide
   it.** Tailwind emits `.inline-flex` after `.hidden` at equal specificity, so
   the base class wins on source order. Use a variant — `max-md:hidden` — which

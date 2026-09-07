@@ -15,7 +15,7 @@ export function SiteFooter() {
                 was the only place a screen reader met "Avalanche Capital"
                 outside the nav's link label. */}
             <p>
-              <Logo patternId="logo-footer" className="h-9 w-auto" />
+              <Logo className="h-9 w-auto" />
               <span className="sr-only">{site.name}</span>
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-fg-muted">

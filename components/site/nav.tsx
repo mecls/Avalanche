@@ -71,17 +71,24 @@ export function SiteNav() {
               so the links stay put as the wordmark and button change width. */}
           <div className="flex flex-1 items-center gap-2.5">
             {/* The logo replaced a 26px Satoshi wordmark on 7 Sep 2026.
-                `h-8` is not a round number picked by eye: the lockup's
-                wordmark is 19.35 of its 32 units tall, and 26px Satoshi has a
-                19.24px cap height, so 32px puts the new wordmark on the old
-                one's optical size to within half a percent. It takes its
-                colour from this link, which is why nothing here sets one. */}
+                `h-8` (32px) was the derived match — the lockup's wordmark is
+                19.35 of its 32 units tall and 26px Satoshi has a 19.24px cap
+                height, so 32px sat on the old wordmark's optical size to
+                within half a percent. **It is `h-7` now, by eye and by
+                request**, which puts the wordmark at a 16.9px cap height —
+                deliberately smaller than the run it replaced, not matched to
+                it. The derivation is kept because it is the way back if this
+                ever needs to be re-matched rather than re-judged.
+
+                It takes its colour from this link, which is why nothing here
+                sets one. The footer's `h-9` was measured against that page's
+                own 30px display text and is untouched. */}
             <Link
               href="/"
               aria-label={`${site.name} home`}
               className="shrink-0"
             >
-              <Logo patternId="logo-nav" className="h-8 w-auto" />
+              <Logo className="h-7 w-auto" />
             </Link>
           </div>
 
