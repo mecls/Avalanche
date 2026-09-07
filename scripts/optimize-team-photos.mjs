@@ -28,27 +28,31 @@
  *    shoots — a beach, a sponsor wall, an office, a curtain — and never read
  *    as a set. The originals are in the git history of this directory.
  *
- * **BERNARDO AND BRUNO WERE RE-GENERATED A SECOND TIME**, later the same day,
- * and the reason is worth keeping: the first pass matched the BACKDROP across
- * the set but not the DRESS. Bernardo came back in a white shirt with a chain
- * and sunglasses, Bruno in a dark open-collar shirt at a three-quarter turn —
- * four studio portraits that still read as four different occasions. Both came
- * back square-on in a dark jacket over a white shirt, which is what Lev and
- * Lucas were already wearing.
+ * **BERNARDO AND BRUNO HAVE EACH BEEN THROUGH THREE GENERATIVE FRAMES**, all
+ * on 7 Sep 2026, and the sequence is the useful part rather than the count:
  *
- * **BERNARDO WAS THEN REPLACED A THIRD TIME**, and that one is the reason
- * `zoom` is no longer Tatjana's alone. His third frame is a SEATED
- * three-quarter shot — leaning on a table, hand to chin, smiling — where the
- * other four are tight head-and-shoulders. Cropped at `zoom: 1` like the rest
- * of them, his head filled about a quarter of the card against their third,
- * the table edge showed along the bottom, and he read as a different shoot
- * again. A 0.88 zoom crops in to head-and-shoulders and puts him back on their
- * scale; it costs nothing, because 0.88 of 1254 still lands above the 640px
- * output width.
+ *  1. Matched the BACKDROP but not the DRESS. Bernardo came back in a white
+ *     shirt with a chain and sunglasses, Bruno in a dark open-collar shirt at
+ *     a three-quarter turn — four studio portraits that still read as four
+ *     different occasions.
+ *  2. Matched the dress: both square-on in a dark jacket over a white shirt,
+ *     which is what Lev and Lucas were already wearing.
+ *  3. Bernardo's is a SEATED three-quarter shot — leaning on a table, hand to
+ *     chin — where everyone else is tight head-and-shoulders, so it matched
+ *     the dress and missed the CROP DISTANCE. Bruno's third simply replaced
+ *     his second and needed no re-tuning at all.
  *
- * So the rule that has now held three times: **match the dress, the angle AND
- * the crop distance.** The backdrop alone does not make a set, and neither
- * does the wardrobe.
+ * Bernardo's is why `zoom` is no longer Tatjana's alone. At `zoom: 1` his head
+ * filled about a quarter of the card against the others' third, and the table
+ * edge showed along the bottom. 0.88 crops in to head-and-shoulders and puts
+ * him back on their scale, at no cost in resolution — 0.88 of 1254 still lands
+ * above the 640px output width.
+ *
+ * So: **match the dress, the angle AND the crop distance.** The backdrop alone
+ * does not make a set, and neither does the wardrobe. Note also that likeness
+ * is not stable across passes — Bruno wore glasses in his second frame and
+ * does not in his third — which is the whole reason docs/COPY-REVIEW.md asks
+ * for each subject's sign-off on the version that actually ships.
  *
  * The name-to-file mapping for the originals was not guessed: the filenames
  * carried no names, so it was read out of avalanche-capital.com's own page
@@ -103,13 +107,14 @@ const HEAD_Y = 0.3;
  *  `zoom` is how much of the master's height to keep, 1 being all of it. */
 // Lev, Bruno and Lucas frame square-on and near-centred, so they take a plain
 // 0.5. Measured rather than eyeballed: the centroid of the dark pixels in the
-// hair band (y 15-32% of the master) sits at 0.485 / 0.498 / 0.539 of the
+// hair band (y 15-32% of the master) sits at 0.485 / 0.491 / 0.539 of the
 // width, which 0.5 centres to within a couple of percent of the crop.
 //
 // Bernardo is the one that does not, and his numbers are the third set he has
 // had. He carried 0.51 against his first re-shoot and 0.5 against his second;
 // his third master is a seated, leaning frame, so it needs all three knobs —
-// see the note above. **Re-measure when a master is replaced; do not carry the
+// see the note above. Bruno has had three masters too and 0.5 has survived
+// the last two of them, which is what a square-on frame buys you. **Re-measure when a master is replaced; do not carry the
 // old number over.** Every value here has been wrong at least once because
 // someone did.
 const PEOPLE = [
