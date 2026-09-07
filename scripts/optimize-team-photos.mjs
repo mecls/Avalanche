@@ -32,11 +32,23 @@
  * and the reason is worth keeping: the first pass matched the BACKDROP across
  * the set but not the DRESS. Bernardo came back in a white shirt with a chain
  * and sunglasses, Bruno in a dark open-collar shirt at a three-quarter turn —
- * four studio portraits that still read as four different occasions. Both are
- * now square-on in a dark jacket over a white shirt, which is what Lev and
- * Lucas were already wearing. If a portrait is ever replaced again, match the
- * dress and the angle as well as the ground; the backdrop alone does not make
- * a set.
+ * four studio portraits that still read as four different occasions. Both came
+ * back square-on in a dark jacket over a white shirt, which is what Lev and
+ * Lucas were already wearing.
+ *
+ * **BERNARDO WAS THEN REPLACED A THIRD TIME**, and that one is the reason
+ * `zoom` is no longer Tatjana's alone. His third frame is a SEATED
+ * three-quarter shot — leaning on a table, hand to chin, smiling — where the
+ * other four are tight head-and-shoulders. Cropped at `zoom: 1` like the rest
+ * of them, his head filled about a quarter of the card against their third,
+ * the table edge showed along the bottom, and he read as a different shoot
+ * again. A 0.88 zoom crops in to head-and-shoulders and puts him back on their
+ * scale; it costs nothing, because 0.88 of 1254 still lands above the 640px
+ * output width.
+ *
+ * So the rule that has now held three times: **match the dress, the angle AND
+ * the crop distance.** The backdrop alone does not make a set, and neither
+ * does the wardrobe.
  *
  * The name-to-file mapping for the originals was not guessed: the filenames
  * carried no names, so it was read out of avalanche-capital.com's own page
@@ -51,8 +63,8 @@
  * square, so top and bottom are kept whole and `faceX` decides which side
  * loses more of the trim.
  *
- * **Tatjana's is the exception, and `zoom` exists for her alone.** Hers is a
- * wider shot than the four generated ones — her head fills about 32% of the
+ * **Tatjana also zooms, for the opposite reason to Bernardo.** Hers is a
+ * wider shot than the generated ones — her head fills about 32% of the
  * frame against their ~40% — so at the same crop she read as standing further
  * back than everyone else, which is the one thing still breaking the row. A
  * 0.8 zoom pulls her in to match. It costs resolution rather than inventing
@@ -89,20 +101,25 @@ const HEAD_Y = 0.3;
 
 /** `faceX` / `faceY` are the centre of the head as a fraction of the master;
  *  `zoom` is how much of the master's height to keep, 1 being all of it. */
-// All four re-shoots now frame square-on and near-centred. Measured rather
-// than eyeballed: the centroid of the dark pixels in the hair band (y 15-32%
-// of the master) sits at 0.504 / 0.485 / 0.498 / 0.539 of the width, so 0.5
-// centres all four to within a couple of percent of the crop.
+// Lev, Bruno and Lucas frame square-on and near-centred, so they take a plain
+// 0.5. Measured rather than eyeballed: the centroid of the dark pixels in the
+// hair band (y 15-32% of the master) sits at 0.485 / 0.498 / 0.539 of the
+// width, which 0.5 centres to within a couple of percent of the crop.
 //
-// Bernardo carried 0.51 and Bruno 0.55 against their FIRST re-shoots — Bruno's
-// was a three-quarter turn sitting right of the master's centre. Both masters
-// were replaced on 7 Sep 2026 and both numbers came back to centre with them.
-// **Re-measure when a master is replaced; do not carry the old number over.**
+// Bernardo is the one that does not, and his numbers are the third set he has
+// had. He carried 0.51 against his first re-shoot and 0.5 against his second;
+// his third master is a seated, leaning frame, so it needs all three knobs —
+// see the note above. **Re-measure when a master is replaced; do not carry the
+// old number over.** Every value here has been wrong at least once because
+// someone did.
 const PEOPLE = [
-  { slug: "bernardo-almeida", faceX: 0.5 },
+  // Seated and leaning, so he sits left of centre and further back than the
+  // rest. Chosen against a contact sheet with Bruno beside him, not by eye
+  // alone: 0.88 puts his head on the same scale as the other four.
+  { slug: "bernardo-almeida", faceX: 0.43, faceY: 0.25, zoom: 0.88 },
   { slug: "lev-valestkiy", faceX: 0.5 },
   { slug: "bruno-erckmam", faceX: 0.5 },
-  // The untouched photograph, and the only entry that zooms. See above.
+  // The untouched photograph. See above.
   { slug: "tatjana-sotirovik", faceX: 0.45, faceY: 0.36, zoom: 0.8 },
   { slug: "lucas-barrozo", faceX: 0.5 },
 ];
