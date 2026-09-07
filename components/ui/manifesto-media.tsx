@@ -1,7 +1,9 @@
 import { Caption, Frame } from "@/components/ui/diagram";
 
 /**
- * The two diagrams on /manifesto.
+ * The two manifesto diagrams — the divergence and the three access layers.
+ * They render in the middle of /about; the file keeps its name because the
+ * content object it draws is still `manifesto`.
  *
  * Drawn in the same system as the six on /solutions — same 620x508 `Frame`,
  * same two corner `Caption`s, same legend columns fixed at x=5/22 and

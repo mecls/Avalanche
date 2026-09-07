@@ -1,5 +1,11 @@
 /**
- * /manifesto — what the firm believes about the market it operates in.
+ * The manifesto — what the firm believes about the market it operates in.
+ *
+ * IT IS NO LONGER ITS OWN ROUTE. It was `/manifesto` until 7 Sep 2026 and is
+ * now the middle of `/about`, between the thesis and the team. The page-level
+ * copy that used to live here — the label, the H1's authored lines, the lede
+ * and the header CTA — moved to `content/about.ts` with it; what is left is
+ * the three blocks themselves, which is all this file was ever really about.
  *
  * EVERY STRING IN THIS FILE IS DRAFT. None of it was lifted from an Avalanche
  * property; it was written against a thesis document supplied on 5 Sep 2026
@@ -39,27 +45,6 @@ export type Layer = {
 };
 
 export const manifesto = {
-  // DRAFT
-  eyebrow: "Manifesto",
-
-  /**
-   * The H1 breaks on AUTHORED lines, the way the hero's does. That is content
-   * rather than layout, which is why the break lives here and not as a <br>
-   * in the page.
-   *
-   * It has to be authored: the full line is 33 characters at 72px inside a
-   * 720px measure, so it wraps either way — and left to itself it can break
-   * as "…scarce. Access / is.", which strands the second sentence's verb and
-   * throws away the whole point of the pairing.
-   */
-  // DRAFT
-  titleLines: ["Capital is not scarce.", "Access is."],
-
-  // DRAFT
-  lede: "Private markets have absorbed more and more of the value being created, while the machinery for distributing capital into them has narrowed. Two forces moving in opposite directions. Everything we do sits in the space between them.",
-
-  cta: "Get in touch",
-
   // DRAFT
   divergence: {
     eyebrow: "The divergence",

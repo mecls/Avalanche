@@ -33,8 +33,8 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 /solutions/fundraising   Page heading · five numbered blocks on a rail
 /solutions/secondaries   Same layout, Secondaries content (COPY PENDING)
 /customers               Filterable grid of all 13 case studies
-/team                    Five partners · Press
-/manifesto               The divergence · five beliefs · the three access layers
+/about                   Why Avalanche · the divergence · five beliefs ·
+                         the three access layers · five partners · press
 /get-in-touch            Nine-step qualification form · FAQ · CTA band
 ```
 
@@ -57,11 +57,11 @@ It was one page carrying a Secondaries block and a Fundraising block. Since 4 Se
 
 That map is keyed on id rather than position on purpose. It was a positional array when there was one view with two blocks; with two views of five, position means nothing — block 02 is investor sourcing on one and pricing on the other. Each diagram makes a **specific** claim (which route matched, which segment was selected, which branch was taken), so none is reused to fill a card it does not describe. An honest blank beats a plausible-looking wrong picture.
 
-**The ghost value measures 2.8:1 against the plate, under the 3:1 floor for a meaningful graphic, and it stays.** `fg-muted` at 50% is 2.82:1 on `#151515` and 2.75:1 on the `#202020` card centre, against 7.7:1 for the accent. Raising it collapses the other end: at 70% the ghost is 3.9:1 against the ground but only 1.8:1 against the accent, which is precisely the equal-luminance-separated-only-by-hue failure the accent section is written about. The frame is `aria-hidden` and the copy beside every diagram states its claim in words, so the pictures are formally decorative. **If this ever changes it changes for all eight diagrams at once, not for one.** `/manifesto`'s falling line, which carries more weight than a ghost dot does, buys back the margin with a dash pattern and an opposite direction — two channels that survive a luminance failure.
+**The ghost value measures 2.8:1 against the plate, under the 3:1 floor for a meaningful graphic, and it stays.** `fg-muted` at 50% is 2.82:1 on `#151515` and 2.75:1 on the `#202020` card centre, against 7.7:1 for the accent. Raising it collapses the other end: at 70% the ghost is 3.9:1 against the ground but only 1.8:1 against the accent, which is precisely the equal-luminance-separated-only-by-hue failure the accent section is written about. The frame is `aria-hidden` and the copy beside every diagram states its claim in words, so the pictures are formally decorative. **If this ever changes it changes for all eight diagrams at once, not for one.** The divergence diagram's falling line, which carries more weight than a ghost dot does, buys back the margin with a dash pattern and an opposite direction — two channels that survive a luminance failure.
 
 **Every count in a diagram pill is derived from the array drawn beside it**, in the same render — "8 matched", "2 committed", "3 of 4 aligned". None is typed twice, so a caption cannot drift from its own picture. Keep that property when editing; it is the only thing stopping a diagram from lying.
 
-**The diagram scaffolding is shared.** `components/ui/diagram.tsx` holds `Frame`, `Caption` and `Plate`. They were private to `solutions-media.tsx` and `solutions-steps.tsx` until `/manifesto` drew two of its own; each carries an invariant that only works if it is literally shared rather than copied — `Frame` fixes the viewBox and the 560px cap, `Caption` fixes the corner run at one rung, and `Plate` carries the `data-band="dark"` that makes art written against `fg` come out light-on-dark inside a white section. The authoring rules stay in `solutions-media.tsx`'s header.
+**The diagram scaffolding is shared.** `components/ui/diagram.tsx` holds `Frame`, `Caption` and `Plate`. They were private to `solutions-media.tsx` and `solutions-steps.tsx` until the manifesto drew two of its own; each carries an invariant that only works if it is literally shared rather than copied — `Frame` fixes the viewBox and the 560px cap, `Caption` fixes the corner run at one rung, and `Plate` carries the `data-band="dark"` that makes art written against `fg` come out light-on-dark inside a white section. The authoring rules stay in `solutions-media.tsx`'s header.
 
 **Diagram type is sized in rungs, and that is not decoration.** A `<text>` inside a viewBox is scaled by (rendered width / 620), so one source size renders at a different physical size on every viewport. Before this was fixed, a 12-unit run shipped anywhere between **5.8px and 12.6px** depending on width — overshooting on tablet and collapsing to texture on a phone. The fix has two halves and needs both:
 
@@ -78,12 +78,67 @@ Growing the type also broke three layouts that had been tuned around the old siz
 
 The old `#secondaries` and `#fundraising` fragments survive as block ids, so a deep link still lands on a real block — on whichever of the two views now owns it.
 
-### /manifesto
+### /about is two pages merged
 
-Added 5 September 2026. Condensed from a much longer thesis document — five
-tenets, four data charts, a competitor 2x2, an eight-row requirement matrix and
-a protocol architecture. Four sections survived: the claim, the picture that
-shows it, the five positions that follow, and where the gap actually sits.
+`/team` and `/manifesto` became one route on **7 September 2026**, by request:
+"not only the team page, but also include the manifesto in between." Both old
+paths 307 to it — `/team` to the top, `/manifesto` to `#manifesto`, the id on
+the divergence section, so an existing link still lands on the content it asked
+for rather than at the top of a page twice as long.
+
+**The order is the argument.** What the firm does (the thesis) → the market
+that makes it necessary (the divergence) → what follows from that (five
+beliefs) → where the gap actually sits (three layers) → who does the work
+(team) → who has said so (press). The manifesto is in the *middle* on purpose:
+a reader who came for the team scrolls through the argument to reach them.
+
+**Bands alternate every section, all the way down** — light header, dark
+thesis, light divergence, dark beliefs, light layers, dark team, light press,
+photo-backed close. Two things follow. No section carries a `border-t`:
+`/manifesto` needed one because two of its light sections were adjacent, and
+with the thesis between them they no longer are. And the team grid looks
+exactly as it did on `/team` — `data-band="dark"` paints the same `#151515`
+that section used to inherit from `<body>` by not being in a band at all.
+
+**The page now opens light, and `/team` did not.** The header section has to
+stay `data-band="light"` *and* the first child of `main`, because two rules in
+`globals.css` key off `main > :first-child[data-band="light"]`: one flips the
+nav's type to ink, the other paints `main` with `--color-paper`. They break
+together and the failure mode is the whole nav rendering white on white. This
+is new exposure on a page that never had it.
+
+**"Why Avalanche" is mounted again after a week off**, and it took the team
+section's heading with it. While the thesis was unmounted, `/team` borrowed its
+"Both Sides of The Table" pillar — title *and* body — as its own heading and
+lede. Mounting the pillar put both on one page, so the borrowed version came
+off and the team section took a heading of its own (`about.team`). It has no
+lede: any sentence there would be one this repo invented about five named
+people, and the same restraint applies as to the bios. If the thesis is ever
+unmounted again, that is the block to check.
+
+**The Manifesto footer link is gone, and so is the mechanism behind it.** The
+route was `footerOnly` — real and indexed but not one of the header's primary
+slots, listed in the footer's Overview column and nowhere else — and
+`nav.tsx` derived a filtered `headerNav` from the one `nav` array to do it.
+Folding the route into `/about` took the flag's only user with it, so the flag
+and the filter went too rather than sitting there as a mechanism with nothing
+behind it. It was six lines; `git show` this commit if a footer-only route is
+ever wanted again.
+
+**"About Us" is the widest header label the nav has carried** and it holds.
+Measured at 360/390/430/600/767/768/809/810/900/1024/1200/1440: no horizontal
+overflow at any of them, and the `md` breakpoint did not need to move. The nav
+has since taken a `Log in` link and a smaller logo, so the current clearances
+are in "The nav" rather than here.
+
+### The manifesto itself
+
+Added 5 September 2026 as its own route. Condensed from a much longer thesis
+document — five tenets, four data charts, a competitor 2x2, an eight-row
+requirement matrix and a protocol architecture. Four sections survived: the
+claim, the picture that shows it, the five positions that follow, and where the
+gap actually sits. Three of them are what now sits in the middle of `/about`;
+the fourth is the page header it kept.
 
 Most of what was cut was cut for a reason worth knowing. The competitor matrix
 and the protocol architecture are `/solutions` material, and `/solutions`
@@ -92,8 +147,8 @@ Protocol" was dropped because it appears nowhere else on the site or in
 `content/`, so shipping it would have been inventing a proprietary brand asset
 rather than describing one.
 
-**There are no figures anywhere on the page, and that is the design.** The
-source carried roughly twenty cited statistics — listed-company counts, family
+**There are no figures anywhere in it, and that is the design.** The source
+carried roughly twenty cited statistics — listed-company counts, family
 offices, median age at IPO, mega-fund share of committed capital. Not one could
 be verified, and the track-record figures are already the most load-bearing
 claims on the site; adding twenty more unverified ones to state a set of
@@ -106,35 +161,20 @@ The five beliefs reuse `WhoWeServe`'s ruled `<dl>` verbatim — accent ordinal a
 statement left, argument right. The two media rows are the `/solutions` row with
 the rail taken out. Nothing here needed new CSS.
 
-**The beliefs section is `data-band="dark"` and that is load-bearing.** The page
-opens light, so the `:has()` rule paints `main` with `--color-paper` — a section
-that does not paint *itself* sits on white while still inheriting the root's
-dark text tokens, i.e. white type on a white ground. This was the first thing
-that broke. `/customers` hits the same trap and answers it with
-`bg-ground-deep`; this page says `data-band="dark"` because it means the band,
-not just the colour.
+**The beliefs section is `data-band="dark"` and that is load-bearing.** A
+section that does not paint *itself* sits on the white `main` while still
+inheriting the root's dark text tokens, i.e. white type on a white ground. This
+was the first thing that broke when the page was built. `/customers` hits the
+same trap and answers it with `bg-ground-deep`; every dark section on `/about`
+says `data-band="dark"` because it means the band, not just the colour.
 
-**The H1 breaks on authored lines**, like the hero's. `manifesto.titleLines`
-holds `["Capital is not scarce.", "Access is."]`. It has to be authored: the
-full line wraps either way inside the header's 720px measure, and left to itself
-it breaks as "…scarce. Access / is.", which strands the second sentence's verb.
-
-**It is in the footer and nowhere else.** The header keeps its three primary
-destinations; `/manifesto` is listed only in the footer's Overview column. It
-is still one entry in the one `nav` array in `content/copy.ts`, carrying a
-`footerOnly` flag — `components/site/nav.tsx` derives `headerNav` by filtering
-that flag out, `components/site/footer.tsx` renders the array whole. A second
-list would have been the obvious alternative and is the wrong one: that array
-is the only place the site's routes are written down, and a route missing from
-it is a route nothing links to.
-
-Worth knowing if it ever goes back in the header: it was there briefly, and it
-fits, but only just. Four links need 691px of the 728px available at the 768px
-`md` breakpoint — 37px of slack against 130px for three — and between 768 and
-~830px they sit up to 11px right of centre because the wordmark cell hits its
-min-content width. No collision or overflow at 784 / 800 / 820 / 860 / 900 /
-1024 / 1200. **A fifth link will not fit at all**; that is when the nav's
-breakpoint moves from `md:` to `lg:`.
+**The H1 breaks on authored lines**, like the hero's. It is now
+`about.titleLines` and still holds `["Capital is not scarce.", "Access is."]` —
+kept as the About page's opening rather than swapped for an introduction,
+because the safe version ("We are a private capital advisory") says nothing.
+The break has to be authored: the full line wraps either way inside the
+header's 720px measure, and left to itself it breaks as "…scarce. Access /
+is.", which strands the second sentence's verb.
 
 ### /get-in-touch
 
@@ -266,7 +306,7 @@ The figures count up on scroll. Two things there are deliberate and worth not un
 
 ### Unmounted, not deleted
 
-`components/sections/thesis.tsx` ("Why Avalanche") and the `thesis` object in `content/copy.ts` are **not rendered anywhere**. The section was taken off the homepage; both were kept because the text is genuine copy from avalanche-capital.com and nothing in this repo is committed yet, so deleting would be unrecoverable. Delete both if it isn't coming back.
+`components/sections/thesis.tsx` ("Why Avalanche") **came back on 7 Sep 2026** and now opens the body of `/about`. It had been unmounted since the homepage dropped it on 1 Sep, kept rather than deleted because the copy is genuine — one of the few blocks here lifted from avalanche-capital.com rather than drafted. Six days of being wrong about that is the argument for the rule: the unmounted blocks are `booking.tsx`, `calendly.tsx` and the `announce` object, and they are all still one merge away from being wanted.
 
 ### Booking is a placeholder
 
@@ -321,11 +361,11 @@ The **layout** is a clone of farahcap.com. The **type** is fundraisr.ai's. The s
 
 **Two small-uppercase runs, and they do different jobs.** `eyebrow` (14/600, **accent**) labels a section *inside* a page and renders a dozen times on the homepage. `page-label` (14/500, no colour of its own) labels the *page itself*, above the 72px H1 — a heavier run under the largest heading on a route reads as a caption rather than as the page's name. The page-name use takes `text-accent` at the call site so it matches the eyebrows; the `/solutions` block labels and rail numbers share the utility and deliberately stay ink, because they sit against the accent rail and both diagrams. Neither utility folds into the other, and the colour stays out of `page-label` itself.
 
-**`/solutions`, `/customers` and `/manifesto` share one page header, and it is now a component.** `components/site/page-header.tsx`: the same label run, the same `display display-72 text-[72px]` stepping down to 40px at 809px, the same 16/24 lede, the same 720px/680px measures, and the same `items-end` row that sets the CTA's bottom edge on the lede's last baseline with a trailing arrow.
+**`/solutions`, `/customers` and `/about` share one page header, and it is now a component.** `components/site/page-header.tsx`: the same label run, the same `display display-72 text-[72px]` stepping down to 40px at 809px, the same 16/24 lede, the same 720px/680px measures, and the same `items-end` row that sets the CTA's bottom edge on the lede's last baseline with a trailing arrow.
 
-It was duplicated JSX in two places. They had been built separately and had drifted to a different value in *every* row — 64px vs 80px H1, a 600-weight grey label against a 500-weight ink one, a 15px lede against 16px, a 576px column against 720px — which is what made `/customers` read as a different site. They were hand-aligned on 4 Sep 2026 and both carried a "keep them in step" comment. `/manifesto` would have made a third copy, so the copies were collapsed instead. **Verified byte-identical**: the rendered `<main>` of all three pages was diffed before and after the extraction and did not change by a character.
+It was duplicated JSX in two places. They had been built separately and had drifted to a different value in *every* row — 64px vs 80px H1, a 600-weight grey label against a 500-weight ink one, a 15px lede against 16px, a 576px column against 720px — which is what made `/customers` read as a different site. They were hand-aligned on 4 Sep 2026 and both carried a "keep them in step" comment. The manifesto page would have made a third copy, so the copies were collapsed instead. **Verified byte-identical**: the rendered `<main>` of all three pages was diffed before and after the extraction and did not change by a character.
 
-It renders only the inner `shell` div — the `<section>` stays with the caller, because `/customers` adds `flex flex-col overflow-hidden` for the logo strip it hangs below the header and `/solutions` does not. `title` is a `ReactNode` so `/manifesto` can pass its own authored line breaks.
+It renders only the inner `shell` div — the `<section>` stays with the caller, because `/customers` adds `flex flex-col overflow-hidden` for the logo strip it hangs below the header and `/solutions` does not. `title` is a `ReactNode` so `/about` can pass its own authored line breaks.
 
 Colour tokens are named by **role**, never by hue. A light section is `data-band="light"` on the `<section>` and that one attribute re-points every token for the subtree, which is why shared components take no `tone` prop — `bg-fg text-ground` is a white button on dark and a black button on light from the same markup.
 
@@ -346,7 +386,7 @@ The site is monochrome except for these:
 | Where | Renders | Why it earns the colour |
 |---|---|---|
 | Section eyebrows + page labels | ~12 per page | A block's own name — "Verticals", "What we raise", "Who we serve". The colour is what makes a section announce itself before the heading does. The two page-name `page-label` runs take `text-accent` at the call site to match. |
-| `/solutions` rail + all eight diagrams | six on `/solutions`, two on `/manifesto` | **Functional.** The accent is the diagram's only means of saying which route matched, which region is the subject. Remove it and the pictures stop working. On `/manifesto` it marks what is *not* being reached — the gap, and the outer layer — which is an inversion of the /solutions six and is called out in the file. |
+| `/solutions` rail + all eight diagrams | six on `/solutions`, two on `/about` | **Functional.** The accent is the diagram's only means of saying which route matched, which region is the subject. Remove it and the pictures stop working. In the two manifesto diagrams it marks what is *not* being reached — the gap, and the outer layer — which is an inversion of the /solutions six and is called out in the file. |
 | Case-study metric pill | once per page | The single number on a card, and the thing a reader should land on. The `/customers` grid uses the tile treatment and carries no pill. |
 | CTA band chip | once per page | The conversion point of every page. Decorative — the label beside it is white and carries the meaning. |
 
@@ -372,7 +412,7 @@ One element: an **absolute** 79.2px nav at `top:0` that scrolls away with the pa
 
 **The ghost button now carries a BORDER, and the reference's does not.** It is glass — a 1% white fill over a 6px backdrop blur — which separates beautifully against the hero footage and against nothing at all on a flat band. On every page but the homepage the site's most-repeated CTA was reading as bare text. The border is `border-fg/70`, so it inverts with the band exactly as `solid`'s fill does: white at 70% over the hero video and over any dark first section, ink over a light one, **from the same markup and with no `tone` prop**. `box-border` is Tailwind's default, so it costs nothing against the fixed 47.2px height. Verified on both consumers — the nav button and `FeaturedCaseStudy`'s "See more customer stories" — on a dark first band (`/`, `/get-in-touch`) and a light one (`/customers`, `/solutions/*`).
 
-**The ghost button says "Get in touch", and it has said that before.** It was "Get in touch", was relabelled "Book a call", and went back on 5 Sep 2026 — `docs/BUILD-NOTES.md` records the middle step. The difference this time is the destination: it was an anchor to the closing band, and it is now `/get-in-touch`, a page. The label lives in `site.navCta`, and `customers.cta` and `manifesto.cta` carry the same string for their page headers. `/customers` had it hardcoded in the page file until this rename, which is exactly how a label drifts.
+**The ghost button says "Get in touch", and it has said that before.** It was "Get in touch", was relabelled "Book a call", and went back on 5 Sep 2026 — `docs/BUILD-NOTES.md` records the middle step. The difference this time is the destination: it was an anchor to the closing band, and it is now `/get-in-touch`, a page. The label lives in `site.navCta`, and `customers.cta` and `about.cta` carry the same string for their page headers. `/customers` had it hardcoded in the page file until this rename, which is exactly how a label drifts.
 
 It was two. A **fixed** 37px announcement bar (opaque `#151515`, green live dot, italic text, underlined accent link) sat above the nav until 4 Sep 2026, and `--header-h` published the 116.2px sum. The bar is gone; `--header-bar-h` and `--header-nav-h` went with it, since one number with one consumer doesn't need three names, and **nothing on the site is `fixed` any more.** The copy is kept but unrendered as `announce` in `content/copy.ts`.
 
@@ -607,7 +647,9 @@ Measured on a production build served locally — no network throttling, so thes
 | `/` | 39ms | 176ms | **176ms** | **0** | 628KB |
 | `/process` | 6ms | 32ms | 32ms | **0** | 42KB |
 | `/customers` | 4ms | 36ms | 36ms | **0** | 67KB |
-| `/team` | 3ms | 64ms | 64ms | **0** | 42KB |
+| `/team` † | 3ms | 64ms | 64ms | **0** | 42KB |
+
+† `/team` and `/process` no longer exist. `/team` is the short pre-merge page — portraits and press only; `/about` is that plus the thesis and three manifesto sections, so it carries two more inline SVG diagrams and roughly twice the markup. **Re-measure it rather than reading this row as current.**
 
 The LCP element on `/` is the hero wrapper painting the **20KB poster**, not the video — which is why a background video didn't move LCP. Of the homepage's 628KB, 565KB is video streaming in behind the poster and 42KB is the font.
 
@@ -618,7 +660,7 @@ The LCP element on `/` is the hero wrapper painting the **20KB poster**, not the
 Full detail and rationale in **`docs/COPY-REVIEW.md`**. Short version:
 
 1. **Approve or replace the drafted copy.** Three offering panels, two investor verticals, process step 03, seven FAQ answers, five team bios. Every one is marked `// DRAFT` at its source. They were written here because the originals are genuinely unreachable — the Framer carousel on `avalanche-capital.com` renders no body text to the page at all (verified against raw HTML, not just by clicking).
-2. **The team bios describe the role, not the person** — deliberately. Names and titles are the only public facts; inventing career histories for five named individuals isn't a placeholder a reviewer can safely skim. Get two sentences from each of them. **They are not on the page any more** — `/team` matches the reference's photo-name-role card, which carries no bio — so this is now a question of whether the page should have them at all, not just of what they say.
+2. **The team bios describe the role, not the person** — deliberately. Names and titles are the only public facts; inventing career histories for five named individuals isn't a placeholder a reviewer can safely skim. Get two sentences from each of them. **They are not on the page any more** — the team grid matches the reference's photo-name-role card, which carries no bio — so this is now a question of whether the page should have them at all, not just of what they say. The section's *heading* is now drafted too: mounting the thesis on `/about` put "Both Sides of The Table" on the page in full, and the team block had been borrowing that pillar as its heading and lede.
 3. **Verify the track-record figures** — `$2B+`, `$300M+`, `200`, `$600M+`. All four come from pages dated 2024 and are the most load-bearing claims on the site.
 4. **Footer legal text** — currently adapted from the short notice on fundraisr.ai. Should come from counsel.
 5. **Confirm the Calendly event.** Both original links on the live sites are dead ("This Calendly URL is not valid"). The site points at `capital-raise-demo-call-ac-clone` — the only live event on the `avalancheintrocall` account, but the slug reads like a duplicate.

@@ -2,10 +2,10 @@
  * The scaffolding every diagram on the site is drawn on: the SVG canvas, the
  * corner caption, and the dark plate the canvas sits in.
  *
- * These three lived inside the two /solutions files until /manifesto took the
- * same construction for its own two diagrams. They are here rather than
- * duplicated because each one carries an invariant that only works if it is
- * literally shared:
+ * These three lived inside the two /solutions files until the manifesto
+ * diagrams took the same construction (then /manifesto, now the middle of
+ * /about). They are here rather than duplicated because each one carries an
+ * invariant that only works if it is literally shared:
  *
  *  - `Frame` fixes the viewBox and the 560px cap. Every diagram must share the
  *    bound or they render at different scales beside each other.

@@ -87,14 +87,35 @@ is half right by accident: the serif is gone again, the accent is real.
   because they sit against the accent rail and both diagrams. Do not fold
   either utility into the other and do not put the colour into `page-label`
   itself.
-- **`/solutions` and `/customers` share ONE page-header construction.** Same
-  `page-label`, same `display display-72 text-[72px]` on the same 809px
-  step-down to 40px, same 16/24 lede, same 720px/680px measures, same
-  `items-end` row with the CTA hard right and a trailing `ArrowGlyph`. They
-  were separate builds until 4 Sep 2026 and had drifted to a *different value
-  in every row* — 64px vs 80px H1, 600-weight grey label vs 500-weight ink,
-  15px lede vs 16px, a 576px column vs 720px. Change one and change the other;
-  the type spec itself lives in `globals.css`, not in either component.
+- **`/about` IS `/team` AND `/manifesto` MERGED** (7 Sep 2026, by request).
+  One route: the thesis, then the three manifesto sections, then the portraits
+  and the press. Both old paths 307 to it in `next.config.ts` — `/manifesto` to
+  `#manifesto`, the id on the divergence section. Three things this changed
+  that are easy to undo by accident. **The page opens LIGHT and `/team` did
+  not**, so the two `main > :first-child[data-band="light"]` rules in
+  `globals.css` now apply to it — keep the header section first and banded, or
+  the nav renders white on white. **Bands alternate every section**, which is
+  why nothing here carries a `border-t` and why the team grid is
+  `data-band="dark"` (that is what keeps it looking as it did). And
+  **`components/sections/thesis.tsx` is MOUNTED again** — it had been unmounted
+  since 1 Sep, and while it was, `/team` borrowed its "Both Sides of The Table"
+  pillar as its own heading and lede. The team block has its own heading now
+  (`about.team`); if the thesis is ever unmounted again, that is what to check.
+- **`/solutions`, `/customers` and `/about` share ONE page header, and it is a
+  COMPONENT now** — `components/site/page-header.tsx`. Same `page-label`, same
+  `display display-72 text-[72px]` on the same 809px step-down to 40px, same
+  16/24 lede, same 720px/680px measures, same `items-end` row with the CTA hard
+  right and a trailing `ArrowGlyph`. The first two were separate builds until
+  4 Sep 2026 and had drifted to a *different value in every row* — 64px vs 80px
+  H1, 600-weight grey label vs 500-weight ink, 15px lede vs 16px, a 576px
+  column vs 720px — so they were hand-aligned, and then collapsed into one
+  component rather than let a third page make a third copy. Two traps it has to
+  keep holding: `display-72` has **no base rule** (it exists only inside
+  `@media (max-width: 809px)`, so `text-[72px]` beside it is the base size),
+  and `page-label` carries no colour of its own — the accent is applied at the
+  call site. It renders only the inner `shell` div; the `<section>` stays with
+  the caller, because `/customers` adds `flex flex-col overflow-hidden` for its
+  logo strip. The type spec itself lives in `globals.css`.
 - Colour tokens are named by **role**, never by hue: `ground`, `ground-deep`,
   `ground-alt`, `card`, `fg`, `fg-muted`, `fg-faint`, `line`, `line-soft`,
   `accent`. Do not reintroduce hue names, and do not hardcode a hex or

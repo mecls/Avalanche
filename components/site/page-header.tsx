@@ -1,7 +1,7 @@
 import { ArrowGlyph, CtaButton } from "@/components/ui/button";
 
 /**
- * The page header shared by /solutions, /customers and /manifesto: a
+ * The page header shared by /solutions, /customers and /about: a
  * `page-label` run, a 72px H1, a 16/24 lede, and a CTA bottom-aligned hard
  * right.
  *
@@ -44,8 +44,9 @@ export function PageHeader({
   eyebrow: string;
   /**
    * `ReactNode` rather than `string` so a page can author its own line
-   * breaks. /manifesto does; the other two pass a plain string and render
-   * byte-identically to the markup this replaced.
+   * breaks. /about does — it inherited the two-line H1 from /manifesto when
+   * that page was folded into it — and the other two pass a plain string and
+   * render byte-identically to the markup this replaced.
    */
   title: React.ReactNode;
   lede: string;

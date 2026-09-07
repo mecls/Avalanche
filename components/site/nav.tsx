@@ -47,16 +47,6 @@ function Chevron() {
   );
 }
 
-/**
- * The header shows every route EXCEPT the ones flagged `footerOnly`.
- *
- * `content/copy.ts`'s `nav` is the one list of the site's routes — the footer
- * renders all of it, the header renders this. Filtering here rather than
- * keeping a second array means a new route cannot be added to one place and
- * forgotten in the other.
- */
-const headerNav = nav.filter((item) => !("footerOnly" in item));
-
 export function SiteNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
@@ -96,7 +86,7 @@ export function SiteNav() {
           </div>
 
           <div className="hidden shrink-0 items-center gap-1.5 md:flex">
-            {headerNav.map((item) => {
+            {nav.map((item) => {
               const menu = "menu" in item ? item.menu : undefined;
               // `startsWith` rather than equality, so Solutions stays lit on
               // /solutions/fundraising and /solutions/secondaries. The bare
@@ -225,7 +215,7 @@ export function SiteNav() {
                 device does not have, so hiding them behind another tap here
                 would make them hardest to reach on the one viewport that
                 cannot hover at all. */}
-            {headerNav.map((item) => {
+            {nav.map((item) => {
               const menu = "menu" in item ? item.menu : undefined;
               return (
                 <div key={item.href} className="flex flex-col">

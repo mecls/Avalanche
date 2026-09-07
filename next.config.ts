@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 /**
- * Two redirects, both 307, both for routes that have moved more than once.
+ * Four redirects, all 307, all for routes that have moved.
  *
  * /process no longer exists — the step timeline it carried became /solutions,
  * which has since split into two views. It now lands on the Fundraising one
@@ -20,6 +20,17 @@ import type { NextConfig } from "next";
  * If the old 308 fires instead, it is harmless: the fragment is dead but the
  * destination redirects on to the same place.
  *
+ * /team and /manifesto are the newest pair and they moved together: both were
+ * folded into /about on 7 Sep 2026, which is the old /team's portraits and
+ * press with the old /manifesto's argument set in front of them. /team lands
+ * at the top of it. /manifesto lands on `#manifesto`, the id on the divergence
+ * section, because that is where its own content starts — without the fragment
+ * an existing link would drop the reader at the top of a page twice as long as
+ * the one they asked for, above copy they have already decided they do not
+ * want. The fragment is safe here for the same reason the 307 is: nothing
+ * about this is cached permanently, and the id is real markup in
+ * app/about/page.tsx rather than a section that might quietly stop existing.
+ *
  * Purge the CDN cache on the next deploy either way.
  */
 const nextConfig: NextConfig = {
@@ -33,6 +44,16 @@ const nextConfig: NextConfig = {
       {
         source: "/solutions",
         destination: "/solutions/fundraising",
+        permanent: false,
+      },
+      {
+        source: "/team",
+        destination: "/about",
+        permanent: false,
+      },
+      {
+        source: "/manifesto",
+        destination: "/about#manifesto",
         permanent: false,
       },
     ];

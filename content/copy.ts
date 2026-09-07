@@ -64,12 +64,18 @@ export const announce = {
 /**
  * The site's routes, in one list, feeding BOTH the header and the footer.
  *
- * `components/site/footer.tsx` renders it whole in the Overview column.
- * `components/site/nav.tsx` derives `headerNav` from it by dropping anything
- * flagged `footerOnly` — so an entry can be reachable and indexed without
- * taking one of the header's three primary slots. /manifesto is the only one
- * today. Keep new routes in here either way: a route missing from this array
- * is a route nothing on the site links to.
+ * The header renders it and so does the footer's Overview column, from this
+ * one array. A route missing from here is a route nothing on the site links
+ * to.
+ *
+ * THERE IS NO LONGER A `footerOnly` FLAG. /manifesto carried one — it was
+ * real and indexed but not one of the header's primary slots, so it showed in
+ * the footer and nowhere else, and `nav.tsx` derived a filtered `headerNav`
+ * from this array to do it. That route was folded into /about on 7 Sep 2026
+ * and took its only user with it, so the flag and the filter went too rather
+ * than sitting here as a mechanism with nothing behind it. `git show` this
+ * file's history if a footer-only route is ever wanted again; it was six
+ * lines.
  *
  * `menu` gives an item a hover/focus dropdown in the desktop nav and an inline
  * sub-list in the mobile sheet. Only Solutions has one.
@@ -106,19 +112,17 @@ export const nav = [
     ],
   },
   { href: "/customers", label: "Customers" },
-  { href: "/team", label: "Team" },
   /**
-   * FOOTER ONLY. The route is real and is meant to be found, but it is not one
-   * of the three places we send people first — so it is listed in the footer's
-   * Overview column and nowhere in the header, neither in the desktop pills nor
-   * in the mobile sheet.
+   * ONE ENTRY, THREE PAGES' WORTH OF CONTENT. /about is the old /team and the
+   * old /manifesto merged (7 Sep 2026): the thesis, then the manifesto, then
+   * the portraits and the press. Both old paths 307 here — see next.config.ts.
    *
-   * It lives in THIS array rather than in a second list because this is the one
-   * place the site's routes are written down, and a route that is missing from
-   * it is a route nothing links to. `components/site/nav.tsx` filters the flag
-   * out; `components/site/footer.tsx` does not.
+   * The label is "About Us" rather than "About" because that is what was
+   * asked for, and it is the only two-word item in the header; it costs about
+   * 30px against the `md` breakpoint's budget, which the measurement below
+   * covers.
    */
-  { href: "/manifesto", label: "Manifesto", footerOnly: true },
+  { href: "/about", label: "About Us" },
 ] as const;
 
 export const hero = {

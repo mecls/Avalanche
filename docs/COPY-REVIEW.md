@@ -64,6 +64,10 @@ Names and titles are the only facts any Avalanche property makes public; the rea
 
 So each line says what the seat does at Avalanche and stops. They read as intentional rather than as gaps, but **they are not bios and shouldn't ship as if they were.** Ask the five of them for two sentences each.
 
+**The bios are no longer rendered anywhere** — the grid is the reference's photo/name/role card — so the open question is now whether the page should carry them at all, not just what they say.
+
+**The team block's HEADING is drafted too, as of 7 September 2026.** It read "Both sides of the table", with that thesis pillar's body as its lede — borrowed verbatim while the thesis section itself was unmounted. `/about` mounts the thesis, so the pillar renders in full a few hundred pixels above and the borrowed version had to go. It now says **"The people you work with"** (`about.team.title`) and carries no lede: any sentence there would be one this repo invented about five named people, which is the same line the bios stop at.
+
 ---
 
 ## 6. Two homepage sections that are entirely placeholder
@@ -204,12 +208,16 @@ old artwork is ever wanted back.
 
 ---
 
-## /manifesto — a whole page, and all of it drafted
+## The manifesto — a whole section of `/about`, and all of it drafted
 
-**Added 5 September 2026.** Every string on this route is in
+**Added 5 September 2026 as `/manifesto`; folded into `/about` on 7 September**
+at your request, between the thesis and the team. Every string is in
 `content/manifesto.ts` and every block in it is marked `// DRAFT`. None of it
 came from an Avalanche property. It was condensed from a thesis document you
-supplied on the day.
+supplied on the day. The page-level copy — the label, the H1's two authored
+lines and the lede — moved to `content/about.ts` with the merge and is still
+`DRAFT`; the H1 is now the first thing anyone reads on About Us, so it is worth
+a second look on its own terms.
 
 ### What was cut, and why that matters more than what was kept
 
@@ -317,13 +325,13 @@ two cannot disagree.
 ### Four labels now point at one page, and two of them promise the wrong thing
 
 Renaming the CTA to **"Get in touch"** (5 Sep 2026) covered the nav and the
-`/customers` and `/manifesto` page headers. It did not cover the other two
+`/customers` and `/about` page headers. It did not cover the other two
 labels that also lead to the questionnaire, and those two now say something the
 page does not do:
 
 | Label | Where | Goes to | Problem |
 |---|---|---|---|
-| **Get in touch** | Nav, /customers and /manifesto headers | the form | Correct. |
+| **Get in touch** | Nav, /customers and /about headers | the form | Correct. |
 | **Get started** | Hero, /solutions headers, four homepage sections | the form | Fine — neutral enough. |
 | **Book a meeting** | The closing band, every page | the form | **Promises a calendar and delivers a nine-question form.** |
 | **Book an intro call** | Footer | the form | Same. |
