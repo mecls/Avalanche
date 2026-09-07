@@ -95,15 +95,7 @@ export function Thesis() {
             "linear-gradient(to right, rgba(21,21,21,0.92) 0%, rgba(21,21,21,0.90) 50%, rgba(21,21,21,0.88) 100%)",
         }}
       />
-      <div
-        aria-hidden
-        className="absolute inset-0 z-[2]"
-        style={{
-          backgroundImage: "url(/grain.png)",
-          backgroundSize: "256px auto",
-          backgroundRepeat: "repeat",
-        }}
-      />
+      <div aria-hidden className="grain absolute inset-0 z-[2]" />
 
       <div className="shell relative z-10">
         <SectionHeading

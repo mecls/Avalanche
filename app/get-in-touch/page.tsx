@@ -125,15 +125,7 @@ export default function GetInTouchPage() {
 
         {/* One long gradient over a wide box bands on an 8-bit display; the
             grain dithers it. Same tile as the hero and the closing band. */}
-        <div
-          aria-hidden
-          className="absolute inset-0 z-[2]"
-          style={{
-            backgroundImage: "url(/grain.png)",
-            backgroundSize: "256px auto",
-            backgroundRepeat: "repeat",
-          }}
-        />
+        <div aria-hidden className="grain absolute inset-0 z-[2]" />
 
         <div className="shell relative z-10 grid items-center gap-12 pt-[calc(100px+var(--header-h))] pb-[100px] max-[809px]:pt-[calc(60px+var(--header-h))] max-[809px]:pb-[60px] lg:grid-cols-2 lg:gap-16">
           <div className="flex flex-col items-start gap-4">

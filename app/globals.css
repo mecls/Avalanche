@@ -475,6 +475,37 @@ body {
   animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/**
+ * The grain overlay. Five places use it: the hero, the closing band, the
+ * /get-in-touch band, the /about thesis band, and every diagram `Plate`.
+ *
+ * **IT WAS FIVE COPIES OF AN INLINE STYLE AND IT FROZE THE PAGE.** The tile
+ * size has to stay in step with `SIZE` in scripts/make-grain.mjs, which is why
+ * it is one rule now rather than five literals — but the promotion below is
+ * the reason this exists at all.
+ *
+ * `will-change: transform` IS LOAD-BEARING, NOT A MICRO-OPTIMISATION.
+ * Measured on a production build of /about, which carries six of these: the
+ * first frame after a scroll took **42 seconds**, and hiding the grain layers
+ * took the same frame to 2.9ms. A repeated semi-transparent noise bitmap over
+ * several large areas was being re-rastered as part of one enormous paint
+ * instead of composited. Promoting each layer makes it its own texture,
+ * rastered once and reused — the same frames then measure 7-42ms.
+ *
+ * These layers never move or change, so promotion costs one texture each and
+ * nothing per frame. **Do not remove it, and do not add a sixth grain layer
+ * without re-measuring** — the cost scales with total grain area, which is
+ * also why /about froze at 900px wide before it froze at 1440: the plates go
+ * full-width below 1200 and each one's grain gets bigger.
+ */
+@utility grain {
+  background-image: url(/grain.png);
+  background-size: 256px auto;
+  background-repeat: repeat;
+  will-change: transform;
+  transform: translateZ(0);
+}
+
 /* Marquee for the client logo band */
 @keyframes marquee {
   from {
@@ -577,7 +608,6 @@ body {
 .dgm-xl {
   font-size: 19px;
 } /* the one name in the meeting brief */
-
 
 @media (max-width: 599px) {
   .dgm-xs {

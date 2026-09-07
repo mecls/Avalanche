@@ -145,15 +145,7 @@ export function Plate({
             "radial-gradient(120% 90% at 50% 0%, var(--color-card) 0%, var(--color-ground) 62%)",
         }}
       />
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          backgroundImage: "url(/grain.png)",
-          backgroundSize: "256px auto",
-          backgroundRepeat: "repeat",
-        }}
-      />
+      <div aria-hidden className="grain absolute inset-0" />
       <div className="relative flex h-full w-full items-center justify-center">
         {children}
       </div>
