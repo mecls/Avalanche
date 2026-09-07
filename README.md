@@ -36,6 +36,7 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 /about                   Why Avalanche · the divergence · five beliefs ·
                          the three access layers · five partners · press
 /get-in-touch            Nine-step qualification form · FAQ · CTA band
+/login                   Client portal sign-in — A SHELL, see below
 ```
 
 ### /solutions is two views
@@ -287,6 +288,42 @@ It shares `ctaClass()` with `CtaButton` so the two cannot drift. A `Link` with
 `href="#"` and a click handler would have been the lazy option and breaks
 middle-click, breaks Enter-to-submit, and puts a bogus destination in the DOM.
 
+
+### /login is a shell
+
+Added 7 September 2026, so the nav's new `Log in` had somewhere real to point.
+**There is no authentication anywhere in this repo** — no provider, no session,
+no route handler, no user store. The screen exists so the layout can be
+approved before an auth provider is chosen, which is the order the
+`/get-in-touch` questionnaire was built in too.
+
+**The fields are `disabled` and that is the whole safety property.** An enabled
+login form with nothing behind it invites someone to type a real password into
+a page that cannot do anything with it, and invites their password manager to
+save it against this origin. `login.notice` says the same thing in words
+directly above the fields. **Keep both, and remove them in the same change that
+adds real auth — not before.** The one state this page must never be in is
+looking like it works.
+
+The form has no `action` and no `method`, which is also deliberate: a `<form>`
+with neither silently submits as a **GET**, putting whatever was typed into the
+address bar. **When this is wired up it must POST** — a Server Action or a
+route handler, over HTTPS, with nothing about the submission in the URL. Same
+rule the questionnaire's `send()` carries for its name and email, and it
+matters more here.
+
+Two smaller decisions. `robots: { index: false }`, because a half-built portal
+door in search results is worse than not existing — and a sign-in screen is not
+a landing page once it is real either. And "Forgot your password?" is **plain
+text, not a link**: there is no reset flow to point at, and an anchor to nowhere
+promises a page. It becomes a `<Link>` in the same change that builds one.
+
+The full-height centred column is the one place that treatment is right on this
+site. `/customers` dropped its `min-h-[calc(100dvh-var(--header-h))]` because it
+left a ~950px band with the entire right half empty opposite a left-aligned
+heading; here the column is centred on both axes, so the space around it is the
+composition rather than a gap in it.
+
 ### The hero
 
 `min-h-svh`, so it fills the viewport exactly — `svh` rather than `vh` because a collapsing mobile URL bar changes `vh` mid-scroll and the hero would visibly resize. The eyebrow, headline and lede are held to a `max-w-3xl` measure, but the **CTA row spans the full shell** so the `$2B+` stat can sit against the right edge, centred against the button. They stack below `sm`. The client marquee runs along the foot with no background of its own, so the video shows through.
@@ -343,9 +380,15 @@ Icons are inline SVG in `components/ui/icons.tsx` — fourteen 24px glyphs, not 
 
 ### The nav
 
-Laid out like fundraisr.ai's: wordmark left, links **centred on the viewport**, CTA and Login right. The links are absolutely positioned rather than flexed into the middle, so they don't drift when the wordmark or buttons change width.
+Logo left, links **centred on the viewport**, `Log in` and the ghost CTA right. The centring is done with `flex-1` on both outer cells rather than absolute positioning, so the middle group stays put as the logo and the buttons change width.
 
-**The `Login` button does nothing on purpose.** There is no client area on this site yet. It is a `<button>` rather than a link — there is no destination, and pointing at `#` or a dead route would be a worse lie — and it carries `aria-disabled` so assistive tech reports it as unavailable while it keeps the muted look of a nav link. Replace `LoginPlaceholder` in `components/site/nav.tsx` with a `<Link>` when there's somewhere to send people.
+**`Log in` is a nav pill, not a second button.** Added 7 Sep 2026. The header already has one button, and two equal-weight buttons leave neither reading as the primary action — so it takes the same classes as the centre links and simply sits in the right cell. It hides below `md` and appears in the mobile sheet with the links, not beside the CTA.
+
+This is the *second* Login in this nav. The first was a `LoginPlaceholder` `<button>` with `aria-disabled`, on the reasoning that there was nowhere to send anyone and a link to `#` would be a worse lie; it was dropped in the farahcap rebuild (`47c4caf`) and this section described it for four days after it stopped existing. The difference now is that `/login` is a real route — see below — so it is a `<Link>`.
+
+**It fits, and the smaller logo is most of why.** Measured at 360 → 1440 with both changes in: no horizontal overflow at any width. At 768, the tightest width that still shows the desktop nav, there is 53px between the logo and the link group and 21px between the group and `Log in`, with the ghost CTA landing exactly on the 20px gutter. Dropping the logo from `h-8` to `h-7` bought back 23px of that — the link group had only 30px of clearance before either change. **A second right-cell item will not fit**; that is when the nav's breakpoint moves from `md:` to `lg:`.
+
+`/login` and `/get-in-touch` are both **hardcoded in `nav.tsx`** rather than read from the `nav` array in `content/copy.ts`. That array feeds the centre pills and the footer's Overview column, and neither of those two belongs in either: they are chrome, not content routes. Their labels live in `site.navLogin` and `site.navCta`.
 
 ## Design system
 
@@ -551,6 +594,8 @@ node scripts/optimize-team-photos.mjs
 
 **FOUR OF THE FIVE ARE GENERATIVE RE-SHOOTS.** That is the first thing to know about this directory. The photographs supplied on 7 Sep 2026 were five different shoots — a beach, a sponsor wall, an office, a studio, a curtain, five outfits, one of them black-and-white — and no crop makes them a set. Four were regenerated outside this repo (ChatGPT, 7 Sep 2026, 1254²) from the originals, onto the plain light-grey studio backdrop the fifth already had. **`tatjana-sotirovik` is the untouched photograph**, and it is the reference the other four were matched to.
 
+**Bernardo and Bruno were then regenerated a second time**, later the same day, and the reason generalises: the first pass matched the *backdrop* across the set but not the *dress*. Bernardo came back in a white shirt with a chain and sunglasses, Bruno in a dark open-collar shirt at a three-quarter turn — four studio portraits that still read as four different occasions. Both are now square-on in a dark jacket over a white shirt, which is what Lev and Lucas were already wearing. **Match the dress and the angle as well as the ground; the backdrop alone does not make a set.**
+
 **The masters are committed, which is a break from the other asset scripts.** `optimize-bg-video.mjs` reads its sources out of `~/Downloads`, and that is fine for a 100MB video that can be downloaded again. A generative output is one-shot and non-deterministic: clean that folder and it is gone for good. So the five masters live in `docs/assets/team/`, named for the person rather than by whatever the tool that made them called the file — 520KB for all five, and the pipeline now runs for anyone who clones the repo.
 
 The **name-to-file mapping for the originals was read, not guessed.** They arrived as Framer CDN exports with hash filenames and no captions, and four of the five subjects are men in business dress. `avalanche-capital.com` is a Framer site and ships its CMS records in the page payload, so the mapping came out of the live HTML where each record carries `{image, name, role, slug}` in order. It returned the same order as `content/team.ts`.
@@ -633,8 +678,6 @@ already 75% on screen before a pixel is scrolled.
 There are four client components — `nav`, `track-record`, `case-study-grid`, `contact-form` — and one rule about the first three: **external state is read with `useSyncExternalStore`, not mirrored into an effect.** `contact-form` is exempt because none of its state is external; see the `/get-in-touch` section above. Scroll offset (`nav`) and `prefers-reduced-motion` (`track-record`) both work that way, with a `false` server snapshot that matches the pre-hydration markup. The nav closes its mobile sheet on route change by adjusting state during render, not in an effect.
 
 That isn't stylistic — `npm run lint` enforces it via `react-hooks/set-state-in-effect`, and lint is clean. Keep it that way.
-
-**Bernardo and Bruno were then regenerated a second time**, later the same day, and the reason generalises: the first pass matched the *backdrop* across the set but not the *dress*. Bernardo came back in a white shirt with a chain and sunglasses, Bruno in a dark open-collar shirt at a three-quarter turn — four studio portraits that still read as four different occasions. Both are now square-on in a dark jacket over a white shirt, which is what Lev and Lucas were already wearing. **Match the dress and the angle as well as the ground; the backdrop alone does not make a set.**
 
 `track-record.tsx` shows financial figures counting up. It must never be left mid-count: the animation snaps to the true value on cleanup (rAF is throttled in background tabs and can be torn down mid-flight), and values under 10 skip the count entirely.
 

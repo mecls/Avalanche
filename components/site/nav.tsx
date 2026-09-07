@@ -170,6 +170,27 @@ export function SiteNav() {
           </div>
 
           <div className="flex flex-1 items-center justify-end gap-2.5">
+            {/* The client-portal door. A nav pill rather than a second
+                button: the header already has one and two equal-weight
+                buttons leave neither reading as the primary action. Same
+                classes as the centre links, so it is the same run of type at
+                the same size — it just sits in the right cell.
+
+                `max-md:hidden` for the same reason the button below carries
+                it, and it goes in the mobile sheet instead. `/login` is
+                hardcoded here rather than read from the `nav` array, because
+                that array drives the centre pills and the footer's Overview
+                column and this belongs in neither — see `site.navLogin`. */}
+            <Link
+              href="/login"
+              aria-current={pathname === "/login" ? "page" : undefined}
+              className={`rounded-full px-3.5 py-2 text-[14px] leading-[16.8px] transition-colors hover:bg-white/[0.08] max-md:hidden ${
+                pathname === "/login" ? "bg-white/[0.08]" : ""
+              }`}
+            >
+              {site.navLogin}
+            </Link>
+
             {/* `max-md:hidden`, NOT `hidden md:inline-flex`, and the
                 difference is not cosmetic. `CtaButton` already puts
                 `inline-flex` in its base classes, and Tailwind emits
@@ -244,6 +265,13 @@ export function SiteNav() {
                 </div>
               );
             })}
+            {/* Login sits with the links rather than beside the button:
+                it is navigation, and pairing it with the CTA would make the
+                sheet end on two competing actions. */}
+            <Link href="/login" className="py-2.5 text-base text-white">
+              {site.navLogin}
+            </Link>
+
             <div className="mt-3">
               <CtaButton href="/get-in-touch">{site.navCta}</CtaButton>
             </div>

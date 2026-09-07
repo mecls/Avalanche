@@ -42,6 +42,19 @@ export const site = {
   /** The header's ghost button. Short by necessity — it sits in a 47.2px
    *  glass rectangle beside the nav pills. */
   navCta: "Get in touch",
+  /**
+   * The header's client-portal link, left of the ghost button.
+   *
+   * It lives HERE and not in the `nav` array below, for the same reason
+   * `navCta` does: that array feeds the header's centre pills and the footer's
+   * Overview column, and this belongs in neither. It is chrome — a door into a
+   * product, not one of the site's content routes — so the header hardcodes
+   * `/login` beside it exactly as it hardcodes `/get-in-touch` for the button.
+   *
+   * "Log in" (two words, verb) rather than "Login" (one word, noun): the noun
+   * is the name of the thing, the verb is what the link does.
+   */
+  navLogin: "Log in",
 } as const;
 
 /**

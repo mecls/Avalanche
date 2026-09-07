@@ -322,6 +322,37 @@ two cannot disagree.
    column offers LinkedIn and the form. Send them and they go into `site`
    beside the booking link, and the mail/phone rows go back in.
 
+## /login — a shell, and every string on it is drafted
+
+**Added 7 September 2026**, so the nav's new `Log in` had a real destination.
+`content/login.ts` holds the lot and all of it is `// DRAFT`.
+
+**Nothing behind it is real.** There is no authentication in this repo — no
+provider, no session, no user store. The fields are `disabled` and a visible
+notice says so, which is the honest state for a form with no destination, and
+the same order the questionnaire on `/get-in-touch` was built in.
+
+Three things to settle before it goes live:
+
+- **Is there going to be a client portal at all?** The whole page assumes one.
+  If the answer is no, the nav link and this route come out together — it is a
+  smaller change than building the auth behind it.
+- **`lede` describes a product that does not exist.** "Access live mandate
+  documents, investor pipeline and meeting notes" is a guess at what a portal
+  would hold, written to make the screen legible. If a portal is coming, replace
+  it with what it actually does; if the feature set is undecided, cut the line
+  rather than let it set an expectation.
+- **`notice` is doing real work and should not be quietly dropped.** It is the
+  only thing on the page telling a reader the portal is not open. Removing it
+  while the fields are still inert leaves a login screen that looks functional,
+  which is worse than not shipping the page.
+
+Not a copy question but it belongs with the decision: the route is `noindex`,
+and the form deliberately has no `action`/`method` so it cannot submit as a GET
+with a password in the URL. Both are in `README.md`.
+
+---
+
 ### Four labels now point at one page, and two of them promise the wrong thing
 
 Renaming the CTA to **"Get in touch"** (5 Sep 2026) covered the nav and the
