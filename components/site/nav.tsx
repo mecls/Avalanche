@@ -170,26 +170,38 @@ export function SiteNav() {
           </div>
 
           <div className="flex flex-1 items-center justify-end gap-2.5">
-            {/* The client-portal door. A nav pill rather than a second
-                button: the header already has one and two equal-weight
-                buttons leave neither reading as the primary action. Same
-                classes as the centre links, so it is the same run of type at
-                the same size — it just sits in the right cell.
+            {/* The client-portal door, and IT DELIBERATELY GOES NOWHERE —
+                there is no portal and no URL for one yet.
 
-                `max-md:hidden` for the same reason the button below carries
-                it, and it goes in the mobile sheet instead. `/login` is
-                hardcoded here rather than read from the `nav` array, because
-                that array drives the centre pills and the footer's Overview
-                column and this belongs in neither — see `site.navLogin`. */}
-            <Link
-              href="/login"
-              aria-current={pathname === "/login" ? "page" : undefined}
-              className={`rounded-full px-3.5 py-2 text-[14px] leading-[16.8px] transition-colors hover:bg-white/[0.08] max-md:hidden ${
-                pathname === "/login" ? "bg-white/[0.08]" : ""
-              }`}
+                A `<button>` rather than an `<a>`, which is the same answer
+                this nav reached the first time it carried a Login (the
+                `LoginPlaceholder` in `82037e3`, dropped in the farahcap
+                rebuild). A link to `#`, or to a route built only to receive
+                it, is a worse lie than a control honestly marked unavailable:
+                both put a destination in the DOM and in the status bar that
+                does not exist. `/login` WAS that route for one commit; it was
+                removed with this change — `git show f5117a6` has the page if
+                a portal ever arrives.
+
+                `aria-disabled` rather than `disabled`: it reports the control
+                as unavailable while keeping it in the tab order and keeping
+                the muted look, where `disabled` would drop it out of the tab
+                order entirely. `text-fg-muted` is the visible half of the same
+                message — an inert control must not look like a working one,
+                so there is no hover state either.
+
+                Swap the whole thing for a `<Link href={…}>` when there is
+                somewhere to send people, and take `cursor-default`,
+                `aria-disabled` and the `title` with it. Geometry matches the
+                centre pills so the row does not move on that day. */}
+            <button
+              type="button"
+              aria-disabled="true"
+              title="Coming soon"
+              className="cursor-default rounded-full px-3.5 py-2 text-[14px] leading-[16.8px] text-fg-muted max-md:hidden"
             >
               {site.navLogin}
-            </Link>
+            </button>
 
             {/* `max-md:hidden`, NOT `hidden md:inline-flex`, and the
                 difference is not cosmetic. `CtaButton` already puts
@@ -265,12 +277,18 @@ export function SiteNav() {
                 </div>
               );
             })}
-            {/* Login sits with the links rather than beside the button:
-                it is navigation, and pairing it with the CTA would make the
-                sheet end on two competing actions. */}
-            <Link href="/login" className="py-2.5 text-base text-white">
+            {/* Same inert control as the desktop one — see the comment on
+                that one before changing either. It sits with the links rather
+                than beside the CTA because it is navigation, and it is
+                `text-white/55` against their `text-white` for the same reason
+                the desktop one is muted: it does nothing yet. */}
+            <button
+              type="button"
+              aria-disabled="true"
+              className="cursor-default py-2.5 text-left text-base text-white/55"
+            >
               {site.navLogin}
-            </Link>
+            </button>
 
             <div className="mt-3">
               <CtaButton href="/get-in-touch">{site.navCta}</CtaButton>

@@ -322,66 +322,28 @@ two cannot disagree.
    column offers LinkedIn and the form. Send them and they go into `site`
    beside the booking link, and the mail/phone rows go back in.
 
-## /login — a shell, and every string on it is drafted
+## The nav's "Log in" — a label with no destination
 
-**Added 7 September 2026**, so the nav's new `Log in` had a real destination.
-`content/login.ts` holds the lot and all of it is `// DRAFT`.
+**Added 7 September 2026, and it deliberately does not go anywhere.** There is
+no client portal and no URL for one, so the control is an `aria-disabled`
+`<button>` rather than a link, visibly muted.
 
-**Nothing behind it is real.** There is no authentication in this repo — no
-provider, no session, no user store. The fields are `disabled` and a visible
-notice says so, which is the honest state for a form with no destination, and
-the same order the questionnaire on `/get-in-touch` was built in.
+For a few hours it had a destination: a `/login` page shell with disabled
+fields and its own drafted copy (`content/login.ts` — a "Client portal" label,
+a lede describing mandate documents and investor pipeline, and a notice saying
+the portal was not open). **That was removed the same day by request**, along
+with the page, so none of that copy is on the site now. `git show f5117a6` has
+it.
 
-Three things to settle before it goes live:
+What is left needing a decision:
 
-- **Is there going to be a client portal at all?** The whole page assumes one.
-  If the answer is no, the nav link and this route come out together — it is a
-  smaller change than building the auth behind it.
-- **`lede` describes a product that does not exist.** "Access live mandate
-  documents, investor pipeline and meeting notes" is a guess at what a portal
-  would hold, written to make the screen legible. If a portal is coming, replace
-  it with what it actually does; if the feature set is undecided, cut the line
-  rather than let it set an expectation.
-- **`notice` is doing real work and should not be quietly dropped.** It is the
-  only thing on the page telling a reader the portal is not open. Removing it
-  while the fields are still inert leaves a login screen that looks functional,
-  which is worse than not shipping the page.
-
-Not a copy question but it belongs with the decision: the route is `noindex`,
-and the form deliberately has no `action`/`method` so it cannot submit as a GET
-with a password in the URL. Both are in `README.md`.
-
----
-
-### Four labels now point at one page, and two of them promise the wrong thing
-
-Renaming the CTA to **"Get in touch"** (5 Sep 2026) covered the nav and the
-`/customers` and `/about` page headers. It did not cover the other two
-labels that also lead to the questionnaire, and those two now say something the
-page does not do:
-
-| Label | Where | Goes to | Problem |
-|---|---|---|---|
-| **Get in touch** | Nav, /customers and /about headers | the form | Correct. |
-| **Get started** | Hero, /solutions headers, four homepage sections | the form | Fine — neutral enough. |
-| **Book a meeting** | The closing band, every page | the form | **Promises a calendar and delivers a nine-question form.** |
-| **Book an intro call** | Footer | the form | Same. |
-
-The last two were accurate when they went straight to the scheduler. They no
-longer do. My suggestion is "Get in touch" for the closing band and "Get in
-touch" or "Start a conversation" for the footer, but this is a copy decision
-and I have not made it for you — **say the word and it is two strings.**
-
-### What changed elsewhere because of this page
-
-Every CTA on the site now points at `/get-in-touch` instead of scrolling to the
-closing band, and the band's own button goes there too rather than straight to
-the scheduler. **`site.booking` is now reached from exactly one place** — the
-success panel at the end of the form. That is the only remaining scheduler link
-on the site, so the outstanding question about which calendar to use now
-affects one button instead of nine.
-
----
+- **`site.navLogin` says "Log in".** Two words, verb rather than noun. It is
+  the only user-facing string this leaves behind, and it currently promises
+  something the site cannot do yet.
+- **Is there going to be a client portal at all?** If not, the control should
+  come out rather than sit in the header as a permanent "coming soon" — it is
+  the only element on the site that advertises a capability that does not
+  exist. If yes, the copy above is worth reading before rebuilding the page.
 
 ## Supplied by you — not drafted, but worth one check
 

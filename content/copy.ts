@@ -43,16 +43,20 @@ export const site = {
    *  glass rectangle beside the nav pills. */
   navCta: "Get in touch",
   /**
-   * The header's client-portal link, left of the ghost button.
+   * The header's client-portal control, left of the ghost button.
+   *
+   * **IT IS NOT A LINK AND HAS NO DESTINATION.** There is no portal and no URL
+   * for one, so `nav.tsx` renders an `aria-disabled` `<button>` rather than an
+   * `<a>` — see the comment there. This is the label and nothing else; there
+   * is deliberately no `loginHref` beside it, because an empty or placeholder
+   * href is exactly the thing that gets shipped by accident.
    *
    * It lives HERE and not in the `nav` array below, for the same reason
    * `navCta` does: that array feeds the header's centre pills and the footer's
-   * Overview column, and this belongs in neither. It is chrome — a door into a
-   * product, not one of the site's content routes — so the header hardcodes
-   * `/login` beside it exactly as it hardcodes `/get-in-touch` for the button.
+   * Overview column, and this belongs in neither.
    *
    * "Log in" (two words, verb) rather than "Login" (one word, noun): the noun
-   * is the name of the thing, the verb is what the link does.
+   * is the name of the thing, the verb is what the control will do.
    */
   navLogin: "Log in",
 } as const;

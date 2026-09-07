@@ -24,7 +24,7 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 
 ## Structure
 
-7 routes. **`/get-in-touch` is now a real page** and every CTA on the site points at it. It used to be an anchor: `#get-in-touch` was the id on the closing band (`components/site/cta-band.tsx`), CTAs scrolled to it, and the band's button went to an external scheduler. The band still sits at the foot of **every** page — it is the ending, not the mechanism — and keeps its id so an old `/#get-in-touch` link still lands somewhere. It shipped off `/get-in-touch`, on the reasoning that its button would point at the page you are already on; that was overruled on 6 Sep 2026, because the ending is furniture and the site should not have one page that stops differently. The band takes a `ctaHref` prop now, defaulting to `/get-in-touch`, and that page passes `#questionnaire` so the button scrolls back up to the form instead of reloading the route.
+6 routes. **`/get-in-touch` is now a real page** and every CTA on the site points at it. It used to be an anchor: `#get-in-touch` was the id on the closing band (`components/site/cta-band.tsx`), CTAs scrolled to it, and the band's button went to an external scheduler. The band still sits at the foot of **every** page — it is the ending, not the mechanism — and keeps its id so an old `/#get-in-touch` link still lands somewhere. It shipped off `/get-in-touch`, on the reasoning that its button would point at the page you are already on; that was overruled on 6 Sep 2026, because the ending is furniture and the site should not have one page that stops differently. The band takes a `ctaHref` prop now, defaulting to `/get-in-touch`, and that page passes `#questionnaire` so the button scrolls back up to the form instead of reloading the route.
 
 ```
 /                        Hero (video, full-screen, client strip) · Track record ·
@@ -36,7 +36,6 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 /about                   Why Avalanche · the divergence · five beliefs ·
                          the three access layers · five partners · press
 /get-in-touch            Nine-step qualification form · FAQ · CTA band
-/login                   Client portal sign-in — A SHELL, see below
 ```
 
 ### /solutions is two views
@@ -289,40 +288,28 @@ It shares `ctaClass()` with `CtaButton` so the two cannot drift. A `Link` with
 middle-click, breaks Enter-to-submit, and puts a bogus destination in the DOM.
 
 
-### /login is a shell
+### There is no /login route, and there was one for a commit
 
-Added 7 September 2026, so the nav's new `Log in` had somewhere real to point.
-**There is no authentication anywhere in this repo** — no provider, no session,
-no route handler, no user store. The screen exists so the layout can be
-approved before an auth provider is chosen, which is the order the
-`/get-in-touch` questionnaire was built in too.
+Worth recording because the reasoning is easy to re-derive badly.
 
-**The fields are `disabled` and that is the whole safety property.** An enabled
-login form with nothing behind it invites someone to type a real password into
-a page that cannot do anything with it, and invites their password manager to
-save it against this origin. `login.notice` says the same thing in words
-directly above the fields. **Keep both, and remove them in the same change that
-adds real auth — not before.** The one state this page must never be in is
-looking like it works.
+The nav's `Log in` was added on 7 Sep 2026 with a real destination: a `/login`
+page shell — client-portal heading, email and password fields, a submit button,
+all of it `disabled`, with a visible notice saying the portal was not open. The
+point was to get the layout approved before an auth provider was chosen, the
+same order the `/get-in-touch` questionnaire was built in.
 
-The form has no `action` and no `method`, which is also deliberate: a `<form>`
-with neither silently submits as a **GET**, putting whatever was typed into the
-address bar. **When this is wired up it must POST** — a Server Action or a
-route handler, over HTTPS, with nothing about the submission in the URL. Same
-rule the questionnaire's `send()` carries for its name and email, and it
-matters more here.
+**It was removed the same day, by request** — there is no portal and no link to
+one yet, so the control should not go anywhere at all. That leaves the route
+orphaned: nothing linked to it, and its own stated reason for existing was that
+the nav needed somewhere to point. A `noindex` URL with a fake login form on it,
+reachable only by accident, is worse than no URL.
 
-Two smaller decisions. `robots: { index: false }`, because a half-built portal
-door in search results is worse than not existing — and a sign-in screen is not
-a landing page once it is real either. And "Forgot your password?" is **plain
-text, not a link**: there is no reset flow to point at, and an anchor to nowhere
-promises a page. It becomes a `<Link>` in the same change that builds one.
-
-The full-height centred column is the one place that treatment is right on this
-site. `/customers` dropped its `min-h-[calc(100dvh-var(--header-h))]` because it
-left a ~950px band with the entire right half empty opposite a left-aligned
-heading; here the column is centred on both axes, so the space around it is the
-composition rather than a gap in it.
+`git show f5117a6` has the page, `content/login.ts`, and the security notes that
+came with it — chiefly that the form deliberately had no `action` and no
+`method`, because that combination submits as a **GET** and would put a typed
+password in the address bar. **If a portal ever arrives, read those before
+rebuilding it**, and point the nav at the real destination rather than at a
+local stand-in.
 
 ### The hero
 
@@ -382,13 +369,15 @@ Icons are inline SVG in `components/ui/icons.tsx` — fourteen 24px glyphs, not 
 
 Logo left, links **centred on the viewport**, `Log in` and the ghost CTA right. The centring is done with `flex-1` on both outer cells rather than absolute positioning, so the middle group stays put as the logo and the buttons change width.
 
-**`Log in` is a nav pill, not a second button.** Added 7 Sep 2026. The header already has one button, and two equal-weight buttons leave neither reading as the primary action — so it takes the same classes as the centre links and simply sits in the right cell. It hides below `md` and appears in the mobile sheet with the links, not beside the CTA.
+**`Log in` is a nav pill, not a second button.** Added 7 Sep 2026. The header already has one button, and two equal-weight buttons leave neither reading as the primary action — so it takes the centre links' geometry and sits in the right cell. It hides below `md` and appears in the mobile sheet with the links, not beside the CTA.
 
-This is the *second* Login in this nav. The first was a `LoginPlaceholder` `<button>` with `aria-disabled`, on the reasoning that there was nowhere to send anyone and a link to `#` would be a worse lie; it was dropped in the farahcap rebuild (`47c4caf`) and this section described it for four days after it stopped existing. The difference now is that `/login` is a real route — see below — so it is a `<Link>`.
+**IT GOES NOWHERE, AND THAT IS THE POINT.** There is no client portal and no URL for one, so it is an `aria-disabled` `<button>` rather than an `<a>`. A link to `#`, or to a route built only to receive it, puts a destination in the DOM and in the status bar that does not exist — a worse lie than a control honestly marked unavailable. `aria-disabled` rather than `disabled` keeps it in the tab order; `text-fg-muted` and the absence of a hover state are the visible half of the same message, because an inert control must not look like a working one. **Swap it for a `<Link>` when there is somewhere to send people**, and take `cursor-default`, `aria-disabled` and the `title` with it; the geometry already matches the pills so the row will not move that day.
+
+This nav has now reached that answer twice. The first Login was a `LoginPlaceholder` `<button>` with exactly the same reasoning, dropped in the farahcap rebuild (`47c4caf`) — and this section went on describing it for four days after it stopped existing. The second version briefly did have a destination: a `/login` page shell, disabled fields and all, built so the control had somewhere real to point. That lasted one commit. **Do not re-add a route to give this an href**; `git show f5117a6` has the page if a portal ever arrives.
 
 **It fits, and the smaller logo is most of why.** Measured at 360 → 1440 with both changes in: no horizontal overflow at any width. At 768, the tightest width that still shows the desktop nav, there is 53px between the logo and the link group and 21px between the group and `Log in`, with the ghost CTA landing exactly on the 20px gutter. Dropping the logo from `h-8` to `h-7` bought back 23px of that — the link group had only 30px of clearance before either change. **A second right-cell item will not fit**; that is when the nav's breakpoint moves from `md:` to `lg:`.
 
-`/login` and `/get-in-touch` are both **hardcoded in `nav.tsx`** rather than read from the `nav` array in `content/copy.ts`. That array feeds the centre pills and the footer's Overview column, and neither of those two belongs in either: they are chrome, not content routes. Their labels live in `site.navLogin` and `site.navCta`.
+`Log in` and `/get-in-touch` both sit **outside the `nav` array** in `content/copy.ts`. That array feeds the centre pills and the footer's Overview column, and neither of these belongs in either: they are chrome, not content routes. Their labels live in `site.navLogin` and `site.navCta` — and there is deliberately no `loginHref` beside the label, because an empty or placeholder href is exactly the thing that gets shipped by accident.
 
 ## Design system
 

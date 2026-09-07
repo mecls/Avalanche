@@ -226,8 +226,8 @@ is half right by accident: the serif is gone again, the accent is real.
 Four: `nav`, `track-record`, `case-study-grid` and `contact-form`. The first
 three read EXTERNAL state, which is why the `useSyncExternalStore` rule below
 exists; `contact-form`'s step and answers are its own, so plain `useState` is
-correct there and that rule is not in play. **`/solutions`, `/about` and
-`/login` deliberately add none** — its scroll-linked rail and text reveal are CSS `view-timeline`,
+correct there and that rule is not in play. **`/solutions` and `/about`
+deliberately add none** — its scroll-linked rail and text reveal are CSS `view-timeline`,
 not JS. Keep it that way; see "The solutions timeline" in `README.md` before touching
 it, including why the reduced-motion guard has to say
 `animation: none` rather than rely on the global duration override.
@@ -343,18 +343,17 @@ untabbable while closed and focus can only reach them through the trigger.
   the still is already cached from the hero. It carries the same image/scrim/
   grain stack, but the scrim is left-weighted rather than vertical because the
   type sits in one left column.
-- **`/login` IS A SHELL AND ITS FIELDS ARE `disabled` ON PURPOSE.** There is no
-  authentication anywhere in this repo — no provider, no session, no route
-  handler, no user store. The route exists because the nav's `Log in` needed a
-  real destination. **Do not enable the fields and do not delete
-  `login.notice`** except in the same change that adds real auth: an enabled
-  login form with nothing behind it invites a real password into a page that
-  cannot use it, and invites the browser to save it against this origin. The
-  `<form>` has no `action` and no `method` for the same reason — that
-  combination submits as a **GET** and puts what was typed in the address bar.
-  When it is wired up it must POST, via a Server Action or route handler, with
-  nothing about the submission in the URL. Same rule as the questionnaire's
-  `send()`, and it matters more here.
+- **THE NAV'S "Log in" GOES NOWHERE, AND THAT IS THE POINT.** There is no
+  portal, no auth of any kind in this repo, and no URL for one. It is an
+  `aria-disabled` `<button>`, not an `<a>` — a link to `#`, or to a route that
+  exists only to receive it, puts a destination in the DOM and the status bar
+  that does not exist, which is a worse lie than a control honestly marked
+  unavailable. `aria-disabled` rather than `disabled` keeps it in the tab
+  order; `text-fg-muted` and no hover state are the visible half of the same
+  message. **Do not give it an href until there is a real one**, and do not
+  re-add a `/login` route to have somewhere to point — that was tried for one
+  commit and removed (`git show f5117a6`). This nav has now reached the same
+  answer twice; the first `LoginPlaceholder` is in `82037e3`.
 - **`components/sections/booking.tsx` is no longer mounted.** The closing band
   replaced the two-column heading + booking-panel layout with the reference's
   single-column one; its button goes straight to `site.booking`. Kept, not
