@@ -92,12 +92,44 @@ beliefs) → where the gap actually sits (three layers) → who does the work
 (team) → who has said so (press). The manifesto is in the *middle* on purpose:
 a reader who came for the team scrolls through the argument to reach them.
 
-**Band sequence** — light header, light thesis (separated by a rule), dark
-metrics, light divergence, dark beliefs, light layers, dark team, photo-backed
-close. The header and the thesis are the only adjacent pair sharing a band,
-which is why `Thesis` carries the page's one `border-t`. The team grid is
-`data-band="dark"`, which paints the same `#151515` the section inherited from
-`<body>` back when this was `/team` and the page opened dark.
+**Order and bands** — centred light header, image-backed "Why Avalanche",
+light metrics, dark team, light divergence, dark beliefs, light layers,
+photo-backed close. Every band alternates. The team grid is `data-band="dark"`, which paints the same `#151515`
+the section inherited from `<body>` back when this was `/team` and the page
+opened dark.
+
+**The header is centred**, which is what replaced an inset visual in its right
+half (added and removed the same day). The complaint was an empty right half,
+and a centred header has no right half to leave empty — a simpler answer than
+filling it. `PageHeader` takes `align="center"`; `/customers` and `/solutions`
+pass nothing and render the left-aligned row they always have.
+
+**"Why Avalanche" is image-backed** and sits second. A close aerial of the
+Ponte 25 de Abril at sunset behind the same image/scrim/grain stack the hero
+and the closing band use — deliberately *not* the hero's wide span, since the
+page already ends on the hero poster and the same photograph twice reads as a
+mistake. Built by `node scripts/optimize-bg-video.mjs about`.
+
+Two things about that band are load-bearing. **Its source is a 608×320 stock
+preview, not a master**, so the preset carries the restoration chain (denoise
+then unsharp) that the hero pipeline used to need for exactly this case — do
+not copy `restore: true` onto a clean master, where it destroys real detail to
+fix artifacts that aren't there. And **its scrim is nearly flat and much darker
+than the closing band's**: `CtaBand` can ramp 0.92 → 0.45 because its type sits
+in one left column, but the lattice here spans the full shell, so every column
+carries 13px text and every column needs the floor. Measured against the
+still's own brightest pixels in the card row, the first attempt (0.86 → 0.55)
+put the middle column at **4.27:1**, under the 4.5:1 that size needs; at
+0.90/0.84/0.80 the three columns clear 8.1, 6.4 and 7.8:1. The scrim is also
+what covers for the upscale, so re-measure if either changes.
+
+**The thesis cells have icons, and they are new marks.** `components/ui/
+icons.tsx` held sector marks only — funds, credit, realestate — and there is no
+honest mapping from those to "Global Network" or "Precision & Execution", so
+three abstractions were drawn to the same 24/1.25 spec: a globe, two parties
+across a table, a target. The empty top-left of an icon-less cell was also what
+made the block look hollow beside `RaiseTypes`, whose glyph fills exactly that
+space.
 
 ### The design pass of 7 September 2026
 
@@ -130,11 +162,19 @@ own `SERIES`, so the preview cannot disagree with the chart it previews — and
 it carries no captions, axis, legend or pill, which is what keeps it a hero
 graphic rather than a second copy of the figure.
 
-**The team grid went three across and left-aligned.** It was the only place on
-the site where card content was centred, which alone made it read as another
-template. The portraits also moved from `rounded-[4px]` to `rounded-lg` — 4px
-is `CtaButton`'s measured radius, so they had been grouped with controls rather
-than with the diagram plates they actually resemble.
+**The team grid is five across on one row, and left-aligned.** It was the only
+place on the site where card content was centred, which alone made it read as
+another template. The column count took two goes: three across gave the biggest
+portraits and the tallest block on the page (**1977px**, against 1612 at four),
+so five columns now fit the whole team on one row at **952px**. The type steps
+down with the column — 20px name, 13px bio — because a 24px display name wraps
+at 254px. There is deliberately **no two-column step**: going 1 → 2 → 5 left
+640–1023px on two columns, where a card reaches 472px and the block hit 2721px,
+which is the same bloat one breakpoint down. Three columns from `sm` holds the
+card between 184 and 307px across that range. The portraits also moved from
+`rounded-[4px]` to `rounded-lg` — 4px is `CtaButton`'s measured radius, so they
+had been grouped with controls rather than with the diagram plates they
+actually resemble.
 
 **"In the press" was dropped.** Three white cards on a white band, no outlet
 marks, no links, no hover state — and unfixable in place, because the repo has

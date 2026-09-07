@@ -205,14 +205,17 @@ export const thesis = {
   pillars: [
     {
       title: "Global Network",
+      icon: "network",
       body: "Direct relationships with LPs, family offices, and institutional investors across the US, Europe, and the Middle East — and the reach to go beyond them when the mandate demands it.",
     },
     {
       title: "Both Sides of The Table",
+      icon: "bothSides",
       body: "Our team has operated as investors and as operators — which means we understand what capital allocators need to see, and how to position an opportunity that gets funded.",
     },
     {
       title: "Precision & Execution",
+      icon: "precision",
       body: "We don't approach the market broadly. Every mandate is matched against a curated set of investors whose criteria, geography, and appetite align — minimising meaningless conversations.",
     },
   ],

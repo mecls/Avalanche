@@ -111,34 +111,11 @@ export function Caption({
  * visible when the diagram stopped growing to fill it. At 720px the card is
  * 720x685 and the diagram fills 78% of it.
  */
-/**
- * The default sizing: `flex:1 0 0` on the /solutions and /about media rows,
- * where the card's aspect ratio is what gives the ROW its height and
- * `items-center` centres the text against it. Copy length cannot move the
- * layout, which is the whole reason the ratio is fixed.
- */
-const PLATE_SIZING =
-  "aspect-[1.05098/1] flex-1 max-[1199px]:w-full max-[1199px]:max-w-[720px] max-[1199px]:flex-none";
-
-/**
- * `className` REPLACES the sizing, and only the sizing — the surface below
- * (radial wash, grain, `data-band="dark"`, radius) is shared and not
- * overridable. That split exists so the /about hero inset can be a small
- * fixed-width panel without forking the surface: two dark plates on one page
- * that dithered differently would read as two different materials. Omit it and
- * the row plates render exactly as they always have.
- */
-export function Plate({
-  children,
-  className = PLATE_SIZING,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+export function Plate({ children }: { children: React.ReactNode }) {
   return (
     <div
       data-band="dark"
-      className={`relative flex items-center justify-center overflow-clip rounded-lg ${className}`}
+      className="relative flex aspect-[1.05098/1] flex-1 items-center justify-center overflow-clip rounded-lg max-[1199px]:w-full max-[1199px]:max-w-[720px] max-[1199px]:flex-none"
     >
       <div
         aria-hidden

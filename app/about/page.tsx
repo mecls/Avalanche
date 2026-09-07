@@ -9,7 +9,6 @@ import { Plate } from "@/components/ui/diagram";
 import {
   AccessLayersDiagram,
   DivergenceDiagram,
-  DivergenceMark,
 } from "@/components/ui/manifesto-media";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { about } from "@/content/about";
@@ -101,17 +100,7 @@ export default function AboutPage() {
           ))}
           lede={about.lede}
           cta={about.cta}
-          /* The inset that fills the header's right half. Same dark plate
-             surface as the two diagram cards further down — wash, grain,
-             radius — at a fixed 420px rather than the row plates' `flex-1`,
-             so the two read as one material at two sizes. The mark inside is
-             built from the divergence chart's own SERIES, so the preview
-             cannot disagree with the chart it previews. */
-          aside={
-            <Plate className="aspect-[4/3] w-[420px]">
-              <DivergenceMark />
-            </Plate>
-          }
+          align="center"
         />
       </section>
 
@@ -132,7 +121,141 @@ export default function AboutPage() {
           It is also the page's first client component. /about had none until
           now; the count-up is the whole point of the block, so it comes with
           one. See "Client components" in AGENTS.md. */}
-      <TrackRecord band="dark" />
+      <TrackRecord band="light" className="border-t border-line-soft" />
+
+      <section data-band="dark" className="section-y">
+        <div className="shell">
+          <SectionHeading
+            eyebrow={about.team.eyebrow}
+            title={about.team.title}
+            lede={about.team.lede}
+          />
+
+          {/* FIVE ACROSS, ONE ROW. Five people in a four- or three-column
+              grid always left a ragged second row, and the wider the columns
+              got the worse it paid: three across gave the biggest portraits
+              and the tallest block on the page by far (1977px, against 1612
+              at four). Five columns fit the whole team on one row, which
+              removes the orphan and the second row's height together.
+
+              The type steps down with the column — 20px name, 13px bio —
+              because a 24px display name wraps in a 254px column.
+
+              THERE IS NO TWO-COLUMN STEP, AND THAT IS THE SAME DECISION AS
+              THE FIVE-COLUMN ONE. It went 1 -> 2 -> 5 at first, which left
+              640-1023px on two columns: a card reaches 472px there, the
+              portrait under it 590px, and the block hit 2721px at 1023 — the
+              exact bloat this layout was changed to remove, one breakpoint
+              down. Three columns from `sm` holds the card between 184 and
+              307px across that whole range and the block between 1.3k and
+              1.6k. Five people on three columns still leave one orphan, which
+              is what the card carrying no chrome is for.
+
+              NO CARD. There is no border, no fill and no padding around the
+              whole thing: the only frame is on the picture, and the type sits
+              on the band. That mattered more when the last row was ragged; it
+              is kept because the cards still have to sit on the band cleanly
+              at the two-column breakpoint, where five people do leave one.
+
+              THE BIOS ARE RENDERED AGAIN, under the role, by request on
+              7 Sep 2026. They came off when the grid was rebuilt around the
+              reference's photo-name-role card, which puts bios behind a
+              "Read Bio" overlay instead. Two things follow from putting them
+              back, and both are load-bearing:
+
+              They are DRAFT copy about five NAMED, IDENTIFIABLE PEOPLE, and
+              they are now public rather than sitting unrendered in
+              content/team.ts. That is why each one describes the SEAT rather
+              than the person — no career history, no prior firms, no
+              credentials, because none of that was ever sourced. Do not
+              "improve" them by inventing any. docs/COPY-REVIEW.md tracks
+              them, and the entry there is now about copy that ships, not copy
+              that is merely kept.
+
+              The row still cannot break: the picture, name and role all sit
+              at a fixed height, so the bio is the only thing that varies and
+              it varies BELOW everything else. Cards in a row therefore stay
+              aligned down to the role no matter how long a bio runs. */}
+          <ul className="mt-16 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-5">
+            {team.map((m) => (
+              <li key={m.name} className="flex flex-col">
+                {/* `aspect-[4/5]` is the contract with
+                    scripts/optimize-team-photos.mjs, which crops every source
+                    to exactly this. Change one and change the other, or the
+                    `object-cover` starts throwing away a band of each photo.
+
+                    The monogram FALLBACK stays: `photo` is nullable, a sixth
+                    member can arrive before their picture does, and an empty
+                    frame is worse than initials.
+
+                    `placeholder="blur"` is not decoration. These five are the
+                    only images on the page, they sit ~4000px down it, and
+                    next/image lazy-loads by default — so scrolling here before
+                    they decode showed five EMPTY BORDERED FRAMES on the dark
+                    band. The frame's own `bg-ground-alt` is the same #151515
+                    as the band behind it, so "not loaded yet" and "nothing
+                    here" looked identical, and the section read as a blank
+                    slab rather than as loading. The data URIs are generated
+                    from the same crops by the pipeline (content/team-blur.ts,
+                    generated) so they cannot drift from the photos. Guarded
+                    rather than assumed: a portrait added without re-running
+                    the script falls back to `empty` instead of throwing.
+
+                    `alt=""` is deliberate. The name is the very next element
+                    and is a heading, so alt text here would make a screen
+                    reader read every name twice. */}
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-line bg-ground-alt">
+                  {m.photo ? (
+                    <Image
+                      src={m.photo}
+                      alt=""
+                      fill
+                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 20vw"
+                      placeholder={teamBlur[m.photo] ? "blur" : "empty"}
+                      blurDataURL={teamBlur[m.photo]}
+                      className="object-cover"
+                    />
+                  ) : (
+                    <span className="display absolute inset-0 flex items-center justify-center text-3xl text-fg-muted">
+                      {m.name
+                        .split(" ")
+                        .map((w) => w[0])
+                        .join("")}
+                    </span>
+                  )}
+                </div>
+
+                <h3 className="display mt-6 text-xl">{m.name}</h3>
+
+                {/* `page-label` rather than `eyebrow`: this run has to stay
+                    monochrome. `eyebrow` carries the accent and renders a
+                    dozen times a page as a BLOCK's name — five job titles are
+                    neither, and colouring them would put the loudest thing on
+                    the page under every portrait. Same 14px uppercase spec,
+                    no colour of its own, which is the whole reason that
+                    utility does not own one. */}
+                <p className="page-label mt-2 text-fg-muted">{m.role}</p>
+
+                {/* Centred to match the name and role above it rather than
+                    ranged left, which would leave the only left-aligned run
+                    in the card sitting under two centred ones.
+                    `text-balance` is what makes that read as deliberate: at
+                    this measure every bio sets in two or three lines, and
+                    without it the last line is regularly one orphaned word.
+
+                    Guarded on `m.bio` for the same reason the photo is:
+                    `bio` is nullable, and a sixth member can arrive before
+                    their copy does. */}
+                {m.bio && (
+                  <p className="mt-3 text-[13px] leading-relaxed text-pretty text-fg-muted">
+                    {m.bio}
+                  </p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
 
       {/* `id="manifesto"` is what the old route redirects to — /manifesto 307s
           to /about#manifesto, so a reader following an existing link lands on
@@ -250,125 +373,6 @@ export default function AboutPage() {
               <AccessLayersDiagram />
             </Plate>
           </div>
-        </div>
-      </section>
-
-      <section data-band="dark" className="section-y">
-        <div className="shell">
-          <SectionHeading
-            eyebrow={about.team.eyebrow}
-            title={about.team.title}
-            lede={about.team.lede}
-          />
-
-          {/* Four across, photo over a centred name and role — the
-              reference's layout, rebuilt 7 Sep 2026. It was three across with
-              a 64px monogram circle and the bio underneath, which is what the
-              page had while there were no photographs to show.
-
-              NO CARD. There is no border, no fill and no padding around the
-              whole thing: the only frame is on the picture, and the type sits
-              on the band. That is what makes a ragged last row work — five
-              people in a four-column grid leaves three empty cells, and an
-              empty CARD would show, where empty ground does not.
-
-              THE BIOS ARE RENDERED AGAIN, under the role, by request on
-              7 Sep 2026. They came off when the grid was rebuilt around the
-              reference's photo-name-role card, which puts bios behind a
-              "Read Bio" overlay instead. Two things follow from putting them
-              back, and both are load-bearing:
-
-              They are DRAFT copy about five NAMED, IDENTIFIABLE PEOPLE, and
-              they are now public rather than sitting unrendered in
-              content/team.ts. That is why each one describes the SEAT rather
-              than the person — no career history, no prior firms, no
-              credentials, because none of that was ever sourced. Do not
-              "improve" them by inventing any. docs/COPY-REVIEW.md tracks
-              them, and the entry there is now about copy that ships, not copy
-              that is merely kept.
-
-              The row still cannot break: the picture, name and role all sit
-              at a fixed height, so the bio is the only thing that varies and
-              it varies BELOW everything else. Cards in a row therefore stay
-              aligned down to the role no matter how long a bio runs. */}
-          <ul className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
-            {team.map((m) => (
-              <li key={m.name} className="flex flex-col">
-                {/* `aspect-[4/5]` is the contract with
-                    scripts/optimize-team-photos.mjs, which crops every source
-                    to exactly this. Change one and change the other, or the
-                    `object-cover` starts throwing away a band of each photo.
-
-                    The monogram FALLBACK stays: `photo` is nullable, a sixth
-                    member can arrive before their picture does, and an empty
-                    frame is worse than initials.
-
-                    `placeholder="blur"` is not decoration. These five are the
-                    only images on the page, they sit ~4000px down it, and
-                    next/image lazy-loads by default — so scrolling here before
-                    they decode showed five EMPTY BORDERED FRAMES on the dark
-                    band. The frame's own `bg-ground-alt` is the same #151515
-                    as the band behind it, so "not loaded yet" and "nothing
-                    here" looked identical, and the section read as a blank
-                    slab rather than as loading. The data URIs are generated
-                    from the same crops by the pipeline (content/team-blur.ts,
-                    generated) so they cannot drift from the photos. Guarded
-                    rather than assumed: a portrait added without re-running
-                    the script falls back to `empty` instead of throwing.
-
-                    `alt=""` is deliberate. The name is the very next element
-                    and is a heading, so alt text here would make a screen
-                    reader read every name twice. */}
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-line bg-ground-alt">
-                  {m.photo ? (
-                    <Image
-                      src={m.photo}
-                      alt=""
-                      fill
-                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
-                      placeholder={teamBlur[m.photo] ? "blur" : "empty"}
-                      blurDataURL={teamBlur[m.photo]}
-                      className="object-cover"
-                    />
-                  ) : (
-                    <span className="display absolute inset-0 flex items-center justify-center text-3xl text-fg-muted">
-                      {m.name
-                        .split(" ")
-                        .map((w) => w[0])
-                        .join("")}
-                    </span>
-                  )}
-                </div>
-
-                <h3 className="display mt-7 text-2xl">{m.name}</h3>
-
-                {/* `page-label` rather than `eyebrow`: this run has to stay
-                    monochrome. `eyebrow` carries the accent and renders a
-                    dozen times a page as a BLOCK's name — five job titles are
-                    neither, and colouring them would put the loudest thing on
-                    the page under every portrait. Same 14px uppercase spec,
-                    no colour of its own, which is the whole reason that
-                    utility does not own one. */}
-                <p className="page-label mt-2.5 text-fg-muted">{m.role}</p>
-
-                {/* Centred to match the name and role above it rather than
-                    ranged left, which would leave the only left-aligned run
-                    in the card sitting under two centred ones.
-                    `text-balance` is what makes that read as deliberate: at
-                    this measure every bio sets in two or three lines, and
-                    without it the last line is regularly one orphaned word.
-
-                    Guarded on `m.bio` for the same reason the photo is:
-                    `bio` is nullable, and a sixth member can arrive before
-                    their copy does. */}
-                {m.bio && (
-                  <p className="mt-3 max-w-[34ch] text-sm leading-relaxed text-pretty text-fg-muted">
-                    {m.bio}
-                  </p>
-                )}
-              </li>
-            ))}
-          </ul>
         </div>
       </section>
 

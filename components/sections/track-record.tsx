@@ -90,7 +90,11 @@ function Stat({
   const n = useCountUp(to, run);
 
   return (
-    <BracketCell index={index} minH="min-h-[12rem] lg:min-h-[13rem]" className={className}>
+    <BracketCell
+      index={index}
+      minH="min-h-[12rem] lg:min-h-[13rem]"
+      className={className}
+    >
       <p className="numeral text-[clamp(3rem,4.1vw,4rem)]">
         {prefix}
         {n.toFixed(decimals)}
@@ -149,6 +153,7 @@ function StatRow({
 export function TrackRecord({
   variant = "grid",
   band,
+  className = "",
 }: {
   variant?: "grid" | "rows";
   /**
@@ -160,6 +165,9 @@ export function TrackRecord({
    * white figures on a white ground. Only a band paints itself.
    */
   band?: "light" | "dark";
+  /** Extra classes for the `grid` variant's section — /about uses it for the
+   *  hairline that separates it from the light header above it. */
+  className?: string;
 } = {}) {
   const ref = useRef<HTMLElement>(null);
   const [run, setRun] = useState(false);
@@ -209,7 +217,7 @@ export function TrackRecord({
   }
 
   return (
-    <section ref={ref} data-band={band} className="section-y">
+    <section ref={ref} data-band={band} className={`section-y ${className}`}>
       <div className="shell">
         <SectionHeading
           eyebrow={trackRecord.eyebrow}

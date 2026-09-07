@@ -1,9 +1,15 @@
 /**
- * Thin line icons for the vertical and raise-type grids.
+ * Thin line icons for the vertical, raise-type and thesis grids.
  *
- * Inline SVG rather than an icon package: fourteen 24px glyphs is not worth a
- * dependency, and `currentColor` means they follow the `[data-band]` token
- * flip for free. Uniform 24 viewBox, 1.25 stroke, round caps.
+ * Inline SVG rather than an icon package: a handful of 24px glyphs is not
+ * worth a dependency, and `currentColor` means they follow the `[data-band]`
+ * token flip for free. Uniform 24 viewBox, 1.25 stroke, round caps.
+ *
+ * The set was SECTOR marks only — funds, credit, realestate and so on — which
+ * is why `Thesis` first shipped without one: forcing "media" or "finance" onto
+ * "Global Network" would have been a glyph that means something else. The
+ * three at the bottom were drawn for those cells instead. Keep that rule when
+ * adding a block: reach for a mark that means the thing, or add one.
  */
 import type { SVGProps } from "react";
 
@@ -128,11 +134,50 @@ export const ICONS = {
       <path d="M2.5 13.5l19-6.5-4.5 8.5-3.5.8-2.2 4.2-1.6-4.4z" />
     </Svg>
   ),
+  // --- thesis pillars (/about) ---
+  // Abstractions rather than sectors, and they are only used by `Thesis`.
+  // Drawn to the same 24/1.25 spec as the rest so they sit in a BracketCell
+  // beside the sector marks without reading as a different set.
+  network: (p: IconProps) => (
+    <Svg {...p}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M3.5 12h17" />
+      <path d="M12 3.5c2.2 2.3 3.4 5.3 3.4 8.5S14.2 18.2 12 20.5c-2.2-2.3-3.4-5.3-3.4-8.5S9.8 5.8 12 3.5z" />
+    </Svg>
+  ),
+  // A table line with a party on each side of it: head-and-shoulders above
+  // left, head-and-shoulders below right. The shoulder arcs are the same
+  // radius mirrored across the line — sweep 1 bulges away from it upward,
+  // sweep 0 downward — so the two read as a matched pair rather than as two
+  // different figures. Drawn twice: a first attempt put both figures on the
+  // same side and lost the table line entirely at 24px.
+  bothSides: (p: IconProps) => (
+    <Svg {...p}>
+      <path d="M2.5 12h19" />
+      <circle cx="8" cy="6.4" r="2.3" />
+      <path d="M4.4 12a3.6 3.6 0 0 1 7.2 0" />
+      <circle cx="16" cy="17.6" r="2.3" />
+      <path d="M12.4 12a3.6 3.6 0 0 0 7.2 0" />
+    </Svg>
+  ),
+  precision: (p: IconProps) => (
+    <Svg {...p}>
+      <circle cx="12" cy="12" r="8.5" />
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3" />
+    </Svg>
+  ),
 } as const;
 
 export type IconName = keyof typeof ICONS;
 
-export function Icon({ name, className }: { name: IconName; className?: string }) {
+export function Icon({
+  name,
+  className,
+}: {
+  name: IconName;
+  className?: string;
+}) {
   const Glyph = ICONS[name];
   return <Glyph className={className} />;
 }
