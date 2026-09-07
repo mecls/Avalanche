@@ -28,6 +28,16 @@
  *    shoots — a beach, a sponsor wall, an office, a curtain — and never read
  *    as a set. The originals are in the git history of this directory.
  *
+ * **BERNARDO AND BRUNO WERE RE-GENERATED A SECOND TIME**, later the same day,
+ * and the reason is worth keeping: the first pass matched the BACKDROP across
+ * the set but not the DRESS. Bernardo came back in a white shirt with a chain
+ * and sunglasses, Bruno in a dark open-collar shirt at a three-quarter turn —
+ * four studio portraits that still read as four different occasions. Both are
+ * now square-on in a dark jacket over a white shirt, which is what Lev and
+ * Lucas were already wearing. If a portrait is ever replaced again, match the
+ * dress and the angle as well as the ground; the backdrop alone does not make
+ * a set.
+ *
  * The name-to-file mapping for the originals was not guessed: the filenames
  * carried no names, so it was read out of avalanche-capital.com's own page
  * payload, where each CMS record holds `{image, name, role, slug}` together.
@@ -79,12 +89,19 @@ const HEAD_Y = 0.3;
 
 /** `faceX` / `faceY` are the centre of the head as a fraction of the master;
  *  `zoom` is how much of the master's height to keep, 1 being all of it. */
+// All four re-shoots now frame square-on and near-centred. Measured rather
+// than eyeballed: the centroid of the dark pixels in the hair band (y 15-32%
+// of the master) sits at 0.504 / 0.485 / 0.498 / 0.539 of the width, so 0.5
+// centres all four to within a couple of percent of the crop.
+//
+// Bernardo carried 0.51 and Bruno 0.55 against their FIRST re-shoots — Bruno's
+// was a three-quarter turn sitting right of the master's centre. Both masters
+// were replaced on 7 Sep 2026 and both numbers came back to centre with them.
+// **Re-measure when a master is replaced; do not carry the old number over.**
 const PEOPLE = [
-  { slug: "bernardo-almeida", faceX: 0.51 },
+  { slug: "bernardo-almeida", faceX: 0.5 },
   { slug: "lev-valestkiy", faceX: 0.5 },
-  // The one re-shoot that is not square-on: a three-quarter turn, sitting
-  // right of the master's centre, so the crop follows him.
-  { slug: "bruno-erckmam", faceX: 0.55 },
+  { slug: "bruno-erckmam", faceX: 0.5 },
   // The untouched photograph, and the only entry that zooms. See above.
   { slug: "tatjana-sotirovik", faceX: 0.45, faceY: 0.36, zoom: 0.8 },
   { slug: "lucas-barrozo", faceX: 0.5 },
