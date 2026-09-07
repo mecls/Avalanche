@@ -345,9 +345,18 @@ export function AccessLayersDiagram() {
         strokeWidth={1}
         strokeDasharray="4 4"
       />
+      {/* ABOVE the apex, not beside the rule. Set at `CX + 14` it ran
+          rightwards across the outer arc and the last glyph sat on the ring:
+          at that baseline the circle has a half-width of
+          sqrt(200^2 - 150^2) = 132, so the arc crosses x=442 and the label
+          reached 443. Centred above the circle it has the whole frame width
+          and cannot collide with anything but the corner captions, which are
+          ranged to the two edges. Same chord arithmetic as the band labels
+          below — see the note on `labelY`. */}
       <text
-        x={CX + 14}
-        y={CY - mid.r - 14}
+        x={CX}
+        y={CY - outer.r - 12}
+        textAnchor="middle"
         className="fill-accent font-sans dgm-sm font-medium tracking-[0.1em] uppercase"
       >
         Exposure gap
