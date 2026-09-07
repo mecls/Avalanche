@@ -369,5 +369,16 @@ affects one button instead of nine.
 3. **The booking link — currently a placeholder.** The scheduler at the foot of every page is a panel with a "Book a meeting" button, not a live embed. It points at `https://www.fundraisr.ai/book-demo` (live, and yours) via `site.booking` in `content/copy.ts`. **Send the real calendar link and it is a one-string change.**
 
    Two notes: that Fundraisr page runs on LeadConnector (GoHighLevel), not Calendly — so if it becomes the scheduler the embed has to be rebuilt, not re-pointed. And the old Calendly event is **not** dead as previously reported: `capital-raise-demo-call-ac-clone` still returns 200 and resolves to "Capital Raise | Strategy Call". If that is the one you want, say so and I will embed it properly. The slug still reads like a duplicate.
-4. **Team headshots.** Monograms stand in. The Framer originals are low-resolution; send better ones if they exist.
+4. **Team photographs — FOUR OF THE FIVE ARE NOW AI-GENERATED.** This is the item on this list most worth a decision, because it is the only place the site shows something that is not a photograph and does not say so.
+
+   The five supplied images were five different shoots and never read as a set. Four were regenerated (ChatGPT, 7 Sep 2026) from the originals onto the plain studio backdrop the fifth already had: **Bernardo Almeida, Lev Valestkiy, Bruno Erckmam and Lucas Barrozo**. **Tatjana Sotirovik's is the untouched original.** The masters and the full provenance are in `docs/assets/team/` and the header of `scripts/optimize-team-photos.mjs`; the original photographs are in this directory's git history.
+
+   Three things to settle:
+
+   - **Each of the four should see their own before this goes live.** They are altered likenesses of named, identifiable people, and the alteration is not trivial — clothing, setting and lighting have all been replaced. Their agreement is the point, not a formality.
+   - **Nothing on the page says the pictures are generated, and nothing says they are photographs either.** That is the current state, not a decision. If the site ever describes them as photography, or a reader could reasonably assume it, a line of disclosure is the cheap fix.
+   - **The name-to-photo mapping was derived, not given.** The originals arrived with hash filenames and no captions; the mapping was read out of avalanche-capital.com's own page payload rather than matched by eye. It is very likely right — it returned the same order as `content/team.ts` — but a face attached to a named person is a factual claim, so please confirm all five.
+
+   A real headshot session for the five of them would retire this whole item.
+
 5. **Case-study categories.** The Funds / Startups / Placement-agency classification on all 13 case studies was assigned by the previous session, not taken from source. It drives the `/customers` filter.

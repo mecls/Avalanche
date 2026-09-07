@@ -501,6 +501,34 @@ node scripts/logos-to-alpha.mjs
 
 `scripts/optimize-logos.mjs` is the earlier one-off that extracted these from SVG-wrapped base64 (9.5MB → 404KB). It has nothing left to do unless you add new `.svg` wrappers.
 
+## Team photos
+
+`public/team/` holds five 4:5 portraits, built by `scripts/optimize-team-photos.mjs` from masters committed at `docs/assets/team/`:
+
+```bash
+node scripts/optimize-team-photos.mjs
+```
+
+**FOUR OF THE FIVE ARE GENERATIVE RE-SHOOTS.** That is the first thing to know about this directory. The photographs supplied on 7 Sep 2026 were five different shoots — a beach, a sponsor wall, an office, a studio, a curtain, five outfits, one of them black-and-white — and no crop makes them a set. Four were regenerated outside this repo (ChatGPT, 7 Sep 2026, 1254²) from the originals, onto the plain light-grey studio backdrop the fifth already had. **`tatjana-sotirovik` is the untouched photograph**, and it is the reference the other four were matched to.
+
+**The masters are committed, which is a break from the other asset scripts.** `optimize-bg-video.mjs` reads its sources out of `~/Downloads`, and that is fine for a 100MB video that can be downloaded again. A generative output is one-shot and non-deterministic: clean that folder and it is gone for good. So the five masters live in `docs/assets/team/`, named for the person rather than by whatever the tool that made them called the file — 520KB for all five, and the pipeline now runs for anyone who clones the repo.
+
+The **name-to-file mapping for the originals was read, not guessed.** They arrived as Framer CDN exports with hash filenames and no captions, and four of the five subjects are men in business dress. `avalanche-capital.com` is a Framer site and ships its CMS records in the page payload, so the mapping came out of the live HTML where each record carries `{image, name, role, slug}` in order. It returned the same order as `content/team.ts`.
+
+**Every output is greyscale**, set in the script rather than by a CSS filter on the page, so what ships is what renders and it keeps applying if a master is replaced.
+
+**Only the horizontal is cropped, except for Tatjana.** The four re-shoots are square, so top and bottom stay whole and `faceX` decides which side loses more of the trim — Bruno Erckmam's is the one that is not square-on, a three-quarter turn sitting right of centre, so his crop follows him. Hers is a wider shot: her head fills about 32% of the frame against the others' ~40%, so at the same crop she read as standing further back than everyone else, which was the last thing breaking the row. **`zoom` exists for her alone.** 0.8 pulls her in to match, and it costs resolution rather than inventing any — the crop lands at 512×640 and `withoutEnlargement` leaves it there, about 6% under the card's 2× DPR ideal. A re-shoot of hers would close that properly; upscaling would only fake it.
+
+**If a replaced photo does not appear, the dev image cache is at `.next/dev/cache/images`.** Not `.next/cache/images` — Next 16 moved it, and the old path no longer exists, so deleting it silently does nothing. The optimizer keys on `(url, width, quality)` and the URL does not change when the file behind it does, so re-running this script leaves the dev server serving the previous crop indefinitely. **Restarting `next dev` does not clear it either** — the cache is on disk, not in memory. `rm -rf .next/dev/cache/images` does. The tell is the served image's dimensions: fetch `/_next/image?url=%2Fteam%2F<slug>.webp&w=640&q=75` and compare against the file, because a stale entry keeps the old source's aspect.
+
+**`aspect-[4/5]` on the page is a contract with the script.** Change one and change the other, or `object-cover` starts throwing away a band of every photo.
+
+**The monogram fallback stays.** `Member.photo` is nullable, a sixth member can arrive before their picture does, and an empty frame is worse than initials. Its `alt` is deliberately `""`: the name is the very next element and is a heading, so alt text here would make a screen reader read every name twice.
+
+**The bios are no longer rendered.** They are still in `content/team.ts`, still marked DRAFT and still tracked in `docs/COPY-REVIEW.md`. The reference puts bios behind a "Read Bio" overlay rather than on the card, and five paragraphs under five portraits fought the pictures. Kept, not rendered, like the other unmounted copy here.
+
+`scripts/ai-suit-headshots.mjs` was written here as a handoff for doing the re-shoots from this repo, and has been **deleted** now that they were done elsewhere: its prompts described the original photographs, which are no longer the masters, so keeping it would have been keeping instructions for the wrong inputs. `git log` has it.
+
 ## The solutions timeline
 
 `/solutions` is a measured clone of farahcap.com's /process. Everything below was checked
@@ -592,7 +620,7 @@ Full detail and rationale in **`docs/COPY-REVIEW.md`**. Short version:
 3. **Verify the track-record figures** — `$2B+`, `$300M+`, `200`, `$600M+`. All four come from pages dated 2024 and are the most load-bearing claims on the site.
 4. **Footer legal text** — currently adapted from the short notice on fundraisr.ai. Should come from counsel.
 5. **Confirm the Calendly event.** Both original links on the live sites are dead ("This Calendly URL is not valid"). The site points at `capital-raise-demo-call-ac-clone` — the only live event on the `avalancheintrocall` account, but the slug reads like a duplicate.
-6. **Team headshots.** Monograms stand in.
+6. **Four of the five team portraits are AI-generated.** Bernardo Almeida, Lev Valestkiy, Bruno Erckmam and Lucas Barrozo were regenerated from their original photographs on 7 Sep 2026; Tatjana Sotirovik's is untouched. The row reads as one set now, but these are altered likenesses of named people — each of them should see their own before launch, and it is worth deciding whether the site should say so. Full detail in `docs/COPY-REVIEW.md`.
 7. **Case-study categories.** The Funds / Startups / Placement-agency split was assigned by us, not taken from source. It drives the `/customers` filter.
 
 ### Also found on the live sites

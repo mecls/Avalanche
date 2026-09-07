@@ -8,7 +8,13 @@
  *  so none of that is here. Each line says what the seat does at Avalanche and
  *  stops.
  *
- *  Replace with the real bios before publishing. See docs/COPY-REVIEW.md. */
+ *  Replace with the real bios before publishing. See docs/COPY-REVIEW.md.
+ *
+ *  The PHOTOS are real and are not a placeholder. They were supplied on
+ *  7 Sep 2026 as Framer CDN exports with hash filenames carrying no names;
+ *  the mapping was read out of avalanche-capital.com's own page payload
+ *  rather than matched by eye, and `scripts/optimize-team-photos.mjs` holds
+ *  both that note and the face-measured crop for each one. */
 
 export type Member = {
   name: string;
@@ -23,34 +29,34 @@ export const team: Member[] = [
     role: "Managing Partner",
     // DRAFT — role description, not biography.
     bio: "Leads the firm and its mandates, setting how each raise is positioned and which investors it goes to.",
-    photo: null,
+    photo: "/team/bernardo-almeida.webp",
   },
   {
     name: "Lev Valestkiy",
     role: "Partner & General Counsel",
     // DRAFT — role description, not biography.
     bio: "Runs the legal function: engagement structuring, regulatory positioning, and the documentation behind every mandate.",
-    photo: null,
+    photo: "/team/lev-valestkiy.webp",
   },
   {
     name: "Bruno Erckmam",
     role: "Partner",
     // DRAFT — role description, not biography.
     bio: "Works mandates end to end, from deal readiness through investor targeting to close.",
-    photo: null,
+    photo: "/team/bruno-erckmam.webp",
   },
   {
     name: "Tatjana Sotirovik",
     role: "Investor Relations Manager",
     // DRAFT — role description, not biography.
     bio: "Owns the investor relationships — outreach, follow-through, and keeping allocators informed across live processes.",
-    photo: null,
+    photo: "/team/tatjana-sotirovik.webp",
   },
   {
     name: "Lucas Barrozo",
     role: "AI Implementation Engineer",
     // DRAFT — role description, not biography.
     bio: "Builds the tooling behind investor identification and segmentation that makes targeting at this precision possible.",
-    photo: null,
+    photo: "/team/lucas-barrozo.webp",
   },
 ];

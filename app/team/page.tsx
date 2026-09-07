@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { CtaBand } from "@/components/site/cta-band";
 import { media } from "@/content/copy";
@@ -22,34 +23,69 @@ export default function TeamPage() {
             lede="Our team has operated as investors and as operators — which means we understand what capital allocators need to see, and how to position an opportunity that gets funded."
           />
 
-          {/* Individually bordered cards rather than a gap-px sheet: the team
-              count is odd, and a ragged last row leaves empty cells showing
-              the sheet's own background. */}
-          <ul className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Four across, photo over a centred name and role — the
+              reference's layout, rebuilt here 7 Sep 2026. It was three across
+              with a 64px monogram circle and the bio underneath, which is what
+              the page had while there were no photographs to show.
+
+              NO CARD. There is no border, no fill and no padding around the
+              whole thing: the only frame is on the picture, and the type sits
+              on the page ground. That is what makes a ragged last row work —
+              five people in a four-column grid leaves three empty cells, and
+              an empty CARD would show, where empty ground does not.
+
+              The bio is not rendered any more. It is still in
+              `content/team.ts`, still marked DRAFT and still tracked in
+              docs/COPY-REVIEW.md — the reference puts bios behind a "Read Bio"
+              overlay rather than on the card, and five paragraphs under five
+              portraits fought the pictures. Kept, not rendered, like the other
+              unmounted copy on this site. */}
+          <ul className="mt-16 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {team.map((m) => (
-              <li
-                key={m.name}
-                className="flex flex-col rounded-lg border border-line bg-card p-8 transition-colors duration-300 hover:border-fg/20"
-              >
-                {/* TODO(miguel): supply headshots; monogram stands in for now.
-                    Monochrome — these are placeholders for photographs, and
-                    accenting five of them made the stand-in the loudest thing
-                    on the page. */}
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-line bg-ground-alt">
-                  <span className="display text-xl text-fg-muted">
-                    {m.name
-                      .split(" ")
-                      .map((w) => w[0])
-                      .join("")}
-                  </span>
+              <li key={m.name} className="flex flex-col">
+                {/* `aspect-[4/5]` is the contract with
+                    scripts/optimize-team-photos.mjs, which crops every source
+                    to exactly this. Change one and change the other, or the
+                    `object-cover` starts throwing away a band of each photo.
+
+                    The monogram FALLBACK stays: `photo` is nullable, a sixth
+                    member can arrive before their picture does, and an empty
+                    frame is worse than initials.
+
+                    `alt=""` is deliberate. The name is the very next element
+                    and is a heading, so alt text here would make a screen
+                    reader read every name twice. */}
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[4px] border border-line bg-ground-alt">
+                  {m.photo ? (
+                    <Image
+                      src={m.photo}
+                      alt=""
+                      fill
+                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                      className="object-cover"
+                    />
+                  ) : (
+                    <span className="display absolute inset-0 flex items-center justify-center text-3xl text-fg-muted">
+                      {m.name
+                        .split(" ")
+                        .map((w) => w[0])
+                        .join("")}
+                    </span>
+                  )}
                 </div>
-                <h3 className="display mt-6 text-2xl">{m.name}</h3>
-                <p className="mt-1.5 text-sm text-fg-muted">{m.role}</p>
-                {m.bio && (
-                  <p className="mt-4 text-sm leading-relaxed text-fg-muted">
-                    {m.bio}
-                  </p>
-                )}
+
+                <h3 className="display mt-7 text-center text-2xl">{m.name}</h3>
+
+                {/* `page-label` rather than `eyebrow`: this run has to stay
+                    monochrome. `eyebrow` carries the accent and renders a
+                    dozen times a page as a BLOCK's name — five job titles are
+                    neither, and colouring them would put the loudest thing on
+                    the page under every portrait. Same 14px uppercase spec,
+                    no colour of its own, which is the whole reason that
+                    utility does not own one. */}
+                <p className="page-label mt-2.5 text-center text-fg-muted">
+                  {m.role}
+                </p>
               </li>
             ))}
           </ul>
