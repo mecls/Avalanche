@@ -115,6 +115,39 @@ const QUALITY = 82;
 /** See the note above before turning this off. */
 const GREYSCALE = true;
 
+/**
+ * TONAL GRADE. Every output is levelled so all five share one range.
+ *
+ * They did not. Measured on the shipped crops, the backdrop alone spanned 39
+ * levels — 172 for Bernardo against 211 for Bruno, with Lev, Tatjana and
+ * Lucas strung between — because five generative passes and one real
+ * photograph each came back with their own exposure. Side by side in a row
+ * that reads as five different papers, which is the last thing left making
+ * the set look assembled rather than shot.
+ *
+ * **THE WHITE POINT IS MEASURED FROM THE BACKDROP, NOT FROM THE IMAGE.** A
+ * first pass mapped each crop's 2nd and 98th percentile onto a shared range
+ * and barely moved the number — 39 levels of spread became 34 — because those
+ * endpoints are set by the SUBJECT: a jacket's blacks and a specular highlight
+ * on a forehead, which differ per person and say nothing about the paper
+ * behind them. Matching the ends of five different histograms does not match
+ * the one region the eye actually compares across a row.
+ *
+ * So the white point comes from a backdrop sample: the top quarter of the
+ * frame, left and right thirds only. Every master in this set is a centred
+ * head-and-shoulders on a plain sweep, so that region is backdrop for all five
+ * and contains no face. Its MEDIAN (not mean — a stray dark hair strand
+ * shifts a mean) is mapped to BACKDROP_TARGET, and the 2nd percentile of the
+ * whole crop is mapped to BLACK_POINT so the shadow end still lands together.
+ *
+ * If a future portrait is not a centred head-and-shoulders — a seated or
+ * standing frame like Bernardo's or Bruno's before they were zoomed in — check
+ * that the sample region is still backdrop before trusting the result.
+ */
+const BLACK_POINT = 10;
+const BACKDROP_TARGET = 186;
+const LOW_PCT = 0.02;
+
 /** Where the head's centre sits vertically in the finished crop. Only
  *  consulted when `zoom` pulls in far enough to leave a choice. */
 const HEAD_Y = 0.3;
@@ -178,14 +211,30 @@ for (const p of PEOPLE) {
     meta.height - height,
   );
 
+  // The graded pipeline up to (but not including) the encode, so the full
+  // image and its blur placeholder are levelled identically.
+  const base = () =>
+    sharp(input)
+      .extract({ left, top, width, height })
+      .resize(MAX_WIDTH, Math.round(MAX_WIDTH / ASPECT), {
+        kernel: "lanczos3",
+        withoutEnlargement: true,
+      })
+      .greyscale(GREYSCALE);
+
+  // Measure this crop's shadow end and its backdrop, then map both onto the
+  // shared ones.
+  const { data: pixels, info: raw } = await base()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+  const lo = lowPercentile(pixels, LOW_PCT);
+  const hi = backdropLevel(pixels, raw.width, raw.height, raw.channels);
+  const gain = (BACKDROP_TARGET - BLACK_POINT) / Math.max(hi - lo, 1);
+  const offset = BLACK_POINT - gain * lo;
+
   const out = path.join(OUT_DIR, `${p.slug}.webp`);
-  const info = await sharp(input)
-    .extract({ left, top, width, height })
-    .resize(MAX_WIDTH, Math.round(MAX_WIDTH / ASPECT), {
-      kernel: "lanczos3",
-      withoutEnlargement: true,
-    })
-    .greyscale(GREYSCALE)
+  const info = await base()
+    .linear(gain, offset)
     .webp({ quality: QUALITY })
     .toFile(out);
 
@@ -196,6 +245,7 @@ for (const p of PEOPLE) {
     .extract({ left, top, width, height })
     .resize(12, 15, { fit: "fill" })
     .greyscale(GREYSCALE)
+    .linear(gain, offset)
     .webp({ quality: 40 })
     .toBuffer();
   blurs[`/team/${p.slug}.webp`] = `data:image/webp;base64,${blur.toString("base64")}`;
@@ -203,7 +253,8 @@ for (const p of PEOPLE) {
   console.log(
     `${p.slug.padEnd(20)} ${meta.width}x${meta.height} ` +
       `crop ${width}x${height}@${left},${top} -> ${info.width}x${info.height}, ` +
-      `${(info.size / 1024).toFixed(0)}KB, blur ${blur.length}B`,
+      `${(info.size / 1024).toFixed(0)}KB, blur ${blur.length}B, ` +
+      `levels ${lo}/${hi} -> ${BLACK_POINT}/${BACKDROP_TARGET}`,
   );
 }
 
@@ -232,4 +283,42 @@ console.log(`\ncontent/team-blur.ts written (${Object.keys(blurs).length} entrie
 
 function clamp(v, lo, hi) {
   return Math.max(lo, Math.min(v, hi));
+}
+
+/** The value below which `low` of the pixels fall. One pass over a 256-bin
+ *  histogram — these are 640x800 greyscale buffers. */
+function lowPercentile(buf, low) {
+  const hist = new Uint32Array(256);
+  for (let i = 0; i < buf.length; i++) hist[buf[i]]++;
+  let seen = 0;
+  for (let v = 0; v < 256; v++) {
+    seen += hist[v];
+    if (seen >= buf.length * low) return v;
+  }
+  return 255;
+}
+
+/**
+ * The backdrop's level: the median of the top quarter's outer thirds. See the
+ * note by BACKDROP_TARGET for why this region and why the median.
+ */
+function backdropLevel(buf, w, h, channels) {
+  const hist = new Uint32Array(256);
+  let n = 0;
+  const yMax = Math.round(h * 0.25);
+  const xL = Math.round(w / 3);
+  const xR = Math.round((w * 2) / 3);
+  for (let y = 0; y < yMax; y++) {
+    for (let x = 0; x < w; x++) {
+      if (x >= xL && x < xR) continue;
+      hist[buf[(y * w + x) * channels]]++;
+      n++;
+    }
+  }
+  let seen = 0;
+  for (let v = 0; v < 256; v++) {
+    seen += hist[v];
+    if (seen >= n / 2) return v;
+  }
+  return 255;
 }

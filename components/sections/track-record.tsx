@@ -148,8 +148,18 @@ function StatRow({
  */
 export function TrackRecord({
   variant = "grid",
+  band,
 }: {
   variant?: "grid" | "rows";
+  /**
+   * Band for the `grid` variant's section. The homepage passes nothing and
+   * renders unbanded on the dark `<body>` ground, which is what it has always
+   * done. /about MUST pass one: that page opens light, so the `:has()` rule in
+   * globals.css paints `main` with `--color-paper`, and an unbanded section
+   * there sits on white while still inheriting the root's dark text tokens —
+   * white figures on a white ground. Only a band paints itself.
+   */
+  band?: "light" | "dark";
 } = {}) {
   const ref = useRef<HTMLElement>(null);
   const [run, setRun] = useState(false);
@@ -199,7 +209,7 @@ export function TrackRecord({
   }
 
   return (
-    <section ref={ref} className="section-y">
+    <section ref={ref} data-band={band} className="section-y">
       <div className="shell">
         <SectionHeading
           eyebrow={trackRecord.eyebrow}

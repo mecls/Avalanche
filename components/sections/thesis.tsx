@@ -1,3 +1,7 @@
+import { BracketGrid, BracketCell } from "@/components/ui/bracket-grid";
+import { SectionHeading } from "@/components/ui/section-heading";
+import { thesis } from "@/content/copy";
+
 /**
  * "Why Avalanche" — three pillars. It opens the body of /about.
  *
@@ -7,26 +11,38 @@
  * drafted. It went back on 7 Sep 2026, when /team and /manifesto merged into
  * /about and a "why this firm" block finally had somewhere it belonged.
  *
- * **ITS SECOND PILLAR USED TO BE THE TEAM SECTION'S HEADING.** While this was
- * unmounted, /team borrowed "Both Sides of The Table" and that pillar's body
- * verbatim as its own heading and lede. Mounting this put both on one page, so
- * the borrowed version came off and the team section took a heading of its own
- * — `about.team` in content/about.ts. If this is ever unmounted again, that is
- * the block to check before deleting anything.
+ * **IT IS ON THE LATTICE NOW, AND THAT IS THE POINT OF THIS FILE.** It shipped
+ * as `rounded-lg` filled panels on a 1px-gap grid, with a blue `eyebrow`
+ * ordinal top-left and a 24px title. Nothing else on the site does that. The
+ * signature card idiom is `BracketGrid` — square corners, a hairline lattice
+ * built from `border-t border-l` on the wrapper and `border-r border-b` per
+ * cell, a 13rem floor, a faint grey TABULAR index in the top-RIGHT corner, the
+ * title pushed to the bottom by `justify-between`, and two offset crop-mark
+ * brackets on the frame. Three homepage sections use it (track record, raise
+ * types, verticals) and /about used it nowhere, which is most of why the page
+ * read as a different template. Moving to the shared component fixed the
+ * ordinal's colour, its position, the title size, the cell height and the
+ * corner brackets in one move — none of those is set here any more.
  *
- * `data-band="dark"` rather than a bare section, and on this page that is
- * load-bearing: /about opens light, so the `:has()` rule in globals.css paints
- * `main` with `--color-paper`, and a section that does not paint ITSELF sits on
- * white while still inheriting the root's dark text tokens — white type on a
- * white ground. The band also does the separating that `border-t
- * border-line-soft` used to, which is why that came off with it.
+ * **No icon in these cells, deliberately.** `RaiseTypes` and `Industries` put
+ * a 24px line glyph top-left, but `components/ui/icons.tsx` is a set of
+ * SECTOR marks — funds, credit, realestate, health — and there is no honest
+ * mapping from those to "Global Network" or "Precision & Execution". A
+ * mismatched glyph would be worse than none, and `TrackRecord`'s cells carry
+ * no icon either, so an icon-less lattice cell is already house style.
+ *
+ * `data-band="light"` matches the other two lattice sections, which are both
+ * light on the homepage. It also softens the page's opening: the header no
+ * longer cuts straight from white to black, because the dark band is now the
+ * metrics bento one section further down.
  */
-import { SectionHeading } from "@/components/ui/section-heading";
-import { thesis } from "@/content/copy";
-
 export function Thesis() {
   return (
-    <section id="thesis" data-band="dark" className="section-y">
+    <section
+      id="thesis"
+      data-band="light"
+      className="section-y border-t border-line-soft"
+    >
       <div className="shell">
         <SectionHeading
           eyebrow={thesis.eyebrow}
@@ -35,17 +51,36 @@ export function Thesis() {
           lede={thesis.lede}
         />
 
-        <div className="mt-16 grid gap-px overflow-hidden rounded-lg border border-line bg-line md:grid-cols-3">
+        {/* Three cells on a 3-column track at `lg`, which is the shape the
+            content already has — no bespoke col-spans like RaiseTypes needs
+            for its 3+3 / 2+2+2. Below `lg` BracketGrid's own `sm:grid-cols-2`
+            takes over and the third cell spans the full width, so there is no
+            ragged half-row. */}
+        <BracketGrid className="mt-14 sm:mt-16 lg:[&>div:first-child]:grid-cols-3">
           {thesis.pillars.map((p, i) => (
-            <article key={p.title} className="bg-card p-8 lg:p-10">
-              <p className="eyebrow">{String(i + 1).padStart(2, "0")}</p>
-              <h3 className="display mt-5 text-2xl">{p.title}</h3>
-              <p className="mt-4 text-sm leading-relaxed text-fg-muted">
-                {p.body}
-              </p>
-            </article>
+            <BracketCell
+              key={p.title}
+              index={i}
+              minH="min-h-[15rem]"
+              className={
+                i === thesis.pillars.length - 1
+                  ? "sm:col-span-2 lg:col-span-1"
+                  : ""
+              }
+            >
+              {/* Pushed to the bottom of the cell by the parent's
+                  `justify-between`, the same way RaiseTypes does it. The
+                  `pt-12` is what stops a short title colliding with the index
+                  in a cell that has not reached its min height. */}
+              <div className="mt-auto pt-12">
+                <h3 className="text-base font-medium">{p.title}</h3>
+                <p className="mt-2 max-w-sm text-sm leading-relaxed text-fg-muted">
+                  {p.body}
+                </p>
+              </div>
+            </BracketCell>
           ))}
-        </div>
+        </BracketGrid>
       </div>
     </section>
   );

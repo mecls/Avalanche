@@ -65,6 +65,86 @@ const py = (v: number) => PLOT.bottom - v * (PLOT.bottom - PLOT.top);
  *  open, far enough left that a 112-unit pill stays inside the frame. */
 const PILL_AT = 3;
 
+/**
+ * The HERO MARK — the divergence reduced to a wordless graphic, for the inset
+ * panel beside the /about page header.
+ *
+ * **IT IS NOT A SECOND COPY OF THE DIAGRAM BELOW, AND THE SHARED `SERIES` IS
+ * WHAT GUARANTEES THAT.** Both are built from the same five points in the same
+ * render, so the mark cannot drift from the chart it previews — the same
+ * derived-invariant idea the /solutions pills use for their counts. What
+ * differs is everything a reader needs in order to READ it: no captions, no
+ * axis, no baseline, no legend, no pill, no `Frame`. The chart lower down
+ * states the claim and labels it; this states it at a glance and labels
+ * nothing.
+ *
+ * That relationship is deliberate and worth keeping if either changes. A hero
+ * graphic that needed a legend would be a chart in the wrong place, and a
+ * chart that dropped its captions would stop being readable — do not converge
+ * them.
+ *
+ * Its own viewBox rather than `Frame`'s 620x508: `Frame` fixes a shared bound
+ * so the eight real diagrams sit at one scale down a page, and this sits
+ * beside a 72px H1 at roughly a third of their width. Borrowing that bound
+ * would render every stroke a third of its intended weight.
+ */
+export function DivergenceMark() {
+  const M = { x0: 4, x1: 356, top: 26, bottom: 178 };
+  const mx = (i: number) => M.x0 + (i * (M.x1 - M.x0)) / (SERIES.length - 1);
+  const my = (v: number) => M.bottom - v * (M.bottom - M.top);
+
+  const capital = SERIES.map((d, i) => `${mx(i)},${my(d.capital)}`).join(" ");
+  const access = SERIES.map((d, i) => `${mx(i)},${my(d.access)}`).join(" ");
+  const gap = [
+    ...SERIES.map((d, i) => `${mx(i)},${my(d.capital)}`),
+    ...SERIES.map((d, i) => `${mx(i)},${my(d.access)}`).reverse(),
+  ].join(" ");
+  const last = SERIES.length - 1;
+
+  return (
+    <svg
+      viewBox="0 0 360 200"
+      className="h-auto w-[86%] max-w-[360px] overflow-visible"
+      fill="none"
+      aria-hidden
+    >
+      {/* The wash is the subject: the mark is ABOUT the space between the two
+          lines, which is why it is drawn first and why nothing labels it. */}
+      <polygon points={gap} className="fill-accent/[0.09]" />
+
+      <polyline
+        points={access}
+        className="stroke-fg-muted/50"
+        strokeWidth={2}
+        strokeDasharray="5 5"
+        strokeLinecap="round"
+      />
+      <polyline
+        points={capital}
+        className="stroke-accent"
+        strokeWidth={2}
+        strokeLinecap="round"
+      />
+
+      {/* Terminals only. Three redundant channels separate the two ends the
+          same way the diagrams do — hue, luminance and radius — so the pair
+          survives for a reader who cannot use the hue. */}
+      <circle
+        cx={mx(last)}
+        cy={my(SERIES[last]!.capital)}
+        r={5}
+        className="fill-accent"
+      />
+      <circle
+        cx={mx(last)}
+        cy={my(SERIES[last]!.access)}
+        r={4}
+        className="fill-fg-muted/50"
+      />
+    </svg>
+  );
+}
+
 export function DivergenceDiagram() {
   const capital = SERIES.map((d, i) => `${px(i)},${py(d.capital)}`).join(" ");
   const access = SERIES.map((d, i) => `${px(i)},${py(d.access)}`).join(" ");

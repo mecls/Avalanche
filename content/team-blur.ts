@@ -13,14 +13,9 @@
  */
 
 export const teamBlur: Record<string, string> = {
-  "/team/bernardo-almeida.webp":
-    "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoMAA8AA4BaJaQAD4kNKwYKcAAA/uIZhJ5b24/gNxZh9b+8nhdlcMOjI+os+XlbgfUwOe2SC3QwS8PxNxHfY6EBY8/fP60MwAA=",
-  "/team/lev-valestkiy.webp":
-    "data:image/webp;base64,UklGRl4AAABXRUJQVlA4IFIAAADwAQCdASoMAA8AA4BaJaQAAlxjch20PAAA/ut1fEeRjc/5hWb9F2yzkNzkPToMPPfIPf7KgG3sZMpX8GLOrzlZ1NDJO9lm+FgTf/jTJ4fR4AAA",
-  "/team/bruno-erckmam.webp":
-    "data:image/webp;base64,UklGRmoAAABXRUJQVlA4IF4AAAAQAgCdASoMAA8AA4BaJaQAD4hKR0B2ZQGAAP7uGc5T+OuwYnh5Dfk8NcR1/Mwk5aoJSAITbMrh1P5GtSaIpe2+I5x3228fs9is64yWIfIoqIJSld3IEFKhkbcPgAAA",
-  "/team/tatjana-sotirovik.webp":
-    "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADwAQCdASoMAA8AA4BaJaQAAq8t0ji8HAAA/sPuMCwA2IS66svGfOZT/O7DYFTcdRGyPcyu+f9rmutKQMxQmNxzMoGn76Rwx0gCXFES54TovD/wzAAAAA==",
-  "/team/lucas-barrozo.webp":
-    "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAQCdASoMAA8AA4BaJaQAAi/hlrL/CAD+7ibr6ceVmZe+pewJVrVAoZ+WIOhqnZW6gyWRzNiWrm/83w8VsVHr77/0OKYcYf7OhkPYzibPyQvsbkfwAA==",
+  "/team/bernardo-almeida.webp": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAACQAQCdASoMAA8AA4BaJaQAAY9KaKAA/snJQVfvEJkCHc48e9D5X+sqBDoY12xnnDiHoWQ5wvlmbnn9EiIkrsZmo68wAV4mhxAOQ6QAAAA=",
+  "/team/lev-valestkiy.webp": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAADwAQCdASoMAA8AA4BaJaQAAxYSCV6B6uAA/tctQAW+I4IRl8GVz0RMIhqudsZaCYe/1Qi6yToodeWJCz8UFfasY5Cz7fE3f4zbb+cAAAA=",
+  "/team/bruno-erckmam.webp": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAwAgCdASoMAA8AA4BaJaQAD4/Q++Lk3um8sAD+4Wks/jtK2tzUjzmO4/QFzIynVkkl9jUmoz0J2R4nfqVr5T7XqE0nkO2ZRGpQ2c8MDggMVrFtkvWDAAAA",
+  "/team/tatjana-sotirovik.webp": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAQCdASoMAA8AA4BaJaQAAq58KMV+AAD+yDmY2DwVFMNFqxl0kBtucRMZIqbjqI2RG/yKuhYS9LqnK+uCaFrruUfRVh50awtVTrYmNLiTlGxqZExgAA==",
+  "/team/lucas-barrozo.webp": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADQAQCdASoMAA8AA4BaJaQAAi6YMRHSAAD+1v+LjCH6pXTynx06HG1FY+KaLFh2BblR9gtZS8S/Ba+WAsxTLsI/Z8bcmbaokvq9QHuicBnaMrvVgAA="
 };

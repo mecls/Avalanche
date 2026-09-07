@@ -3,15 +3,16 @@ import Image from "next/image";
 import { CtaBand } from "@/components/site/cta-band";
 import { PageHeader } from "@/components/site/page-header";
 import { Thesis } from "@/components/sections/thesis";
+import { TrackRecord } from "@/components/sections/track-record";
 import { CtaButton } from "@/components/ui/button";
 import { Plate } from "@/components/ui/diagram";
 import {
   AccessLayersDiagram,
   DivergenceDiagram,
+  DivergenceMark,
 } from "@/components/ui/manifesto-media";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { about } from "@/content/about";
-import { media } from "@/content/copy";
 import { manifesto } from "@/content/manifesto";
 import { teamBlur } from "@/content/team-blur";
 import { team } from "@/content/team";
@@ -32,21 +33,35 @@ export const metadata: Metadata = {
  * footer's Overview column lost its separate Manifesto link because there is
  * no separate page left to link to.
  *
- * THE ORDER IS THE ARGUMENT. What the firm does (the thesis) -> the market
- * that makes it necessary (the divergence) -> what follows from that (five
+ * THE ORDER IS THE ARGUMENT. What the firm does (the thesis) -> what it has
+ * done (the metrics) -> the market that makes it necessary (the divergence) -> what follows from that (five
  * beliefs) -> where the gap actually sits (three layers) -> who does the work
- * (team) -> who has said so (press). The manifesto sits in the MIDDLE
- * deliberately: a reader who came for the team scrolls through the argument
- * to reach them.
+ * (team). The manifesto sits in the MIDDLE deliberately: a reader who came
+ * for the team scrolls through the argument to reach them.
  *
- * BANDS ALTERNATE ALL THE WAY DOWN — light header, dark thesis, light
- * divergence, dark beliefs, light layers, dark team, light press, then the
- * photo-backed closing band. Two consequences worth knowing before editing.
- * No section here needs a `border-t`: /manifesto carried one because two of
- * its light sections were adjacent, and with the thesis between them they no
- * longer are. And the team grid still looks exactly as it did on /team —
- * `data-band="dark"` paints the same `#151515` that section used to inherit
- * from `<body>` by not being in a band at all.
+ * **"In the press" was removed on 7 Sep 2026.** Three cards of drafted quotes
+ * on a white band, separated only by a hairline, with the outlet set as an
+ * eyebrow rather than its mark, no link to any article and no hover state —
+ * the weakest block on the page and unfixable in place, because there are no
+ * outlet marks in `public/logos/` for those three and no article URLs
+ * anywhere in the repo. `media` is kept but unrendered in content/copy.ts,
+ * like the other unmounted copy here.
+ *
+ * BAND SEQUENCE: light header, light thesis (separated by a rule, the way
+ * `RaiseTypes` separates itself on the homepage), dark metrics, light
+ * divergence, dark beliefs, light layers, dark team, then the photo-backed
+ * closing band. The header and the thesis are the only adjacent pair sharing
+ * a band, which is why `Thesis` carries the page's one `border-t`.
+ *
+ * That opening pair is deliberate. The page ran light header straight into a
+ * dark thesis until 7 Sep 2026, and the cut read as abrupt because nothing
+ * visual sat in the header to prepare it — 420px of white with a lone button
+ * in the right half. The header carries a dark inset now and the dark band is
+ * one section further down.
+ *
+ * The team grid is `data-band="dark"`, which paints the same `#151515` the
+ * section used to inherit from `<body>` back when this was /team and the page
+ * opened dark.
  *
  * **The header section MUST stay `data-band="light"` and the FIRST child of
  * `main`.** Two rules in globals.css key off
@@ -86,10 +101,38 @@ export default function AboutPage() {
           ))}
           lede={about.lede}
           cta={about.cta}
+          /* The inset that fills the header's right half. Same dark plate
+             surface as the two diagram cards further down — wash, grain,
+             radius — at a fixed 420px rather than the row plates' `flex-1`,
+             so the two read as one material at two sizes. The mark inside is
+             built from the divergence chart's own SERIES, so the preview
+             cannot disagree with the chart it previews. */
+          aside={
+            <Plate className="aspect-[4/3] w-[420px]">
+              <DivergenceMark />
+            </Plate>
+          }
         />
       </section>
 
       <Thesis />
+
+      {/* THE PAGE'S ONLY PROOF SURFACE. /about argued entirely from position
+          and carried no figures and no client marks anywhere, where the
+          homepage opens on this bento plus a logo strip and /customers is
+          wall-to-wall client marks. This is the homepage's own component and
+          content, not a second copy of the numbers.
+
+          `band="dark"` is REQUIRED here and the homepage passes nothing. Its
+          `grid` variant renders an unbanded section, which is correct on a
+          dark-first page because it inherits the <body> ground — but /about
+          opens light, so `main` is painted with --color-paper and an unbanded
+          section would put white figures on a white ground.
+
+          It is also the page's first client component. /about had none until
+          now; the count-up is the whole point of the block, so it comes with
+          one. See "Client components" in AGENTS.md. */}
+      <TrackRecord band="dark" />
 
       {/* `id="manifesto"` is what the old route redirects to — /manifesto 307s
           to /about#manifesto, so a reader following an existing link lands on
@@ -132,7 +175,11 @@ export default function AboutPage() {
 
       <section data-band="dark" className="section-y">
         <div className="shell">
-          <SectionHeading eyebrow={beliefs.eyebrow} title={beliefs.title} />
+          <SectionHeading
+            eyebrow={beliefs.eyebrow}
+            title={beliefs.title}
+            lede={beliefs.lede}
+          />
 
           {/* The same ruled <dl> WhoWeServe uses on the homepage: ordinal and
               statement left, argument right, hairline between. A <dl> may only
@@ -165,7 +212,11 @@ export default function AboutPage() {
         <div className="shell">
           <div className="flex w-full flex-row-reverse items-center justify-center gap-9 max-[1199px]:flex-col">
             <div className="flex flex-1 flex-col items-start gap-6 max-[1199px]:w-full max-[1199px]:flex-none">
-              <SectionHeading eyebrow={layers.eyebrow} title={layers.title} />
+              <SectionHeading
+                eyebrow={layers.eyebrow}
+                title={layers.title}
+                lede={layers.lede}
+              />
 
               <dl className="w-full max-w-[680px] divide-y divide-line border-y border-line">
                 {layers.items.map((l) => (
@@ -207,6 +258,7 @@ export default function AboutPage() {
           <SectionHeading
             eyebrow={about.team.eyebrow}
             title={about.team.title}
+            lede={about.team.lede}
           />
 
           {/* Four across, photo over a centred name and role — the
@@ -239,7 +291,7 @@ export default function AboutPage() {
               at a fixed height, so the bio is the only thing that varies and
               it varies BELOW everything else. Cards in a row therefore stay
               aligned down to the role no matter how long a bio runs. */}
-          <ul className="mt-16 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+          <ul className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
             {team.map((m) => (
               <li key={m.name} className="flex flex-col">
                 {/* `aspect-[4/5]` is the contract with
@@ -267,13 +319,13 @@ export default function AboutPage() {
                     `alt=""` is deliberate. The name is the very next element
                     and is a heading, so alt text here would make a screen
                     reader read every name twice. */}
-                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[4px] border border-line bg-ground-alt">
+                <div className="relative aspect-[4/5] w-full overflow-hidden rounded-lg border border-line bg-ground-alt">
                   {m.photo ? (
                     <Image
                       src={m.photo}
                       alt=""
                       fill
-                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                       placeholder={teamBlur[m.photo] ? "blur" : "empty"}
                       blurDataURL={teamBlur[m.photo]}
                       className="object-cover"
@@ -288,7 +340,7 @@ export default function AboutPage() {
                   )}
                 </div>
 
-                <h3 className="display mt-7 text-center text-2xl">{m.name}</h3>
+                <h3 className="display mt-7 text-2xl">{m.name}</h3>
 
                 {/* `page-label` rather than `eyebrow`: this run has to stay
                     monochrome. `eyebrow` carries the accent and renders a
@@ -297,9 +349,7 @@ export default function AboutPage() {
                     the page under every portrait. Same 14px uppercase spec,
                     no colour of its own, which is the whole reason that
                     utility does not own one. */}
-                <p className="page-label mt-2.5 text-center text-fg-muted">
-                  {m.role}
-                </p>
+                <p className="page-label mt-2.5 text-fg-muted">{m.role}</p>
 
                 {/* Centred to match the name and role above it rather than
                     ranged left, which would leave the only left-aligned run
@@ -312,30 +362,10 @@ export default function AboutPage() {
                     `bio` is nullable, and a sixth member can arrive before
                     their copy does. */}
                 {m.bio && (
-                  <p className="mt-3 text-center text-sm leading-relaxed text-balance text-fg-muted">
+                  <p className="mt-3 max-w-[34ch] text-sm leading-relaxed text-pretty text-fg-muted">
                     {m.bio}
                   </p>
                 )}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section data-band="light" className="section-y">
-        <div className="shell">
-          <SectionHeading
-            eyebrow="Media"
-            title="In the press"
-            accent="the press"
-          />
-          <ul className="mt-14 grid gap-px overflow-hidden rounded-lg border border-line bg-line md:grid-cols-3">
-            {media.map((m) => (
-              <li key={m.outlet} className="flex flex-col bg-card p-8">
-                <blockquote className="display text-xl leading-snug text-balance">
-                  &ldquo;{m.quote}&rdquo;
-                </blockquote>
-                <p className="eyebrow mt-auto pt-8">{m.outlet}</p>
               </li>
             ))}
           </ul>

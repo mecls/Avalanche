@@ -188,7 +188,10 @@ export const hero = {
    */
   stripLabel: "Representative clients & engagements",
   // Sits at the right of the hero's content row, bottom-aligned with the CTA.
-  stat: { value: "$2B+", label: "in active mandates partners brought in for our clients" },
+  stat: {
+    value: "$2B+",
+    label: "in active mandates partners brought in for our clients",
+  },
 } as const;
 
 /** NOT CURRENTLY RENDERED — the "Why Avalanche" section was removed from the
@@ -252,11 +255,41 @@ export const trackRecord = {
    * rendering for figures like 1.2M+.
    */
   stats: [
-    { prefix: "", to: 30, suffix: "+", decimals: 0, label: "Active mandates worldwide" },
-    { prefix: "$", to: 2, suffix: "B+", decimals: 0, label: "Capital raising powered by Fundraisr" },
-    { prefix: "", to: 600, suffix: "+", decimals: 0, label: "End-to-end qualified investor introductions facilitated" },
-    { prefix: "", to: 1.2, suffix: "M+", decimals: 1, label: "Active investor profiles on the platform" },
-    { prefix: "<", to: 10, suffix: " days", decimals: 0, label: "Average time to first investor meeting" },
+    {
+      prefix: "",
+      to: 30,
+      suffix: "+",
+      decimals: 0,
+      label: "Active mandates worldwide",
+    },
+    {
+      prefix: "$",
+      to: 2,
+      suffix: "B+",
+      decimals: 0,
+      label: "Capital raising powered by Fundraisr",
+    },
+    {
+      prefix: "",
+      to: 600,
+      suffix: "+",
+      decimals: 0,
+      label: "End-to-end qualified investor introductions facilitated",
+    },
+    {
+      prefix: "",
+      to: 1.2,
+      suffix: "M+",
+      decimals: 1,
+      label: "Active investor profiles on the platform",
+    },
+    {
+      prefix: "<",
+      to: 10,
+      suffix: " days",
+      decimals: 0,
+      label: "Average time to first investor meeting",
+    },
   ],
   cta: "Get started",
   ctaNote: "Intro call · ~30 min · No commitment required",
@@ -505,6 +538,22 @@ export const ctaBand = {
   note: "Intro call · No commitment required",
 } as const;
 
+/**
+ * NOT CURRENTLY RENDERED. It was "In the press" at the foot of /about and came
+ * off on 7 Sep 2026.
+ *
+ * The block was three white cards on a white band, separated only by a
+ * hairline, with the outlet set as an eyebrow rather than its mark, no link to
+ * any article and no hover state — while the same site runs real logo lockups
+ * in the hero strip and across /customers. It could not be fixed in place:
+ * there are no outlet marks in `public/logos/` for these three and no article
+ * URLs anywhere in the repo, and inventing either is not available. So it was
+ * removed rather than restyled, and 593px of filler went with it.
+ *
+ * Kept because the quotes are still wanted if the articles are real. Bring it
+ * back with marks, anchors and a hover state, on the `BracketGrid` lattice
+ * rather than as filled panels — see docs/COPY-REVIEW.md.
+ */
 export const media = [
   {
     quote:

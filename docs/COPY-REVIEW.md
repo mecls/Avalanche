@@ -64,6 +64,23 @@ Names and titles are the only facts any Avalanche property makes public; the rea
 
 So each line says what the seat does at Avalanche and stops. They read as intentional rather than as gaps, but **they are not bios and shouldn't ship as if they were.** Ask the five of them for two sentences each.
 
+**Four new DRAFT lines landed on 7 September 2026** with a design pass: a
+supporting subhead under three section headings that had none
+(`manifesto.beliefs.lede`, `manifesto.layers.lede`, `about.team.lede`). Every
+other section header on the site carries one, and their absence was breaking
+the page's vertical rhythm. `about.team.lede` describes the SHAPE of the team —
+five people, both sides of a raise — and no individual, which is the same limit
+the bios keep.
+
+**"In the press" was removed from `/about` the same day.** Three cards of
+drafted quotes on a white band, no outlet marks, no article links, no hover
+state. It could not be fixed in place: there are no marks for those three
+outlets in `public/logos/` and no article URLs anywhere in the repo. `media` is
+kept but unrendered in `content/copy.ts`. **If the articles are real, send the
+URLs and the outlet marks and it comes back** — on the lattice, with anchors
+and a hover state. If they are not, the quotes should be deleted rather than
+kept.
+
 **They are rendered on `/about`, under each portrait, as of 7 September 2026.** They had been unrendered for a day — the grid was rebuilt around the reference's photo/name/role card, which carries no bio — and were put back by request. So this is no longer a question of whether the page should carry them: it does, and these exact sentences are live. **This is the highest-priority item on this list for that reason** — it is drafted copy describing five named, identifiable people, in public.
 
 **The team block's HEADING is drafted too, as of 7 September 2026.** It read "Both sides of the table", with that thesis pillar's body as its lede — borrowed verbatim while the thesis section itself was unmounted. `/about` mounts the thesis, so the pillar renders in full a few hundred pixels above and the borrowed version had to go. It now says **"The people you work with"** (`about.team.title`) and carries no lede: any sentence there would be one this repo invented about five named people, which is the same line the bios stop at.

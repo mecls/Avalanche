@@ -101,6 +101,17 @@ is half right by accident: the serif is gone again, the accent is real.
   because they sit against the accent rail and both diagrams. Do not fold
   either utility into the other and do not put the colour into `page-label`
   itself.
+- **THE CARD IDIOM ON THIS SITE IS `BracketGrid`, NOT FILLED PANELS.** Square
+  corners, a hairline lattice (`border-t border-l` on the wrapper,
+  `border-r border-b` per cell), a 13rem floor, a faint grey TABULAR index in
+  the top-RIGHT, the title pushed down by `justify-between`, and two offset
+  crop-mark brackets. Four sections use it — track record, raise types,
+  verticals, and "Why Avalanche" on /about. **Do not build a new card block as
+  rounded filled panels on a gap grid**: /about shipped two of those and they
+  were the single biggest reason the page read as a different template. Cells
+  may go without an icon (`TrackRecord` and `Thesis` do); `components/ui/
+  icons.tsx` is a set of SECTOR marks, so do not force one onto an abstract
+  block.
 - **`/about` IS `/team` AND `/manifesto` MERGED** (7 Sep 2026, by request).
   One route: the thesis, then the three manifesto sections, then the portraits
   and the press. Both old paths 307 to it in `next.config.ts` — `/manifesto` to
@@ -226,8 +237,8 @@ is half right by accident: the serif is gone again, the accent is real.
 Four: `nav`, `track-record`, `case-study-grid` and `contact-form`. The first
 three read EXTERNAL state, which is why the `useSyncExternalStore` rule below
 exists; `contact-form`'s step and answers are its own, so plain `useState` is
-correct there and that rule is not in play. **`/solutions` and `/about`
-deliberately add none** — its scroll-linked rail and text reveal are CSS `view-timeline`,
+correct there and that rule is not in play. **`/solutions` deliberately adds
+none** — its scroll-linked rail and text reveal are CSS `view-timeline`,
 not JS. Keep it that way; see "The solutions timeline" in `README.md` before touching
 it, including why the reduced-motion guard has to say
 `animation: none` rather than rely on the global duration override.

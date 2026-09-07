@@ -33,8 +33,8 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 /solutions/fundraising   Page heading · five numbered blocks on a rail
 /solutions/secondaries   Same layout, Secondaries content (COPY PENDING)
 /customers               Filterable grid of all 13 case studies
-/about                   Why Avalanche · the divergence · five beliefs ·
-                         the three access layers · five partners · press
+/about                   Why Avalanche · track record · the divergence ·
+                         five beliefs · the three access layers · five partners
 /get-in-touch            Nine-step qualification form · FAQ · CTA band
 ```
 
@@ -92,13 +92,57 @@ beliefs) → where the gap actually sits (three layers) → who does the work
 (team) → who has said so (press). The manifesto is in the *middle* on purpose:
 a reader who came for the team scrolls through the argument to reach them.
 
-**Bands alternate every section, all the way down** — light header, dark
-thesis, light divergence, dark beliefs, light layers, dark team, light press,
-photo-backed close. Two things follow. No section carries a `border-t`:
-`/manifesto` needed one because two of its light sections were adjacent, and
-with the thesis between them they no longer are. And the team grid looks
-exactly as it did on `/team` — `data-band="dark"` paints the same `#151515`
-that section used to inherit from `<body>` by not being in a band at all.
+**Band sequence** — light header, light thesis (separated by a rule), dark
+metrics, light divergence, dark beliefs, light layers, dark team, photo-backed
+close. The header and the thesis are the only adjacent pair sharing a band,
+which is why `Thesis` carries the page's one `border-t`. The team grid is
+`data-band="dark"`, which paints the same `#151515` the section inherited from
+`<body>` back when this was `/team` and the page opened dark.
+
+### The design pass of 7 September 2026
+
+The page was audited against `/`, `/customers` and `/solutions/fundraising`.
+The foundations matched — type scale, band rhythm, 120px section padding, the
+shared CTA band and footer, and the two dark diagram plates. What broke the
+illusion was component-level divergence, and five things changed:
+
+**"Why Avalanche" moved onto the lattice.** It shipped as `rounded-lg` filled
+panels on a 1px-gap grid with a blue eyebrow ordinal top-left — an idiom used
+nowhere else here. `BracketGrid` is the signature card motif (three homepage
+sections use it) and moving to it fixed the ordinal's colour and position, the
+title size, the cell height and the corner brackets in one change, because none
+of those is set at the call site any more. **This was the single biggest reason
+the page read as a different template.**
+
+**The metrics bento landed after the thesis.** `/about` argued entirely from
+position and carried no figures and no client marks anywhere, while `/` opens
+on this block and `/customers` is wall-to-wall marks. It is the homepage's own
+`TrackRecord`, which gained a `band` prop for the purpose — its `grid` variant
+renders unbanded, correct on a dark-first page and white-on-white here. It is
+also **the page's first client component**; the count-up is the point of the
+block.
+
+**The header took a dark inset.** It was 420px of white with a lone button in
+the right half and then a hard cut to black. `PageHeader` gained an optional
+`aside`; `/customers` and `/solutions` pass nothing and render exactly the
+markup they always have. The mark inside is built from the divergence chart's
+own `SERIES`, so the preview cannot disagree with the chart it previews — and
+it carries no captions, axis, legend or pill, which is what keeps it a hero
+graphic rather than a second copy of the figure.
+
+**The team grid went three across and left-aligned.** It was the only place on
+the site where card content was centred, which alone made it read as another
+template. The portraits also moved from `rounded-[4px]` to `rounded-lg` — 4px
+is `CtaButton`'s measured radius, so they had been grouped with controls rather
+than with the diagram plates they actually resemble.
+
+**"In the press" was dropped.** Three white cards on a white band, no outlet
+marks, no links, no hover state — and unfixable in place, because the repo has
+neither the marks nor the article URLs. `media` is kept but unrendered.
+
+**Three sections gained a subhead.** Every section header on the site is
+eyebrow, heading, one muted line; the beliefs, layers and team blocks all
+jumped from a 52px heading straight into content.
 
 **The page now opens light, and `/team` did not.** The header section has to
 stay `data-band="light"` *and* the first child of `main`, because two rules in
@@ -609,9 +653,10 @@ Bernardo and Bruno are on their third and fourth masters, and between them they 
 
 **The monogram fallback stays.** `Member.photo` is nullable, a sixth member can arrive before their picture does, and an empty frame is worse than initials. Its `alt` is deliberately `""`: the name is the very next element and is a heading, so alt text here would make a screen reader read every name twice.
 
-**The bios are rendered again**, under the role, by request on 7 Sep 2026. They had come off when the grid was rebuilt around the reference's photo-name-role card, which puts bios behind a "Read Bio" overlay instead.
+**The bios are rendered again**, under the role, by request on 7 Sep 2026, and
+ranged left with the rest of the card since the design pass. They had come off when the grid was rebuilt around the reference's photo-name-role card, which puts bios behind a "Read Bio" overlay instead.
 
-They are centred to match the name and role above them — ranged left would leave the only left-aligned run in the card sitting under two centred ones — and they carry `text-balance`, which is what makes that read as deliberate: at this measure every bio sets in two or three lines, and without it the last line is regularly one orphaned word. The row cannot break either way: picture, name and role are all fixed height, so the bio is the only thing that varies and it varies *below* everything else, leaving cards aligned down to the role however long a bio runs.
+They were briefly centred to match the name and role, which were themselves centred; the whole card is left-aligned now, so they carry `text-pretty` and a `34ch` measure rather than `text-balance`. The row cannot break either way: picture, name and role are all fixed height, so the bio is the only thing that varies and it varies *below* everything else, leaving cards aligned down to the role however long a bio runs.
 
 **They are now DRAFT copy about five named people that is public rather than merely kept**, which raises the stakes on the open item rather than changing it. Each one describes the *seat*, not the person — no career history, no prior firms, no credentials, because none of that was ever sourced. Do not "improve" them by inventing any.
 

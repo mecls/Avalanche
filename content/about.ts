@@ -64,5 +64,17 @@ export const about = {
     eyebrow: "Team",
     // DRAFT
     title: "The people you work with",
+    /**
+     * The supporting line every other section header on the site carries —
+     * eyebrow, heading, then one muted line of context. Four of this page's
+     * sections were missing theirs, which is what broke the vertical rhythm
+     * against /customers and /solutions.
+     *
+     * It describes the SHAPE of the team, not any individual: five people,
+     * both sides of a raise. That is the same limit the bios keep, for the
+     * same reason — see content/team.ts.
+     */
+    // DRAFT
+    lede: "Five people covering both sides of a raise — origination, structuring, investor relationships, and the tooling underneath them.",
   },
 } as const;

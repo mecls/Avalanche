@@ -60,6 +60,8 @@ export const manifesto = {
   beliefs: {
     eyebrow: "What we believe",
     title: "Five positions we build on",
+    // DRAFT — the supporting line the site's section headers all carry.
+    lede: "Not predictions. These are the structural features of private markets that every mandate we take is built to work with.",
     items: [
       {
         title: "Private markets are where value is created now.",
@@ -88,6 +90,8 @@ export const manifesto = {
   layers: {
     eyebrow: "Where the gap sits",
     title: "Every raise runs on three layers of relationships",
+    // DRAFT — the supporting line the site's section headers all carry.
+    lede: "Most raises exhaust the first two and never reach the third. The third is where the capital actually is.",
     items: [
       {
         n: "01",
