@@ -219,12 +219,25 @@ export default function AboutPage() {
               people in a four-column grid leaves three empty cells, and an
               empty CARD would show, where empty ground does not.
 
-              The bio is not rendered. It is still in `content/team.ts`, still
-              marked DRAFT and still tracked in docs/COPY-REVIEW.md — the
-              reference puts bios behind a "Read Bio" overlay rather than on
-              the card, and five paragraphs under five portraits fought the
-              pictures. Kept, not rendered, like the other unmounted copy on
-              this site. */}
+              THE BIOS ARE RENDERED AGAIN, under the role, by request on
+              7 Sep 2026. They came off when the grid was rebuilt around the
+              reference's photo-name-role card, which puts bios behind a
+              "Read Bio" overlay instead. Two things follow from putting them
+              back, and both are load-bearing:
+
+              They are DRAFT copy about five NAMED, IDENTIFIABLE PEOPLE, and
+              they are now public rather than sitting unrendered in
+              content/team.ts. That is why each one describes the SEAT rather
+              than the person — no career history, no prior firms, no
+              credentials, because none of that was ever sourced. Do not
+              "improve" them by inventing any. docs/COPY-REVIEW.md tracks
+              them, and the entry there is now about copy that ships, not copy
+              that is merely kept.
+
+              The row still cannot break: the picture, name and role all sit
+              at a fixed height, so the bio is the only thing that varies and
+              it varies BELOW everything else. Cards in a row therefore stay
+              aligned down to the role no matter how long a bio runs. */}
           <ul className="mt-16 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
             {team.map((m) => (
               <li key={m.name} className="flex flex-col">
@@ -271,6 +284,22 @@ export default function AboutPage() {
                 <p className="page-label mt-2.5 text-center text-fg-muted">
                   {m.role}
                 </p>
+
+                {/* Centred to match the name and role above it rather than
+                    ranged left, which would leave the only left-aligned run
+                    in the card sitting under two centred ones.
+                    `text-balance` is what makes that read as deliberate: at
+                    this measure every bio sets in two or three lines, and
+                    without it the last line is regularly one orphaned word.
+
+                    Guarded on `m.bio` for the same reason the photo is:
+                    `bio` is nullable, and a sixth member can arrive before
+                    their copy does. */}
+                {m.bio && (
+                  <p className="mt-3 text-center text-sm leading-relaxed text-balance text-fg-muted">
+                    {m.bio}
+                  </p>
+                )}
               </li>
             ))}
           </ul>

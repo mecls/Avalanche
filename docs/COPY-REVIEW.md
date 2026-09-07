@@ -64,7 +64,7 @@ Names and titles are the only facts any Avalanche property makes public; the rea
 
 So each line says what the seat does at Avalanche and stops. They read as intentional rather than as gaps, but **they are not bios and shouldn't ship as if they were.** Ask the five of them for two sentences each.
 
-**The bios are no longer rendered anywhere** — the grid is the reference's photo/name/role card — so the open question is now whether the page should carry them at all, not just what they say.
+**They are rendered on `/about`, under each portrait, as of 7 September 2026.** They had been unrendered for a day — the grid was rebuilt around the reference's photo/name/role card, which carries no bio — and were put back by request. So this is no longer a question of whether the page should carry them: it does, and these exact sentences are live. **This is the highest-priority item on this list for that reason** — it is drafted copy describing five named, identifiable people, in public.
 
 **The team block's HEADING is drafted too, as of 7 September 2026.** It read "Both sides of the table", with that thesis pillar's body as its lede — borrowed verbatim while the thesis section itself was unmounted. `/about` mounts the thesis, so the pillar renders in full a few hundred pixels above and the borrowed version had to go. It now says **"The people you work with"** (`about.team.title`) and carries no lede: any sentence there would be one this repo invented about five named people, which is the same line the bios stop at.
 

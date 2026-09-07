@@ -425,7 +425,11 @@ untabbable while closed and focus can only reach them through the trigger.
   replaced the fold. Reference fidelity lost to house consistency on purpose —
   do not restore the full height without something to fill the right column.
 - **Team bios describe the role, not the person**, because no biographical
-  facts were available. Do not invent career history for them.
+  facts were available. Do not invent career history, prior firms or
+  credentials for them. **They are RENDERED on /about** under each portrait
+  (put back 7 Sep 2026 after a day unrendered), so this is public DRAFT copy
+  about five named, identifiable people — the constraint is tighter now, not
+  looser.
 - **Dev runs on port 3200**, pinned. Port 3000 collides with another project on
   this machine and Next moves ports silently, which makes the site look broken.
 
