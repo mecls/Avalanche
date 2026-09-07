@@ -101,40 +101,43 @@ const PRESETS = {
   },
 
   /**
-   * /about's "Why Avalanche" band. A STILL, like `contact`.
+   * /about's "Why Avalanche" band. A STILL, and the only preset whose source
+   * is an IMAGE rather than a clip.
    *
-   * **THE SOURCE IS A 608x320 STOCK PREVIEW, NOT A MASTER**, which is the one
-   * thing to know before reusing it. That is a 3x blow-up to the 1800px this
-   * band needs, so unlike the other two presets it gets the RESTORATION chain
-   * the hero pipeline used to carry for exactly this case: a light denoise to
-   * stop the upscaler amplifying compression noise, then unsharp to put back
-   * the edge the scale-up costs. Do not copy `restore: true` onto a clean
-   * master — on a 10Mbps+ source it destroys real detail to fix artifacts that
-   * are not there.
+   * **THE SOURCE IS 269x148, AND THAT IS NOT A TYPO.** It is a thumbnail —
+   * 39,812 pixels against the 1.5 million this band renders, so it is blown up
+   * about 6x linear. It was supplied and chosen with that trade-off stated;
+   * it replaced a 608x320 frame from a bridge clip that was itself a 3x
+   * upscale (`git show 7302484`).
    *
-   * It survives the blow-up because of where it lands: behind a 0.86-0.55
-   * scrim carrying white type, where softness reads as depth of field and
-   * sharpening artifacts would not survive the darkening anyway. **If this
-   * band ever loses its scrim, re-source the clip.**
+   * So the chain here is doing restoration, not optimisation, and each stage
+   * earns its place on a small JPEG: `deblock` first, because at this size the
+   * 8x8 DCT grid is the dominant artifact and upscaling it makes it structural;
+   * `hqdn3d` to stop the scaler amplifying what the deblock leaves; then
+   * lanczos, then a LIGHT unsharp — heavy sharpening here re-draws the block
+   * edges the first two stages just removed. `gradfun` for the sky, as
+   * everywhere else. **Do not copy `restore` onto a real master**; on a clean
+   * source it destroys detail to fix artifacts that are not there.
    *
-   * A close aerial of the tower at sunset, deliberately NOT the hero's wide
-   * backlit span — /about already ends on the hero poster in the closing band,
-   * and the same photograph twice on one page reads as a mistake. t=17 rather
-   * than the opening frame: by then the tower has travelled right, leaving the
-   * left third open water and sky, which is the half the copy sits on.
+   * 1600 rather than the 2000 the contact still uses. There is no detail above
+   * about 300px to preserve, so a wider output would spend bytes encoding
+   * interpolation.
+   *
+   * **THE SOURCE IS COMMITTED**, unlike the two clips, which read from
+   * ~/Downloads. Those are 100MB files that can be downloaded again; this is
+   * 17KB and the folder it arrived in is not a stable input.
+   *
+   * **If a licensed, full-resolution original ever arrives this gets much
+   * better for one line**: point `src` at it and delete `restore`.
    */
   about: {
     file: "about-bg",
-    src: path.join(
-      homedir(),
-      "Downloads",
-      "Sunset Skyline Of 25th April Bridge At Filmagem gratuita 8123774.mp4",
-    ),
+    src: path.join(process.cwd(), "docs", "assets", "about-bg-source.jpeg"),
     stillOnly: true,
-    stillWidth: 1800,
-    stillAt: 17,
+    isImage: true,
+    stillWidth: 1600,
     restore: true,
-    quality: 78,
+    quality: 80,
   },
 };
 
@@ -162,15 +165,17 @@ const mb = (f) => (statSync(f).size / 1e6).toFixed(2) + "MB";
 if (preset.stillOnly) {
   const tmp = path.join(OUT, ".still.png");
   const still = path.join(OUT, `${preset.file}.webp`);
-  // `stillAt` seeks from the start, `stillFromEnd` from the end. The latter is
-  // for a source whose useful frame is its last one and would drift if the
-  // clip were ever re-cut.
-  const seekStill = preset.stillAt !== undefined
-    ? ["-ss", String(preset.stillAt)]
-    : ["-sseof", String(-preset.stillFromEnd)];
+  // An image source has nothing to seek. `stillAt` seeks from the start,
+  // `stillFromEnd` from the end — the latter for a clip whose useful frame is
+  // its last and would drift if the source were ever re-cut.
+  const seekStill = preset.isImage
+    ? []
+    : preset.stillAt !== undefined
+      ? ["-ss", String(preset.stillAt)]
+      : ["-sseof", String(-preset.stillFromEnd)];
   // See `restore` in the preset before adding this to anything else.
   const chain = preset.restore
-    ? `hqdn3d=1.5:1.5:6:6,scale=${preset.stillWidth}:-2:flags=lanczos,unsharp=5:5:0.8:5:5:0.0,gradfun=3:16`
+    ? `deblock=filter=strong:block=8,hqdn3d=3:3:10:10,scale=${preset.stillWidth}:-2:flags=lanczos,unsharp=3:3:0.35:3:3:0.0,gradfun=3:16`
     : `scale=${preset.stillWidth}:-2:flags=lanczos,gradfun=3:16`;
   ff([...seekStill, "-i", SRC, "-update", "1", "-frames:v", "1", "-vf", chain, tmp]);
   await sharp(tmp).webp({ quality: preset.quality }).toFile(still);

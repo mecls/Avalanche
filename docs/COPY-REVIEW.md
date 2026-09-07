@@ -339,6 +339,26 @@ two cannot disagree.
    column offers LinkedIn and the form. Send them and they go into `site`
    beside the booking link, and the mail/phone rows go back in.
 
+## The /about background image — resolution and rights
+
+**Not copy, but it belongs on this list**, because it is the second thing a
+visitor sees on the page and neither question is settled.
+
+`docs/assets/about-bg-source.jpeg` is **269x148** — a thumbnail. The band it
+fills renders at 1600x880, so it is blown up about 6x, and the scrim over it is
+carrying that as much as it is carrying text contrast. It was supplied and
+chosen after the trade-off was shown side by side against the alternative.
+
+Two things to settle before launch:
+
+- **A licensed, full-resolution original would fix it for one line.** Point the
+  `about` preset at it and delete `restore`. Anything 1600px or wider drops
+  straight in.
+- **Where is it from?** A 269x148 file named `download.jpeg` has the shape of a
+  search-result thumbnail rather than a licensed asset. Every other image on
+  this site has a known origin — the client marks, the two bridge clips, the
+  team portraits. This one does not, and a commercial site needs it to.
+
 ## The nav's "Log in" — a label with no destination
 
 **Added 7 September 2026, and it deliberately does not go anywhere.** There is

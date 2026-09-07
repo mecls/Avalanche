@@ -34,14 +34,18 @@ import { thesis } from "@/content/copy";
  * The empty top-left of an icon-less cell is also what made this block look
  * hollow next to `RaiseTypes`, whose glyph fills exactly that space.
  *
- * **IT IS IMAGE-BACKED**, and it is the second block on /about — a close
- * aerial of the Ponte 25 de Abril at sunset, behind the same image/scrim/grain
- * stack the hero and the closing band use. Deliberately not the hero's wide
- * span: /about ends on the hero poster in the closing band, and the same
- * photograph twice on one page reads as a mistake. The still is built by
- * `scripts/optimize-bg-video.mjs about`, whose header carries the warning that
- * its source is a 608x320 preview rather than a master — **this band's scrim
- * is what makes that survivable, so do not lighten it much.**
+ * **IT IS IMAGE-BACKED**, and it is the second block on /about — a city
+ * skyline at dusk, behind the same image/scrim/grain stack the hero and the
+ * closing band use. It replaced a frame from a bridge clip, which had the
+ * problem of being the same subject as the hero; a different subject keeps the
+ * page from showing one photograph twice.
+ *
+ * The still is built by `scripts/optimize-bg-video.mjs about`. **Read that
+ * preset's header before touching this band**: the source is a 269x148
+ * thumbnail, supplied and chosen with the trade-off stated, and the scrim
+ * below is doing as much work hiding the upscale as it is carrying contrast.
+ * A licensed full-resolution original would improve this more than any change
+ * here, and is a one-line swap in the preset.
  *
  * `data-band="dark"` rather than leaving it unbanded like `CtaBand` does: the
  * lattice below takes `border-line` for its hairlines and the band is what
@@ -65,13 +69,19 @@ export function Thesis() {
           and the reason is what sits on it. `CtaBand` can ramp 0.92 down to
           0.45 because its type is in a single left column and the right half
           is deliberately open. Here the lattice spans the full shell, so every
-          column carries small text and every column needs the floor.
-          Measured against the still's own brightest pixels in the card row:
-          the first attempt (0.86 -> 0.55) put the middle column at 4.27:1 for
-          white, under the 4.5:1 needed at 13px. At 0.90/0.84/0.80 the three
-          columns clear 8.1, 6.4 and 7.8:1. **Re-measure if the still or the
-          copy layout changes** — the source is a 608x320 preview and this
-          scrim is also what covers for the upscale. */}
+          column carries 13px text and every column needs the floor.
+
+          **RE-MEASURE IT WHENEVER THE STILL CHANGES.** It has been derived
+          twice against two different photographs and the numbers moved a long
+          way. Against the bridge frame, 0.86 -> 0.55 put the middle column at
+          4.27:1 and 0.90/0.84/0.80 fixed it. The city still that replaced it
+          is far brighter — its window highlights reach a relative luminance of
+          0.99, against the bridge's 0.73 — and those same values scraped
+          4.50:1, exactly the 13px floor and no margin at all. 0.92/0.90/0.88
+          puts the three columns at 7.7, 6.7 and 6.5:1.
+
+          The scrim is also what covers for the upscale: this source is a
+          269x148 thumbnail. Lightening it undoes both jobs at once. */}
       <div
         aria-hidden
         className="absolute inset-0 z-0 bg-ground bg-cover bg-center"
@@ -82,7 +92,7 @@ export function Thesis() {
         className="absolute inset-0 z-[1]"
         style={{
           backgroundImage:
-            "linear-gradient(to right, rgba(21,21,21,0.90) 0%, rgba(21,21,21,0.84) 50%, rgba(21,21,21,0.80) 100%)",
+            "linear-gradient(to right, rgba(21,21,21,0.92) 0%, rgba(21,21,21,0.90) 50%, rgba(21,21,21,0.88) 100%)",
         }}
       />
       <div

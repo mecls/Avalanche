@@ -104,24 +104,34 @@ and a centred header has no right half to leave empty — a simpler answer than
 filling it. `PageHeader` takes `align="center"`; `/customers` and `/solutions`
 pass nothing and render the left-aligned row they always have.
 
-**"Why Avalanche" is image-backed** and sits second. A close aerial of the
-Ponte 25 de Abril at sunset behind the same image/scrim/grain stack the hero
-and the closing band use — deliberately *not* the hero's wide span, since the
-page already ends on the hero poster and the same photograph twice reads as a
-mistake. Built by `node scripts/optimize-bg-video.mjs about`.
+**"Why Avalanche" is image-backed** and sits second — a city skyline at dusk
+behind the same image/scrim/grain stack the hero and closing band use. Built by
+`node scripts/optimize-bg-video.mjs about`, the only preset whose source is an
+image rather than a clip.
 
-Two things about that band are load-bearing. **Its source is a 608×320 stock
-preview, not a master**, so the preset carries the restoration chain (denoise
-then unsharp) that the hero pipeline used to need for exactly this case — do
-not copy `restore: true` onto a clean master, where it destroys real detail to
-fix artifacts that aren't there. And **its scrim is nearly flat and much darker
-than the closing band's**: `CtaBand` can ramp 0.92 → 0.45 because its type sits
-in one left column, but the lattice here spans the full shell, so every column
-carries 13px text and every column needs the floor. Measured against the
-still's own brightest pixels in the card row, the first attempt (0.86 → 0.55)
-put the middle column at **4.27:1**, under the 4.5:1 that size needs; at
-0.90/0.84/0.80 the three columns clear 8.1, 6.4 and 7.8:1. The scrim is also
-what covers for the upscale, so re-measure if either changes.
+**Its source is a 269×148 thumbnail.** That is 39,812 pixels against the 1.5
+million the band renders — roughly a 6× linear blow-up. It was supplied and
+chosen with the trade-off stated, replacing a 608×320 bridge frame that was
+itself a 3× upscale *and* had the separate problem of being the same subject as
+the hero. So the preset runs a restoration chain rather than an optimisation
+one: `deblock` first, because at this size the 8×8 DCT grid is the dominant
+artifact and scaling makes it structural; `hqdn3d` so the scaler does not
+amplify what deblock leaves; then lanczos and a **light** unsharp, because
+heavy sharpening re-draws the block edges the first two stages removed. **Do
+not copy `restore: true` onto a real master** — it destroys detail to fix
+artifacts that aren't there. A licensed full-resolution original would improve
+this more than any other change, and is a one-line swap.
+
+**The scrim has been derived twice, against two photographs, and the numbers
+moved a long way.** `CtaBand` can ramp 0.92 → 0.45 because its type sits in one
+left column; the lattice here spans the full shell, so every column carries
+13px text and needs the floor. Against the bridge frame, 0.86 → 0.55 put the
+middle column at **4.27:1** and 0.90/0.84/0.80 fixed it. The city still is far
+brighter — window highlights reach a relative luminance of **0.99** against the
+bridge's 0.73 — and those same values scraped **4.50:1**, exactly the floor with
+no margin. 0.92/0.90/0.88 puts the three columns at 7.7, 6.7 and 6.5:1. The
+scrim is also what hides the upscale, so lightening it undoes both jobs at
+once. **Re-measure whenever the still changes.**
 
 **The thesis cells have icons, and they are new marks.** `components/ui/
 icons.tsx` held sector marks only — funds, credit, realestate — and there is no
