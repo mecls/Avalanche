@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { nav, site } from "@/content/copy";
 import { CtaButton } from "@/components/ui/button";
+import { Logo } from "@/components/ui/logo";
 
 /**
  * Site chrome: ONE element — a 79.2px nav, `absolute` at top:0, which scrolls
@@ -79,12 +80,18 @@ export function SiteNav() {
               middle group on the VIEWPORT rather than in the space left over,
               so the links stay put as the wordmark and button change width. */}
           <div className="flex flex-1 items-center gap-2.5">
+            {/* The logo replaced a 26px Satoshi wordmark on 7 Sep 2026.
+                `h-8` is not a round number picked by eye: the lockup's
+                wordmark is 19.35 of its 32 units tall, and 26px Satoshi has a
+                19.24px cap height, so 32px puts the new wordmark on the old
+                one's optical size to within half a percent. It takes its
+                colour from this link, which is why nothing here sets one. */}
             <Link
               href="/"
               aria-label={`${site.name} home`}
-              className="display text-[26px] whitespace-nowrap"
+              className="shrink-0"
             >
-              {site.name}
+              <Logo patternId="logo-nav" className="h-8 w-auto" />
             </Link>
           </div>
 
@@ -166,10 +173,20 @@ export function SiteNav() {
           </div>
 
           <div className="flex flex-1 items-center justify-end gap-2.5">
+            {/* `max-md:hidden`, NOT `hidden md:inline-flex`, and the
+                difference is not cosmetic. `CtaButton` already puts
+                `inline-flex` in its base classes, and Tailwind emits
+                `.inline-flex` AFTER `.hidden` — same specificity, later
+                source order, so the plain `hidden` never won and this button
+                rendered on phones beside the hamburger. It was invisible
+                glass until the border landed on 6 Sep 2026, which is why
+                nobody caught it. A variant is emitted after both, so it wins.
+                Check the generated CSS before pairing `hidden` with any
+                component that sets its own `display`. */}
             <CtaButton
               href="/get-in-touch"
               variant="ghost"
-              className="hidden md:inline-flex"
+              className="max-md:hidden"
             >
               {site.navCta}
             </CtaButton>

@@ -31,6 +31,11 @@ type Props = {
  *
  * Geometry measured from the reference: 4px radius, 14/20 padding, 47.2px
  * tall, 16px/19.2px Satoshi 500. A rectangle, not a pill, and no trailing glyph.
+ *
+ * **It sets its own `display`, so `className="hidden"` does NOT hide it.**
+ * Tailwind emits `.inline-flex` after `.hidden` at equal specificity, so the
+ * base class wins. Hide it with a variant — `max-md:hidden` — which is emitted
+ * after both. The nav button was showing on every phone because of this.
  */
 export function CtaButton({
   href,

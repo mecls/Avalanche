@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { legal, nav, site } from "@/content/copy";
+import { Logo } from "@/components/ui/logo";
 
 export function SiteFooter() {
   return (
@@ -7,9 +8,15 @@ export function SiteFooter() {
       <div className="shell py-16">
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <p className="display text-3xl">
-              {site.name}
-              <span className="text-fg-faint">.</span>
+            {/* Same lockup as the nav, one step larger — `h-9` puts its
+                wordmark on the cap height of the 30px display text it
+                replaced. The `sr-only` run is the site's full name, which the
+                artwork does not spell: the logo reads "Avalanche", and this
+                was the only place a screen reader met "Avalanche Capital"
+                outside the nav's link label. */}
+            <p>
+              <Logo patternId="logo-footer" className="h-9 w-auto" />
+              <span className="sr-only">{site.name}</span>
             </p>
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-fg-muted">
               {site.tagline}. {site.description}

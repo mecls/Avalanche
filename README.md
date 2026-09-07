@@ -465,6 +465,28 @@ It carries the same three-layer stack as the hero — image, scrim, grain — fo
 
 `components/sections/booking.tsx` is no longer mounted — the reference's layout is single-column with one button, so the band's button goes straight to `site.booking`.
 
+## The logo
+
+`components/ui/logo.tsx` — the three-slash mark plus the "Avalanche" wordmark, as one lockup. Supplied as an SVG on 7 September 2026 and kept verbatim at `docs/assets/avalanche-logo.svg`, because the derivation below is by hand and not scripted; it replaced the 26px Satoshi wordmark in the nav and the 30px one in the footer.
+
+**It is inline SVG, not an `<img>`, because the wordmark has to invert.** The nav is transparent over whatever band opens the page, and on `/customers` and `/solutions/*` that band is white — the file arrived with `fill="#fff"`, which is invisible there. Taking the colour from `currentColor` means the same markup renders white over the hero and ink on a light band, off the `[data-band]` tokens that already re-point `text-fg`. **Do not reach for `logo-mark`**: that class inverts the whole element and would turn the mark's blue orange.
+
+**The mark keeps its blue on both bands.** It is the brand asset, not a fifth accent use — the four-places rule is about `--color-accent`, and this gradient is not it. On white its light end is thin (about 1.9:1), which is why the wordmark beside it carries the identity and the mark is `aria-hidden`.
+
+**The artwork says "Avalanche", not "Avalanche Capital".** `site.name` is still the full name and still appears in the page title, the nav link's `aria-label`, and an `sr-only` run in the footer — which was the only place a screen reader met it outside the nav.
+
+**204KB → 7KB.** The supplied file filled the mark with a `<pattern>` over an embedded 692×823 PNG, which is 198KB of base64 for what is a smooth blue gradient, inline on every page. The pattern stretches that image to the mark's 59.8×31.5 bounding box whatever its size, and a gradient survives the downsample: composited at 5× the rendered size, **48×24 is within 1/255 per channel at the median and 4 at the worst pixel**. No visible difference at 10×.
+
+A vector `<linearGradient>` was tried first and rejected — the source is a mesh, not a ramp, and neither a 5-stop linear fit nor a full bilinear one gets below a median error of 9 per channel, which is plainly visible above nav size. A `viewBox` was also added; the supplied file has width/height and none, so setting a width on it moves the frame and leaves the artwork the same size.
+
+**Sizing is measured, not eyeballed.** The lockup's wordmark is 19.35 of its 32 units tall; 26px Satoshi has a 19.24px cap height, so `h-8` in the nav puts the new wordmark on the old one's optical size to within half a percent. `h-9` does the same against the footer's 30px.
+
+`patternId` is a **required** prop and must be unique on the page — each instance carries its own `<defs>`, and duplicate ids are invalid HTML. There is no default, so a third call site has to think about it.
+
+### The `hidden` trap it exposed
+
+Giving the ghost button a border made a long-standing bug visible: the nav CTA was rendering **on every phone**, beside the hamburger. `CtaButton` puts `inline-flex` in its base classes and the call site passed `hidden md:inline-flex`; Tailwind emits `.inline-flex` (line 677 of the built sheet) after `.hidden` (line 665) at equal specificity, so the base class won and the plain `hidden` never applied. It had been invisible glass until the border landed, which is why nobody caught it. The fix is `max-md:hidden` — a variant, emitted after both. **Check the generated CSS before pairing `hidden` with any component that sets its own `display`.**
+
 ## Logos
 
 `public/logos/` holds 70 client and case-study marks. They arrived as flattened rasters with **inconsistent** baked-in backgrounds — some white, some black, none with alpha.
@@ -566,7 +588,7 @@ The LCP element on `/` is the hero wrapper painting the **20KB poster**, not the
 Full detail and rationale in **`docs/COPY-REVIEW.md`**. Short version:
 
 1. **Approve or replace the drafted copy.** Three offering panels, two investor verticals, process step 03, seven FAQ answers, five team bios. Every one is marked `// DRAFT` at its source. They were written here because the originals are genuinely unreachable — the Framer carousel on `avalanche-capital.com` renders no body text to the page at all (verified against raw HTML, not just by clicking).
-2. **The team bios describe the role, not the person** — deliberately. Names and titles are the only public facts; inventing career histories for five named individuals isn't a placeholder a reviewer can safely skim. Get two sentences from each of them.
+2. **The team bios describe the role, not the person** — deliberately. Names and titles are the only public facts; inventing career histories for five named individuals isn't a placeholder a reviewer can safely skim. Get two sentences from each of them. **They are not on the page any more** — `/team` matches the reference's photo-name-role card, which carries no bio — so this is now a question of whether the page should have them at all, not just of what they say.
 3. **Verify the track-record figures** — `$2B+`, `$300M+`, `200`, `$600M+`. All four come from pages dated 2024 and are the most load-bearing claims on the site.
 4. **Footer legal text** — currently adapted from the short notice on fundraisr.ai. Should come from counsel.
 5. **Confirm the Calendly event.** Both original links on the live sites are dead ("This Calendly URL is not valid"). The site points at `capital-raise-demo-call-ac-clone` — the only live event on the `avalancheintrocall` account, but the slug reads like a duplicate.

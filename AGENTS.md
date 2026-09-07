@@ -37,6 +37,26 @@ farahcap serif rebuild, and since 4 Sep 2026 farahcap's layout carrying
 fundraisr's face plus the accent. A doc claiming "no serif, no accent colour"
 is half right by accident: the serif is gone again, the accent is real.
 
+- **The logo is `components/ui/logo.tsx`, and it is INLINE SVG for a reason.**
+  Supplied 7 Sep 2026 as `avalanche-logo.svg`; it replaced the 26px Satoshi
+  wordmark in the nav and the 30px one in the footer. Its wordmark path is
+  `currentColor`, which is the whole trick — the nav is transparent over
+  whatever band opens the page, so on `/customers` and `/solutions/*` a
+  hardcoded white wordmark is invisible. An `<img>` cannot do that, which is
+  why it is not one. **Do not put `logo-mark` on it**: that class inverts the
+  whole element and would turn the mark's blue orange. The mark keeps its
+  gradient on both bands — it is the brand asset, not a fifth accent use.
+  The artwork says "Avalanche", not "Avalanche Capital"; the footer carries
+  the full name in an `sr-only` run and the nav in its `aria-label`.
+- **`patternId` is a required prop and must be unique per instance.** Each
+  lockup carries its own `<defs>`, and two elements sharing an id is invalid
+  HTML. There is deliberately no default value.
+- **`CtaButton` sets its own `display`, so `className="hidden"` does not hide
+  it.** Tailwind emits `.inline-flex` after `.hidden` at equal specificity, so
+  the base class wins on source order. Use a variant — `max-md:hidden` — which
+  is emitted after both. The nav's ghost button rendered on every phone for
+  months because of this; it was invisible glass until the border landed, which
+  is why nobody caught it.
 - **ONE face, and it is self-hosted.** Satoshi on every heading, figure, body
   run, button and nav item. There is no secondary display face and **no serif
   anywhere**. It is a Fontshare release, not on Google Fonts, so it loads via
