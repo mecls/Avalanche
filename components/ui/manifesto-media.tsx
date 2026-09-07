@@ -76,16 +76,12 @@ export function DivergenceDiagram() {
   ].join(" ");
 
   const last = SERIES.length - 1;
-  const pillCx = px(PILL_AT);
-  const pillTop = py(SERIES[PILL_AT]!.capital) - 15;
+  // The divider sits where the gap is already unambiguous but the lines have
+  // not yet reached their terminals, so the callout has room to its right.
+  const cut = px(3);
 
   return (
     <Frame>
-      {/* SHORT ON PURPOSE. The two captions share one baseline and SVG does
-          not reflow, so the pair has to fit 620 units at the LARGEST rung —
-          `dgm-sm` is 21 units below 479px, roughly 15.5 units a character
-          with the tracking. 22 + 22 characters was 682 and they overlapped on
-          a phone. The shipped six top out at 18. Keep the sum under ~36. */}
       <Caption x={0} y={20}>
         Capital supply
       </Caption>
@@ -93,43 +89,20 @@ export function DivergenceDiagram() {
         Distribution
       </Caption>
 
-      {/* The wash first, so both lines sit on top of their own boundary. */}
       <polygon points={gap} className="fill-accent/[0.07]" />
 
-      {/* The route that is narrowing.
-
-          `fg-muted/50` is the system's ghost value and is kept EXACTLY, even
-          though this line carries more weight than a ghost dot does. Measured
-          on the plate: 2.8:1 against the ground and 2.7:1 against the accent
-          line. The first of those is under the 3:1 floor for a meaningful
-          graphic — but it is the same value the six /solutions diagrams ship
-          for their ghost dots, the frame is `aria-hidden` and the copy beside
-          it states both claims in words, so this is a property of the system
-          rather than of this diagram.
-
-          DO NOT FIX IT HERE ALONE. Raising the alpha lifts the ground contrast
-          and collapses the accent separation in the same move — /70 measures
-          3.9:1 against the ground but only 1.8:1 against the accent, which is
-          the failure the README's accent section is written about. If the
-          ghost value changes it changes for all eight diagrams at once.
-          
-          What this line has that a ghost dot does not: a dash pattern and an
-          opposite direction. Both survive a luminance failure. */}
       <polyline
         points={access}
         className="stroke-fg-muted/50"
         strokeWidth={2}
-        strokeDasharray="7 6"
+        strokeDasharray="6 6"
         strokeLinecap="round"
-        strokeLinejoin="round"
       />
-
       <polyline
         points={capital}
         className="stroke-accent"
         strokeWidth={2}
         strokeLinecap="round"
-        strokeLinejoin="round"
       />
 
       <circle
@@ -145,41 +118,63 @@ export function DivergenceDiagram() {
         className="fill-fg-muted/50"
       />
 
-      {/* Time. A rule and two ends, because the horizontal axis carries no
-          quantity — only a direction. */}
-      <path d="M0,408 H620" className="stroke-line-soft" strokeWidth={1} />
-      <text x={0} y={436} className="fill-fg-muted font-sans dgm-md">
-        A decade ago
+      {/* The callout replaced a pill straddling the capital line. A pill names
+          the gap; this measures it — the dashed rule spans the two series at
+          one x, so the label sits on the distance it is describing rather than
+          floating above one of the lines. */}
+      <line
+        x1={cut}
+        y1={py(SERIES[3]!.capital)}
+        x2={cut}
+        y2={py(SERIES[3]!.access)}
+        className="stroke-accent/60"
+        strokeWidth={1}
+        strokeDasharray="4 4"
+      />
+      <text
+        x={cut + 14}
+        y={py(SERIES[3]!.capital) + 52}
+        className="fill-accent font-sans dgm-sm font-medium tracking-[0.1em] uppercase"
+      >
+        The access gap
       </text>
       <text
-        x={620}
-        y={436}
-        textAnchor="end"
+        x={cut + 14}
+        y={py(SERIES[3]!.capital) + 76}
+        className="fill-fg-muted font-sans dgm-sm tracking-[0.08em] uppercase"
+      >
+        Widening, not closing
+      </text>
+
+      {/* Three ticks rather than two. The third is what turns the picture from
+          a description of the past into the claim the page actually makes. */}
+      <line
+        x1={0}
+        y1={408}
+        x2={620}
+        y2={408}
+        className="stroke-line-soft"
+        strokeWidth={1}
+      />
+      <text x={0} y={432} className="fill-fg-muted font-sans dgm-md">
+        Ten years ago
+      </text>
+      <text
+        x={310}
+        y={432}
+        textAnchor="middle"
         className="fill-fg-muted font-sans dgm-md"
       >
         Today
       </text>
-
-      {/* Straddles the accent line at the point the gap is plainly open. */}
-      <g>
-        <rect
-          x={pillCx - 56}
-          y={pillTop}
-          width={112}
-          height={30}
-          rx={15}
-          className="fill-ground stroke-accent"
-          strokeWidth={1}
-        />
-        <text
-          x={pillCx}
-          y={pillTop + 19}
-          textAnchor="middle"
-          className="fill-accent font-sans dgm-xs font-medium tracking-[0.08em] uppercase"
-        >
-          Access gap
-        </text>
-      </g>
+      <text
+        x={620}
+        y={432}
+        textAnchor="end"
+        className="fill-fg-muted font-sans dgm-md"
+      >
+        2030 and beyond
+      </text>
 
       <g>
         <circle cx={5} cy={490} r={5} className="fill-accent" />
@@ -212,34 +207,73 @@ export function DivergenceDiagram() {
    Concentric circles would have put three labels on three different chords.
    ------------------------------------------------------------------------- */
 
-const LAYERS = [
+/**
+ * Concentric CIRCLES, not the nested rounded rects this drew until 7 Sep 2026.
+ *
+ * The rects had the same nesting and read as a stack of cards; circles read as
+ * reach, which is the claim. Each ring is labelled inside its own band, so the
+ * three bands are the three layers and the gap between the outer two is the
+ * thing being pointed at.
+ *
+ * **THE RADII ARE SET BY THE TYPE, NOT THE OTHER WAY ROUND.** Each band has to
+ * hold a two-line label without either line touching the arcs either side of
+ * it, and at this frame's rungs a label is about 40 units tall. A first pass
+ * at r 175/122/72 gave the middle band 50 units to hold that, and its second
+ * line sat on the ring below. r 200/136/76 opens the two outer bands to ~60
+ * and ~64. The reference this was drawn from carries text at about 5% of its
+ * outer radius; the rungs here put it nearer 10%, which is the whole reason
+ * the rings had to grow rather than the labels shrink.
+ *
+ * The bound: `cy` 245 with `r` 200 spans 45 to 445, clear of the captions at
+ * 20 and the legend baseline at 490.
+ */
+const RINGS = [
   {
-    n: "03",
+    n: "Layer three",
     label: "The addressable universe",
-    /** The rect, and the row that labels it. Rows cascade inward with the
-     *  rects so each sits in its own band. */
-    rect: { x: 0, y: 56, w: 620, h: 352, r: 16 },
-    row: { x: 16, y: 86 },
+    r: 200,
+    labelY: 390,
     outer: true,
   },
   {
-    n: "02",
-    label: "The extended network",
-    rect: { x: 76, y: 116, w: 468, h: 232, r: 14 },
-    row: { x: 94, y: 146 },
+    n: "Layer two",
+    label: "Extended network",
+    r: 136,
+    labelY: 332,
     outer: false,
   },
-  {
-    n: "01",
-    label: "Your own network",
-    rect: { x: 150, y: 176, w: 320, h: 112, r: 12 },
-    row: { x: 168, y: 232 },
-    outer: false,
-  },
+  { n: "Layer one", label: "Your network", r: 76, labelY: 239, outer: false },
 ];
 
+const CX = 310;
+const CY = 245;
+
+/**
+ * `labelY` is measured, not centred, and this is why.
+ *
+ * A first version put each label at the midpoint of its band, which is right
+ * on the vertical centre line and wrong everywhere else — **a circle curves
+ * back up at its edges**, so the arc above a wide label is much lower at the
+ * label's ends than at its middle. Both outer labels collided with their own
+ * ring even though the centre-line clearance looked fine.
+ *
+ * The constraint is the CHORD. At a distance `dy` below the centre, a ring of
+ * radius `r` leaves a half-width of `sqrt(r^2 - dy^2)`, and the label's own
+ * half-width has to fit inside it. Solving that for these three:
+ *
+ *   "The addressable universe"  ~80 half   collides below y=429  ->  390/412
+ *   "Extended network"          ~65 half   collides below y=365  ->  332/354
+ *   "Your network"              ~47 half   collides below y=309  ->  239/261
+ *
+ * Each also has to clear the ring INSIDE it (381 and 321), which is what sets
+ * the upper bound. **Re-solve if a label's wording or a radius changes** —
+ * lengthening a label moves its collision point up, and the numbers above stop
+ * being true.
+ */
+
 export function AccessLayersDiagram() {
-  const outer = LAYERS[0]!.rect;
+  const outer = RINGS[0]!;
+  const mid = RINGS[1]!;
 
   return (
     <Frame>
@@ -250,18 +284,17 @@ export function AccessLayersDiagram() {
         The universe
       </Caption>
 
-      {/* Outermost first. Each inner rect is `fill-ground`, so it knocks the
-          wash back out and leaves the accent showing as the outer band only. */}
-      {LAYERS.map((l) => (
-        <rect
-          key={`r-${l.n}`}
-          x={l.rect.x}
-          y={l.rect.y}
-          width={l.rect.w}
-          height={l.rect.h}
-          rx={l.rect.r}
+      {/* Outermost first. Each inner circle is `fill-ground`, so it knocks the
+          wash back out and leaves the accent showing as the outer band only —
+          the layer that is NOT being reached. */}
+      {RINGS.map((ring) => (
+        <circle
+          key={ring.n}
+          cx={CX}
+          cy={CY}
+          r={ring.r}
           className={
-            l.outer
+            ring.outer
               ? "fill-accent/[0.07] stroke-accent"
               : "fill-ground stroke-line"
           }
@@ -269,52 +302,56 @@ export function AccessLayersDiagram() {
         />
       ))}
 
-      {LAYERS.map((l) => (
-        <g key={`l-${l.n}`}>
-          <circle
-            cx={l.row.x}
-            cy={l.row.y}
-            r={l.outer ? 6 : 5}
-            className={l.outer ? "fill-accent" : "fill-fg-muted/50"}
-          />
-          <text
-            x={l.row.x + 16}
-            y={l.row.y + 6}
-            className="fill-fg-faint font-sans dgm-sm tracking-[0.12em] uppercase"
-          >
-            {l.n}
-          </text>
-          <text
-            x={l.row.x + 52}
-            y={l.row.y + 6}
-            className={`font-sans dgm-lg ${
-              l.outer ? "fill-fg" : "fill-fg-muted"
-            }`}
-          >
-            {l.label}
-          </text>
-        </g>
-      ))}
+      {/* Each label sits centred in its own band — see `bandLabelY`. The
+          ordinal takes the smaller rung and the name the middle one; `dgm-lg`
+          here was what made the pair too tall for a 60-unit band. */}
+      {RINGS.map((ring) => {
+        const y = ring.labelY;
+        return (
+          <g key={`t-${ring.n}`}>
+            <text
+              x={CX}
+              y={y}
+              textAnchor="middle"
+              className={`font-sans dgm-sm tracking-[0.12em] uppercase ${
+                ring.outer ? "fill-accent" : "fill-fg-faint"
+              }`}
+            >
+              {ring.n}
+            </text>
+            <text
+              x={CX}
+              y={y + 22}
+              textAnchor="middle"
+              className={`font-sans dgm-md ${
+                ring.outer ? "fill-fg" : "fill-fg-muted"
+              }`}
+            >
+              {ring.label}
+            </text>
+          </g>
+        );
+      })}
 
-      <g>
-        <rect
-          x={outer.x + outer.w / 2 - 62}
-          y={outer.y - 15}
-          width={124}
-          height={30}
-          rx={15}
-          className="fill-ground stroke-accent"
-          strokeWidth={1}
-        />
-        <text
-          x={outer.x + outer.w / 2}
-          y={outer.y + 4}
-          textAnchor="middle"
-          className="fill-accent font-sans dgm-xs font-medium tracking-[0.08em] uppercase"
-        >
-          Addressable
-        </text>
-      </g>
+      {/* The gap itself, measured rather than named: the rule spans the outer
+          band at the top of the figure, where the two arcs are furthest apart
+          vertically and nothing else is drawn. */}
+      <line
+        x1={CX}
+        y1={CY - outer.r}
+        x2={CX}
+        y2={CY - mid.r}
+        className="stroke-accent/70"
+        strokeWidth={1}
+        strokeDasharray="4 4"
+      />
+      <text
+        x={CX + 14}
+        y={CY - mid.r - 14}
+        className="fill-accent font-sans dgm-sm font-medium tracking-[0.1em] uppercase"
+      >
+        Exposure gap
+      </text>
 
       <g>
         <circle cx={5} cy={490} r={5} className="fill-accent" />

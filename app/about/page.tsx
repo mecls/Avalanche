@@ -5,11 +5,16 @@ import { PageHeader } from "@/components/site/page-header";
 import { Thesis } from "@/components/sections/thesis";
 import { TrackRecord } from "@/components/sections/track-record";
 import { CtaButton } from "@/components/ui/button";
-import { Plate } from "@/components/ui/diagram";
+import { Figure, Plate } from "@/components/ui/diagram";
 import {
   AccessLayersDiagram,
   DivergenceDiagram,
 } from "@/components/ui/manifesto-media";
+import {
+  BothSidesDiagram,
+  ThresholdDiagram,
+} from "@/components/ui/market-media";
+import { mandate, bothSides as bothSidesCopy } from "@/content/market-data";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { about } from "@/content/about";
 import { manifesto } from "@/content/manifesto";
@@ -372,6 +377,31 @@ export default function AboutPage() {
             <Plate>
               <AccessLayersDiagram />
             </Plate>
+          </div>
+
+          {/* The two firm diagrams sit here rather than beside "Why
+              Avalanche", because both are answers to THIS section's question.
+              The threshold is where the gap actually bites — everything left
+              of it is where distribution is the binding constraint — and both
+              sides is how the third layer gets reached more than once.
+
+              Neither carries a market figure, so their caption lines are the
+              claim itself rather than a citation. */}
+          <div className="mt-20 grid grid-cols-1 gap-x-8 gap-y-14 lg:grid-cols-2">
+            <Figure
+              claim={mandate.note}
+              source={`${mandate.inside} — ${mandate.threshold}`}
+              size="aspect-[1.35/1] w-full"
+            >
+              <ThresholdDiagram />
+            </Figure>
+            <Figure
+              claim={bothSidesCopy.note}
+              source={bothSidesCopy.buy.detail}
+              size="aspect-[1.35/1] w-full"
+            >
+              <BothSidesDiagram />
+            </Figure>
           </div>
         </div>
       </section>

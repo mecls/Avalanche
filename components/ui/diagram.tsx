@@ -111,11 +111,31 @@ export function Caption({
  * visible when the diagram stopped growing to fill it. At 720px the card is
  * 720x685 and the diagram fills 78% of it.
  */
-export function Plate({ children }: { children: React.ReactNode }) {
+/**
+ * The default sizing: `flex:1 0 0` on the media rows, where the card's aspect
+ * ratio gives the ROW its height and `items-center` centres the text against
+ * it, so copy length cannot move the layout.
+ */
+const PLATE_SIZING =
+  "aspect-[1.05098/1] flex-1 max-[1199px]:w-full max-[1199px]:max-w-[720px] max-[1199px]:flex-none";
+
+/**
+ * `className` REPLACES the sizing and only the sizing — the surface (wash,
+ * grain, `data-band="dark"`, radius) is shared and not overridable, so two
+ * plates on one page cannot end up different materials. `Figure` uses it to
+ * flatten the aspect for its grids.
+ */
+export function Plate({
+  children,
+  className = PLATE_SIZING,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
   return (
     <div
       data-band="dark"
-      className="relative flex aspect-[1.05098/1] flex-1 items-center justify-center overflow-clip rounded-lg max-[1199px]:w-full max-[1199px]:max-w-[720px] max-[1199px]:flex-none"
+      className={`relative flex items-center justify-center overflow-clip rounded-lg ${className}`}
     >
       <div
         aria-hidden
@@ -138,5 +158,45 @@ export function Plate({ children }: { children: React.ReactNode }) {
         {children}
       </div>
     </div>
+  );
+}
+
+/**
+ * A plate with its claim and source beneath it.
+ *
+ * The five market diagrams carry figures, and a figure on this site has to say
+ * where it came from — so the attribution travels with the picture rather than
+ * living in a footnote somewhere else on the page.
+ *
+ * **The claim and source are HTML, not `<text>` in the viewBox.** SVG text is
+ * scaled by the frame, so at three-across it would render around 10px with no
+ * way for a reader to enlarge it; as HTML it is selectable, searchable,
+ * translatable and scales with the reader's own type size. It is also the only
+ * part of these diagrams a screen reader can reach — `Frame` is `aria-hidden`,
+ * which is correct for the picture and would not be for its source.
+ *
+ * `size` overrides the plate's aspect for the grids: the default 1.05098/1 is
+ * near-square, which is right for one plate beside a column of text and too
+ * tall for three in a row.
+ */
+export function Figure({
+  claim,
+  source,
+  size,
+  children,
+}: {
+  claim: string;
+  source: string;
+  size?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <figure className="flex flex-col">
+      <Plate className={size}>{children}</Plate>
+      <figcaption className="mt-5">
+        <p className="text-[15px] leading-6 text-fg">{claim}</p>
+        <p className="mt-2 text-[13px] leading-5 text-fg-faint">{source}</p>
+      </figcaption>
+    </figure>
   );
 }
