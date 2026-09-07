@@ -13,6 +13,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { about } from "@/content/about";
 import { media } from "@/content/copy";
 import { manifesto } from "@/content/manifesto";
+import { teamBlur } from "@/content/team-blur";
 import { team } from "@/content/team";
 
 export const metadata: Metadata = {
@@ -250,6 +251,19 @@ export default function AboutPage() {
                     member can arrive before their picture does, and an empty
                     frame is worse than initials.
 
+                    `placeholder="blur"` is not decoration. These five are the
+                    only images on the page, they sit ~4000px down it, and
+                    next/image lazy-loads by default — so scrolling here before
+                    they decode showed five EMPTY BORDERED FRAMES on the dark
+                    band. The frame's own `bg-ground-alt` is the same #151515
+                    as the band behind it, so "not loaded yet" and "nothing
+                    here" looked identical, and the section read as a blank
+                    slab rather than as loading. The data URIs are generated
+                    from the same crops by the pipeline (content/team-blur.ts,
+                    generated) so they cannot drift from the photos. Guarded
+                    rather than assumed: a portrait added without re-running
+                    the script falls back to `empty` instead of throwing.
+
                     `alt=""` is deliberate. The name is the very next element
                     and is a heading, so alt text here would make a screen
                     reader read every name twice. */}
@@ -260,6 +274,8 @@ export default function AboutPage() {
                       alt=""
                       fill
                       sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                      placeholder={teamBlur[m.photo] ? "blur" : "empty"}
+                      blurDataURL={teamBlur[m.photo]}
                       className="object-cover"
                     />
                   ) : (
