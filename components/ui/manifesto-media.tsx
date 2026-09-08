@@ -219,10 +219,19 @@ export function DivergenceDiagram() {
  * hold a two-line label without either line touching the arcs either side of
  * it, and at this frame's rungs a label is about 40 units tall. A first pass
  * at r 175/122/72 gave the middle band 50 units to hold that, and its second
- * line sat on the ring below. r 200/136/76 opens the two outer bands to ~60
- * and ~64. The reference this was drawn from carries text at about 5% of its
- * outer radius; the rungs here put it nearer 10%, which is the whole reason
- * the rings had to grow rather than the labels shrink.
+ * line sat on the ring below. The reference this was drawn from carries text
+ * at about 5% of its outer radius; the rungs here put it nearer 10%, which is
+ * the whole reason the rings had to grow rather than the labels shrink.
+ *
+ * **THE INNER TWO SHRANK RATHER THAN THE OUTER ONE GROWING** (8 Sep 2026),
+ * because the outer radius has nowhere to go: 200 already spans 45 to 445
+ * against the "Exposure gap" label at 20-37 and the legend at 479-498, so
+ * growing it runs into one or the other. 136/76 left the two label groups
+ * with 5 and 10 units of air — measured off the real bounding boxes, not
+ * estimated — which is what "the text is touching the circumference" looks
+ * like. 126/62 opens the outer band from 64 to 74 units and the middle one
+ * from 60 to 64, and the labels moved up into it: 12-16 units of clearance
+ * on each side of both groups now.
  *
  * The bound: `cy` 245 with `r` 200 spans 45 to 445, clear of the captions at
  * 20 and the legend baseline at 490.
@@ -232,17 +241,17 @@ const RINGS = [
     n: "Layer three",
     label: "The addressable universe",
     r: 200,
-    labelY: 390,
+    labelY: 386,
     outer: true,
   },
   {
     n: "Layer two",
     label: "Extended network",
-    r: 136,
-    labelY: 332,
+    r: 126,
+    labelY: 316,
     outer: false,
   },
-  { n: "Layer one", label: "Your network", r: 76, labelY: 239, outer: false },
+  { n: "Layer one", label: "Your network", r: 62, labelY: 239, outer: false },
 ];
 
 const CX = 310;
@@ -261,12 +270,19 @@ const CY = 245;
  * radius `r` leaves a half-width of `sqrt(r^2 - dy^2)`, and the label's own
  * half-width has to fit inside it. Solving that for these three:
  *
- *   "The addressable universe"  ~80 half   collides below y=429  ->  390/412
- *   "Extended network"          ~65 half   collides below y=365  ->  332/354
- *   "Your network"              ~47 half   collides below y=309  ->  239/261
+ * Solved against the MEASURED bounding boxes at r 200/126/62. Each row is the
+ * label's own half-width, the y at which the arc below it crosses that
+ * half-width, and the resulting ordinal/name baselines:
  *
- * Each also has to clear the ring INSIDE it (381 and 321), which is what sets
- * the upper bound. **Re-solve if a label's wording or a radius changes** —
+ *   "The addressable universe"  83 half   arc at y=427  ->  386/408
+ *   "Extended network"          59 half   arc at y=356  ->  316/338
+ *   "Your network"              43 half   arc at y=290  ->  239/261
+ *
+ * Each also has to clear the ring INSIDE it — the arc above crosses the
+ * ORDINAL's half-width at y=361, y=290 and y=199 respectively — which is what
+ * sets the upper bound. Both bounds are live for the outer two groups: they
+ * sit with roughly 12-16 units of air above and below, and there is no slack
+ * to spend. **Re-solve if a label's wording or a radius changes** —
  * lengthening a label moves its collision point up, and the numbers above stop
  * being true.
  */

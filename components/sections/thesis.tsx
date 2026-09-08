@@ -34,70 +34,44 @@ import { thesis } from "@/content/copy";
  * The empty top-left of an icon-less cell is also what made this block look
  * hollow next to `RaiseTypes`, whose glyph fills exactly that space.
  *
- * **IT IS IMAGE-BACKED**, and it is the second block on /about — a city
- * skyline at dusk, behind the same image/scrim/grain stack the hero and the
- * closing band use. It replaced a frame from a bridge clip, which had the
- * problem of being the same subject as the hero; a different subject keeps the
- * page from showing one photograph twice.
+ * **IT IS FLAT BLACK NOW, AND IT USED TO BE IMAGE-BACKED** (8 Sep 2026, by
+ * request). As the second block on /about it carried a city skyline at dusk
+ * behind the same image/scrim/grain stack the hero and the closing band use.
+ * All three layers went together, because each existed only to make the
+ * photograph legible under the lattice: the scrim ramped to `#151515` and the
+ * grain dithered the scrim. What is left is the `#151515` the ramp was
+ * heading for anyway.
  *
- * The still is built by `scripts/optimize-bg-video.mjs about`. **Read that
- * preset's header before touching this band**: the source is a 269x148
- * thumbnail, supplied and chosen with the trade-off stated, and the scrim
- * below is doing as much work hiding the upscale as it is carrying contrast.
- * A licensed full-resolution original would improve this more than any change
- * here, and is a one-line swap in the preset.
+ * **PUTTING THE PICTURE BACK MEANS PUTTING ALL THREE BACK.** The scrim was
+ * derived twice against two different stills and the numbers moved a long way
+ * between them — against this city frame, whose window highlights reach a
+ * relative luminance of 0.99, `0.92/0.90/0.88` puts the lattice's three
+ * columns at 7.7, 6.7 and 6.5:1, and the flatter ramp `CtaBand` uses does not
+ * work here because the lattice spans the whole shell rather than one left
+ * column. The still itself survives: `docs/assets/about-bg-source.jpeg` and
+ * the `about` preset in `scripts/optimize-bg-video.mjs` still build
+ * `public/video/about-bg.webp`. `git log -S about-bg.webp` has the markup.
  *
- * `data-band="dark"` rather than leaving it unbanded like `CtaBand` does: the
- * lattice below takes `border-line` for its hairlines and the band is what
- * points that token at the translucent-white value. It also paints `ground`
- * underneath, which is the fallback if the image ever 404s.
+ * `data-band="dark"` IS NOW THE ONLY THING PAINTING THIS BAND, which makes it
+ * more load-bearing than it was rather than less. It points `border-line` at
+ * the translucent-white value the lattice below needs for its hairlines, and
+ * it paints `ground` — a job it used to share with the image layer's own
+ * `bg-ground` fallback.
  */
 export function Thesis({ className = "" }: { className?: string } = {}) {
   return (
     <section
       id="thesis"
       data-band="dark"
-      className={`relative isolate overflow-clip py-28 sm:py-32 ${className}`}
+      className={`py-28 sm:py-32 ${className}`}
     >
-      {/* The same three-layer stack the hero and the closing band use — image,
-          scrim, grain — and it needs all three for the same reasons. The grain
-          is not decoration: one long gradient across a wide box bands in an
-          8-bit encode, and dithering it is what lets a scrim stay as light as
-          it can. `bg-ground` under the image is the fallback if it 404s.
-
-          THIS SCRIM IS NEARLY FLAT AND MUCH DARKER THAN THE CLOSING BAND'S,
-          and the reason is what sits on it. `CtaBand` can ramp 0.92 down to
-          0.45 because its type is in a single left column and the right half
-          is deliberately open. Here the lattice spans the full shell, so every
-          column carries 13px text and every column needs the floor.
-
-          **RE-MEASURE IT WHENEVER THE STILL CHANGES.** It has been derived
-          twice against two different photographs and the numbers moved a long
-          way. Against the bridge frame, 0.86 -> 0.55 put the middle column at
-          4.27:1 and 0.90/0.84/0.80 fixed it. The city still that replaced it
-          is far brighter — its window highlights reach a relative luminance of
-          0.99, against the bridge's 0.73 — and those same values scraped
-          4.50:1, exactly the 13px floor and no margin at all. 0.92/0.90/0.88
-          puts the three columns at 7.7, 6.7 and 6.5:1.
-
-          The scrim is also what covers for the upscale: this source is a
-          269x148 thumbnail. Lightening it undoes both jobs at once. */}
-      <div
-        aria-hidden
-        className="absolute inset-0 z-0 bg-ground bg-cover bg-center"
-        style={{ backgroundImage: "url(/video/about-bg.webp)" }}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 z-[1]"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(21,21,21,0.92) 0%, rgba(21,21,21,0.90) 50%, rgba(21,21,21,0.88) 100%)",
-        }}
-      />
-      <div aria-hidden className="grain absolute inset-0 z-[2]" />
-
-      <div className="shell relative z-10">
+      {/* `relative isolate overflow-clip` came off with the picture and should
+          not come back on its own. All three existed to stack and clip the
+          image/scrim/grain layers against this section; with nothing absolute
+          inside it, a stacking context here only makes the band harder to
+          reason about. The inner `shell` lost its `relative z-10` for the same
+          reason — there is nothing left for it to sit above. */}
+      <div className="shell">
         <SectionHeading
           eyebrow={thesis.eyebrow}
           title={thesis.title}

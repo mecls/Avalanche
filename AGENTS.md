@@ -112,29 +112,78 @@ is half right by accident: the serif is gone again, the accent is real.
   may go without an icon (`TrackRecord` and `Thesis` do); `components/ui/
   icons.tsx` is a set of SECTOR marks, so do not force one onto an abstract
   block.
-- **EVERY BLOCK ON `/about` AFTER THE FIRST TWO IS `min-h-svh`** (7 Sep 2026,
-  by request). The header and the thesis keep their natural height; the track
-  record, the team, the divergence, the beliefs and each of the three layer
-  panels are at least one viewport tall with their content centred. It is a
-  FLOOR — the team grid and the beliefs list were already taller and did not
-  move. `svh`, not `dvh` (remeasures as a phone's URL bar hides, relaying out
-  mid-scroll) and not `vh` (the LARGE viewport on iOS, so the last line starts
-  under the browser chrome). The rule is one `FULL_SCREEN` const in
-  `app/about/page.tsx` so the call sites cannot drift.
-- **THE THREE ACCESS LAYERS ARE THREE FULL SCREENS, NOT A `<dl>`.** They were
-  a ruled three-row list beside one static plate until 7 Sep 2026. Each panel
-  now tiles the viewport exactly, so scrolling one screen lands the next
-  layer's text and picture where the last one's were — that is the whole point
-  of the layout and it is why the panels must stay the same height as each
-  other. The plate's fixed aspect ratio is what guarantees that; copy length
-  cannot move a row it does not size. `AccessLayersDiagram` takes a `focus`
-  prop and is drawn three times, and **`focus` is derived from the layer's own
-  `n`** rather than typed a second time. The accent deliberately does NOT move
-  with the focus — see the note on the component.
+- **EVERY BLOCK ON `/about` IS `min-h-svh` EXCEPT THE FIRST AND THE LAST**
+  (7 Sep 2026, by request). The thesis, the divergence, the beliefs and the
+  team take the floor. The track record was on that list until it came off
+  the page on 8 Sep 2026; the layer sequence never was, because its runway is
+  400svh and a one-screen floor would do nothing to it.
+  The **page header** does not — a label, a two-line H1, a lede and a button
+  with a screen of white round them read as an empty page. The **closing CTA
+  band** does not either, and that one is not a taste call: it is the same
+  component on all five routes and has to read the same size on all five, so
+  do not pass it a height from one page. It is a FLOOR — the team grid and
+  the beliefs list were already taller and did not move. `svh`, not `dvh`
+  (remeasures as a phone's URL bar hides, relaying out mid-scroll) and not
+  `vh` (the LARGE viewport on iOS, so the last line starts under the browser
+  chrome). One `FULL_SCREEN` const in `app/about/page.tsx`, so the call sites
+  cannot drift; if the header ever takes it, it needs
+  `calc(100svh - var(--header-h))` instead, because `main` reserves the nav's
+  height as padding above it.
+- **THE THREE ACCESS LAYERS ARE THREE SLIDES IN ONE PINNED STAGE.** They were
+  a ruled three-row list beside one static plate until 7 Sep 2026, then three
+  full-screen panels in flow, and both had the same fault: the next layer's
+  picture arrived a screen BELOW the last one, so the reader travelled to it
+  rather than watching it replace what was there. Now a 400svh runway holds
+  one `sticky` stage with the three slides stacked absolutely inside it, and
+  only opacity changes. `.layer-seq` / `.layer-stage` / `.layer-slide` /
+  `.layer-col` in `globals.css`; no client component.
+  - **`--layer-h` IS THE ONE NUMBER THE WHOLE BLOCK IS TUNED AROUND**, and it
+    is a MEASUREMENT, not a taste call: the tallest of the three text
+    columns, 677px, set by panel 02's four "Why This Segment" reasons. It is
+    the stage's height AND the column floor, so re-measure after any copy
+    change in `layers` — set it to 0, read the three columns, take the
+    largest. Too small and panel 02 spills out of the stage; too large and
+    all three carry dead space. It drops to 649px under `max-height: 800px`,
+    which is the PLATE's own ceiling and therefore the floor of the floor —
+    read the comment there before lowering it further.
+  - **The stage is sized to the PANEL and pushed down with `top`, not sized
+    to the screen.** `top: 0; height: 100svh` put half the leftover viewport
+    INSIDE the stage above the picture — invisible once pinned, and a ~190px
+    hole under the section heading before it pinned, which is the state a
+    reader arrives in. The current form puts the identical composition on
+    screen when pinned and no gap under the heading.
+  - **The column floor lives in CSS, not on the element**, because it must
+    apply only where the stage does. In the fallback — under 1200px, without
+    scroll-driven animations, or under reduced motion — the slides are in
+    flow, nothing needs aligning, and a floor is ~380px of dead space under
+    panels 01 and 03.
+- **THE THREE PANELS TAKE THREE DIFFERENT PICTURES, keyed on the layer's
+  ordinal** in `LAYER_MEDIA` — the same reason /solutions keys `MEDIA` on a
+  block id. One diagram drawn three times with a different ring emphasised
+  was tried first and read as a repeat; a `focus` prop on
+  `AccessLayersDiagram` went with it. **Two of the three are still not
+  pictures of their layer** — the threshold is about which issuers sit inside
+  the segment, both sides about counterparties returning. They used to hang a
+  `Figure` claim line under the plate to say so; since 8 Sep 2026 they carry
+  SUPPLIED COPY OF THEIR OWN in the text column instead — `aside` in
+  `content/manifesto.ts`, where panel 01's paragraph names the mandate the
+  threshold diagram draws and panel 02's fourth reason is the both-sides
+  flow — and the captions came off with it. **Do not put a caption back
+  beside an aside**: `mandate.note` restates panel 01's paragraph and
+  `bothSides.buy.detail` is a legend the diagram already draws inside itself,
+  so running both states one claim twice on one screen. All three panels are
+  bare `Plate`s now and `LAYER_MEDIA` is a diagram per ordinal, nothing else.
+  Still do not retitle a layer to fit the picture beside it; that makes a
+  picture claim something it does not show, which is the trap the asides were
+  written to avoid.
 - **`/about` IS `/team` AND `/manifesto` MERGED** (7 Sep 2026, by request).
-  One route: the thesis, then the three manifesto sections, then the portraits
-  and the press. Both old paths 307 to it in `next.config.ts` — `/manifesto` to
-  `#manifesto`, the id on the divergence section. Three things this changed
+  One route: the thesis, then the three manifesto sections, then the
+  portraits. **The team is the LAST block before the closing band** — it sat
+  third until 8 Sep 2026, where the reader met five faces before being told
+  what the firm believes. `CtaBand` still ends the page; the team moved to
+  the end of the ARGUMENT, not past the site's ending. Both old paths 307 to
+  it in `next.config.ts` — `/manifesto` to `#manifesto`, the id on the
+  divergence section. Three things this changed
   that are easy to undo by accident. **The page opens LIGHT and `/team` did
   not**, so the two `main > :first-child[data-band="light"]` rules in
   `globals.css` now apply to it — keep the header section first and banded, or
@@ -263,10 +312,14 @@ it, including why the reduced-motion guard has to say
 `animation: none` rather than rely on the global duration override.
 
 **`/about`'s layer sequence adds none either, for the same reason.** The three
-access layers are three full-screen panels that fade one into the next on
-scroll — `.layer-panel` / `.layer-panel-in` in `globals.css`, `view-timeline`
-again, no JS. `/about` has exactly one client component and it is
-`TrackRecord`'s count-up.
+access layers are three slides stacked in one `sticky` stage, crossfading in
+place as a 400svh runway scrolls past — `.layer-seq` / `.layer-stage` /
+`.layer-slide` in `globals.css`, `view-timeline` again, no JS.
+
+**`/about` NOW HAS NO CLIENT COMPONENTS AT ALL.** Its only one was
+`TrackRecord`'s count-up, and the track record came off the page on
+8 Sep 2026 by request. The page is server-rendered end to end, and the layer
+sequence is what would break that first — keep it CSS.
 
 **This is why the Fundraising/Secondaries views are TWO ROUTES and not a tab.**
 A stateful tab would have made the whole of `/solutions` a client component and
@@ -373,6 +426,21 @@ untabbable while closed and focus can only reach them through the trigger.
   marks, and `customers.logoNote` states they are past engagements. Calling
   past clients investors or partners would be a claim the site cannot support.
   Same shape, accurate words — see `hero.stripLabel`.
+- **THE THESIS IS NOT IMAGE-BACKED ANY MORE** (8 Sep 2026, by request). The
+  second block on `/about` carried a city skyline behind the same
+  image/scrim/grain stack the hero and the closing band use; all three layers
+  came off together, because the scrim existed only to make the photograph
+  legible under the lattice and the grain only to dither the scrim. The band
+  is the flat `#151515` the scrim was ramping to anyway, painted by
+  `data-band="dark"` alone — which is now the ONLY thing painting it, and also
+  what points `border-line` at the value the lattice needs. **Put the picture
+  back and all three go back**: the scrim was measured against that specific
+  still and `CtaBand`'s flatter left-weighted ramp does not transfer, because
+  the lattice spans the whole shell rather than one column. The asset and its
+  preset survive (`scripts/optimize-bg-video.mjs about`), so it is a revert,
+  not a rebuild. This also means the light header now cuts straight into a
+  dark band with nothing softening it — see the note in `app/about/page.tsx`
+  for why that is the wanted state and not a regression.
 - **The closing CTA band is image-backed, not video-backed.** It uses the hero
   POSTER: the block sits at the bottom of a long page, so a second autoplaying
   video would decode continuously for something most readers never reach, and

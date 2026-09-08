@@ -3,9 +3,8 @@ import Image from "next/image";
 import { CtaBand } from "@/components/site/cta-band";
 import { PageHeader } from "@/components/site/page-header";
 import { Thesis } from "@/components/sections/thesis";
-import { TrackRecord } from "@/components/sections/track-record";
 import { CtaButton } from "@/components/ui/button";
-import { Figure, Plate } from "@/components/ui/diagram";
+import { Plate } from "@/components/ui/diagram";
 import {
   AccessLayersDiagram,
   DivergenceDiagram,
@@ -14,7 +13,6 @@ import {
   BothSidesDiagram,
   ThresholdDiagram,
 } from "@/components/ui/market-media";
-import { mandate, bothSides as bothSidesCopy } from "@/content/market-data";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { about } from "@/content/about";
 import { manifesto } from "@/content/manifesto";
@@ -37,11 +35,24 @@ export const metadata: Metadata = {
  * footer's Overview column lost its separate Manifesto link because there is
  * no separate page left to link to.
  *
- * THE ORDER IS THE ARGUMENT. What the firm does (the thesis) -> what it has
- * done (the metrics) -> the market that makes it necessary (the divergence) -> what follows from that (five
+ * THE ORDER IS THE ARGUMENT. What the firm does (the thesis) -> the market
+ * that makes it necessary (the divergence) -> what follows from that (five
  * beliefs) -> where the gap actually sits (three layers) -> who does the work
  * (team). The manifesto sits in the MIDDLE deliberately: a reader who came
- * for the team scrolls through the argument to reach them.
+ * for the team scrolls through the argument to reach them — and since
+ * 8 Sep 2026 the team really is last, which is where this sentence had it all
+ * along while the markup had it third.
+ *
+ * **THE TRACK RECORD CAME OFF ON 8 Sep 2026**, by request. It was the metrics
+ * bento between the thesis and the team, and it was this page's only proof
+ * surface: /about argues from position alone again, carrying no figures and
+ * no client marks anywhere. The block is not deleted, only unmounted here —
+ * `TrackRecord` still renders on the homepage (`grid`) and on /customers
+ * (`rows`), so the four figures are untouched and still the most load-bearing
+ * claims on the site. It was also the page's only CLIENT component, so
+ * /about is server-rendered end to end again; see "Client components" in
+ * AGENTS.md, and note that the layer sequence below is scroll-linked CSS
+ * precisely so it stays that way.
  *
  * **"In the press" was removed on 7 Sep 2026.** Three cards of drafted quotes
  * on a white band, separated only by a hairline, with the outlet set as an
@@ -51,17 +62,25 @@ export const metadata: Metadata = {
  * anywhere in the repo. `media` is kept but unrendered in content/copy.ts,
  * like the other unmounted copy here.
  *
- * BAND SEQUENCE: light header, light thesis (separated by a rule, the way
- * `RaiseTypes` separates itself on the homepage), dark metrics, light
- * divergence, dark beliefs, light layers, dark team, then the photo-backed
- * closing band. The header and the thesis are the only adjacent pair sharing
- * a band, which is why `Thesis` carries the page's one `border-t`.
+ * BAND SEQUENCE: light header, dark thesis, light divergence, dark beliefs,
+ * light layers, dark team, then the photo-backed closing band. EVERY
+ * ADJACENT PAIR ALTERNATES, and that is why no section on this page carries a
+ * rule between itself and its neighbour — the band change IS the separator.
+ * Dropping the track record and moving the team to the end both had to
+ * preserve it, and did. Re-check it before adding, removing or reordering a
+ * block: two same-band sections in a row read as one very long section, and
+ * the page has no hairline to fall back on.
  *
- * That opening pair is deliberate. The page ran light header straight into a
- * dark thesis until 7 Sep 2026, and the cut read as abrupt because nothing
- * visual sat in the header to prepare it — 420px of white with a lone button
- * in the right half. The header carries a dark inset now and the dark band is
- * one section further down.
+ * The light header running straight into the dark thesis is the one cut that
+ * has been argued over, and it is bare again on purpose. It read as abrupt on
+ * 7 Sep 2026 because nothing visual sat in the header to prepare it — 420px
+ * of white with a lone button in the right half — and two things were tried
+ * against it: a dark inset plate in the header (`git show 44846ba`), then an
+ * image-backed thesis that softened the seam with a photograph. The inset
+ * lost to CENTRING the header, which removes the empty right half rather
+ * than filling it, and the picture came off the thesis on 8 Sep 2026 by
+ * request. Both fixes are gone and the complaint went with them: a centred
+ * header has no hanging right half for the cut to interrupt.
  *
  * The team grid is `data-band="dark"`, which paints the same `#151515` the
  * section used to inherit from `<body>` back when this was /team and the page
@@ -102,49 +121,49 @@ export const metadata: Metadata = {
  * a sequence, and the two firm diagrams were sitting in a grid at the bottom
  * of the section doing nothing — so they moved up here.
  *
- * **THE FIRST TWO ARE NOT PICTURES OF THEIR LAYER, AND THEY SAY SO.** The
- * threshold is about which issuers sit inside the segment; both sides is
- * about the same counterparties coming back. Each therefore keeps its own
- * claim line under it, which is what stops the pairing from reading as a
- * caption for the copy beside it. The rings ARE layer three — its accent band
- * is that layer and the exposure-gap callout is that layer's claim — so it
- * carries no caption: the copy beside it already is one.
+ * **THE FIRST TWO ARE STILL NOT PICTURES OF THEIR LAYER.** The threshold is
+ * about which issuers sit inside the segment; both sides is about the same
+ * counterparties coming back. What changed on 8 Sep 2026 is that both now
+ * have COPY OF THEIR OWN on the panel — supplied, not drafted — so the
+ * mismatch is stated in words instead of papered over. Panel 01's paragraph
+ * names the mandate the threshold diagram draws; panel 02's fourth reason is
+ * the both-sides flow. See `aside` in `content/manifesto.ts`.
  *
- * That asymmetry is the honest state of this section, not an oversight. If a
- * picture is ever drawn FOR layer one or layer two, it takes the caption off
- * with it. Until then, do not retitle these two to fit the layer they sit
- * beside — that would make a picture claim something it does not show.
+ * **THE `Figure` CAPTIONS WENT WITH THAT, AND MUST NOT COME BACK ALONGSIDE
+ * IT.** Panels 01 and 02 used to hang a claim + source line under the plate,
+ * for exactly one reason: the pictures had no words. They do now, and the
+ * captions said the same thing — `mandate.note` restates the paragraph, and
+ * `bothSides.buy.detail` is a legend the diagram already draws inside itself.
+ * Running both puts one claim on a screen twice. So all three panels are
+ * bare `Plate`s and this map is a diagram per ordinal, nothing else.
+ *
+ * Still do not retitle a layer to fit the picture beside it — that would make
+ * a picture claim something it does not show, which is the trap the asides
+ * were written to avoid.
  */
-const LAYER_MEDIA: Record<
-  string,
-  { Diagram: () => React.ReactElement; claim?: string; source?: string }
-> = {
-  "01": {
-    Diagram: ThresholdDiagram,
-    claim: mandate.note,
-    source: `${mandate.inside} — ${mandate.threshold}`,
-  },
-  "02": {
-    Diagram: BothSidesDiagram,
-    claim: bothSidesCopy.note,
-    source: bothSidesCopy.buy.detail,
-  },
-  "03": { Diagram: AccessLayersDiagram },
+const LAYER_MEDIA: Record<string, () => React.ReactElement> = {
+  "01": ThresholdDiagram,
+  "02": BothSidesDiagram,
+  "03": AccessLayersDiagram,
 };
 
 /**
- * EVERY BLOCK ON THIS PAGE FILLS THE SCREEN EXCEPT THE PAGE HEADER, by
- * request on 7 Sep 2026 — the thesis, the track record, the team, the
- * divergence, the beliefs, the layer heading, each of the three layer panels
- * and the closing band. The page is read a screen at a time from there down.
+ * EVERY BLOCK ON THIS PAGE FILLS THE SCREEN EXCEPT THE FIRST AND THE LAST,
+ * by request on 7 Sep 2026 — the thesis, the divergence, the beliefs and the
+ * team take the floor; the page header and the closing CTA band do not. The
+ * track record was on that list until it came off the page on 8 Sep 2026, and
+ * the layer sequence has never needed it: its runway is 400svh, four screens
+ * on its own, so a one-screen floor would do nothing there.
  *
- * The exemption list took three passes to settle and the header is the whole
- * of it. It went in as "everything after the first two", which left the
- * thesis band ending mid-screen with white above and below — exactly what a
- * band that does not fill looks like when its neighbours do. Everything got
- * the floor; the header alone came back off it. It is a label, a two-line
- * H1, a lede and a button, and a screen of white around them reads as an
- * empty page rather than as a composition.
+ * The exemption list took several passes to settle, and both exemptions are
+ * there for a stated reason. It went in as "everything after the first two",
+ * which left the thesis band ending mid-screen with white above and below —
+ * exactly what a band that does not fill looks like when its neighbours do.
+ * Everything got the floor, and then two things came back off it: the header,
+ * because it is a label, a two-line H1, a lede and a button, and a screen of
+ * white around them reads as an empty page rather than as a composition; and
+ * the closing band, because it is shared with four other routes and has to
+ * read the same size on all five.
  *
  * It is a FLOOR, not a height. The team grid, the beliefs list and the layer
  * sequence are all taller than a viewport on their own and this changes
@@ -196,26 +215,289 @@ export default function AboutPage() {
 
       <Thesis className={FULL_SCREEN} />
 
-      {/* THE PAGE'S ONLY PROOF SURFACE. /about argued entirely from position
-          and carried no figures and no client marks anywhere, where the
-          homepage opens on this bento plus a logo strip and /customers is
-          wall-to-wall client marks. This is the homepage's own component and
-          content, not a second copy of the numbers.
+      {/* `id="manifesto"` is what the old route redirects to — /manifesto 307s
+          to /about#manifesto, so a reader following an existing link lands on
+          the manifesto rather than at the top of a page twice as long as the
+          one they asked for. The anchor is on the divergence because that is
+          where the manifesto starts; the thesis above it is the other half of
+          the merge. `scroll-mt` is breathing room only — the nav is absolute
+          and scrolls away, so nothing overlaps the target. */}
+      <section
+        id="manifesto"
+        data-band="light"
+        className={`section-y scroll-mt-24 ${FULL_SCREEN}`}
+      >
+        <div className="shell">
+          <div className="flex w-full flex-row items-center justify-center gap-9 max-[1199px]:flex-col">
+            <div className="flex flex-1 flex-col items-start gap-6 max-[1199px]:w-full max-[1199px]:flex-none">
+              <SectionHeading
+                eyebrow={divergence.eyebrow}
+                title={divergence.title}
+              />
 
-          `band="dark"` is REQUIRED here and the homepage passes nothing. Its
-          `grid` variant renders an unbanded section, which is correct on a
-          dark-first page because it inherits the <body> ground — but /about
-          opens light, so `main` is painted with --color-paper and an unbanded
-          section would put white figures on a white ground.
+              <div className="flex max-w-[680px] flex-col gap-5">
+                {divergence.body.map((p) => (
+                  <p key={p} className="text-[16px] leading-6 text-fg-muted">
+                    {p}
+                  </p>
+                ))}
+                <p className="text-[16px] leading-6 text-fg">
+                  {divergence.note}
+                </p>
+              </div>
+            </div>
 
-          It is also the page's first client component. /about had none until
-          now; the count-up is the whole point of the block, so it comes with
-          one. See "Client components" in AGENTS.md. */}
-      <TrackRecord
-        band="light"
-        className={`border-t border-line-soft ${FULL_SCREEN}`}
-      />
+            <Plate>
+              <DivergenceDiagram />
+            </Plate>
+          </div>
+        </div>
+      </section>
 
+      <section data-band="dark" className={`section-y ${FULL_SCREEN}`}>
+        <div className="shell">
+          <SectionHeading
+            eyebrow={beliefs.eyebrow}
+            title={beliefs.title}
+            lede={beliefs.lede}
+          />
+
+          {/* The same ruled <dl> WhoWeServe uses on the homepage: ordinal and
+              statement left, argument right, hairline between. A <dl> may only
+              contain <dt>/<dd> (optionally wrapped in a <div>), so the index
+              lives inside the <dt> rather than beside it. */}
+          <dl className="mt-16 divide-y divide-line border-y border-line">
+            {beliefs.items.map((b, i) => (
+              <div
+                key={b.title}
+                className="grid gap-4 py-9 md:grid-cols-[1fr_1.4fr] md:items-baseline md:gap-10"
+              >
+                <dt className="flex items-baseline gap-5">
+                  <span className="eyebrow shrink-0">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="display text-2xl md:text-[1.75rem]">
+                    {b.title}
+                  </span>
+                </dt>
+                <dd className="text-sm leading-relaxed text-fg-muted">
+                  {b.body}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
+      {/* THE THREE LAYERS ARE THREE SLIDES IN ONE PINNED STAGE, each
+          REPLACING the last where it stands, by request on 7-8 Sep 2026.
+          They were a ruled <dl> of three rows beside a single plate — the
+          whole argument in one row, with the picture doing nothing while the
+          reader worked down the list.
+
+          The stage is `sticky` inside a 400svh runway and the three slides
+          are stacked absolutely inside it, so nothing about the layout moves
+          on scroll: only opacity does. That is the difference between one
+          block substituting another and a reader travelling down to the next
+          one, and it is the whole reason this is not three sections in flow —
+          which it was for a build, and which put every incoming picture a
+          screen below the outgoing one no matter how the two were faded.
+
+          The mechanism is `.layer-seq` / `.layer-stage` / `.layer-slide` in
+          globals.css — scroll-linked CSS, NO client component, the same rule
+          /solutions lives under. Below 1200px, without scroll-driven
+          animations, and under reduced motion there is no stage and no
+          runway: the slides stack down the page and all three are visible,
+          which is the finished state rather than a degraded one.
+
+          Three DIFFERENT pictures, one per slide, keyed on the layer's own
+          ordinal — see `LAYER_MEDIA` for which, and for why two of them keep
+          their own caption and the third does not.
+
+          Text FIRST in the document with `flex-row-reverse` putting it on the
+          right: image left, text right on a wide screen, and a phone still
+          reads the claim before the picture. */}
+      <section data-band="light" className="section-y">
+        <div className="shell">
+          <SectionHeading
+            eyebrow={layers.eyebrow}
+            title={layers.title}
+            lede={layers.lede}
+          />
+
+          {/* THE RUNWAY. It has no content of its own: it is 400svh of
+              scroll for the stage below to be pinned against, and it carries
+              the view timeline all three slides read. Its height and the
+              percentages in globals.css are one calculation — change either
+              and change both. Below 1200px it collapses to nothing and the
+              slides simply stack. */}
+          <div className="layer-seq mt-10">
+            {/* An <ol> because the layers are numbered and the order is the
+                argument — the first two are exhausted before the third is
+                reached. */}
+            <ol className="layer-stage flex list-none flex-col gap-20">
+              {layers.items.map((l, i) => {
+                const last = i === layers.items.length - 1;
+                const Diagram = LAYER_MEDIA[l.n];
+
+                // Each slide is one absolutely-positioned layer of the pinned
+                // stage, so all three occupy the SAME box and only opacity
+                // separates them — see globals.css. The ordinal in the class
+                // name is what picks the slide's window on the shared
+                // timeline; a fourth layer needs a fourth keyframe set and the
+                // windows re-derived, which is why they are not generated.
+                //
+                // Two arrangements were tried and discarded before this one.
+                // Three full-screen panels in flow put the next picture a
+                // screen below the last, so the reader travelled to it rather
+                // than watching it replace what was there. Giving the section
+                // heading its own screen made that worse, not better: it moved
+                // the first picture a whole screen away from the words
+                // introducing it.
+                return (
+                  <li
+                    key={l.n}
+                    className={`layer-slide layer-slide-${i + 1} w-full`}
+                  >
+                    <div className="flex w-full flex-row-reverse items-center justify-center gap-9 max-[1199px]:flex-col">
+                      {/* THE FLOOR THAT ALIGNS THE THREE TEXT BLOCKS IS
+                        `.layer-col`, AND IT LIVES IN globals.css. It used to
+                        be `min-h-[300px]` here, which stopped being right on
+                        8 Sep 2026 when panel 02 took four reasons and grew to
+                        695px on its own. Two things forced the move:
+
+                        The value is DERIVED from the tallest panel and has to
+                        be re-measured whenever this copy changes — see the
+                        rule for the measurements and the budget it has to
+                        stay inside.
+
+                        And it must apply ONLY where the pinned stage does.
+                        `items-center` centres each column against the plate,
+                        so a column's own height decides where its first line
+                        lands; a floor above the tallest makes all three the
+                        same box and every panel's ordinal starts on the same
+                        line. In the fallback — under 1200px, without
+                        scroll-driven animations, or under reduced motion —
+                        the panels are in FLOW, one under the next, and there
+                        is nothing to align. A floor there is just ~350px of
+                        dead space under panels 01 and 03, which is why a
+                        Tailwind literal could not do this job any more. */}
+                      <div className="layer-col flex flex-1 flex-col items-start gap-6 max-[1199px]:w-full max-[1199px]:flex-none">
+                        <p className="page-label text-fg-faint">{l.n}</p>
+
+                        <h3 className="display text-[28px] md:text-[36px]">
+                          {l.title}
+                        </h3>
+
+                        <p className="max-w-[560px] text-[16px] leading-6 text-fg-muted">
+                          {l.body}
+                        </p>
+
+                        {/* THE PANEL'S PICTURE COPY — see `aside` in
+                            content/manifesto.ts for why it exists and why it
+                            is not a caption. `text-fg` rather than the body's
+                            `text-fg-muted`: it is a claim, not supporting
+                            detail, and it takes the weight the caption under
+                            the plate used to carry. */}
+                        {l.aside?.note && (
+                          <p className="max-w-[560px] text-[16px] leading-6 text-fg">
+                            {l.aside.note}
+                          </p>
+                        )}
+
+                        {/* The four reasons, as the ruled <dl> the beliefs
+                            list and `WhoWeServe` use — NOT a card grid, and
+                            not the two-column split those two take at `md`.
+                            This column is half the row, so a second column
+                            here would set four-word lines.
+
+                            IT IS THE TALLEST THING IN THE SEQUENCE, which is
+                            what sets the `min-h` on the column above: all
+                            three panels have to be the same box or their
+                            ordinals land at different heights. Measure it
+                            again if this copy grows. */}
+                        {l.aside?.reasons && (
+                          <div className="w-full max-w-[560px]">
+                            <p className="page-label text-fg">
+                              {l.aside.title}
+                            </p>
+
+                            <dl className="layer-reasons mt-3.5 divide-y divide-line border-y border-line">
+                              {l.aside.reasons.map((r) => (
+                                <div key={r.n} className="py-3">
+                                  <dt className="flex items-baseline gap-4">
+                                    <span className="page-label shrink-0 text-fg-faint">
+                                      {r.n}
+                                    </span>
+                                    <span className="text-[15px] leading-snug font-medium">
+                                      {r.title}
+                                    </span>
+                                  </dt>
+
+                                  {/* No hanging indent under the ordinal. The
+                                      column is too narrow to give up 38px of
+                                      measure, and the rule between rows is
+                                      already doing the grouping. */}
+                                  <dd className="mt-1.5 text-[13px] leading-5 text-fg-muted">
+                                    {r.body}
+                                  </dd>
+                                </div>
+                              ))}
+                            </dl>
+                          </div>
+                        )}
+
+                        {last && (
+                          <>
+                            <p className="max-w-[560px] text-[16px] leading-6 text-fg">
+                              {layers.note}
+                            </p>
+
+                            {/* Solid rather than ghost: the ghost variant is a
+                              1%-white fill with no border — legible over the
+                              hero footage and over a dark band, all but
+                              invisible on a white one. */}
+                            <CtaButton href="/solutions/fundraising">
+                              {layers.cta}
+                            </CtaButton>
+                          </>
+                        )}
+                      </div>
+
+                      {/* Bare on all three panels since 8 Sep 2026 — the
+                        captions came off when the copy that replaced them
+                        landed in the text column. See `LAYER_MEDIA`. */}
+                      {Diagram && (
+                        <Plate>
+                          <Diagram />
+                        </Plate>
+                      )}
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      {/* THE TEAM CLOSES THE PAGE, by request on 8 Sep 2026. It sat THIRD
+          until then, between the track record and the divergence, and the
+          argument read straight past it: five faces arrived before the reader
+          had been told what the firm believes or where the gap sits. Last is
+          where the file comment at the top of this page always said it
+          belonged — "who does the work" is the end of that sequence, and it
+          only now matches the markup.
+
+          IT IS THE LAST BLOCK BEFORE THE CLOSING BAND, not before the footer.
+          `CtaBand` still ends the page, because it ends all five routes and
+          the site's ending is not this page's to change.
+
+          It also keeps the band alternation intact, which is the thing to
+          re-check after any move here: light header, dark thesis, light
+          divergence, dark beliefs, light layers, DARK TEAM. The layers
+          section above it is light, so this block staying `dark` is what
+          stops the two from merging into one very long section. */}
       <section data-band="dark" className={`section-y ${FULL_SCREEN}`}>
         <div className="shell">
           <SectionHeading
@@ -350,210 +632,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* `id="manifesto"` is what the old route redirects to — /manifesto 307s
-          to /about#manifesto, so a reader following an existing link lands on
-          the manifesto rather than at the top of a page twice as long as the
-          one they asked for. The anchor is on the divergence because that is
-          where the manifesto starts; the thesis above it is the other half of
-          the merge. `scroll-mt` is breathing room only — the nav is absolute
-          and scrolls away, so nothing overlaps the target. */}
-      <section
-        id="manifesto"
-        data-band="light"
-        className={`section-y scroll-mt-24 ${FULL_SCREEN}`}
-      >
-        <div className="shell">
-          <div className="flex w-full flex-row items-center justify-center gap-9 max-[1199px]:flex-col">
-            <div className="flex flex-1 flex-col items-start gap-6 max-[1199px]:w-full max-[1199px]:flex-none">
-              <SectionHeading
-                eyebrow={divergence.eyebrow}
-                title={divergence.title}
-              />
-
-              <div className="flex max-w-[680px] flex-col gap-5">
-                {divergence.body.map((p) => (
-                  <p key={p} className="text-[16px] leading-6 text-fg-muted">
-                    {p}
-                  </p>
-                ))}
-                <p className="text-[16px] leading-6 text-fg">
-                  {divergence.note}
-                </p>
-              </div>
-            </div>
-
-            <Plate>
-              <DivergenceDiagram />
-            </Plate>
-          </div>
-        </div>
-      </section>
-
-      <section data-band="dark" className={`section-y ${FULL_SCREEN}`}>
-        <div className="shell">
-          <SectionHeading
-            eyebrow={beliefs.eyebrow}
-            title={beliefs.title}
-            lede={beliefs.lede}
-          />
-
-          {/* The same ruled <dl> WhoWeServe uses on the homepage: ordinal and
-              statement left, argument right, hairline between. A <dl> may only
-              contain <dt>/<dd> (optionally wrapped in a <div>), so the index
-              lives inside the <dt> rather than beside it. */}
-          <dl className="mt-16 divide-y divide-line border-y border-line">
-            {beliefs.items.map((b, i) => (
-              <div
-                key={b.title}
-                className="grid gap-4 py-9 md:grid-cols-[1fr_1.4fr] md:items-baseline md:gap-10"
-              >
-                <dt className="flex items-baseline gap-5">
-                  <span className="eyebrow shrink-0">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span className="display text-2xl md:text-[1.75rem]">
-                    {b.title}
-                  </span>
-                </dt>
-                <dd className="text-sm leading-relaxed text-fg-muted">
-                  {b.body}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </section>
-
-      {/* THE THREE LAYERS ARE THREE FULL SCREENS, one read at a time, by
-          request on 7 Sep 2026. They were a ruled <dl> of three rows beside a
-          single plate — the whole argument in one row, with the picture doing
-          nothing while the reader worked down the list.
-
-          Each panel is `min-h-svh` with its content centred, so the panels
-          TILE the viewport: scroll exactly one screen and the next layer's
-          text lands where the last one's was, and so does its picture. That
-          is the property the request turns on, and it is why the panels must
-          stay the same height as each other — the plate's fixed aspect ratio
-          is what guarantees it, since copy length cannot move a row it does
-          not size. `svh` rather than `dvh`: a panel measured against the
-          shrinking viewport would relayout under a phone's disappearing URL
-          bar, mid-scroll, on every panel.
-
-          The crossfade between them is `.layer-panel` / `.layer-panel-in` in
-          globals.css — scroll-linked CSS, NO client component, the same rule
-          /solutions lives under. The un-animated state is all three visible,
-          so a browser without scroll-driven animations reads three ordinary
-          full-height panels.
-
-          Three DIFFERENT pictures, one per panel, keyed on the layer's own
-          ordinal — see `LAYER_MEDIA` for which, and for why two of them keep
-          their own caption and the third does not.
-
-          Text FIRST in the document with `flex-row-reverse` putting it on the
-          right: image left, text right on a wide screen, and a phone still
-          reads the claim before the picture. */}
-      <section data-band="light" className="section-y">
-        <div className="shell">
-          <SectionHeading
-            eyebrow={layers.eyebrow}
-            title={layers.title}
-            lede={layers.lede}
-          />
-
-          {/* An <ol> because the layers are numbered and the order is the
-              argument — the first two are exhausted before the third is
-              reached. */}
-          <ol className="mt-10 flex list-none flex-col">
-            {layers.items.map((l, i) => {
-              const last = i === layers.items.length - 1;
-              const media = LAYER_MEDIA[l.n];
-
-              // TOP-ALIGNED, NOT CENTRED, and that is what puts the first
-              // picture directly under the section heading. A panel is a
-              // full screen holding ~650px of content, so centring it parked
-              // 170px of white above every panel — under the heading that
-              // read as the heading having been abandoned, and it could not
-              // be tuned away for the first panel alone without moving its
-              // picture out of line with the other two. Top-aligning spends
-              // the same white at the BOTTOM of each panel, where the next
-              // one is already fading in, and every panel keeps the
-              // identical top offset that makes the three pictures land in
-              // the same place.
-              //
-              // A heading on its own screen was tried in between and was
-              // worse: it moved the picture a whole screen away from the
-              // words introducing it.
-              return (
-                <li
-                  key={l.n}
-                  className="layer-panel flex min-h-svh flex-col justify-start pb-16"
-                >
-                  <div className="layer-panel-in flex w-full flex-row-reverse items-center justify-center gap-9 max-[1199px]:flex-col">
-                    {/* THE 300px FLOOR IS WHAT ALIGNS THE THREE TEXT BLOCKS,
-                        and it is the second half of the caption trick above.
-                        `items-center` centres each column against the plate,
-                        so a column's own height decides where its first line
-                        lands: measured 151 / 175 / 294 here, which put "01",
-                        "02" and "03" at three different heights — 72px apart
-                        between the first panel and the last. A floor above
-                        the tallest makes all three columns the same box, so
-                        every panel's ordinal, heading and body start on the
-                        same line as the last one's. Raise it if the copy ever
-                        grows past it; below that the panels drift apart
-                        again. Off below 1199px, where the column sits above
-                        the plate rather than beside it and the floor would
-                        only add dead space. */}
-                    <div className="flex min-h-[300px] flex-1 flex-col items-start gap-6 max-[1199px]:w-full max-[1199px]:min-h-0 max-[1199px]:flex-none">
-                      <p className="page-label text-fg-faint">{l.n}</p>
-
-                      <h3 className="display text-[28px] md:text-[36px]">
-                        {l.title}
-                      </h3>
-
-                      <p className="max-w-[560px] text-[16px] leading-6 text-fg-muted">
-                        {l.body}
-                      </p>
-
-                      {last && (
-                        <>
-                          <p className="max-w-[560px] text-[16px] leading-6 text-fg">
-                            {layers.note}
-                          </p>
-
-                          {/* Solid rather than ghost: the ghost variant is a
-                              1%-white fill with no border — legible over the
-                              hero footage and over a dark band, all but
-                              invisible on a white one. */}
-                          <CtaButton href="/solutions/fundraising">
-                            {layers.cta}
-                          </CtaButton>
-                        </>
-                      )}
-                    </div>
-
-                    {/* Captioned or bare, decided by whether the picture is
-                        of this layer — see `LAYER_MEDIA`. `Figure` and `Plate`
-                        take the same share of the row, so the two forms sit
-                        identically and the panels stay the same height. */}
-                    {media &&
-                      (media.claim && media.source ? (
-                        <Figure claim={media.claim} source={media.source}>
-                          <media.Diagram />
-                        </Figure>
-                      ) : (
-                        <Plate>
-                          <media.Diagram />
-                        </Plate>
-                      ))}
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
-        </div>
-      </section>
-
-      <CtaBand className={FULL_SCREEN} />
+      {/* NO `FULL_SCREEN` HERE, and it is not an omission. This band is the
+          same component on all five routes and it must READ the same on all
+          five — it took the floor for one build and /about's footer stood
+          half again as tall as every other page's. The full-screen rhythm is
+          this page's, the closing band is the site's. */}
+      <CtaBand />
     </>
   );
 }

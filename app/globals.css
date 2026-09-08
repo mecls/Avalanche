@@ -734,62 +734,259 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   The /about access-layer sequence — three full-screen panels, read
-   one at a time.
+   The /about access-layer sequence — three slides in ONE pinned
+   stage, each replacing the last IN PLACE.
 
-   Same machinery as the block above and a DIFFERENT curve, for a
-   different job. `.step-row` fades a row that shares the screen with
-   its neighbours; each `.layer-panel` here is `min-h-svh`, so the
-   panels tile the viewport exactly and the next one lands where the
-   last one was. The fade's only job is to keep two of them from being
-   half-readable at once at the seam.
+   IT WAS THREE FULL-SCREEN PANELS IN FLOW AND THAT WAS THE PROBLEM.
+   Panels that tile the viewport put the next layer's picture one
+   screen BELOW the last one, so the reader travels to it: the seam
+   is a screenful of the outgoing block's empty half above the
+   incoming block's empty half, however the two are faded. What was
+   asked for is substitution, and substitution needs both slides in
+   the same place at the same time — which flow cannot do.
 
-   THE ZERO POINTS ARE PULLED INWARDS ON PURPOSE, which is the thing
-   `step-reveal` warns against. There it would have made text
-   transparent that a reader could otherwise be reading; here the
-   panels are exactly one screen tall, so `entry 30%` is the moment
-   only the top 30% of a panel is on screen — its content is centred,
-   so nothing but its upper margin has appeared yet.
+   So: a 400svh container as pure scroll runway, one `sticky` stage
+   pinned inside it for the whole of it, and the three slides stacked
+   absolutely on top of each other in that stage. Nothing moves. Only
+   opacity changes.
 
-   The crossfade is symmetric BY CONSTRUCTION. Two stacked panels of
-   equal height share one progress value: panel N at `exit q%` puts
-   panel N+1 at exactly `entry q%`. Out over 10-70 against in over
-   30-90 therefore meets at q=0.5 with both at 0.33 — enough overlap
-   to read as one replacing the other, not enough for two to compete.
-   Change one range and change the other, or the seam goes lopsided.
+   ONE TIMELINE, THREE WINDOWS, and the percentages are derived, not
+   chosen. The container publishes its own view progress; over a
+   400svh box in a 100svh viewport the cover range is 500svh, so the
+   stage is pinned from 100/500 = 20% to 400/500 = 80%. That is 60
+   points of timeline for three slides — 20 each, with the handovers
+   at 40% and 60%. The crossfades straddle those: 4 points, which is
+   20svh of scrolling, short enough to read as a cut rather than a
+   dissolve. **If the container height changes, all six numbers move.**
 
-   Base state is again the FINISHED state: no support, or reduced
-   motion, gives three fully-visible panels and nothing else.
+   `visibility` rides along with `opacity` so a slide that is not on
+   screen is not in the tab order either — slide three carries the
+   section's only button, and it would otherwise be focusable and
+   clickable through the two slides in front of it. It interpolates
+   as "visible if either end is visible", so a slide stays reachable
+   for the whole of its own fade.
+
+   GATED TO >=1200px, and the base state below that is the FINISHED
+   one: three rows stacked down the page, all visible, no pinning, no
+   runway. That is also what a browser without scroll-driven
+   animations gets, and what reduced motion gets. A phone would have
+   to pin a stage taller than its own viewport, so it does not try.
    --------------------------------------------------------------- */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .layer-panel {
-      view-timeline-name: --layer-panel;
-      view-timeline-axis: block;
-    }
+@media (min-width: 1200px) {
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .layer-seq {
+        position: relative;
+        height: 400svh;
+        view-timeline-name: --layer-seq;
+        view-timeline-axis: block;
 
-    @keyframes layer-reveal {
-      entry 30% {
-        opacity: 0;
-        transform: translateY(48px);
-      }
-      entry 90% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      exit 10% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-      exit 70% {
-        opacity: 0;
-        transform: translateY(-48px);
-      }
-    }
+        /* THE HEIGHT OF ONE PANEL, and the single number this whole block is
+           tuned around. It is the tallest of the three text columns, measured:
+           panel 01 is 295px, panel 03 is 366px and panel 02 — which carries
+           the four "Why This Segment" reasons — is the one that sets it. The
+           plate is shorter than all of that (516px at a 1200px viewport,
+           649px from 1600px up, capped by `Frame`'s max-width), so the column
+           drives the row and the row is this tall at every width the stage
+           exists at. The measure is capped at 560px, which is why one value
+           covers 1200px to 1920px rather than needing a curve.
 
-    .layer-panel-in {
-      animation: layer-reveal linear both;
-      animation-timeline: --layer-panel;
+           RE-MEASURE AFTER ANY COPY CHANGE in `layers` — set it to 0, read
+           the three column heights, take the largest. Too small and panel 02
+           overflows the stage; too large and all three panels carry dead
+           space they did not ask for. */
+        --layer-h: 677px;
+      }
+
+      /* PINNED CENTRED, AND SIZED TO THE PANEL RATHER THAN THE SCREEN.
+
+         It was `top: 0; height: 100svh` — a full-viewport box with the panel
+         centred inside it — and that put (100svh - panel) / 2 of white INSIDE
+         the stage, above the picture. Invisible once pinned, because the slack
+         is then just the margin around a centred composition. Very visible
+         BEFORE pinning, which is the state a reader arrives in: the stage sits
+         directly under the section heading, so its internal top slack read as
+         a ~190px hole between the lede and the first picture.
+
+         Sizing the box to the panel and pushing it down with `top` instead
+         puts the identical composition on screen when pinned — the panel still
+         lands (100svh - panel) / 2 from the top — while the box above it
+         collapses to nothing, so the gap under the heading is just the
+         runway's own `mt-10` plus the plate's 23px of centring: ~63px, which
+         is the `mt-16` rhythm the rest of the site's sections use.
+
+         It also shortens the un-pinning tail at the end of the sequence by the
+         same amount, and it moves the pinned window on the timeline a little
+         wider — 16.8% to 83.2% at a 1026px viewport, against 20/80 before. The
+         four crossfade percentages below sit at 38/42 and 58/62 and stay well
+         inside that, so they did not have to move; check they still do if this
+         height changes a lot.
+
+         A viewport shorter than the panel makes `top` negative, which is the
+         correct degradation: the stage pins with its top above the viewport
+         and the panel overflows evenly rather than being clipped. The
+         `max-height` rule at the end of this block is what keeps that from
+         happening on a normal laptop. */
+      .layer-stage {
+        display: block;
+        position: sticky;
+        top: calc((100svh - var(--layer-h)) / 2);
+        height: var(--layer-h);
+      }
+
+      /* THE FLOOR THAT ALIGNS THE THREE PANELS. Each slide's row is
+         `items-center`, so a column's own height decides where its first line
+         lands — measured 295 / 677 / 366, which would put "01", "02" and "03"
+         up to 190px apart. One floor above the tallest makes all three the
+         same box, so every panel's ordinal, heading and body start on the same
+         line and only the words change as the reader scrolls.
+
+         It is HERE rather than on the element because it must apply exactly
+         where the pinned stage does. In the fallback below — under 1200px, or
+         without scroll-driven animations, or under reduced motion — the panels
+         are in flow one under the next, nothing needs aligning, and this floor
+         would be ~380px of dead space under panels 01 and 03. */
+      .layer-col {
+        min-height: var(--layer-h);
+      }
+
+      .layer-slide {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        animation: linear both;
+        animation-timeline: --layer-seq;
+      }
+
+      /* EVERY SET PINS `cover 0%` AND `cover 100%` EXPLICITLY, and that is
+         not padding. A keyframe set that does not reach both ends of the
+         timeline gets IMPLICIT from/to keyframes synthesised from the
+         element's own computed value — opacity 1 here — so a set written as
+         just "1 at 38%, 0 at 42%" actually runs "1 at 0%, 1 at 38%, 0 at
+         42%, **1 at 100%**" and every slide ramps back up over the rest of
+         the scroll. Measured before this was fixed: all three were part-
+         visible at once at 23% and again at 70%. `both` fill does not save
+         it — there is nothing outside the range to fill.
+
+         (The `/solutions` sets above get away without it because
+         `entry 0%` and `exit 100%` ARE the two ends of the range.) */
+      @keyframes layer-slide-1 {
+        cover 0% {
+          opacity: 1;
+          visibility: visible;
+        }
+        cover 38% {
+          opacity: 1;
+          visibility: visible;
+        }
+        cover 42% {
+          opacity: 0;
+          visibility: hidden;
+        }
+        cover 100% {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      @keyframes layer-slide-2 {
+        cover 0% {
+          opacity: 0;
+          visibility: hidden;
+        }
+        cover 38% {
+          opacity: 0;
+          visibility: hidden;
+        }
+        cover 42% {
+          opacity: 1;
+          visibility: visible;
+        }
+        cover 58% {
+          opacity: 1;
+          visibility: visible;
+        }
+        cover 62% {
+          opacity: 0;
+          visibility: hidden;
+        }
+        cover 100% {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      @keyframes layer-slide-3 {
+        cover 0% {
+          opacity: 0;
+          visibility: hidden;
+        }
+        cover 58% {
+          opacity: 0;
+          visibility: hidden;
+        }
+        cover 62% {
+          opacity: 1;
+          visibility: visible;
+        }
+        cover 100% {
+          opacity: 1;
+          visibility: visible;
+        }
+      }
+
+      .layer-slide-1 {
+        animation-name: layer-slide-1;
+      }
+      .layer-slide-2 {
+        animation-name: layer-slide-2;
+      }
+      .layer-slide-1 {
+        animation-name: layer-slide-1;
+      }
+      .layer-slide-2 {
+        animation-name: layer-slide-2;
+      }
+      .layer-slide-3 {
+        animation-name: layer-slide-3;
+      }
+
+      /* A 1366x768 LAPTOP IS THE CASE THIS EXISTS FOR. Chrome's chrome and
+         the OS bar leave it about 640px of viewport, and a 677px panel does
+         not fit — the stage would pin with its top off-screen and the panel
+         would spill over the bands above and below it.
+
+         So the densest thing in the panel tightens instead of the stage
+         growing: the reasons list gives up 8px of row padding and a little
+         leading, which takes panel 02 from 677px to 623px. Nothing else on
+         the panel moves, and above 800px nothing changes at all.
+
+         **649px, NOT 623px, AND THAT IS THE POINT OF THIS COMMENT.** The row
+         is max(tallest column, plate), and the plate cannot be tightened: its
+         height is its width over a fixed aspect ratio, and its width is capped
+         by the 1440px shell at 682px, so it reaches 649px on any viewport
+         1480px or wider no matter how short that viewport is. Setting this to
+         the tightened column height would size the stage under its own plate,
+         and a wide-but-short window (1600x768 is the ordinary one) would spill
+         the picture over the bands above and below. So the tightening buys the
+         28px between 677 and 649 and stops there. Below 1480px wide the plate
+         is smaller than 649 and the extra is simply air.
+
+         Re-measure both numbers together after any copy change here. */
+      @media (max-height: 800px) {
+        .layer-seq {
+          --layer-h: 649px;
+        }
+
+        .layer-reasons > div {
+          padding-block: 0.5rem;
+        }
+
+        .layer-reasons dd {
+          line-height: 1.4;
+        }
+      }
     }
   }
 }
