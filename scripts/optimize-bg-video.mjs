@@ -6,7 +6,7 @@
  * It was `optimize-hero-video.mjs` and served one clip. /get-in-touch took a
  * second on 6 Sep 2026, so the per-clip decisions moved into PRESETS below and
  * the shared machinery stayed here. Almost nothing about an encode is portable
- * between sources — crf least of all — so read the preset you are touching
+ * between sources - crf least of all - so read the preset you are touching
  * rather than copying the other one.
  *
  * Two earlier revisions of the hero pipeline are worth knowing about, because
@@ -52,7 +52,7 @@ const PRESETS = {
    * drives the bitrate. At crf 27 this clip is 4.16MB. The water texture and
    * the sky gradient both hold at 31, and the scrim over it runs 0.44-0.60,
    * which hides compression artifacts far better than it hides softness.
-   * Light denoise was tried to tame the glitter and lost — it cost more in
+   * Light denoise was tried to tame the glitter and lost - it cost more in
    * detail than it saved in bits.
    */
   hero: {
@@ -68,7 +68,7 @@ const PRESETS = {
    * knowing about before anyone reaches for one again.
    *
    * The source is a slow aerial of the Santa Justa lift, 2560x1440 / 10.4Mbps
-   * / 40.7s — no bars, no cuts. It shipped as a background video on 6 Sep
+   * / 40.7s - no bars, no cuts. It shipped as a background video on 6 Sep
    * 2026 and was replaced by this still the same day, by request.
    *
    * THAT VIDEO HAD TO BE PING-PONGED AND THE MEASUREMENTS ARE WHY. Unlike the
@@ -77,12 +77,12 @@ const PRESETS = {
    * the clip, lands between 0.16 and 0.26. No cut point in this source loops.
    * Concatenating the clip with its own reverse (minus the duplicated join
    * frame) took that seam to 0.983. If a video ever goes back here, it needs
-   * the same treatment — a straight `loop` will visibly jump.
+   * the same treatment - a straight `loop` will visibly jump.
    *
    * The still is THE LAST FRAME of the source, taken with an end-relative
    * seek. By then the camera has pulled fully back to frame the lift's
    * viewing platform against the Carmo ruins, and the blown sun flare that
-   * dominates the first half of the clip has gone entirely — which matters,
+   * dominates the first half of the clip has gone entirely - which matters,
    * because the page sets white type over the left of this frame.
    *
    * 2000px rather than the video's 1600: a single still has none of a video's
@@ -104,7 +104,7 @@ const PRESETS = {
    * /about's "Why Avalanche" band. A STILL, and the only preset whose source
    * is an IMAGE rather than a clip.
    *
-   * **THE SOURCE IS 269x148, AND THAT IS NOT A TYPO.** It is a thumbnail —
+   * **THE SOURCE IS 269x148, AND THAT IS NOT A TYPO.** It is a thumbnail -
    * 39,812 pixels against the 1.5 million this band renders, so it is blown up
    * about 6x linear. It was supplied and chosen with that trade-off stated;
    * it replaced a 608x320 frame from a bridge clip that was itself a 3x
@@ -114,7 +114,7 @@ const PRESETS = {
    * earns its place on a small JPEG: `deblock` first, because at this size the
    * 8x8 DCT grid is the dominant artifact and upscaling it makes it structural;
    * `hqdn3d` to stop the scaler amplifying what the deblock leaves; then
-   * lanczos, then a LIGHT unsharp — heavy sharpening here re-draws the block
+   * lanczos, then a LIGHT unsharp - heavy sharpening here re-draws the block
    * edges the first two stages just removed. `gradfun` for the sky, as
    * everywhere else. **Do not copy `restore` onto a real master**; on a clean
    * source it destroys detail to fix artifacts that are not there.
@@ -166,7 +166,7 @@ if (preset.stillOnly) {
   const tmp = path.join(OUT, ".still.png");
   const still = path.join(OUT, `${preset.file}.webp`);
   // An image source has nothing to seek. `stillAt` seeks from the start,
-  // `stillFromEnd` from the end — the latter for a clip whose useful frame is
+  // `stillFromEnd` from the end - the latter for a clip whose useful frame is
   // its last and would drift if the source were ever re-cut.
   const seekStill = preset.isImage
     ? []

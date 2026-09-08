@@ -1,7 +1,7 @@
 import { secondaries } from "@/content/copy";
 
 /**
- * /solutions — TWO VIEWS behind a toggle, not one page with two blocks.
+ * /solutions - TWO VIEWS behind a toggle, not one page with two blocks.
  *
  * The page used to be a single route carrying one Secondaries block and one
  * Fundraising block. On 4 Sep 2026 it became two routes, `/solutions/
@@ -10,23 +10,23 @@ import { secondaries } from "@/content/copy";
  *
  * SWITCHING BETWEEN THEM IS THE NAV DROPDOWN'S JOB AND ONLY ITS JOB. There was
  * briefly a segmented toggle at the head of the page as well; it was removed
- * the same day as redundant — the dropdown under "Solutions" already lists
+ * the same day as redundant - the dropdown under "Solutions" already lists
  * both, on every page rather than only on these two. One control, one place.
  * If a switcher is ever wanted back on the page, `git show 58684ea` has it.
  *
  * The views are still separate ROUTES rather than a client-side tab, and that
  * has not changed with the toggle going: `/solutions` is the one page on the
- * site with NO client components — its rail and text reveal are CSS
- * `view-timeline` — and a stateful tab would have made the whole page a client
+ * site with NO client components - its rail and text reveal are CSS
+ * `view-timeline` - and a stateful tab would have made the whole page a client
  * component. Routes also keep both views deep-linkable, which the dropdown
  * depends on.
  *
  * `/solutions` itself redirects to `/solutions/fundraising` (next.config.ts).
  *
  * ---------------------------------------------------------------------------
- * PROVENANCE — read this before editing either block list.
+ * PROVENANCE - read this before editing either block list.
  *
- * FUNDRAISING WAS fundraisr.ai/solutions, captured 4 Sep 2026 — five steps in
+ * FUNDRAISING WAS fundraisr.ai/solutions, captured 4 Sep 2026 - five steps in
  * their order, with their headings, de-branded as described below. **It is
  * not any more.** On 9 Sep 2026 the header and the first three blocks were
  * replaced with supplied Avalanche copy and the last two were removed, so the
@@ -39,8 +39,8 @@ import { secondaries } from "@/content/copy";
  * The source says "Fundraisr's pre-marketing agent", "Fundraisr generates
  * personalised messaging", "Fundraisr doesn't just give you data". Naming the
  * sister platform on the Avalanche site is a positioning decision rather than
- * a neutral one — docs/COPY-REVIEW.md already flags the single existing
- * instance of it as needing sign-off — so these read as "our" and "we". No
+ * a neutral one - docs/COPY-REVIEW.md already flags the single existing
+ * instance of it as needing sign-off - so these read as "our" and "we". No
  * claim changed; only the brand attached to it.
  *
  * SECONDARIES WAS PLACEHOLDER and is not any more. Five blocks were marked
@@ -68,7 +68,7 @@ export type SolutionBlock = {
    *
    * This says nothing about artwork. Whether a block gets a diagram or the
    * pending plate is decided solely by the MEDIA map in
-   * components/sections/solutions-steps.tsx, keyed on `id` — a block can have
+   * components/sections/solutions-steps.tsx, keyed on `id` - a block can have
    * real copy and no diagram, or real art and placeholder copy (Secondaries
    * 03). Two different gaps, tracked in two different places, so closing
    * one does not silently claim the other is closed.
@@ -95,18 +95,18 @@ export type SolutionView = {
 };
 
 /**
- * 01 — Fundraising. THREE steps, and it is no longer fundraisr's page.
+ * 01 - Fundraising. THREE steps, and it is no longer fundraisr's page.
  *
  * It was five, lifted from fundraisr.ai/solutions with the brand filed off.
  * On 9 Sep 2026 the header and blocks 01-03 were replaced with supplied copy
  * and blocks 04-05 were removed, which leaves an advisory process in three
- * moves — get ready, get introduced, get closed — rather than a five-feature
+ * moves - get ready, get introduced, get closed - rather than a five-feature
  * product tour. Nothing here is fundraisr's copy any more; the de-branding
  * note in the file header now applies to the SECONDARIES placeholders only.
  *
  * NONE of these blocks is `pending` and all three have their own diagram, so
  * this side of /solutions still has no outstanding gap of either kind. Two of
- * the three diagrams MOVED with the copy rather than staying put — see the
+ * the three diagrams MOVED with the copy rather than staying put - see the
  * notes on blocks 01 and 03. That is the rule working, not churn: a picture
  * that keeps labels its own copy has stopped using is the failure mode the
  * MEDIA map exists to prevent.
@@ -115,7 +115,7 @@ export const fundraisingView: SolutionView = {
   eyebrow: "Solutions",
   // SUPPLIED 9 Sep 2026, replacing fundraisr.ai's own header. The page used to
   // open "The full-stack fundraising platform." over a lede about consolidating
-  // research, outreach, pipeline and meeting intelligence "into one system" —
+  // research, outreach, pipeline and meeting intelligence "into one system" -
   // which described a PRODUCT. This is an advisory firm, and the new pair says
   // approach and segment rather than software and features. The de-branding
   // note above still applies to the five blocks; the header is no longer
@@ -127,19 +127,19 @@ export const fundraisingView: SolutionView = {
     {
       n: "01",
       /** The id is the MEDIA key and the anchor, so it is NOT renamed with the
-       *  label — same reason block 02 still says "fundraising". */
+       *  label - same reason block 02 still says "fundraising". */
       id: "pre-marketing",
       // SUPPLIED 9 Sep 2026, all three lines. The old body described "our
       // pre-marketing agent" analysing the raise, which was fundraisr product
       // copy with the brand filed off; this is the firm doing the work.
       //
       // THE BODY IS NOT NEW COPY. It is byte-identical to
-      // `fundraising.steps[0].body` in content/copy.ts — the unmounted
-      // three-step process lifted from avalanche-capital.com — so it is
+      // `fundraising.steps[0].body` in content/copy.ts - the unmounted
+      // three-step process lifted from avalanche-capital.com - so it is
       // PUBLISHED Avalanche copy, not something drafted, and the title
       // follows that object's "Solving For ..." pattern too. One sentence in
       // two files can drift; see the note over `fundraising` there. The
-      // DIAGRAM MOVED WITH IT — its three input chips were the old body's
+      // DIAGRAM MOVED WITH IT - its three input chips were the old body's
       // "structure, thesis, target profile" and are now the new body's
       // dataroom, decks and supporting documentation. A picture that names
       // three things its copy no longer mentions is exactly what the "do not
@@ -155,7 +155,7 @@ export const fundraisingView: SolutionView = {
       id: "fundraising",
       // SUPPLIED 9 Sep 2026. This retires the "1.2 million investors" headline,
       // which was a platform-database claim and one of the figures
-      // docs/COPY-REVIEW.md had flagged as unverified — see the remaining
+      // docs/COPY-REVIEW.md had flagged as unverified - see the remaining
       // citations listed there. The diagram beside it still describes the new
       // body: it draws a mandate filter selecting investors out of a universe,
       // which is "identify the LPs and investors whose mandates align with your
@@ -168,8 +168,8 @@ export const fundraisingView: SolutionView = {
       n: "03",
       /**
        * RENAMED FROM "engagement" on 9 Sep 2026 with the copy. The two ids
-       * that keep a name they have outgrown — "fundraising" here and
-       * "secondaries" below — do so because they were live deep links from
+       * that keep a name they have outgrown - "fundraising" here and
+       * "secondaries" below - do so because they were live deep links from
        * the single-page era; this one never was, so it says what the block
        * says. It is the MEDIA key as well as the anchor, so renaming it means
        * renaming it in solutions-steps.tsx too, which is where its diagram
@@ -177,14 +177,14 @@ export const fundraisingView: SolutionView = {
        */
       id: "closure",
       // SUPPLIED 9 Sep 2026, replacing "Personalised engagement / Scalable
-      // outreach with a personal touch." — a body about multi-touch email and
+      // outreach with a personal touch." - a body about multi-touch email and
       // LinkedIn campaigns, which was fundraisr platform copy de-branded.
       // THE DIAGRAM CHANGED WITH IT and this is the important half: the
       // outreach-sequence picture that used to sit here draws follow-ups
       // branching on an engagement signal, which is not term sheets, not a
       // dataroom and not a signed commitment. The four-stage progression that
-      // was block 04's took its place — Contacted, Engaged, Diligence,
-      // Committed, with only the committed column accented — because that IS
+      // was block 04's took its place - Contacted, Engaged, Diligence,
+      // Committed, with only the committed column accented - because that IS
       // this block's claim. See solutions-steps.tsx.
       label: "Deal closure",
       title: "Solving for deal closure",
@@ -194,7 +194,7 @@ export const fundraisingView: SolutionView = {
      * BLOCKS 04 AND 05 WERE REMOVED ON 9 Sep 2026, by request. They were
      * "Pipeline management / From first touch to signed commitment. Every
      * step, tracked." and "Meeting intelligence / Know who you're speaking
-     * with, and why." — the last two fundraisr platform steps, and the two
+     * with, and why." - the last two fundraisr platform steps, and the two
      * that read most like software features on a page that now describes an
      * advisory process in three moves: get ready, get introduced, get closed.
      *
@@ -207,7 +207,7 @@ export const fundraisingView: SolutionView = {
 };
 
 /**
- * 02 — Secondaries. AWAITING COPY.
+ * 02 - Secondaries. AWAITING COPY.
  *
  * The heading and lede are the two strings that already exist for this service
  * (`secondaries.title` / `secondaries.lede` in copy.ts, itself DRAFT), so the
@@ -216,34 +216,34 @@ export const fundraisingView: SolutionView = {
  *
  * **IT IS TWO BLOCKS OF SUPPLIED COPY AS OF 9 Sep 2026, AND NOTHING HERE IS
  * PLACEHOLDER ANY MORE.** Buy-side advisory and Sell-side advisory, with a
- * diagram each. The three generic stage names that used to follow them —
- * "Counterparties", "Process", "Close" — were removed by request rather than
+ * diagram each. The three generic stage names that used to follow them -
+ * "Counterparties", "Process", "Close" - were removed by request rather than
  * filled in, because 01 and 02 are two SIDES of a trade and those three were
  * STAGES of one mandate: the page was describing itself two ways at once.
  *
  * So NO block on either view carries `pending` now. The flag, the visible
  * "awaiting approved copy" note and `PendingPlate` all remain wired up and
- * unused, which is correct — they are the mechanism for the next block that
+ * unused, which is correct - they are the mechanism for the next block that
  * arrives without copy or artwork, and the whole point of them is that such a
  * block cannot ship silently.
  */
 export const secondariesView: SolutionView = {
   eyebrow: "Solutions",
   title: secondaries.title,
-  // DRAFT — the existing secondaries lede, already flagged at its source.
+  // DRAFT - the existing secondaries lede, already flagged at its source.
   lede: secondaries.lede,
   cta: "Get started",
   blocks: [
     /**
      * 01 AND 02 ARE REAL AS OF 9 Sep 2026, and they changed what this page IS.
      *
-     * They were "Position review" and "Pricing" — two stages of one mandate,
+     * They were "Position review" and "Pricing" - two stages of one mandate,
      * placeholder names for the general shape of a secondaries process. The
      * supplied copy replaced them with the TWO SIDES OF THE TRADE, buy and
      * sell, which are not stages of anything: a buyer does not go on to become
      * a seller. That is the same reading the original two-block /solutions had
      * of Fundraising and Secondaries, and the note in copy.ts explains why the
-     * rail still numbers parallel offerings — the number is position, not
+     * rail still numbers parallel offerings - the number is position, not
      * sequence.
      *
      * **BLOCKS 03-05 WERE REMOVED THE SAME DAY, by request, and that is what
@@ -256,7 +256,7 @@ export const secondariesView: SolutionView = {
      *
      * `title` is the supplied phrase and `label` is that phrase minus the word
      * "advisory", so the small label and the display heading say the same
-     * thing at two sizes — the pattern blocks 01-03 of Fundraising already
+     * thing at two sizes - the pattern blocks 01-03 of Fundraising already
      * use. Neither is invented; there is no third string here that nobody
      * supplied.
      */
@@ -272,7 +272,7 @@ export const secondariesView: SolutionView = {
     },
     {
       n: "02",
-      /** RENAMED from "valuation" with the copy — it was never a deep link,
+      /** RENAMED from "valuation" with the copy - it was never a deep link,
        *  unlike the id above, so it says what the block says. It is the MEDIA
        *  key too; see solutions-steps.tsx. */
       id: "sell-side",

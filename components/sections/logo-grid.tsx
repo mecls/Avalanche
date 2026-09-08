@@ -12,7 +12,7 @@ import { clientLogos } from "@/content/client-logos";
  * last row as a floating grey block under a gap-px grid; this way the row
  * simply ends.
  *
- * The marks are pre-processed to white-on-transparent — the client roster by
+ * The marks are pre-processed to white-on-transparent - the client roster by
  * scripts/logos-to-alpha.mjs, the /solutions/secondaries band by
  * scripts/secondary-logos.mjs. `logo-mark` is what lets them survive a light
  * band: globals.css inverts them there rather than shipping a second set. Both
@@ -23,7 +23,7 @@ import { clientLogos } from "@/content/client-logos";
  * list is long and runs five across; the nine secondaries marks run three
  * across at every width, which is the only count that divides them evenly and
  * the reason they are not simply handed the default. Pass whole class strings,
- * not a number — Tailwind scans source text, so an interpolated `grid-cols-${n}`
+ * not a number - Tailwind scans source text, so an interpolated `grid-cols-${n}`
  * would not be emitted.
  */
 export function LogoGrid({

@@ -5,7 +5,7 @@ import { faqs } from "@/content/faqs";
  * Two-column: heading block left, accordion right, stacking below `lg`.
  * The heading sticks while the list scrolls past on tall viewports.
  *
- * Still a native <details> accordion — keyboard-accessible, findable by
+ * Still a native <details> accordion - keyboard-accessible, findable by
  * in-page search, and open by default before hydration, with no JS at all.
  * The first item is `open` so the section does not read as a wall of closed
  * bars, which is how the reference presents it.
@@ -32,7 +32,7 @@ export function Faqs() {
               <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[0.9375rem] font-medium [&::-webkit-details-marker]:hidden">
                 {f.q}
                 {/* Monochrome. This is the accent's most tempting home on the
-                    page — it is the one thing in a row that changes on open —
+                    page - it is the one thing in a row that changes on open -
                     but there are eight of them stacked in a single block, and
                     eight accent marks in one column is the opposite of an
                     accent. The rotation carries the state on its own. */}

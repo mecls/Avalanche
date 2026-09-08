@@ -1,24 +1,24 @@
-/** FAQ — homepage only. (It was also on /process, which no longer exists.)
+/** FAQ - homepage only. (It was also on /process, which no longer exists.)
  *
  *  Answers were written here, not lifted from a published FAQ: neither
  *  avalanche-capital.com nor fundraisr.ai has one (checked fundraisr's /faq,
- *  /platform, /solutions, /customers and /pricing — none exist or none carry
+ *  /platform, /solutions, /customers and /pricing - none exist or none carry
  *  questions). They are grounded in what those sites DO say:
  *
- *    fundraisr.ai  — the platform positioning, the three product pillars, the
+ *    fundraisr.ai  - the platform positioning, the three product pillars, the
  *                    1.2M+ investor figure, the client types, "3x faster",
  *                    "<10 days to first investor meeting"
- *    avalanche-capital.com — the thesis pillars and the offerings
- *    the Avalanche blog — the segment → message → channel → presentation →
+ *    avalanche-capital.com - the thesis pillars and the offerings
+ *    the Avalanche blog - the segment → message → channel → presentation →
  *                    diligence sequence, and "term sheets, not meetings"
  *
- *  Everything marked DRAFT is awaiting sign-off — see docs/COPY-REVIEW.md.
+ *  Everything marked DRAFT is awaiting sign-off - see docs/COPY-REVIEW.md.
  *
  *  Two are deliberately conservative. "Do you guarantee clients raise" is
  *  answered in the negative because the footer disclaimer already says exactly
  *  that, and any softer answer would contradict it. "What is the cost" is not
  *  answered with a number because nobody has told me one, and inventing a fee
- *  on a capital-advisory site is not a placeholder — it is a liability. */
+ *  on a capital-advisory site is not a placeholder - it is a liability. */
 
 export type Faq = { q: string; a: string };
 
@@ -38,7 +38,7 @@ export const faqs: Faq[] = [
     a: "It depends on the mandate, the market, and how ready your materials are when we start. What we can say is where the time goes: benchmarking and positioning first, then building the mandate-specific investor list, then outreach and diligence. Clients on our platform average under ten days to a first investor meeting, and the research phase is usually the longest part of everything that follows. Starting with a weak data room lengthens all of it. We'll give you a realistic timeline on the intro call rather than a number on a web page.",
   },
   {
-    // DRAFT — a real operating fact; confirm the actual policy before publishing.
+    // DRAFT - a real operating fact; confirm the actual policy before publishing.
     q: "How many new clients do you take on?",
     a: "A limited number at any one time. Running a raise properly means working a curated investor list personally rather than broadcasting a deck, and that does not scale past a certain point without the quality dropping. If we don't think we can move the needle on a mandate, we'll say so on the first call.",
   },
@@ -57,7 +57,7 @@ export const faqs: Faq[] = [
     a: "Pre-seed and seed through Series C and beyond, plus fund vehicles themselves. In practice that means LP capital for managers raising a fund, growth capital for operating companies with a round in front of them, project-level real estate, private credit and debt facilities, and secondary liquidity for holders looking to exit a position ahead of a full realisation. Deal readiness work sits in front of all of it.",
   },
   {
-    // DRAFT — no fee information was available from any Avalanche or Fundraisr property.
+    // DRAFT - no fee information was available from any Avalanche or Fundraisr property.
     q: "What is the cost to work with Avalanche Capital?",
     a: "Engagements are scoped to the mandate, so there is no single number. We'll walk you through structure and cost on the intro call, once we understand what you're raising and what shape the materials are in.",
   },

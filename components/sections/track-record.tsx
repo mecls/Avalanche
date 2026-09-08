@@ -64,7 +64,7 @@ function useCountUp(to: number, run: boolean, ms = 1600) {
     };
   }, [to, run, ms, animates, reduced]);
 
-  // Under reduced motion the true figure is shown outright — never counted.
+  // Under reduced motion the true figure is shown outright - never counted.
   return reduced ? to : n;
 }
 
@@ -112,8 +112,8 @@ function Stat({
  * One statistic as a full-width row: label on the left, figure hard right,
  * baselines aligned, hairline above. This is the /customers treatment.
  *
- * Below `sm` the two stack — a 5rem figure and a wrapping label cannot share
- * a 390px line — and the figure leads, because that is the part worth seeing
+ * Below `sm` the two stack - a 5rem figure and a wrapping label cannot share
+ * a 390px line - and the figure leads, because that is the part worth seeing
  * first once they are no longer read across.
  */
 function StatRow({
@@ -147,7 +147,7 @@ function StatRow({
 
 /**
  * `grid` is the homepage's bracketed two-over-three block. `rows` is the
- * /customers list — heading hard right, then one hairline-separated row per
+ * /customers list - heading hard right, then one hairline-separated row per
  * figure, and no CTA (the page already ends on one).
  */
 export function TrackRecord({
@@ -161,11 +161,11 @@ export function TrackRecord({
    * renders unbanded on the dark `<body>` ground, which is what it has always
    * done. /about MUST pass one: that page opens light, so the `:has()` rule in
    * globals.css paints `main` with `--color-paper`, and an unbanded section
-   * there sits on white while still inheriting the root's dark text tokens —
+   * there sits on white while still inheriting the root's dark text tokens -
    * white figures on a white ground. Only a band paints itself.
    */
   band?: "light" | "dark";
-  /** Extra classes for the `grid` variant's section — /about uses it for the
+  /** Extra classes for the `grid` variant's section - /about uses it for the
    *  hairline that separates it from the light header above it. */
   className?: string;
 } = {}) {
@@ -185,7 +185,7 @@ export function TrackRecord({
       // threshold 0 + a bottom inset, NOT a fractional threshold. A fraction
       // is a proportion of the SECTION, so a section taller than 4x the
       // viewport could never satisfy 0.25 and the figures would sit at zero
-      // forever — worse than a partial count. This fires when the section's
+      // forever - worse than a partial count. This fires when the section's
       // top crosses 85% of the viewport, whatever its height.
       { threshold: 0, rootMargin: "0px 0px -15% 0px" },
     );
@@ -199,7 +199,7 @@ export function TrackRecord({
         <div className="shell">
           {/* No eyebrow here, unlike the `grid` variant. One was added on
               4 Sep 2026 purely to give this block something to carry the
-              accent, then removed with it — the reference's rows treatment
+              accent, then removed with it - the reference's rows treatment
               opens on the heading, and a layout change made to host a colour
               has no reason to outlive the colour. */}
           <h2 className="display text-[clamp(2.25rem,4vw,3.25rem)] text-balance sm:text-right">
@@ -229,7 +229,7 @@ export function TrackRecord({
 
         {/* TWO OVER TWO, AND THE SHAPE IS TIED TO THE FIGURE COUNT.
 
-            It was two cells over three — 3+3 above, 2+2+2 below in a 6-column
+            It was two cells over three - 3+3 above, 2+2+2 below in a 6-column
             track, with the fifth cell widened to `sm:col-span-2` so the
             2-column breakpoint did not end on a ragged half-row. The platform
             database figure ("1.2M+ active investor profiles") was dropped on
@@ -238,7 +238,7 @@ export function TrackRecord({
             with the corner bracket floating past the last cell.
 
             Four peers, so every cell takes half the track at `lg` and the
-            `sm` grid's own 2 columns do the rest — no span override at all
+            `sm` grid's own 2 columns do the rest - no span override at all
             below `lg`, because 4 divides evenly into 2.
 
             **If a fifth figure ever comes back, the old spans come back with

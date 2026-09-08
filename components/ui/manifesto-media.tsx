@@ -1,11 +1,11 @@
 import { Caption, Frame } from "@/components/ui/diagram";
 
 /**
- * The two manifesto diagrams — the divergence and the three access layers.
+ * The two manifesto diagrams - the divergence and the three access layers.
  * They render in the middle of /about; the file keeps its name because the
  * content object it draws is still `manifesto`.
  *
- * Drawn in the same system as the six on /solutions — same 620x508 `Frame`,
+ * Drawn in the same system as the six on /solutions - same 620x508 `Frame`,
  * same two corner `Caption`s, same legend columns fixed at x=5/22 and
  * x=320/337, same `dgm-*` rungs, tokens only. The authoring rules and the
  * reasoning behind each of them are in the header of solutions-media.tsx;
@@ -23,7 +23,7 @@ import { Caption, Frame } from "@/components/ui/diagram";
  *
  * 2. THE ACCENT MARKS WHAT IS *NOT* BEING REACHED. On /solutions it says which
  *    route matched, which segment was selected. Here it marks the region the
- *    page is about — the gap between the two lines, and the outer layer of the
+ *    page is about - the gap between the two lines, and the outer layer of the
  *    network. That is the subject of the picture rather than a success state.
  *    Both pills say so in words ("Access gap", "Addressable") precisely so the
  *    inversion reads as intended. Do not "correct" it to mark the inner layers
@@ -31,7 +31,7 @@ import { Caption, Frame } from "@/components/ui/diagram";
  */
 
 /* -------------------------------------------------------------------------
-   01 — The divergence.
+   01 - The divergence.
 
    ONE ARRAY DRIVES ALL THREE MARKS. The accent line, the ghost line and the
    wash between them are all built from `SERIES` in the same render, so the
@@ -41,7 +41,7 @@ import { Caption, Frame } from "@/components/ui/diagram";
    The values are a SHAPE, not data. They are unlabelled on purpose: no axis
    ticks, no units, no numbers anywhere on the frame. The claim the picture
    makes is "these two move apart", which is a direction rather than a
-   quantity — see the header of content/manifesto.ts for why this page carries
+   quantity - see the header of content/manifesto.ts for why this page carries
    no figures at all.
    ------------------------------------------------------------------------- */
 
@@ -65,7 +65,7 @@ export function DivergenceDiagram() {
   const capital = SERIES.map((d, i) => `${px(i)},${py(d.capital)}`).join(" ");
   const access = SERIES.map((d, i) => `${px(i)},${py(d.access)}`).join(" ");
 
-  // Capital forward, access back — the closed area BETWEEN the two lines.
+  // Capital forward, access back - the closed area BETWEEN the two lines.
   const gap = [
     ...SERIES.map((d, i) => `${px(i)},${py(d.capital)}`),
     ...SERIES.map((d, i) => `${px(i)},${py(d.access)}`).reverse(),
@@ -115,7 +115,7 @@ export function DivergenceDiagram() {
       />
 
       {/* The callout replaced a pill straddling the capital line. A pill names
-          the gap; this measures it — the dashed rule spans the two series at
+          the gap; this measures it - the dashed rule spans the two series at
           one x, so the label sits on the distance it is describing rather than
           floating above one of the lines. */}
       <line
@@ -187,7 +187,7 @@ export function DivergenceDiagram() {
 }
 
 /* -------------------------------------------------------------------------
-   02 — The three layers.
+   02 - The three layers.
 
    NESTING IS THE CLAIM, so the three are concentric rather than stacked: each
    layer contains the one before it, and the outer band is the part of the
@@ -195,7 +195,7 @@ export function DivergenceDiagram() {
 
    The accent is knocked out rather than painted. The outer rect carries the
    wash across its whole area and the inner two are filled with `ground`, so
-   what remains visible is exactly the outer BAND — the addressable layer,
+   what remains visible is exactly the outer BAND - the addressable layer,
    and nothing else. Same trick the pills use to sit on top of a line.
 
    Rectilinear rather than circular because every other diagram in the system
@@ -223,8 +223,8 @@ export function DivergenceDiagram() {
  * because the outer radius has nowhere to go: 200 already spans 45 to 445
  * against the "Exposure gap" label at 20-37 and the legend at 479-498, so
  * growing it runs into one or the other. 136/76 left the two label groups
- * with 5 and 10 units of air — measured off the real bounding boxes, not
- * estimated — which is what "the text is touching the circumference" looks
+ * with 5 and 10 units of air - measured off the real bounding boxes, not
+ * estimated - which is what "the text is touching the circumference" looks
  * like. 126/62 opens the outer band from 64 to 74 units and the middle one
  * from 60 to 64, and the labels moved up into it: 12-16 units of clearance
  * on each side of both groups now.
@@ -257,7 +257,7 @@ const CY = 245;
  * `labelY` is measured, not centred, and this is why.
  *
  * A first version put each label at the midpoint of its band, which is right
- * on the vertical centre line and wrong everywhere else — **a circle curves
+ * on the vertical centre line and wrong everywhere else - **a circle curves
  * back up at its edges**, so the arc above a wide label is much lower at the
  * label's ends than at its middle. Both outer labels collided with their own
  * ring even though the centre-line clearance looked fine.
@@ -274,11 +274,11 @@ const CY = 245;
  *   "Extended network"          59 half   arc at y=356  ->  316/338
  *   "Your network"              43 half   arc at y=290  ->  239/261
  *
- * Each also has to clear the ring INSIDE it — the arc above crosses the
- * ORDINAL's half-width at y=361, y=290 and y=199 respectively — which is what
+ * Each also has to clear the ring INSIDE it - the arc above crosses the
+ * ORDINAL's half-width at y=361, y=290 and y=199 respectively - which is what
  * sets the upper bound. Both bounds are live for the outer two groups: they
  * sit with roughly 12-16 units of air above and below, and there is no slack
- * to spend. **Re-solve if a label's wording or a radius changes** —
+ * to spend. **Re-solve if a label's wording or a radius changes** -
  * lengthening a label moves its collision point up, and the numbers above stop
  * being true.
  */
@@ -289,8 +289,8 @@ const CY = 245;
  * When the three layers became three panels, this was drawn three times with
  * a different ring emphasised each time. It repeated one picture down three
  * screens, and the emphasis could not carry the difference: the accent has to
- * stay on the OUTER band whatever is being pointed at — that band is the
- * diagram's claim rather than its cursor — so all three read as the same
+ * stay on the OUTER band whatever is being pointed at - that band is the
+ * diagram's claim rather than its cursor - so all three read as the same
  * frame with a slightly brighter ring. The panels take three different
  * pictures now and this one sits on the layer it is actually about.
  */
@@ -308,7 +308,7 @@ export function AccessLayersDiagram() {
       </Caption>
 
       {/* Outermost first. Each inner circle is `fill-ground`, so it knocks the
-          wash back out and leaves the accent showing as the outer band only —
+          wash back out and leaves the accent showing as the outer band only -
           the layer that is NOT being reached. */}
       {RINGS.map((ring) => (
         <circle
@@ -325,7 +325,7 @@ export function AccessLayersDiagram() {
         />
       ))}
 
-      {/* Each label sits centred in its own band — see `bandLabelY`. The
+      {/* Each label sits centred in its own band - see `bandLabelY`. The
           ordinal takes the smaller rung and the name the middle one; `dgm-lg`
           here was what made the pair too tall for a 60-unit band. */}
       {RINGS.map((ring) => {
@@ -375,7 +375,7 @@ export function AccessLayersDiagram() {
           reached 443. Centred above the circle it has the whole frame width
           and cannot collide with anything but the corner captions, which are
           ranged to the two edges. Same chord arithmetic as the band labels
-          below — see the note on `labelY`. */}
+          below - see the note on `labelY`. */}
       <text
         x={CX}
         y={CY - outer.r - 12}

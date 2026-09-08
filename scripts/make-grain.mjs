@@ -1,5 +1,5 @@
 /**
- * Generates public/grain.png — the hero's noise tile.
+ * Generates public/grain.png - the hero's noise tile.
  *
  *   node scripts/make-grain.mjs
  *
@@ -15,7 +15,7 @@
  *
  * TILEABILITY is the whole trick, and it is why this is not just random
  * noise: the alpha is generated per-pixel independently, which is inherently
- * seamless — no filtering, no gradients, nothing that could disagree across
+ * seamless - no filtering, no gradients, nothing that could disagree across
  * the seam. Do not add a blur here; a blurred field is NOT tileable and the
  * repeat would show as a visible grid.
  */
@@ -25,7 +25,7 @@ import sharp from "sharp";
 
 /**
  * 256, not the reference's 720. The tile is repeated either way, and grain
- * MUST render at 1:1 — scaling it via background-size blurs it into mush —
+ * MUST render at 1:1 - scaling it via background-size blurs it into mush -
  * so the only thing the tile size changes is the file. Per-pixel random alpha
  * is close to incompressible: 720px lands at 387KB, 256px at 30KB, and on
  * structureless noise the shorter repeat is not visible.

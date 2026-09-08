@@ -6,8 +6,8 @@ import { bothSides, mandate } from "@/content/market-data";
  * segment, and both sides of the table.
  *
  * **NEITHER OF THESE CARRIES A FIGURE**, so the site's no-figures rule
- * survives intact. Three market charts briefly sat here — the listed/private
- * crossover, the holding period, and family-office growth — and they were the
+ * survives intact. Three market charts briefly sat here - the listed/private
+ * crossover, the holding period, and family-office growth - and they were the
  * only statistics that have ever shipped on this site. They were removed the
  * same day (`git show` this file's history), which means the reasoning in the
  * header of content/manifesto.ts still holds without an exception attached to
@@ -15,12 +15,12 @@ import { bothSides, mandate } from "@/content/market-data";
  * not typed into a path here.
  *
  * What these two draw is the firm's own segment definition, not a market
- * measurement — a commercial claim about scope, which needs a different kind
+ * measurement - a commercial claim about scope, which needs a different kind
  * of sign-off from a sourced number.
  *
  * Their claim lines are NOT drawn in the SVG. They render as HTML beneath the
  * plate, where they are selectable, searchable and scale with the reader's own
- * type size — none of which is true of `<text>` in a viewBox.
+ * type size - none of which is true of `<text>` in a viewBox.
  *
  * Authoring rules (frame bound, caption baseline, legend columns, `dgm-*`
  * rungs, tokens only) are in the header of solutions-media.tsx. These follow
@@ -36,7 +36,7 @@ import { bothSides, mandate } from "@/content/market-data";
    frame lying about where the mandate ends.
 
    Both rows share one x scale even though they name different things, because
-   the claim is that they are the SAME threshold seen from either side —
+   the claim is that they are the SAME threshold seen from either side -
    drawing them on two scales would quietly deny that.
    ------------------------------------------------------------------------- */
 
@@ -77,8 +77,8 @@ export function ThresholdDiagram() {
         strokeDasharray="5 5"
       />
       {/* LEFT of the rule, ranged right, because there is no room on the
-          other side. `cut` is derived — it is the midpoint between the last
-          in-mandate stage and the first one outside — and with five steps it
+          other side. `cut` is derived - it is the midpoint between the last
+          in-mandate stage and the first one outside - and with five steps it
           lands at 526, leaving 94 units to the frame edge for a 27-character
           run. "THE INSTITUTIONAL THRESHOLD" ran to about 840 and was cut off
           mid-word at every viewport. Abutting the rule from the left names
@@ -183,7 +183,7 @@ export function BothSidesDiagram() {
         const x = xs[i]!;
         const cx = x + BOX.w / 2;
         // Left box points down into the network, right box points up out of
-        // it. See the note above — the directions are the claim.
+        // it. See the note above - the directions are the claim.
         const down = i === 0;
         return (
           <g key={s.title}>

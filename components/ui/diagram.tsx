@@ -13,18 +13,18 @@
  *  - `Plate` carries `data-band="dark"`, which is what makes art written
  *    against `fg` / `line` / `accent` come out light-on-dark inside a white
  *    section. A diagram outside a `data-band="dark"` subtree renders as dark
- *    ink on white — correct by the token rules, and not what the art expects.
+ *    ink on white - correct by the token rules, and not what the art expects.
  *
- * The rules for authoring a diagram against these — the legend's fixed
- * columns, the derived-count invariant, rungs rather than literals — are in
+ * The rules for authoring a diagram against these - the legend's fixed
+ * columns, the derived-count invariant, rungs rather than literals - are in
  * the header of components/ui/solutions-media.tsx.
  */
 
 /**
  * Shared canvas.
  *
- * The height is set so the drawn content ENDS at ~499 in every diagram — the
- * legend baseline — leaving an even margin top and bottom. Get this wrong and
+ * The height is set so the drawn content ENDS at ~499 in every diagram - the
+ * legend baseline - leaving an even margin top and bottom. Get this wrong and
  * the artwork centres on the box rather than on its own content, which reads
  * as the whole card being bottom-heavy. All six share the bound so they sit at
  * the same height down the page, which matters now that five stack in a
@@ -48,15 +48,15 @@ export function Frame({ children }: { children: React.ReactNode }) {
  * Why `max-w-[560px]`, and why the width is no longer per-breakpoint.
  *
  * SVG type scales with the frame, so the rendered size of every label is
- * (frame width / 620) x its user-unit size. The card is fluid — 644px on a
+ * (frame width / 620) x its user-unit size. The card is fluid - 644px on a
  * wide desktop, 524px at 1200, 960px when it goes full-width on a tablet, and
- * 350px on a 390px phone — so a percentage width made that ratio swing by
+ * 350px on a 390px phone - so a percentage width made that ratio swing by
  * 2.2x and the labels with it.
  *
  * This was three rules (84% / 68% at 1199 / 94% at 809) chosen to compensate
  * per band. They were derived from card widths that are no longer true and
  * they overshot: on a 1000px viewport the tablet card is 960px, and 68% of
- * that is a 1.05x scale — the diagram rendered LARGER than its design size.
+ * that is a 1.05x scale - the diagram rendered LARGER than its design size.
  *
  * One rule with a cap is both simpler and steadier. 94% keeps a margin inside
  * the card; the 560px cap stops the tablet blow-up. From 600px to 1600px the
@@ -105,7 +105,7 @@ export function Caption({
  * `max-w-[720px]` applies ONLY on the stacked layout, and only there is it
  * safe: below 1199px the card is `w-full flex-none`, so capping it cannot
  * affect the desktop row where `flex-1` plus the aspect ratio drives the row
- * height. Without it a full-width card on a tablet was 1150x1094px — a plate
+ * height. Without it a full-width card on a tablet was 1150x1094px - a plate
  * taller than the viewport with a 560px diagram floating in the middle of it,
  * 51% of the width empty. That was always slightly absurd; it only became
  * visible when the diagram stopped growing to fill it. At 720px the card is
@@ -117,7 +117,7 @@ export function Caption({
  * it, so copy length cannot move the layout.
  *
  * The row's share of the WIDTH is split out from the aspect ratio so `Figure`
- * can take the same share while sizing its plate separately — a captioned
+ * can take the same share while sizing its plate separately - a captioned
  * picture is a plate PLUS a caption, so the two cannot carry one class between
  * them and still sit in a row the way a bare plate does.
  */
@@ -127,7 +127,7 @@ const ROW_SIZING =
 const PLATE_SIZING = `aspect-[1.05098/1] ${ROW_SIZING}`;
 
 /**
- * `className` REPLACES the sizing and only the sizing — the surface (wash,
+ * `className` REPLACES the sizing and only the sizing - the surface (wash,
  * grain, `data-band="dark"`, radius) is shared and not overridable, so two
  * plates on one page cannot end up different materials. `Figure` uses it to
  * flatten the aspect for its grids.
@@ -164,19 +164,19 @@ export function Plate({
  * A plate with its claim and source beneath it.
  *
  * The five market diagrams carry figures, and a figure on this site has to say
- * where it came from — so the attribution travels with the picture rather than
+ * where it came from - so the attribution travels with the picture rather than
  * living in a footnote somewhere else on the page.
  *
  * **The claim and source are HTML, not `<text>` in the viewBox.** SVG text is
  * scaled by the frame, so at three-across it would render around 10px with no
  * way for a reader to enlarge it; as HTML it is selectable, searchable,
  * translatable and scales with the reader's own type size. It is also the only
- * part of these diagrams a screen reader can reach — `Frame` is `aria-hidden`,
+ * part of these diagrams a screen reader can reach - `Frame` is `aria-hidden`,
  * which is correct for the picture and would not be for its source.
  *
  * `size` overrides the plate's aspect, and `className` the figure's share of
  * the row. Both default to the media row's own values, so a captioned picture
- * drops into a row beside a text column exactly where a bare `Plate` would —
+ * drops into a row beside a text column exactly where a bare `Plate` would -
  * that is how the layer panels on /about carry a picture that states its own
  * subject while the layer's copy sits beside it.
  */

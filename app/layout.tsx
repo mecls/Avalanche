@@ -9,7 +9,7 @@ import "./globals.css";
  * ONE face for the whole site: Satoshi, on everything. Headings, figures,
  * body, buttons, nav. No secondary display face and no serif anywhere.
  *
- * SELF-HOSTED, not from Google Fonts — Satoshi is a Fontshare (Indian Type
+ * SELF-HOSTED, not from Google Fonts - Satoshi is a Fontshare (Indian Type
  * Foundry) release and is not on Google's catalogue at all. One 42KB variable
  * woff2, so no third-party connection and nothing render-blocking. The file
  * has been in app/fonts/ since the first fundraisr-matched build; it went
@@ -21,7 +21,7 @@ import "./globals.css";
  * ROMAN ONLY, and that constrains the design rather than the other way round:
  * this build carries no `ital` or `slnt` axis and reports `italicAngle: 0`, so
  * ANY italic on the site would be a browser-synthesised slant. Nothing is set
- * in italic — the hero H1's lead words and the closing note both dropped theirs
+ * in italic - the hero H1's lead words and the closing note both dropped theirs
  * when this landed. Do not add an `italic` class anywhere without adding
  * Satoshi-VariableItalic.woff2 (~43KB) alongside this.
  *
@@ -68,7 +68,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         measured from a one-page reference; this site has four routes, and on
         the three without a hero an absolutely-positioned header with no
         reserved space lands directly on top of the first section's heading.
-        Net effect on the homepage is identical — the hero still starts at y:0.
+        Net effect on the homepage is identical - the hero still starts at y:0.
       */}
       <body className="flex min-h-full flex-col bg-ground text-fg">
         <SiteNav />

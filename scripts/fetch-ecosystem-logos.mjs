@@ -3,7 +3,7 @@
 //
 // These are NOT the client logos. They are dark/colour marks meant for a light
 // ground, so they are deliberately left untouched by scripts/logos-to-alpha.mjs
-// and must never carry the `logo-mark` class — inverting them would blow them
+// and must never carry the `logo-mark` class - inverting them would blow them
 // out to white on a white band. See content/ecosystem-logos.ts.
 import { mkdir, writeFile } from 'node:fs/promises'
 import sharp from 'sharp'
@@ -54,7 +54,7 @@ for (const [name, url] of SOURCES) {
   // One of these is an Illustrator export carrying `xmlns:x="ns_extend;"` and
   // an <sfw> metadata block on `xmlns="ns_sfw;"`. Those are not absolute URIs,
   // so librsvg rejects the whole file. Strip the non-absolute namespaces and
-  // the metadata block — nothing renders from either.
+  // the metadata block - nothing renders from either.
   if (type.includes('svg')) {
     raw = Buffer.from(
       raw

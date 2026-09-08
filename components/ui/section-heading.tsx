@@ -3,8 +3,8 @@ type Props = {
   title: string;
   /**
    * Trailing substring of `title` that used to be rendered in an italic
-   * accent. Headings are flat in this design — the accent carries graphics,
-   * not a word inside a headline — so this is accepted and ignored. Kept
+   * accent. Headings are flat in this design - the accent carries graphics,
+   * not a word inside a headline - so this is accepted and ignored. Kept
    * because the emphasis points are editorial information worth not throwing
    * away.
    */

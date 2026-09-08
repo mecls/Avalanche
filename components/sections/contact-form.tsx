@@ -9,8 +9,8 @@ import { site } from "@/content/copy";
  * The nine-step qualification questionnaire on /get-in-touch.
  *
  * THE FOURTH CLIENT COMPONENT, and the first one whose state is its own. The
- * other three read EXTERNAL state — scroll offset, reduced-motion, a route
- * change — which is why the repo's rule is `useSyncExternalStore` rather than
+ * other three read EXTERNAL state - scroll offset, reduced-motion, a route
+ * change - which is why the repo's rule is `useSyncExternalStore` rather than
  * `useState` + `useEffect`. Nothing here is external: the step and the answers
  * exist only inside this form, so plain `useState` is correct and the
  * `react-hooks/set-state-in-effect` rule this repo enforces is not in play.
@@ -18,12 +18,12 @@ import { site } from "@/content/copy";
  *
  * IT DOES NOT SUBMIT ANYWHERE. `send()` validates, logs and shows the success
  * panel. There is no route handler, no email service, no third-party endpoint
- * — that was a deliberate decision so the flow could be seen and approved
+ * - that was a deliberate decision so the flow could be seen and approved
  * before a destination is chosen. The TODO is on `send()`.
  *
  * One question per step, because nine fields on one screen is a wall and the
  * last four are the qualifying ones we actually need answered. Choosing an
- * option advances — EXCEPT on the last question, where it only selects. Ending
+ * option advances - EXCEPT on the last question, where it only selects. Ending
  * a form by submitting the instant someone touches the ninth option gives them
  * no moment to change their mind, so the final step keeps a deliberate button.
  */
@@ -63,7 +63,7 @@ export function ContactForm() {
   // directly above the question, so the next Tab reaches the first option.
   //
   // Sets no state, and skips the first render so loading the page does not
-  // yank focus — and the scroll position with it — into the card.
+  // yank focus - and the scroll position with it - into the card.
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
@@ -92,7 +92,7 @@ export function ContactForm() {
       setError("This one still needs an answer.");
       return;
     }
-    // TODO(miguel): this is where the submission goes. Nothing is sent today —
+    // TODO(miguel): this is where the submission goes. Nothing is sent today -
     // see the header of content/contact.ts. Whatever lands here must NOT put
     // these answers in a URL; they include a name and an email address.
     console.info("[get-in-touch] submission (not sent anywhere yet)", answers);
@@ -187,7 +187,7 @@ export function ContactForm() {
                   aria-pressed={on}
                   onClick={() => {
                     set(q.id, opt);
-                    // The last question only selects — see the note above.
+                    // The last question only selects - see the note above.
                     if (!last) setStep((s) => s + 1);
                   }}
                   className={`flex items-center gap-3.5 border px-4 py-3.5 text-left text-[15px] leading-5 transition-colors duration-150 ${

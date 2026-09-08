@@ -17,7 +17,7 @@ import { site } from "@/content/copy";
 const WIDGET_SRC = "https://assets.calendly.com/assets/external/widget.js";
 
 /**
- * Calendly inline embed, deferred until it scrolls into view — the widget
+ * Calendly inline embed, deferred until it scrolls into view - the widget
  * pulls ~100KB and an iframe, and it always sits below the fold.
  */
 export function CalendlyEmbed() {

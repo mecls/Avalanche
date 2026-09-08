@@ -4,10 +4,10 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { thesis } from "@/content/copy";
 
 /**
- * "Why Avalanche" — three pillars. It opens the body of /about.
+ * "Why Avalanche" - three pillars. It opens the body of /about.
  *
  * MOUNTED AGAIN AFTER A WEEK OFF. It was on the homepage until 1 Sep 2026 and
- * was kept unmounted rather than deleted because the copy is genuine — one of
+ * was kept unmounted rather than deleted because the copy is genuine - one of
  * the few blocks on this site lifted from avalanche-capital.com rather than
  * drafted. It went back on 7 Sep 2026, when /team and /manifesto merged into
  * /about and a "why this firm" block finally had somewhere it belonged.
@@ -15,7 +15,7 @@ import { thesis } from "@/content/copy";
  * **IT IS ON THE LATTICE NOW, AND THAT IS THE POINT OF THIS FILE.** It shipped
  * as `rounded-lg` filled panels on a 1px-gap grid, with a blue `eyebrow`
  * ordinal top-left and a 24px title. Nothing else on the site does that. The
- * signature card idiom is `BracketGrid` — square corners, a hairline lattice
+ * signature card idiom is `BracketGrid` - square corners, a hairline lattice
  * built from `border-t border-l` on the wrapper and `border-r border-b` per
  * cell, a 13rem floor, a faint grey TABULAR index in the top-RIGHT corner, the
  * title pushed to the bottom by `justify-between`, and two offset crop-mark
@@ -23,11 +23,11 @@ import { thesis } from "@/content/copy";
  * types, verticals) and /about used it nowhere, which is most of why the page
  * read as a different template. Moving to the shared component fixed the
  * ordinal's colour, its position, the title size, the cell height and the
- * corner brackets in one move — none of those is set here any more.
+ * corner brackets in one move - none of those is set here any more.
  *
  * **The icons are new marks, not borrowed ones.** These cells shipped without
- * a glyph because `components/ui/icons.tsx` held SECTOR marks only — funds,
- * credit, realestate — and there is no honest mapping from those to "Global
+ * a glyph because `components/ui/icons.tsx` held SECTOR marks only - funds,
+ * credit, realestate - and there is no honest mapping from those to "Global
  * Network" or "Precision & Execution"; a mismatched glyph means something
  * else. Three abstractions were drawn for them instead, to the same 24/1.25
  * spec, so they sit beside the sector marks without reading as another set.
@@ -44,7 +44,7 @@ import { thesis } from "@/content/copy";
  *
  * **PUTTING THE PICTURE BACK MEANS PUTTING ALL THREE BACK.** The scrim was
  * derived twice against two different stills and the numbers moved a long way
- * between them — against this city frame, whose window highlights reach a
+ * between them - against this city frame, whose window highlights reach a
  * relative luminance of 0.99, `0.92/0.90/0.88` puts the lattice's three
  * columns at 7.7, 6.7 and 6.5:1, and the flatter ramp `CtaBand` uses does not
  * work here because the lattice spans the whole shell rather than one left
@@ -55,7 +55,7 @@ import { thesis } from "@/content/copy";
  * `data-band="dark"` IS NOW THE ONLY THING PAINTING THIS BAND, which makes it
  * more load-bearing than it was rather than less. It points `border-line` at
  * the translucent-white value the lattice below needs for its hairlines, and
- * it paints `ground` — a job it used to share with the image layer's own
+ * it paints `ground` - a job it used to share with the image layer's own
  * `bg-ground` fallback.
  */
 export function Thesis({ className = "" }: { className?: string } = {}) {
@@ -70,7 +70,7 @@ export function Thesis({ className = "" }: { className?: string } = {}) {
           image/scrim/grain layers against this section; with nothing absolute
           inside it, a stacking context here only makes the band harder to
           reason about. The inner `shell` lost its `relative z-10` for the same
-          reason — there is nothing left for it to sit above. */}
+          reason - there is nothing left for it to sit above. */}
       <div className="shell">
         <SectionHeading
           eyebrow={thesis.eyebrow}

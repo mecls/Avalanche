@@ -1,11 +1,11 @@
 /**
  * Case studies, captured from fundraisr.ai/customers.
  * Results are verbatim. `category` is our own classification, used by the
- * Customers page filter — review before publishing.
+ * Customers page filter - review before publishing.
  *
  * TEN, DOWN FROM THIRTEEN. Rimla Capital, Catalyst Capital and Foggprevail
  * Capital were removed on 9 Sep 2026 by request. Their marks are still in
- * `public/logos/cases/` and are now unreferenced — kept rather than deleted,
+ * `public/logos/cases/` and are now unreferenced - kept rather than deleted,
  * because they are already processed to white-on-transparent by
  * scripts/logos-to-alpha.mjs and re-adding a study should not mean
  * re-processing an asset. `git log -S "rimla-capital"` has the three entries.
@@ -19,7 +19,7 @@
  * members and both came off the page that day with Rimla Capital. A filter
  * option that can only ever return nothing is worse than one that is missing:
  * it reads as a segment we serve and then shows a blank grid to anyone who
- * picks it. Put it back WITH a study, not before — and note that removing it
+ * picks it. Put it back WITH a study, not before - and note that removing it
  * narrows the `Category` type, so a study cannot silently be filed under it
  * either.
  *
@@ -38,7 +38,7 @@ export type CaseStudy = {
   result: string;
   /**
    * Pulled out of `result`, and it used to be the accent METRIC PILL on the
-   * homepage's case-study card. **Nothing displays it since 9 Sep 2026** —
+   * homepage's case-study card. **Nothing displays it since 9 Sep 2026** -
    * the card's top half came off when the slide was rebuilt around a
    * full-column picture, and it was the site's last pill. It is not dead
    * data: `/customers` searches it (`case-study-grid.tsx`), so "$35M" and
@@ -155,14 +155,14 @@ export const caseStudies: CaseStudy[] = [
  * THE TWO SURFACED ON THE HOMEPAGE, in order. It was one until 8 Sep 2026.
  *
  * They are looked up by slug rather than listed inline so the homepage and
- * the /customers grid can never disagree about a client — there is one record
+ * the /customers grid can never disagree about a client - there is one record
  * per client and both pages read it. Adding a third here is enough to render
  * it; the section maps this array.
  *
  * WHAT THE HOMEPAGE STILL TAKES FROM THE RECORD IS `name` AND `category`,
  * nothing more, since the result sentence and the metric pill came off the
- * slide on 9 Sep 2026. The rule still earns its keep — a client cannot be
- * filed as Startups here and Funds there — but `result` and `metric` are read
+ * slide on 9 Sep 2026. The rule still earns its keep - a client cannot be
+ * filed as Startups here and Funds there - but `result` and `metric` are read
  * by /customers alone now, so editing either is no longer a two-page change.
  */
 export const featuredCaseStudies = ["neurable", "nobody-studios"].map(

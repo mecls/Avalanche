@@ -7,7 +7,7 @@
  * Fundraising view: PreMarketing, Engagement, Pipeline and Meeting. BuySide
  * was drawn 9 Sep for the Secondaries block of the same name.
  *
- * **TWO ARE KEPT AND NOT RENDERED** — Engagement and Meeting — because the
+ * **TWO ARE KEPT AND NOT RENDERED** - Engagement and Meeting - because the
  * blocks they were drawn for were rewritten or removed on 9 Sep 2026. Each
  * says so at the top of its own comment, including which block it must NOT be
  * put back beside. `PendingPlate` now covers nothing: every block on both
@@ -15,13 +15,13 @@
  * that stops the next block arriving without either and shipping silently.
  *
  * These REPLACED public/solutions/{secondaries,fundraising}.webp, a pair of
- * 1760px raster plates — now deleted, recoverable from commit d797028^. Three
+ * 1760px raster plates - now deleted, recoverable from commit d797028^. Three
  * things were wrong with them, and all three were structural rather than
  * matters of taste:
  *
  *  1. They carried a hardcoded #2d6a9f-ish blue that belonged to no token and
  *     matched nothing else on the site. (The palette's accent is itself blue
- *     now — #73B6FF — which does not retroactively make that art right: the
+ *     now - #73B6FF - which does not retroactively make that art right: the
  *     objection was a one-off literal, not the hue. Drawn against the token,
  *     these followed the palette there for free.)
  *  2. They were light plates on a dark card, so they read as a screenshot
@@ -32,28 +32,28 @@
  * Drawn in SVG against the site's own tokens, so they follow the band like
  * everything else: on the `data-band="dark"` plate `fg` is white, `accent` is
  * the brand blue as supplied (#73B6FF, which is already lit for a dark
- * ground) and `line` is a white hairline. Nothing here is hardcoded — the
+ * ground) and `line` is a white hairline. Nothing here is hardcoded - the
  * accent has been gold, then obsidian, then #3056EE, then this, and not one
  * value in this file has changed for any of it. That is the whole point of
  * naming by role.
  *
- * ONE OF THE ACCENT'S FOUR HOMES — see the accent section in README. These
+ * ONE OF THE ACCENT'S FOUR HOMES - see the accent section in README. These
  * earn it on different grounds from the eyebrows: here the colour is not
  * emphasis but the diagram's only means of saying which route matched, which
  * segment was selected, which branch was taken. Take it out and the pictures
  * stop working. That is also why every unselected element is `fg-muted` at
- * 35-50% rather than a second hue — the distinction has to survive as a
+ * 35-50% rather than a second hue - the distinction has to survive as a
  * LUMINANCE step for a colour-blind reader, not just as a colour change.
  *
- * STILL ILLUSTRATIVE. All six are schematics — anonymous positions and
+ * STILL ILLUSTRATIVE. All six are schematics - anonymous positions and
  * counterparties, generic sector names, no real figures. Every count that
  * appears in a pill ("8 matched", "2 committed", "3 of 4 aligned") is DERIVED
  * from the array drawn beside it in the same render, never typed twice, so a
  * picture cannot contradict its own caption. Keep that property when editing.
  * See docs/COPY-REVIEW.md.
  *
- * TYPE SIZES ARE NOT SET HERE. Every run takes a rung — `dgm-xs` through
- * `dgm-xl` — defined in globals.css, because the sizes have to change per
+ * TYPE SIZES ARE NOT SET HERE. Every run takes a rung - `dgm-xs` through
+ * `dgm-xl` - defined in globals.css, because the sizes have to change per
  * breakpoint and a `<text>` in a viewBox is scaled by the frame. Do not put a
  * `text-[Npx]` back on one of these; the whole point of the rungs is that a
  * literal cannot be re-tuned when the frame changes. Take a rung, or add one.
@@ -62,7 +62,7 @@
  * x=320/337, identically in every one. It has to be, because SVG does not
  * reflow. The positions were originally set per diagram to sit just past each
  * one's own first label, which worked only at the size those labels happened
- * to be — when the rungs grew the type for phones, the first label ran under
+ * to be - when the rungs grew the type for phones, the first label ran under
  * the second entry's dot in every diagram at once. x=320 clears the longest
  * first label ("Meets mandate criteria", ~286 units at the largest rung) with
  * room left, and the longest second label still ends near 517 of 620. Keep
@@ -80,13 +80,13 @@ import { Caption, Frame } from "@/components/ui/diagram";
  * that are awaiting both artwork and copy.
  *
  * The choice was to leave those cards empty, to repeat a diagram we already
- * have, or to say plainly that the artwork is pending — this is the third. A
+ * have, or to say plainly that the artwork is pending - this is the third. A
  * repeated diagram is worse than an obvious blank: each one MEANS something
  * specific, so showing the counterparty-routing picture beside a pricing block
  * would be illustrating the wrong claim.
  *
  * Deliberately quiet and deliberately not mistakable for finished art: a
- * dashed frame, a hairline cross, and a label. It carries NO accent — the
+ * dashed frame, a hairline cross, and a label. It carries NO accent - the
  * accent marks something real, and there is nothing real here yet.
  *
  * Delete a block's `pending` flag and give it a diagram in MEDIA to replace
@@ -184,7 +184,7 @@ function Entry({
 }
 
 /**
- * SECONDARIES 02 — Sell-side advisory. A held position routed straight to one
+ * SECONDARIES 02 - Sell-side advisory. A held position routed straight to one
  * counterparty, with the unmatched routes it bypasses drawn faintly behind it.
  *
  * **IT MOVED HERE FROM BLOCK 03 ON 9 Sep 2026** and it is a better fit than it
@@ -199,7 +199,7 @@ function Entry({
  * It is also 3.0:1 brighter than a 50%-opacity fg-muted ghost, and that second
  * margin is the one that matters: hue alone would drop this diagram for a
  * colour-blind reader. Darkening the accent toward the light-band value
- * collapses it — see the note in globals.css.
+ * collapses it - see the note in globals.css.
  */
 export function SecondariesDiagram() {
   const L = 252;
@@ -300,12 +300,12 @@ export function SecondariesDiagram() {
 }
 
 /**
- * SECONDARIES 01 — Buy-side advisory. Sourced positions meeting a vetting
+ * SECONDARIES 01 - Buy-side advisory. Sourced positions meeting a vetting
  * line, and only the ones that clear it reaching the buyer's column.
  *
  * **THE CLAIM IS THE MISSING ROW.** The block says buyers get "curated access
  * to verified secondary opportunities" without "doing the legwork of finding a
- * credible seller themselves" — so the picture has to show work being done ON
+ * credible seller themselves" - so the picture has to show work being done ON
  * THE BUYER'S BEHALF, not a match being made. Both columns therefore carry the
  * same labels and the right one is SHORTER: Position 03 is sourced, does not
  * clear the line, and is visibly absent on the other side. A reader can name
@@ -313,14 +313,14 @@ export function SecondariesDiagram() {
  * any count.
  *
  * That is also what keeps it from reading as a repeat of the sell-side picture
- * above. That one is a SEARCH — equal columns, crossing ghosts, one route
- * chosen out of many. This is a FILTER — one column entering, a shorter column
+ * above. That one is a SEARCH - equal columns, crossing ghosts, one route
+ * chosen out of many. This is a FILTER - one column entering, a shorter column
  * leaving, nothing crossing. Same primitives, opposite motion.
  *
  * The count in the pill is derived from `SOURCED` in the same render, like
  * every other pill in this file, so it cannot drift from the rows drawn under
  * it. The dashed rule is `line-soft` rather than the accent: it is the
- * threshold, not the outcome, and the accent in this frame has one job —
+ * threshold, not the outcome, and the accent in this frame has one job -
  * saying which positions passed.
  */
 const SOURCED = [
@@ -354,7 +354,7 @@ export function BuySideDiagram() {
 
       {/* The vetting line, drawn first so every route sits on top of it.
           `line`, NOT `line-soft`: soft is the token for a route that was not
-          taken, and at 1px on this plate it did not render at all — the
+          taken, and at 1px on this plate it did not render at all - the
           screened-out stub simply trailed off into space and the picture
           stopped being a filter. This is the threshold every route is measured
           against, so it has to be as visible as a box outline. */}
@@ -412,7 +412,7 @@ export function BuySideDiagram() {
       ))}
 
       {/* On the line and ABOVE the first row, in the gap between the two
-          columns — it labels the threshold, and anywhere lower would sit
+          columns - it labels the threshold, and anywhere lower would sit
           beside a row and read as labelling that one. y=26 rather than 45:
           at 45 the pill's lower edge crossed the top-right corner of the
           first left box, whose top is y=64. It clears the caption baseline
@@ -459,13 +459,13 @@ export function BuySideDiagram() {
  * type size as the other five.
  *
  * Sectors used to run along the BOTTOM on an 80-unit pitch. Six of them, and
- * the longest ("Consumer") is 109 units wide at the phone rung — so the labels
+ * the longest ("Consumer") is 109 units wide at the phone rung - so the labels
  * physically overlapped, and the only fix available was a capped `dgm-axis`
  * rung that rendered ~8.5px against ~10px everywhere else. Six horizontal
  * labels need about 700 units of pitch; the frame is 620, and the stage-label
  * gutter was competing for the same space. No pitch fits.
  *
- * Sectors are now ROWS. A vertical list costs nothing per character — the
+ * Sectors are now ROWS. A vertical list costs nothing per character - the
  * labels are right-aligned into a 110-unit gutter and only have to clear each
  * other vertically, where the pitch is set by line height rather than by word
  * length. Stages take the horizontal axis instead: five instead of six, and
@@ -486,14 +486,14 @@ const ROW_YY = [100, 155, 210, 265, 320, 375];
 const LABEL_X = 110;
 
 /** The selected block: stages 1-2 x sectors 1-4. Eight dots, and the pill says
- *  eight — the caption is derived from the geometry, not written beside it.
+ *  eight - the caption is derived from the geometry, not written beside it.
  *  It was 4 stages x 2 sectors before the transpose; still eight, because the
  *  count is read off the rectangle rather than typed. */
 const SEL = { c0: 1, c1: 2, r0: 1, r1: 4 };
 const MATCHED_COUNT = (SEL.c1 - SEL.c0 + 1) * (SEL.r1 - SEL.r0 + 1);
 
 /**
- * 02 — Fundraising. The investor universe segmented by stage and sector, with
+ * 02 - Fundraising. The investor universe segmented by stage and sector, with
  * the subset matching the mandate's criteria selected.
  *
  * This is the same idea as the asset it replaces, drawn properly: the
@@ -569,7 +569,7 @@ export function FundraisingDiagram() {
       ))}
 
       {/* Straddles the selection's top edge, the way a real selection readout
-          does — not parked in a corner. */}
+          does - not parked in a corner. */}
       <g>
         <rect
           x={(x0 + x1) / 2 - 62}
@@ -614,7 +614,7 @@ export function FundraisingDiagram() {
  *
  *  - Tokens only. No hex anywhere. `accent` is the ONE saturated thing in each
  *    frame and it always marks the same idea: the thing that matched, aligned
- *    or completed. Everything unselected is `fg-muted` at 35-50% — a real
+ *    or completed. Everything unselected is `fg-muted` at 35-50% - a real
  *    luminance step below the accent, not just a different hue, because hue
  *    alone drops the distinction for a colour-blind reader.
  *  - Every count that appears in a pill is DERIVED from the array drawn beside
@@ -623,7 +623,7 @@ export function FundraisingDiagram() {
  *    above so all six sit at the same height across the two views.
  *  - Still schematic. "Investor 07", a 7/5/3/2 funnel and four generic mandate
  *    parameters are the shape of the work, not figures. Nothing here is a
- *    claim, and nothing should become one — see docs/COPY-REVIEW.md.
+ *    claim, and nothing should become one - see docs/COPY-REVIEW.md.
  */
 
 /** A labelled node box, used by the sequence diagram. */
@@ -666,7 +666,7 @@ function Node({
 }
 
 /**
- * 01 — Deal-readiness. Three kinds of raise material converging into one
+ * 01 - Deal-readiness. Three kinds of raise material converging into one
  * positioned package.
  *
  * The convergence IS the claim: the block says the materials are benchmarked
@@ -679,7 +679,7 @@ function Node({
  * They read "Structure / Thesis / Target profile" until 9 Sep 2026, because
  * that was the list in the block's previous body. New copy landed naming the
  * dataroom, the decks and the supporting documentation instead, so the chips
- * moved with it — a diagram that labels three things its own copy no longer
+ * moved with it - a diagram that labels three things its own copy no longer
  * mentions is the failure the "do not reuse a diagram" rule exists to stop.
  * Re-read `fundraisingView` block 01 before editing either.
  */
@@ -764,7 +764,7 @@ export function PreMarketingDiagram() {
       ))}
 
       {/* Straddles the package's top edge, the way the selection readout does
-          in 02 — a label on the thing, not floating chrome. */}
+          in 02 - a label on the thing, not floating chrome. */}
       <g>
         <rect
           x={pkg.x + pkg.w / 2 - 56}
@@ -800,8 +800,8 @@ export function PreMarketingDiagram() {
 }
 
 /**
- * KEPT, NOT RENDERED. It was Fundraising block 03 — "Personalised engagement /
- * Scalable outreach with a personal touch." — until that block was given deal-
+ * KEPT, NOT RENDERED. It was Fundraising block 03 - "Personalised engagement /
+ * Scalable outreach with a personal touch." - until that block was given deal-
  * closure copy on 9 Sep 2026. **Do not put it back beside block 03**: it draws
  * follow-ups branching on an engagement signal, and the block now talks about
  * term sheets, datarooms and a signed commitment. `PipelineDiagram` took the
@@ -809,7 +809,7 @@ export function PreMarketingDiagram() {
  * it, and outreach sequencing is the kind of step a future view could want; it
  * is unreferenced by the MEDIA map today, so it costs nothing but the file.
  *
- * 03 — Personalised engagement. A multi-touch sequence that branches on an
+ * 03 - Personalised engagement. A multi-touch sequence that branches on an
  * engagement signal.
  *
  * The branch is the point of the block: the copy says follow-ups are sequenced
@@ -915,18 +915,18 @@ export function EngagementDiagram() {
 }
 
 /**
- * 03 — Deal closure. Four stages, top-aligned, so the funnel is the shape of
+ * 03 - Deal closure. Four stages, top-aligned, so the funnel is the shape of
  * the columns rather than something drawn.
  *
  * **IT WAS DRAWN FOR BLOCK 04 AND MOVED UP WHEN THAT BLOCK WAS REMOVED**
  * (9 Sep 2026). That is not a diagram being reused to fill a card it does not
- * describe — the note this file's map carries — it is the picture arriving at
+ * describe - the note this file's map carries - it is the picture arriving at
  * the block it always argued for. Read the sentence below: it was already
  * true of "reaching a signed commitment" while the block above it was about
  * managing a pipeline, which is the mismatch that made the move obvious.
  *
  * The counts are the cards: `STAGES` holds the number of cards per column and
- * the pill reads the last one, so the readout cannot drift from the picture —
+ * the pill reads the last one, so the readout cannot drift from the picture -
  * the same rule as the "8 matched" pill in 02. Only the committed column is
  * accented, because the block is about reaching a signed commitment and that
  * is the one state worth marking.
@@ -1051,11 +1051,11 @@ export function PipelineDiagram() {
  * because the step could return and because the counts below are the sort of
  * thing that is expensive to get right twice.
  *
- * 05 — Meeting intelligence. One anonymous counterparty on the left, the
+ * 05 - Meeting intelligence. One anonymous counterparty on the left, the
  * mandate parameters that align on the right.
  *
  * "3 of 4" is COUNTED from `PARAMS`, and the enclosing rect is drawn from the
- * same array — so the pill, the box and the dots cannot disagree. The aligned
+ * same array - so the pill, the box and the dots cannot disagree. The aligned
  * entries are a contiguous run because the rect has to enclose them; if a
  * future edit makes them non-contiguous, the rect stops being honest and the
  * shape has to change with it.
@@ -1088,7 +1088,7 @@ export function MeetingDiagram() {
         Mandate parameters
       </Caption>
 
-      {/* The counterparty. Anonymous on purpose — an initialled disc and a
+      {/* The counterparty. Anonymous on purpose - an initialled disc and a
           generic descriptor, so nothing reads as a real investor. */}
       <rect
         x={card.x}

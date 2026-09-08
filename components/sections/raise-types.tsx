@@ -4,7 +4,7 @@ import { Icon, type IconName } from "@/components/ui/icons";
 import { raiseTypes } from "@/content/copy";
 
 /** /solutions/fundraising: what we raise, between the process steps and the
- *  closing band. It was the homepage's until 8 Sep 2026 — see the route. */
+ *  closing band. It was the homepage's until 8 Sep 2026 - see the route. */
 export function RaiseTypes() {
 
   return (

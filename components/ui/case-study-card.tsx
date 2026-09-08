@@ -3,8 +3,8 @@ import type { CaseStudy } from "@/content/case-studies";
 
 /*
  * `CaseStudyCard` USED TO LIVE HERE AND IS GONE (9 Sep 2026, by request).
- * It was the homepage's wide treatment — the client's mark, the accent metric
- * pill and our result sentence in a bordered panel — and the case-study slide
+ * It was the homepage's wide treatment - the client's mark, the accent metric
+ * pill and our result sentence in a bordered panel - and the case-study slide
  * was rebuilt around a full-column picture instead, with the headline saying
  * what the pill and the sentence both said. Nothing else ever rendered it:
  * /customers draws the tile below, which is a different shape entirely. Two
@@ -19,7 +19,7 @@ import type { CaseStudy } from "@/content/case-studies";
  *
  * No border and no metric pill. The tile's own ground is what separates it
  * from the section, so this only reads as a tile while the section around it
- * is darker than `card` — hence `bg-ground-deep` on that section rather than
+ * is darker than `card` - hence `bg-ground-deep` on that section rather than
  * plain `ground`. The marks are white-on-transparent, so the tile must stay
  * dark; do not put this grid in a `data-band="light"` section.
  */

@@ -2,7 +2,7 @@ import { CtaButton } from "@/components/ui/button";
 import { ctaBand } from "@/content/copy";
 
 /**
- * "Start with a consultation" — the closing block, directly above the footer.
+ * "Start with a consultation" - the closing block, directly above the footer.
  *
  * It used to be the anchor target for every CTA on the site, and its button
  * went straight to an external scheduler. Since /get-in-touch exists (5 Sep
@@ -16,7 +16,7 @@ import { ctaBand } from "@/content/copy";
  * `ctaHref` defaults to /get-in-touch and that page passes its own anchor, so
  * the button scrolls up to the questionnaire rather than reloading the route.
  * The label is "Book a meeting" either way, which reads correctly in both
- * places — do not special-case the copy.
+ * places - do not special-case the copy.
  *
  * `id="get-in-touch"` is kept although nothing on the site targets it now, so
  * that an old `/#get-in-touch` link from outside still lands on the closing
@@ -28,7 +28,7 @@ import { ctaBand } from "@/content/copy";
  * something most readers never reach, and the still already exists and is
  * already cached from the hero's own poster.
  *
- * It carries the same three-layer stack as the hero — image, scrim, grain —
+ * It carries the same three-layer stack as the hero - image, scrim, grain -
  * for the same reason: one long gradient over a wide box bands without the
  * grain to dither it.
  *
@@ -71,13 +71,13 @@ export function CtaBand({
         {/* Eyebrow as a glyph + label, the way the reference opens the block.
             The glyph is a square chip so the row reads as one unit.
 
-            ONE OF THREE ACCENTS LEFT ON THE SITE — see the accent section in
+            ONE OF THREE ACCENTS LEFT ON THE SITE - see the accent section in
             README. It survived the cut because this block is the conversion
             point of every page and the chip renders exactly once on each, so
             the colour lands where a reader is meant to act.
 
-            It stays DECORATIVE — the label beside it is pure white and carries
-            the meaning — because contrast here is measured against a
+            It stays DECORATIVE - the label beside it is pure white and carries
+            the meaning - because contrast here is measured against a
             photograph, not a flat band, and the accent is not calibrated for
             that. This section is not inside a `data-band`, so it takes the
             root (dark) accent, which is correct: the scrim is always dark. */}
@@ -113,7 +113,7 @@ export function CtaBand({
           {ctaBand.body}
         </p>
 
-        {/* Button hard left, caption hard right, sharing a baseline — the
+        {/* Button hard left, caption hard right, sharing a baseline - the
             same bottom-aligned pairing the hero uses. They stack below `sm`,
             where there is no room to read across. */}
         <div className="mt-14 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between sm:gap-10">

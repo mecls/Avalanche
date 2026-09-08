@@ -8,7 +8,7 @@ export function SiteFooter() {
       <div className="shell py-16">
         <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            {/* Same lockup as the nav, one step larger — `h-9` puts its
+            {/* Same lockup as the nav, one step larger - `h-9` puts its
                 wordmark on the cap height of the 30px display text it
                 replaced. The `sr-only` run is the site's full name, which the
                 artwork does not spell: the logo reads "Avalanche", and this

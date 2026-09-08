@@ -8,7 +8,7 @@ import { CtaButton } from "@/components/ui/button";
 import { Logo } from "@/components/ui/logo";
 
 /**
- * Site chrome: ONE element — a 79.2px nav, `absolute` at top:0, which scrolls
+ * Site chrome: ONE element - a 79.2px nav, `absolute` at top:0, which scrolls
  * away with the page.
  *
  * It was two. A `fixed` 37px announcement bar sat above this ("Advising funds,
@@ -24,7 +24,7 @@ import { Logo } from "@/components/ui/logo";
  * re-point its own tokens and avoid white-on-white.
  *
  * An absolute nav only ever sits over the FIRST section, and that never
- * changes after first paint — so the whole thing collapses to one `:has()`
+ * changes after first paint - so the whole thing collapses to one `:has()`
  * rule in globals.css. No scroll listener, no tone state, no hydration gap.
  *
  * Its height is published as `--header-h`: `main` reserves it and the hero
@@ -51,7 +51,7 @@ export function SiteNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  // Reset the mobile sheet on navigation DURING RENDER, not in an effect —
+  // Reset the mobile sheet on navigation DURING RENDER, not in an effect -
   // an effect would paint one frame with the old route's sheet still open.
   const [lastPath, setLastPath] = useState(pathname);
   if (pathname !== lastPath) {
@@ -59,7 +59,7 @@ export function SiteNav() {
     setOpen(false);
   }
 
-  // ABSOLUTE, not fixed, so it scrolls away — and now at top:0, since the bar
+  // ABSOLUTE, not fixed, so it scrolls away - and now at top:0, since the bar
   // that used to offset it is gone. It is transparent at every scroll position
   // and over every band; the only thing that changes is its text colour, and
   // that is the `:has()` rule in globals.css for pages opening on a light band.
@@ -71,11 +71,11 @@ export function SiteNav() {
               so the links stay put as the wordmark and button change width. */}
           <div className="flex flex-1 items-center gap-2.5">
             {/* The logo replaced a 26px Satoshi wordmark on 7 Sep 2026.
-                `h-8` (32px) was the derived match — the lockup's wordmark is
+                `h-8` (32px) was the derived match - the lockup's wordmark is
                 19.35 of its 32 units tall and 26px Satoshi has a 19.24px cap
                 height, so 32px sat on the old wordmark's optical size to
                 within half a percent. **It is `h-7` now, by eye and by
-                request**, which puts the wordmark at a 16.9px cap height —
+                request**, which puts the wordmark at a 16.9px cap height -
                 deliberately smaller than the run it replaced, not matched to
                 it. The derivation is kept because it is the way back if this
                 ever needs to be re-matched rather than re-judged.
@@ -170,7 +170,7 @@ export function SiteNav() {
           </div>
 
           <div className="flex flex-1 items-center justify-end gap-2.5">
-            {/* The client-portal door, and IT DELIBERATELY GOES NOWHERE —
+            {/* The client-portal door, and IT DELIBERATELY GOES NOWHERE -
                 there is no portal and no URL for one yet.
 
                 A `<button>` rather than an `<a>`, which is the same answer
@@ -180,14 +180,14 @@ export function SiteNav() {
                 it, is a worse lie than a control honestly marked unavailable:
                 both put a destination in the DOM and in the status bar that
                 does not exist. `/login` WAS that route for one commit; it was
-                removed with this change — `git show f5117a6` has the page if
+                removed with this change - `git show f5117a6` has the page if
                 a portal ever arrives.
 
                 `aria-disabled` rather than `disabled`: it reports the control
                 as unavailable while keeping it in the tab order and keeping
                 the muted look, where `disabled` would drop it out of the tab
                 order entirely. `text-fg-muted` is the visible half of the same
-                message — an inert control must not look like a working one,
+                message - an inert control must not look like a working one,
                 so there is no hover state either.
 
                 Swap the whole thing for a `<Link href={…}>` when there is
@@ -206,7 +206,7 @@ export function SiteNav() {
             {/* `max-md:hidden`, NOT `hidden md:inline-flex`, and the
                 difference is not cosmetic. `CtaButton` already puts
                 `inline-flex` in its base classes, and Tailwind emits
-                `.inline-flex` AFTER `.hidden` — same specificity, later
+                `.inline-flex` AFTER `.hidden` - same specificity, later
                 source order, so the plain `hidden` never won and this button
                 rendered on phones beside the hamburger. It was invisible
                 glass until the border landed on 6 Sep 2026, which is why
@@ -277,7 +277,7 @@ export function SiteNav() {
                 </div>
               );
             })}
-            {/* Same inert control as the desktop one — see the comment on
+            {/* Same inert control as the desktop one - see the comment on
                 that one before changing either. It sits with the links rather
                 than beside the CTA because it is navigation, and it is
                 `text-white/55` against their `text-white` for the same reason

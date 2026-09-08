@@ -5,7 +5,7 @@
  * worth a dependency, and `currentColor` means they follow the `[data-band]`
  * token flip for free. Uniform 24 viewBox, 1.25 stroke, round caps.
  *
- * The set was SECTOR marks only — funds, credit, realestate and so on — which
+ * The set was SECTOR marks only - funds, credit, realestate and so on - which
  * is why `Thesis` first shipped without one: forcing "media" or "finance" onto
  * "Global Network" would have been a glyph that means something else. The
  * three at the bottom were drawn for those cells instead. Keep that rule when
@@ -147,8 +147,8 @@ export const ICONS = {
   ),
   // A table line with a party on each side of it: head-and-shoulders above
   // left, head-and-shoulders below right. The shoulder arcs are the same
-  // radius mirrored across the line — sweep 1 bulges away from it upward,
-  // sweep 0 downward — so the two read as a matched pair rather than as two
+  // radius mirrored across the line - sweep 1 bulges away from it upward,
+  // sweep 0 downward - so the two read as a matched pair rather than as two
   // different figures. Drawn twice: a first attempt put both figures on the
   // same side and lost the table line entirely at 24px.
   bothSides: (p: IconProps) => (

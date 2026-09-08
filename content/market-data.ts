@@ -1,9 +1,9 @@
 /**
  * The two segment definitions the /about firm diagrams draw.
  *
- * **NOT MARKET STATISTICS.** This file briefly held four sourced datasets —
+ * **NOT MARKET STATISTICS.** This file briefly held four sourced datasets -
  * listed vs private-backed company counts, median age at IPO, family-office
- * growth — for three charts that shipped and were removed the same day. With
+ * growth - for three charts that shipped and were removed the same day. With
  * those gone, nothing on this site carries a figure again, and the reasoning
  * at the top of content/manifesto.ts stands without an exception.
  *
@@ -11,12 +11,12 @@
  * sign-off of a different kind from a sourced number: it is a commercial claim
  * about scope rather than something a reviewer can check against a source.
  * `git show` this file's history has the figures and their citations if they
- * are ever wanted back — they came with sources attached, which was the whole
+ * are ever wanted back - they came with sources attached, which was the whole
  * basis for shipping them.
  */
 
 /**
- * The mandate segment. NOT a market statistic — this is Avalanche's own
+ * The mandate segment. NOT a market statistic - this is Avalanche's own
  * definition of who it works with, so it needs sign-off of a different kind:
  * it is a commercial claim about scope rather than a sourced number.
  *
@@ -49,8 +49,8 @@ export const mandate = {
 
 /**
  * Both sides of the table, as a flow. The claim is that the same relationships
- * serve twice — a GP raised today is an allocator later, a founder funded
- * today is dealflow later — which is the argument for operating both sides.
+ * serve twice - a GP raised today is an allocator later, a founder funded
+ * today is dealflow later - which is the argument for operating both sides.
  */
 export const bothSides = {
   sell: [

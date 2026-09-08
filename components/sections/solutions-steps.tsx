@@ -19,7 +19,7 @@ import type { SolutionView } from "@/content/solutions";
  *
  *  - The media card is `flex:1 0 0` with `aspect-ratio: 1.05098/1`, which is
  *    what makes a row 612.75px tall at a 1440px viewport. The card drives the
- *    ROW height, and `items-center` then centres the text against it — so the
+ *    ROW height, and `items-center` then centres the text against it - so the
  *    layout does not move when a block's body runs to a different number of
  *    lines. That is the property to preserve when editing copy.
  *  - 644 + 36 + 40 + 36 + 644 = 1400, the shell's content box at 1440.
@@ -32,12 +32,12 @@ import type { SolutionView } from "@/content/solutions";
  * beside a stacked card would be inventing a layout the reference does not
  * have.
  *
- * The spine visibly breaks for 20px between rows — each rail is exactly as
+ * The spine visibly breaks for 20px between rows - each rail is exactly as
  * tall as its own row, and the container's gap sits between them. That gap is
  * correct, not a bug.
  *
  * The page label, block label and rail number are ONE typographic run at three
- * call sites — the `page-label` utility, not the site's `eyebrow`. It was a
+ * call sites - the `page-label` utility, not the site's `eyebrow`. It was a
  * local const in this file until /customers took the same run for its own page
  * header on 4 Sep 2026; the spec and the reasoning are in globals.css now, so
  * the two headers cannot drift. Ink rather than accent even though the rail
@@ -49,8 +49,8 @@ import type { SolutionView } from "@/content/solutions";
  * Which diagram a block gets, BY BLOCK ID rather than by index.
  *
  * It was a positional array while there was one view with two blocks. There
- * are now two views of DIFFERENT LENGTHS — Fundraising is three blocks since
- * 9 Sep 2026 and Secondaries is still five — so position says nothing at all.
+ * are now two views of DIFFERENT LENGTHS - Fundraising is three blocks since
+ * 9 Sep 2026 and Secondaries is still five - so position says nothing at all.
  * Keying on the id means a block either has artwork that is genuinely about
  * it, or it renders the pending plate.
  *
@@ -65,7 +65,7 @@ import type { SolutionView } from "@/content/solutions";
  * follow-ups branching on an engagement signal, which is not a term sheet, a
  * dataroom or a signed commitment, so leaving it in place would have been
  * exactly the failure this map is keyed by id to prevent. `PipelineDiagram`
- * moved into that slot from the removed block 04 instead — its four stages end
+ * moved into that slot from the removed block 04 instead - its four stages end
  * at Committed and only that column is accented, which is the new block's
  * whole claim.
  */
@@ -84,10 +84,10 @@ const MEDIA: Record<string, () => React.ReactElement> = {
 
   // --- Secondaries: two of five, the rest awaiting both art and copy ---
   /** Sourced positions meeting a vetting line, and only what clears it
-   *  reaching the buyer — a FILTER, and the missing row is the claim. */
+   *  reaching the buyer - a FILTER, and the missing row is the claim. */
   secondaries: BuySideDiagram,
   /** A held position routed to one counterparty out of many, the rest ghosted
-   *  — a SEARCH. It was `counterparties` (block 03) until 9 Sep 2026 and moved
+   *  - a SEARCH. It was `counterparties` (block 03) until 9 Sep 2026 and moved
    *  when block 02 got copy that names what it draws: "run a discreet process
    *  to identify the right buyer". Block 03 has placeholder copy, so the
    *  picture was illustrating a line that made no claim. */
@@ -107,7 +107,7 @@ export function SolutionsSteps({ view }: { view: SolutionView }) {
       />
 
       {/* An <ol> because the rail numbers them and a screen reader should hear
-          the same count. It is an ordered LIST, not a sequence of steps — see
+          the same count. It is an ordered LIST, not a sequence of steps - see
           the note in content/solutions.ts for why the labels are named stages
           rather than "Step 1" and "Step 2". */}
       <ol className="shell flex list-none flex-col items-center justify-center gap-5 overflow-clip pt-5 pb-[100px] max-[1199px]:gap-[60px] max-[809px]:gap-[54px] max-[809px]:pb-[60px]">
@@ -140,7 +140,7 @@ export function SolutionsSteps({ view }: { view: SolutionView }) {
                 {/* The fill is ABSOLUTE, and that is load-bearing rather than
                     stylistic. In flow it is 580px of content inside a
                     `flex: 1 1 0%` track, and a flex-grow item still hands its
-                    content height to the column's intrinsic size — so the
+                    content height to the column's intrinsic size - so the
                     rail measured 40 + 20 + 580 = 640px, became the tallest
                     thing in the row, and drove the row height instead of the
                     card. `min-height: 0` does not fix that; only taking the

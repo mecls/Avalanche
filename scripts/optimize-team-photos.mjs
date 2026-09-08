@@ -9,7 +9,7 @@
  * **THE MASTERS LIVE IN THE REPO, and that is a change from how the other
  * asset scripts work.** `optimize-bg-video.mjs` reads its sources out of
  * ~/Downloads, which is fine for a 100MB video that can be re-downloaded.
- * Five of these six are GENERATIVE OUTPUTS — one-shot, non-deterministic, and
+ * Five of these six are GENERATIVE OUTPUTS - one-shot, non-deterministic, and
  * gone for good if that folder is ever cleaned. So they are committed:
  * `docs/assets/team/<slug>.webp`, named for the person rather than by whatever
  * the tool that made them called the file.
@@ -20,19 +20,19 @@
  *  - `tatjana-sotirovik` is the ORIGINAL PHOTOGRAPH, supplied 7 Sep 2026 as a
  *    Framer CDN export (`MNFHVuUOKaLTisNOGASHYgH6q6E.webp`, 800x800). It is
  *    the only untouched one, and it is the reference the other four were
- *    matched to — plain light-grey studio backdrop, greyscale, head and
+ *    matched to - plain light-grey studio backdrop, greyscale, head and
  *    shoulders.
  *  - `bernardo-almeida`, `lev-valestkiy`, `bruno-erckmam` and `lucas-barrozo`
  *    are GENERATIVE RE-SHOOTS produced outside this repo (ChatGPT, 7 Sep 2026,
  *    1254x1254) from the original photographs, which were five different
- *    shoots — a beach, a sponsor wall, an office, a curtain — and never read
+ *    shoots - a beach, a sponsor wall, an office, a curtain - and never read
  *    as a set. The originals are in the git history of this directory.
  *  - `arsenio-renato` is the SIXTH and it arrived differently: supplied
  *    directly on 9 Sep 2026 as `ChatGPT Image Sep 8, 2026, 03_22_31 PM.png`
  *    (1254x1254), so it is generative like the four above but has no original
  *    photograph behind it in this repo and no CMS record naming it. It landed
  *    already matching the set on the three things that took the others four
- *    passes — backdrop, dress and angle — and needed only the crop distance,
+ *    passes - backdrop, dress and angle - and needed only the crop distance,
  *    below.
  *
  * **BERNARDO AND BRUNO HAVE EACH BEEN THROUGH THREE GENERATIVE FRAMES**, all
@@ -40,7 +40,7 @@
  *
  *  1. Matched the BACKDROP but not the DRESS. Bernardo came back in a white
  *     shirt with a chain and sunglasses, Bruno in a dark open-collar shirt at
- *     a three-quarter turn — four studio portraits that still read as four
+ *     a three-quarter turn - four studio portraits that still read as four
  *     different occasions.
  *  2. Matched the dress: both square-on in a dark jacket over a white shirt,
  *     which is what Lev and Lucas were already wearing.
@@ -56,7 +56,7 @@
  * wider again at roughly a quarter. 0.88 and 0.65 crop each of them back to
  * head-and-shoulders on the others' scale.
  *
- * **FOUR OF THE SIX NOW ZOOM, AND ALL FOUR ZOOM THE SAME WAY** — see the
+ * **FOUR OF THE SIX NOW ZOOM, AND ALL FOUR ZOOM THE SAME WAY** - see the
  * note below. There is no entry that zooms out; `zoom` only ever crops in,
  * because the failure it fixes is always the same one, a master shot wider
  * than the head-and-shoulders standard the set is built on. Arsenio is the
@@ -70,8 +70,8 @@
  * launch: he is the only one not looking at the lens, and a corner of the
  * notebook sits in the bottom of the card.
  *
- * Note also that likeness is not stable across passes — Bruno wore glasses in
- * his second frame and does not in his third or fourth — which is the whole
+ * Note also that likeness is not stable across passes - Bruno wore glasses in
+ * his second frame and does not in his third or fourth - which is the whole
  * reason docs/COPY-REVIEW.md asks for each subject's sign-off on the version
  * that actually ships.
  *
@@ -91,8 +91,8 @@
  * **Tatjana zooms for the SAME reason as the other two, not a different one.**
  * An earlier revision of this comment called hers "the opposite reason" and
  * that was simply wrong: every `zoom` here is below 1 and every one of them
- * crops IN. Hers is a wider shot than the generated ones — her head fills
- * about 32% of the frame against their ~40% — so at the same crop she read as
+ * crops IN. Hers is a wider shot than the generated ones - her head fills
+ * about 32% of the frame against their ~40% - so at the same crop she read as
  * standing further back than everyone else. A 0.8 pulls her in to match.
  *
  * Hers is the only one that costs resolution, and it costs it rather than
@@ -117,7 +117,7 @@
  * that became two rows of three, then ~344px when the grid was capped. At
  * 196px every crop had margin to spare; at 416px only half cleared 2x. **Re-
  * check this constant whenever the team grid changes, and re-check Tatjana
- * first — hers is the shortest master in the set and the first to fall
+ * first - hers is the shortest master in the set and the first to fall
  * behind** (512px against a 688px ideal, so 0.74x).
  */
 import { mkdirSync, writeFileSync } from "node:fs";
@@ -141,7 +141,7 @@ const ASPECT = 4 / 5;
  * that safe rather than a silent upscale. What each master can actually give
  * at its own crop: Lev and Lucas 1003px, Bernardo 883, Arsenio 722, Bruno 652,
  * Tatjana 512. So three of the six land on 832 and three stay where their
- * masters end — Tatjana's is the one to re-shoot if this matters, at 1.23x.
+ * masters end - Tatjana's is the one to re-shoot if this matters, at 1.23x.
  */
 const MAX_WIDTH = 832;
 const QUALITY = 82;
@@ -152,15 +152,15 @@ const GREYSCALE = true;
  * TONAL GRADE. Every output is levelled so all five share one range.
  *
  * They did not. Measured on the shipped crops, the backdrop alone spanned 39
- * levels — 172 for Bernardo against 211 for Bruno, with Lev, Tatjana and
- * Lucas strung between — because five generative passes and one real
+ * levels - 172 for Bernardo against 211 for Bruno, with Lev, Tatjana and
+ * Lucas strung between - because five generative passes and one real
  * photograph each came back with their own exposure. Side by side in a row
  * that reads as five different papers, which is the last thing left making
  * the set look assembled rather than shot.
  *
  * **THE WHITE POINT IS MEASURED FROM THE BACKDROP, NOT FROM THE IMAGE.** A
  * first pass mapped each crop's 2nd and 98th percentile onto a shared range
- * and barely moved the number — 39 levels of spread became 34 — because those
+ * and barely moved the number - 39 levels of spread became 34 - because those
  * endpoints are set by the SUBJECT: a jacket's blacks and a specular highlight
  * on a forehead, which differ per person and say nothing about the paper
  * behind them. Matching the ends of five different histograms does not match
@@ -169,12 +169,12 @@ const GREYSCALE = true;
  * So the white point comes from a backdrop sample: the top quarter of the
  * frame, left and right thirds only. Every master in this set is a centred
  * head-and-shoulders on a plain sweep, so that region is backdrop for all five
- * and contains no face. Its MEDIAN (not mean — a stray dark hair strand
+ * and contains no face. Its MEDIAN (not mean - a stray dark hair strand
  * shifts a mean) is mapped to BACKDROP_TARGET, and the 2nd percentile of the
  * whole crop is mapped to BLACK_POINT so the shadow end still lands together.
  *
- * If a future portrait is not a centred head-and-shoulders — a seated or
- * standing frame like Bernardo's or Bruno's before they were zoomed in — check
+ * If a future portrait is not a centred head-and-shoulders - a seated or
+ * standing frame like Bernardo's or Bruno's before they were zoomed in - check
  * that the sample region is still backdrop before trusting the result.
  */
 const BLACK_POINT = 10;
@@ -192,7 +192,7 @@ const HEAD_Y = 0.3;
 // dark pixels in the hair band (y 15-32% of the master) sits at 0.485 and
 // 0.539 of the width, which 0.5 centres to within a couple of percent.
 //
-// The other three all zoom, and every zoom here crops IN — there is no entry
+// The other three all zoom, and every zoom here crops IN - there is no entry
 // that zooms out. Bernardo and Bruno are on their third and fourth masters
 // respectively, and between them they have carried five different sets of
 // numbers: 0.51, then 0.5, then a seated frame needing all three knobs; 0.55,
@@ -207,7 +207,7 @@ const PEOPLE = [
   // alone: 0.88 puts his head on the same scale as the other four.
   { slug: "bernardo-almeida", faceX: 0.43, faceY: 0.25, zoom: 0.88 },
   { slug: "lev-valestkiy", faceX: 0.5 },
-  // Standing, holding a notebook, looking off-camera — the widest master in
+  // Standing, holding a notebook, looking off-camera - the widest master in
   // the set. 0.65 is the tightest crop that still clears 640px wide, and it
   // is what puts his head on the others' scale; it also takes most of the
   // notebook out of the frame, though a corner of it stays.
@@ -216,7 +216,7 @@ const PEOPLE = [
   { slug: "tatjana-sotirovik", faceX: 0.45, faceY: 0.36, zoom: 0.8 },
   { slug: "lucas-barrozo", faceX: 0.5 },
   // Landed matching the set on backdrop, dress and angle, and needed only the
-  // crop distance — the one thing the note above says a contact sheet is for.
+  // crop distance - the one thing the note above says a contact sheet is for.
   // `faceX` is the measured hair-band centroid (0.454, so slightly left of
   // centre); `faceY` is the midpoint of hair-top to chin (0.373); 0.72 is what
   // puts his head on the others' scale, checked in a row with all six.
@@ -304,12 +304,12 @@ for (const p of PEOPLE) {
 writeFileSync(
   path.join(process.cwd(), "content", "team-blur.ts"),
   `/**\n` +
-    ` * GENERATED by scripts/optimize-team-photos.mjs — do not edit by hand.\n` +
+    ` * GENERATED by scripts/optimize-team-photos.mjs - do not edit by hand.\n` +
     ` *\n` +
     ` * One 12x15 WebP per portrait, inlined as a data URI and handed to\n` +
     ` * next/image as \`blurDataURL\`. Without it the portraits are lazy with no\n` +
     ` * placeholder, so scrolling the team section before they decode shows five\n` +
-    ` * empty bordered frames on the dark band — which reads as a broken slab\n` +
+    ` * empty bordered frames on the dark band - which reads as a broken slab\n` +
     ` * rather than as loading, because the frame's own \`bg-ground-alt\` is the\n` +
     ` * same #151515 as the band behind it.\n` +
     ` *\n` +
@@ -325,7 +325,7 @@ function clamp(v, lo, hi) {
 }
 
 /** The value below which `low` of the pixels fall. One pass over a 256-bin
- *  histogram — these are 640x800 greyscale buffers. */
+ *  histogram - these are 640x800 greyscale buffers. */
 function lowPercentile(buf, low) {
   const hist = new Uint32Array(256);
   for (let i = 0; i < buf.length; i++) hist[buf[i]]++;

@@ -1,9 +1,9 @@
 /**
- * /get-in-touch — the qualification questionnaire behind every CTA on the site.
+ * /get-in-touch - the qualification questionnaire behind every CTA on the site.
  *
  * EVERY STRING HERE IS DRAFT except the nine questions and their options,
  * which were supplied on 5 September 2026. The order is exactly as given. Three
- * things were changed to it and nothing else — all three are listed in
+ * things were changed to it and nothing else - all three are listed in
  * docs/COPY-REVIEW.md and all three are one edit to undo:
  *
  *   1. A typo: "Three to six måonths" -> "Three to six months".
@@ -17,7 +17,7 @@
  * of a form. The OPTIONS are untouched beyond the three points above.
  *
  * THE FORM DOES NOT SUBMIT ANYWHERE YET. `components/sections/contact-form.tsx`
- * validates, collects and shows the success state, and that is all — there is
+ * validates, collects and shows the success state, and that is all - there is
  * no route handler, no email service and no third-party endpoint. Wiring a
  * destination is a deliberate separate job; the TODO is at the submit handler.
  */
@@ -31,7 +31,7 @@ export type Question =
 /**
  * Nine, in this order, one per step. The count in the card's "Question n of N"
  * label is read from this array's length rather than typed, so the two cannot
- * disagree — the same rule the diagrams follow.
+ * disagree - the same rule the diagrams follow.
  */
 export const questions: readonly Question[] = [
   { id: "name", kind: "text", label: "What is your name?", placeholder: "Full name" },
@@ -126,7 +126,7 @@ export const contact = {
   /**
    * TODO(miguel): no email address or phone number exists anywhere in this
    * repo, so the left column offers LinkedIn and nothing else. Send them and
-   * they go in `site` alongside the booking link — this becomes a one-line
+   * they go in `site` alongside the booking link - this becomes a one-line
    * change and the reference's mail/phone rows can go back in.
    */
   // DRAFT

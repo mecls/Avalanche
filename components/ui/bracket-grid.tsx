@@ -1,6 +1,6 @@
 /**
  * The bordered grid with corner brackets, shared by three sections
- * (track record, raise types, verticals). Only the cell CONTENT differs —
+ * (track record, raise types, verticals). Only the cell CONTENT differs -
  * the frame, the hairlines, the index numbers and the brackets are the same,
  * so they live here rather than in three copies.
  *

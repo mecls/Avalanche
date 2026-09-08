@@ -8,14 +8,14 @@ import { secondaryLogos } from "@/content/secondary-logos";
  *
  * **IT IS THE /customers "Trusted by" BLOCK, deliberately.** Same eyebrow +
  * display heading on the left, same framing paragraph set against it on the
- * right, same ruled `LogoGrid` beneath — because it is doing the same job, and
+ * right, same ruled `LogoGrid` beneath - because it is doing the same job, and
  * a second roster invented from scratch would have read as a different
  * template on a site that already has one for exactly this. It replaces the
  * three placeholder blocks that used to close this page (9 Sep 2026, by
  * request).
  *
  * `data-band="light"` with a `border-t`, matching `RaiseTypes` on the sister
- * route — this sits in the same slot there, between the numbered blocks and
+ * route - this sits in the same slot there, between the numbered blocks and
  * the closing band, so the two routes still end the same way.
  *
  * **THREE ACROSS AT EVERY WIDTH, and that is arithmetic rather than taste.**
@@ -28,14 +28,14 @@ import { secondaryLogos } from "@/content/secondary-logos";
  * ~259px wide and a 96px mark fills 37% of it; three across makes the cell
  * 432px and the same 96px mark sits marooned in the middle of it, which read
  * as nine small logos on a large empty table rather than as a roster. The
- * sizes below hold that 37% at each breakpoint — ~48px in a ~107px phone cell,
+ * sizes below hold that 37% at each breakpoint - ~48px in a ~107px phone cell,
  * 112px at `sm`, 160px at `lg`. 160 is also the ceiling the masters allow:
  * scripts/secondary-logos.mjs writes them 320px on the long edge, which is
  * exactly 2x DPR there.
  *
  * The paragraph is not decoration. These logos claim live access to secondary
  * opportunities in named companies, which is a stronger statement than the
- * client roster's "these firms hired us" — the body is what scopes it to "a
+ * client roster's "these firms hired us" - the body is what scopes it to "a
  * selection", says the list is not exhaustive, and sends a specific request to
  * the team. See the note on `directAccess` in content/copy.ts.
  */

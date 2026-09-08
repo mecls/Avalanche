@@ -19,7 +19,7 @@ export const metadata: Metadata = {
  *
  * The HEADER no longer does. It was a full-height statement hero built from its
  * own parts, and it was the only page on the site whose opening was not made of
- * the shared ones — see the comment on the section itself. Reference fidelity
+ * the shared ones - see the comment on the section itself. Reference fidelity
  * lost to house consistency there on purpose.
  *
  * Bands alternate light / light / dark / dark / light, as the reference does.
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 export default function CustomersPage() {
   return (
     <>
-      {/* The page header is the shared construction — see
+      {/* The page header is the shared construction - see
           components/site/page-header.tsx, which carries the drift history
           that is the reason it is a component.
 
@@ -51,7 +51,7 @@ export default function CustomersPage() {
       {/* `pb-16` ON TOP OF THE HEADER'S OWN `pb-12`, i.e. 112px under the
           lede and the button before the dark grid begins (9 Sep 2026, by
           request). The header's 48px was tuned when the venture strip sat
-          below it and supplied ~116px of its own — a border, `py-10` and a
+          below it and supplied ~116px of its own - a border, `py-10` and a
           36px row of marks. With the strip gone that 48px put the tile grid
           almost against the button.
 
@@ -59,7 +59,7 @@ export default function CustomersPage() {
           shared by /customers, /about and both /solutions routes, and the
           other three did not lose anything below their headers; raising its
           `pb` would move all four to fix one. This is exactly the case the
-          component's split exists for — it renders the inner `shell` div and
+          component's split exists for - it renders the inner `shell` div and
           leaves the `<section>` to the caller. 112px also sits close to the
           100px above the eyebrow, so the header reads as evenly set rather
           than bottom-heavy. */}
@@ -71,7 +71,7 @@ export default function CustomersPage() {
           cta={customers.cta}
         />
 
-        {/* THE VENTURE STRIP WAS REMOVED HERE (9 Sep 2026, by request) — a
+        {/* THE VENTURE STRIP WAS REMOVED HERE (9 Sep 2026, by request) - a
             shell-width `LogoMarquee` of the ecosystem marks under a
             `border-t`, at the foot of the header. `content/ecosystem-logos.ts`
             and `public/logos/ecosystem/` are kept, and so is
@@ -84,7 +84,7 @@ export default function CustomersPage() {
             and no other page header's, because the strip was a second child
             that had to be laid out under the header and clipped. One child is
             left, so they say nothing. `data-band="light"` STAYS and is the
-            load-bearing half — two rules in globals.css key off
+            load-bearing half - two rules in globals.css key off
             `main > :first-child[data-band="light"]`, one flipping the nav's
             type to ink and one painting `main`, and they fail together with
             the whole nav rendering white on white.
@@ -95,7 +95,7 @@ export default function CustomersPage() {
       </section>
 
       {/* THE GRID'S HEADING SECTION WAS REMOVED HERE (9 Sep 2026, by request).
-          It was a `SectionHeading` alone in its own light band — "From first
+          It was a `SectionHeading` alone in its own light band - "From first
           mandate to billion-dollar deal books." over a line about working
           across venture, private credit, real estate and private equity. Both
           strings are kept, unrendered, as `customers.gridTitle` / `gridLede`.
@@ -104,7 +104,7 @@ export default function CustomersPage() {
           the dark tile grid with no band between them, which is the same cut
           /about makes under its own header and wants no softening. And the
           GRID SECTION IS NOW UNHEADED: `CaseStudyGrid` renders a search box, a
-          category select and the tiles, and nothing names the block — so the
+          category select and the tiles, and nothing names the block - so the
           page's outline goes from the H1 to the "Trusted by" H2 with the
           largest section on the page carrying no heading of its own. That is
           the state that was asked for; if a screen-reader label is ever wanted
@@ -120,7 +120,7 @@ export default function CustomersPage() {
 
       <section data-band="light" className="section-y">
         <div className="shell">
-          {/* Heading left, framing paragraph right — the reference sets the
+          {/* Heading left, framing paragraph right - the reference sets the
               two against each other rather than stacking them. */}
           <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
             <div>
@@ -129,7 +129,7 @@ export default function CustomersPage() {
                 {customers.trustedByTitle}
               </h2>
             </div>
-            {/* `customers.trustedByBody`, NOT `whoWeServe.lede` — it was the
+            {/* `customers.trustedByBody`, NOT `whoWeServe.lede` - it was the
                 latter until 8 Sep 2026, when that key was rewritten to
                 describe investor types. This paragraph sits over a grid of
                 CLIENT marks and has to keep naming who hires Avalanche; see
@@ -145,7 +145,7 @@ export default function CustomersPage() {
 
           {/* The client disclaimer sits here, with the client marks. The strip
               in the hero is a different set and carries its own, narrower
-              caption — the two claims are not interchangeable. */}
+              caption - the two claims are not interchangeable. */}
           <p className="mt-8 text-[0.6875rem] text-fg-faint">
             {customers.logoNote}
           </p>

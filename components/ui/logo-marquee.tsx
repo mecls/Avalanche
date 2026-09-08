@@ -9,8 +9,8 @@ type Props = {
   /**
    * Whether these are the white-on-transparent marks from
    * scripts/logos-to-alpha.mjs. Those carry `logo-mark`, which globals.css
-   * inverts on a light band. Full-colour marks must NOT be inverted — they
-   * would blow out to white on a white band — so they opt out.
+   * inverts on a light band. Full-colour marks must NOT be inverted - they
+   * would blow out to white on a white band - so they opt out.
    *
    * Neither set is held back any more: the reference runs its strip at full
    * opacity, and the marks sit on a translucent blurred band rather than
@@ -26,7 +26,7 @@ type Props = {
  * loop; under reduced motion the animation is dropped and it reads as a plain
  * row.
  *
- * Carries no background, padding or heading of its own — the caller owns
+ * Carries no background, padding or heading of its own - the caller owns
  * those, because it is used both inside the hero and as its own band.
  */
 export function LogoMarquee({

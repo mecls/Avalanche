@@ -1,7 +1,7 @@
 /**
  * Normalise client logos for a dark ground.
  *
- * The source marks are flattened rasters with backgrounds baked in — and the
+ * The source marks are flattened rasters with backgrounds baked in - and the
  * backgrounds are not consistent: some are white, some are black. On the old
  * cream palette a `mix-blend-multiply` hid the white ones; on #080808 that
  * blend renders them invisible, and the black-backed ones were already showing
@@ -14,7 +14,7 @@
  * sits correctly on any ground and anti-aliases cleanly. This is the same flat,
  * monochrome treatment fundraisr.ai gets from `grayscale(1)` on real SVGs.
  *
- * Idempotent — a file that already has an alpha channel is left alone.
+ * Idempotent - a file that already has an alpha channel is left alone.
  *
  *   node scripts/logos-to-alpha.mjs
  */
@@ -49,7 +49,7 @@ for (const dir of DIRS) {
     };
 
     // Median border luminance is a far more reliable read of "background"
-    // than a single corner — several marks bleed into one corner.
+    // than a single corner - several marks bleed into one corner.
     const border = [];
     for (let x = 0; x < width; x++) {
       border.push(at(x, 0), at(x, height - 1));
@@ -66,7 +66,7 @@ for (const dir of DIRS) {
     // Raw luminance is not good enough on its own: several sources have a
     // near-black rather than pure-black background (luma 10-20), which maps to
     // 4-8% alpha and shows as a faint rectangular halo around the mark. So the
-    // range is remapped with a black point and a white point — everything below
+    // range is remapped with a black point and a white point - everything below
     // FLOOR goes fully transparent, everything above CEIL fully opaque, and the
     // band between keeps the anti-aliased edges intact.
     const FLOOR = 26;

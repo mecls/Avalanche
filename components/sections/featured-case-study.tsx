@@ -11,7 +11,7 @@ type Testimonial = {
   name?: string;
   role?: string;
   company: string;
-  /** The slide's picture — the whole left column. Required. */
+  /** The slide's picture - the whole left column. Required. */
   photo: string;
   /** The picture is the client's MARK, not a portrait. See the frame. */
   logo?: boolean;
@@ -30,7 +30,7 @@ const slideId = (slug: string) => `case-${slug}`;
  * precedent: the control stays in the tab order, so a keyboard reader learns
  * it exists and that it is spent, instead of it silently not being there.
  *
- * The visible word is short — "Previous" / "Next" — and the `sr-only` run
+ * The visible word is short - "Previous" / "Next" - and the `sr-only` run
  * completes the accessible name to "Previous case study" / "Next case study".
  * Two full labels side by side wrap onto their own row on a phone.
  */
@@ -39,7 +39,7 @@ function Step({ target, dir }: { target?: string; dir: "prev" | "next" }) {
     <>
       {/* The glyph is a right arrow with a `group-hover` nudge along +x.
           Rotating the wrapper turns both the mark and the nudge, so the hover
-          moves it left — which is the direction this control means. */}
+          moves it left - which is the direction this control means. */}
       {dir === "prev" && (
         <span className="rotate-180">
           <ArrowGlyph />
@@ -56,7 +56,7 @@ function Step({ target, dir }: { target?: string; dir: "prev" | "next" }) {
       <button
         type="button"
         aria-disabled="true"
-        // `pointer-events-none` kills the ghost button's hover states — a
+        // `pointer-events-none` kills the ghost button's hover states - a
         // spent control that still lights up on hover is worse than one that
         // is merely faint. It does NOT take the button out of the tab order,
         // which is the half that has to survive.
@@ -75,7 +75,7 @@ function Step({ target, dir }: { target?: string; dir: "prev" | "next" }) {
  *
  * **IT LIVES INSIDE THE SLIDE, AND IT IS PERMANENT BECAUSE THE SLIDE FITS THE
  * VIEWPORT.** Only one slide is on screen, so a control that belongs to a
- * slide is always the correct one and nothing has to track an active index —
+ * slide is always the correct one and nothing has to track an active index -
  * that is what keeps everything but the click handler server-rendered. The
  * cluster does not need `position: sticky` and could not have it anyway:
  * `overflow-x: auto` on the track computes `overflow-y` to `auto` as well, so
@@ -85,7 +85,7 @@ function Step({ target, dir }: { target?: string; dir: "prev" | "next" }) {
  * The dots are the affordance that the pager alone was not: "01 / 02" states a
  * count, two dots SHOW one. They are real links, so they are also direct
  * access once a third study lands. A peeking sliver of the next slide was
- * tried instead and does not work here — a slide is full-bleed text inside the
+ * tried instead and does not work here - a slide is full-bleed text inside the
  * shell rather than a card with an edge, so the 20px on show is the left half
  * of a letterform, which reads as a rendering fault.
  */
@@ -105,7 +105,7 @@ function Controls({
       <div className="flex items-center gap-5">
         {/* Position, spelled out as well as dotted: with the other slides
             scrolled out of frame there is nothing else on screen saying how
-            many there are. `page-label` carries no colour of its own — the
+            many there are. `page-label` carries no colour of its own - the
             accent is not spent on a pager. */}
         <p className="page-label text-fg-muted">
           {pad(index + 1)} / {pad(slides.length)}
@@ -147,8 +147,8 @@ function Controls({
  * One slide: the controls across the top, then the picture on the left and
  * everything said about it on the right.
  *
- * **THE TWO COLUMNS ARE WHAT MAKE IT FIT.** Stacked — headline, client line,
- * metric card, then a separate testimonial figure — the slide was 932px tall
+ * **THE TWO COLUMNS ARE WHAT MAKE IT FIT.** Stacked - headline, client line,
+ * metric card, then a separate testimonial figure - the slide was 932px tall
  * in an 806px viewport, so the controls were off screen by the time the reader
  * reached the quote and nothing on screen said a second study existed. The row
  * is `items-center`: the two columns are never the same height and hanging the
@@ -159,21 +159,21 @@ function Controls({
  * the client's logo, a metric pill and our own result sentence. All three of
  * those came off in the same change: the headline already says what closed and
  * how fast, so the pill repeated it in miniature and the sentence repeated it
- * in prose. What is left is one claim per voice — ours in the headline,
- * theirs in the quote — with the face or the mark carrying the slide.
+ * in prose. What is left is one claim per voice - ours in the headline,
+ * theirs in the quote - with the face or the mark carrying the slide.
  *
  * **THE METRIC PILL WAS ONE OF THE ACCENT'S FOUR HOMES and this removed the
  * last one that rendered.** The others are the eyebrows and page labels, the
  * /solutions rail and diagrams, and the CTA band's chip; /customers draws its
  * grid with `CaseStudyTile`, which never carried a pill. So the accent is now
  * eyebrows and the CTA chip on this page. That is a real change to the list in
- * AGENTS.md, not an oversight — do not reintroduce a pill here to "restore"
+ * AGENTS.md, not an oversight - do not reintroduce a pill here to "restore"
  * it.
  *
  * `SectionHeading` is deliberately not used: it pairs a title with a lede and
  * has no slot for a subtitle, and adding one would be dead weight in the six
  * other blocks that share it. The heading is spelled out with the same
- * `display` rung it renders — as an `h3`, because the section's own name is
+ * `display` rung it renders - as an `h3`, because the section's own name is
  * the `h2` above the track now.
  */
 function Study({
@@ -205,7 +205,7 @@ function Study({
       <div className="mt-10 grid gap-10 lg:mt-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:gap-16">
         {/* A PORTRAIT AND A MARK CANNOT SHARE A TREATMENT, and at this size
             the difference is not subtle. A photograph fills the frame
-            (`cover`, no inset, cropped to the rounded ground) — Ramses'
+            (`cover`, no inset, cropped to the rounded ground) - Ramses'
             portrait is a square 800px source, so the square frame crops
             nothing. A mark is white-on-transparent artwork with its own
             margins baked in, so it has to be `contain`, sit ON a plate rather
@@ -240,7 +240,7 @@ function Study({
           </p>
 
           {/* THE CATEGORY IS A TAG, NOT AN EYEBROW. It wore `eyebrow` inside
-              the card until 9 Sep 2026, which set it in the accent — small
+              the card until 9 Sep 2026, which set it in the accent - small
               uppercase accent type reads as a link, and this one goes
               nowhere. Outlined and muted, it reads as what it is: a
               classification. It is also the only field left that this slide
@@ -261,7 +261,7 @@ function Study({
             <blockquote className="text-[clamp(1rem,1.35vw,1.1875rem)] leading-relaxed">
               {voice.quote.map((para, i) => (
                 // A multi-paragraph quotation OPENS on every paragraph and
-                // CLOSES only on the last — the open mark is what tells a
+                // CLOSES only on the last - the open mark is what tells a
                 // reader the new paragraph is still the client talking. It
                 // opened once and closed once until 9 Sep 2026, which read as
                 // a quote that had been left hanging.
@@ -276,10 +276,10 @@ function Study({
                 company alone. Nobody Studios' words are the firm's own
                 positioning rather than a person's, so that slide has no
                 speaker and its picture is the mark. Do not invent one to even
-                the two out. There is no avatar here any more — the picture
+                the two out. There is no avatar here any more - the picture
                 filling the left column is the same image it used to hold. */}
             <figcaption className="mt-6">
-              {/* `not-italic` is not cosmetic — `cite` defaults to italic and
+              {/* `not-italic` is not cosmetic - `cite` defaults to italic and
                   this build of Satoshi has no italic axis, so the browser
                   would synthesise a fake slant. See AGENTS.md. */}
               <cite className="font-medium not-italic">
@@ -303,21 +303,21 @@ function Study({
  * It showed one study until 8 Sep 2026 and then two stacked; they are a
  * CAROUSEL now, so only Neurable is on screen and Nobody Studios is a swipe,
  * an arrow key, a dot or a button away. `featuredCaseStudies` in
- * content/case-studies.ts decides how many and in what order — the first entry
- * is the one that shows — and `caseTestimonials` has to gain a matching slug
+ * content/case-studies.ts decides how many and in what order - the first entry
+ * is the one that shows - and `caseTestimonials` has to gain a matching slug
  * for each.
  *
  * The container is a `region` with an explicit `tabIndex`: browsers make a
  * scrollable box keyboard-reachable on their own, but only an announced,
  * labelled one tells a screen-reader user what they have arrived in. The
  * A focused scroll container is also supposed to take Left/Right arrow keys
- * natively, which the mandatory snap would turn into a slide change — but that
+ * natively, which the mandatory snap would turn into a slide change - but that
  * could not be confirmed under browser automation, so do not describe it as a
  * feature. A real key handler would have to sit on the track, which wraps
  * every slide, and would take the whole section client-side.
  *
  * The section's own name is the `h2`; the two study headlines are `h3`s under
- * it. It was the other way round — an unheaded `eyebrow` div over two `h2`s —
+ * it. It was the other way round - an unheaded `eyebrow` div over two `h2`s -
  * which left the studies hanging off nothing in the document outline.
  */
 export function FeaturedCaseStudy() {

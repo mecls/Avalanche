@@ -5,7 +5,7 @@ type Props = {
   href: string;
   children: React.ReactNode;
   /** `sm` is the nav button; `md` the in-page CTA. Both are 47.2px tall in
-   *  the reference — `sm` exists now only for tighter in-card CTAs. */
+   *  the reference - `sm` exists now only for tighter in-card CTAs. */
   size?: "sm" | "md";
   variant?: "solid" | "ghost";
   className?: string;
@@ -14,19 +14,19 @@ type Props = {
 /**
  * Every CTA on the site routes through here.
  *
- * `solid` is foreground-on-ground inverted — white on black in a dark band,
- * black on white in a light one — because both tokens are re-pointed by
+ * `solid` is foreground-on-ground inverted - white on black in a dark band,
+ * black on white in a light one - because both tokens are re-pointed by
  * `[data-band]`. That is the whole reason the buttons need no variant prop.
  *
  * `ghost` is the header button. It is a 1% white fill plus a 6px backdrop
- * blur — glass — and it NOW CARRIES A BORDER, which the reference's does not.
+ * blur - glass - and it NOW CARRIES A BORDER, which the reference's does not.
  *
  * Without one it reads as glass over the hero footage and as nothing at all
  * over a flat band: the blur has nothing to separate against, so on every page
  * but the homepage the site's most-repeated CTA was bare text. The border is
- * `border-fg/70`, so it inverts with the band exactly as `solid`'s fill does —
+ * `border-fg/70`, so it inverts with the band exactly as `solid`'s fill does -
  * white over the hero video and over a dark first section, ink over a light
- * one — from the same markup and with no `tone` prop. `box-border` is
+ * one - from the same markup and with no `tone` prop. `box-border` is
  * Tailwind's default, so it costs no height against the fixed 47.2px.
  *
  * Geometry measured from the reference: 4px radius, 14/20 padding, 47.2px
@@ -34,7 +34,7 @@ type Props = {
  *
  * **It sets its own `display`, so `className="hidden"` does NOT hide it.**
  * Tailwind emits `.inline-flex` after `.hidden` at equal specificity, so the
- * base class wins. Hide it with a variant — `max-md:hidden` — which is emitted
+ * base class wins. Hide it with a variant - `max-md:hidden` - which is emitted
  * after both. The nav button was showing on every phone because of this.
  */
 export function CtaButton({
@@ -58,7 +58,7 @@ export function CtaButton({
  *
  * Almost everything on the site that navigates is a `CtaButton`, i.e. a
  * `Link`. The questionnaire on /get-in-touch needs a real
- * `<button type="submit">` — an anchor with `href="#"` and a click handler
+ * `<button type="submit">` - an anchor with `href="#"` and a click handler
  * would break middle-click, break Enter-to-submit, and put a bogus
  * destination in the DOM.
  *
@@ -109,7 +109,7 @@ export function CtaSubmit({
 
 /**
  * Trailing arrow for a page-header CTA. Slides right on hover, which is why
- * the button it sits in needs `className="group"` — without that the
+ * the button it sits in needs `className="group"` - without that the
  * transition never fires and it reads as a static glyph.
  *
  * NOT in components/ui/icons.tsx: that file is a uniform set of 24-viewBox,
@@ -117,7 +117,7 @@ export function CtaSubmit({
  * ever appears inside a CtaButton. It lives here so the two import together.
  *
  * Deliberately NOT folded into CtaButton as a prop. Most CTAs on the site
- * carry no glyph — the reference's button is a bare rectangle — and the two
+ * carry no glyph - the reference's button is a bare rectangle - and the two
  * page headers that do use it are the exception, not the default.
  */
 export function ArrowGlyph() {

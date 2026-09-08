@@ -1,12 +1,12 @@
 /**
  * Site copy, lifted from Avalanche's own properties:
- *   avalanche-capital.com  — hero, thesis pillars, investor verticals, track record
- *   fundraisr.ai           — customers page, stats band
- *   fundraisr.co           — implementation programme figures
+ *   avalanche-capital.com  - hero, thesis pillars, investor verticals, track record
+ *   fundraisr.ai           - customers page, stats band
+ *   fundraisr.co           - implementation programme figures
  *
  * Blocks marked `DRAFT` were written here, not lifted. The source panels sit
  * inside a Framer carousel on avalanche-capital.com whose body text is not in
- * the page at all — verified by reading the raw HTML, not just by clicking. So
+ * the page at all - verified by reading the raw HTML, not just by clicking. So
  * they were extrapolated from Avalanche's own published writing (the
  * /blog posts) and from the panels that DO exist. Every one is listed in
  * docs/COPY-REVIEW.md for sign-off. They make no claim the site does not
@@ -20,12 +20,12 @@ export const site = {
     "Private capital advisory for funds, founders, and operating companies. Exposure to the right capital sources, the right mandates, and the right counterparties.",
   // NOTE: both Calendly links on avalanche-capital.com and fundraisr.co are
   // dead ("This Calendly URL is not valid"). This is the only live event on the
-  // avalancheintrocall account — "Capital Raise | Strategy Call".
+  // avalancheintrocall account - "Capital Raise | Strategy Call".
   // TODO(miguel): the slug reads like a duplicate; confirm it is the one to use.
   calendly:
     "https://calendly.com/avalancheintrocall/capital-raise-demo-call-ac-clone",
   /**
-   * PLACEHOLDER — where the "Book a meeting" button sends people.
+   * PLACEHOLDER - where the "Book a meeting" button sends people.
    *
    * Points at the Fundraisr booking page, which is live and yours, so the
    * button works today. It runs on LeadConnector (GoHighLevel), not Calendly.
@@ -36,10 +36,10 @@ export const site = {
   booking: "https://www.fundraisr.ai/book-demo",
   entity: "Avalanche Capital LDA (PT 517584271)",
   /** The only public contact channel this repo has. There is no email address
-   *  and no phone number anywhere in it — /get-in-touch offers this and the
+   *  and no phone number anywhere in it - /get-in-touch offers this and the
    *  form, and nothing else, until real ones arrive. */
   linkedin: "https://www.linkedin.com/company/avalanche-capital-advisory",
-  /** The header's ghost button. Short by necessity — it sits in a 47.2px
+  /** The header's ghost button. Short by necessity - it sits in a 47.2px
    *  glass rectangle beside the nav pills. */
   navCta: "Get in touch",
   /**
@@ -47,7 +47,7 @@ export const site = {
    *
    * **IT IS NOT A LINK AND HAS NO DESTINATION.** There is no portal and no URL
    * for one, so `nav.tsx` renders an `aria-disabled` `<button>` rather than an
-   * `<a>` — see the comment there. This is the label and nothing else; there
+   * `<a>` - see the comment there. This is the label and nothing else; there
    * is deliberately no `loginHref` beside it, because an empty or placeholder
    * href is exactly the thing that gets shipped by accident.
    *
@@ -64,7 +64,7 @@ export const site = {
 /**
  * NOT CURRENTLY RENDERED. Kept, like the other unmounted blocks.
  *
- * This was the fixed bar above the nav — a live-dot, the line below in italic,
+ * This was the fixed bar above the nav - a live-dot, the line below in italic,
  * and an underlined accent link to the booking anchor. It was removed on
  * 4 Sep 2026; `components/site/nav.tsx` is now the nav alone and nothing on
  * the site is `fixed`.
@@ -85,7 +85,7 @@ export const announce = {
  * one array. A route missing from here is a route nothing on the site links
  * to.
  *
- * THERE IS NO LONGER A `footerOnly` FLAG. /manifesto carried one — it was
+ * THERE IS NO LONGER A `footerOnly` FLAG. /manifesto carried one - it was
  * real and indexed but not one of the header's primary slots, so it showed in
  * the footer and nowhere else, and `nav.tsx` derived a filtered `headerNav`
  * from this array to do it. That route was folded into /about on 7 Sep 2026
@@ -105,7 +105,7 @@ export const announce = {
  *
  * THIS IS NOW THE ONLY WAY TO SWITCH VIEWS. An on-page segmented toggle did
  * the same job for part of 4 Sep 2026 and was removed as redundant, so this
- * list is no longer one of two places the pair is written down — it is the
+ * list is no longer one of two places the pair is written down - it is the
  * only one. Adding a third view means adding a route, a content object in
  * content/solutions.ts, and an entry here.
  */
@@ -132,7 +132,7 @@ export const nav = [
   /**
    * ONE ENTRY, THREE PAGES' WORTH OF CONTENT. /about is the old /team and the
    * old /manifesto merged (7 Sep 2026): the thesis, then the manifesto, then
-   * the portraits and the press. Both old paths 307 here — see next.config.ts.
+   * the portraits and the press. Both old paths 307 here - see next.config.ts.
    *
    * The label is "About Us" rather than "About" because that is what was
    * asked for, and it is the only two-word item in the header; it costs about
@@ -152,21 +152,21 @@ export const hero = {
    * editorial decision, so the break lives here rather than as a <br> buried
    * in the component.
    *
-   * `lead` USED TO BE SET IN ITALIC and no longer is — the site moved to
+   * `lead` USED TO BE SET IN ITALIC and no longer is - the site moved to
    * Satoshi on 4 Sep 2026 and this build of it has no italic face, so an <em>
    * would be a fake slant on the biggest type on the site. The split is kept
    * because it is still where the line breaks; the two halves just render
    * identically now. `rest` carries its own leading space.
    *
    * Re-balancing the
-   * lines means editing these two entries — do not add a third without
+   * lines means editing these two entries - do not add a third without
    * checking the 80px size still holds two lines' worth of measure.
    */
   titleLines: [
     { lead: "Private", rest: " capital" },
     { lead: "advisory", rest: " with an edge" },
   ],
-  // the word that would carry the accent. Still ignored — see section-heading.
+  // the word that would carry the accent. Still ignored - see section-heading.
   accent: "edge",
   lede: "Our unique edge is exposure - to the right capital sources, the right mandates, and the right counterparties.",
   cta: "Get started",
@@ -181,8 +181,8 @@ export const hero = {
    * Opens the hero's logo band, in a fixed 231px column.
    *
    * DELIBERATELY NOT the reference's "Representative investors & strategic
-   * partners". That strip carries CLIENT marks — `customers.logoNote` states
-   * they are past engagements — and calling past clients investors or
+   * partners". That strip carries CLIENT marks - `customers.logoNote` states
+   * they are past engagements - and calling past clients investors or
    * partners would be a claim the site cannot support. Same shape, accurate
    * words. See docs/COPY-REVIEW.md.
    */
@@ -194,7 +194,7 @@ export const hero = {
   },
 } as const;
 
-/** NOT CURRENTLY RENDERED — the "Why Avalanche" section was removed from the
+/** NOT CURRENTLY RENDERED - the "Why Avalanche" section was removed from the
  *  homepage on 1 Sep 2026. Kept because this is genuine copy from
  *  avalanche-capital.com. See components/sections/thesis.tsx. */
 export const thesis = {
@@ -240,14 +240,14 @@ export const whoWeServe = {
   lede: "We operate across the entire spectrum of investor types and profiles which are suitable for the lower/mid-market venture ecosystem.",
   verticals: [
     {
-      // SUPPLIED 8 Sep 2026 — replaced the lifted avalanche-capital.com body,
+      // SUPPLIED 8 Sep 2026 - replaced the lifted avalanche-capital.com body,
       // which named banks, insurance firms and pension funds. This one names
       // the vehicles that actually appear in a venture cap table.
       title: "Institutional Investors",
       body: "Sophisticated entities such as VCs, Funds of Funds, Sovereigns and Asset Managers, characterised by their substantial capital base and rigorous investment protocols. Institutional investors typically prioritise stable, long-term returns and typically engage in diversified investment portfolios.",
     },
     {
-      // SUPPLIED 8 Sep 2026. It replaced "Accredited Retail", a DRAFT block —
+      // SUPPLIED 8 Sep 2026. It replaced "Accredited Retail", a DRAFT block -
       // the slot is a different investor type now, not a rewrite of that one,
       // so the accreditation caveat in docs/COPY-REVIEW.md went with it.
       title: "Family Offices",
@@ -274,7 +274,7 @@ export const trackRecord = {
    * by Fundraisr") and another counted the platform's database ("1.2M+ active
    * investor profiles"). The database card was dropped outright and the rest
    * restated as the advisory's own numbers, so every figure in this block is
-   * now the same kind of claim. **They are load-bearing financial claims —
+   * now the same kind of claim. **They are load-bearing financial claims -
    * do not adjust one to make a layout work.**
    *
    * THERE ARE FOUR OF THEM AND THE GRID IS TUNED TO FOUR. Dropping the fifth
@@ -284,7 +284,7 @@ export const trackRecord = {
    * `to` drives the count-up and `prefix`/`suffix` frame it, so the displayed
    * string is `prefix + to + suffix`. Values under 10 skip the count entirely
    * (a 0 → 2 tick reads as broken, not impressive). `decimals` is 0 on all
-   * four now — it existed for the 1.2M+ card and is kept because the next
+   * four now - it existed for the 1.2M+ card and is kept because the next
    * supplied figure may need it again.
    */
   stats: [
@@ -347,7 +347,7 @@ export const offerings = {
 } as const;
 
 /**
- * The Secondaries solution page. Deliberately thin — "Secondary Liquidity"
+ * The Secondaries solution page. Deliberately thin - "Secondary Liquidity"
  * below is the only copy Avalanche has ever published specifically about
  * secondaries (it used to be offering 04, folded into the Process page). It
  * is reused verbatim here rather than padded out with invented material. See
@@ -360,14 +360,14 @@ export const offerings = {
  * strips on the homepage and /customers say "these firms hired us", and
  * `customers.logoNote` says so in words. This one says we currently hold
  * access to secondary opportunities in these named, listed-adjacent companies
- * — a statement about live inventory rather than about past work. The body
+ * - a statement about live inventory rather than about past work. The body
  * below is the disclaimer that makes it survivable: it says "a selection",
  * says the list is not exhaustive, and points a reader with a specific request
  * at the team rather than at the grid. **Do not drop that paragraph and keep
  * the logos**, and see docs/COPY-REVIEW.md, which flags the whole band for
  * sign-off.
  *
- * The heading ends in a colon on purpose — it runs INTO the grid rather than
+ * The heading ends in a colon on purpose - it runs INTO the grid rather than
  * standing over it, which is why the body sits beside it rather than beneath.
  */
 export const directAccess = {
@@ -380,7 +380,7 @@ export const secondaries = {
   eyebrow: "Secondaries",
   title: "Secondary Liquidity",
   /**
-   * SUPPLIED 9 Sep 2026, and it is no longer DRAFT — this is the first real
+   * SUPPLIED 9 Sep 2026, and it is no longer DRAFT - this is the first real
    * copy this service has had anywhere. The drafted line it replaces read
    * "Not every position should be held to the end of the fund's life. We work
    * with GPs, LPs, and shareholders seeking liquidity ahead of a full exit -
@@ -390,31 +390,31 @@ export const secondaries = {
    * Note what CHANGED and not just that it did, because it is a different
    * service description rather than a rewrite of the same one. The draft
    * described GPs and LPs selling fund positions; this describes PRE-IPO
-   * secondaries in operating companies — shareholders and founders on one
+   * secondaries in operating companies - shareholders and founders on one
    * side, and buyers wanting late-stage exposure ahead of a listing on the
    * other. **The five placeholder BLOCKS below it in content/solutions.ts
    * still describe the draft's version**: "Position review", "Pricing",
    * "Counterparties", and the counterparty diagram drawn for them. They are
    * marked `pending` and say so on the page, so nothing false ships, but the
-   * page's heading and its steps now describe two different trades — that is
+   * page's heading and its steps now describe two different trades - that is
    * the gap to close when the block copy arrives.
    */
   lede: "We advise shareholders, founders, and buyers navigating pre-IPO secondary transactions - from pricing and structuring to counterparty identification. For investors seeking exposure to late-stage private companies ahead of a listing, we provide curated access to verified secondary opportunities.",
 } as const;
 
 /**
- * NOT CURRENTLY RENDERED, and `steps[0]` IS NOW LIVE ANYWAY — read this before
+ * NOT CURRENTLY RENDERED, and `steps[0]` IS NOW LIVE ANYWAY - read this before
  * editing either copy of it.
  *
- * The three-step fundraising process — Deal Readiness, Investor Segment,
- * Conversion — had its own page until /solutions was cut back on 4 Sep 2026.
+ * The three-step fundraising process - Deal Readiness, Investor Segment,
+ * Conversion - had its own page until /solutions was cut back on 4 Sep 2026.
  * Kept because `steps[0]` and `steps[1]` are genuine copy from
  * avalanche-capital.com and the voice in all three is grounded in the blog
  * posts (see docs/COPY-REVIEW.md). The graphics that went with them are
  * recoverable from commit ac09735.
  *
  * **`steps[0].body` IS BYTE-IDENTICAL TO `fundraisingView` BLOCK 01's BODY**
- * in content/solutions.ts, and that is not a copy-paste slip — the block 01
+ * in content/solutions.ts, and that is not a copy-paste slip - the block 01
  * copy supplied on 9 Sep 2026 turned out to be this exact paragraph, which
  * means it is published Avalanche copy rather than anything drafted here. Two
  * places now hold one sentence, so they CAN drift. They are deliberately not
@@ -452,7 +452,7 @@ export const fundraising = {
 } as const;
 
 /**
- * /solutions — the page the step timeline carries.
+ * /solutions - the page the step timeline carries.
  *
  * TWO blocks, not three, and they are the two things Avalanche actually does.
  *
@@ -463,7 +463,7 @@ export const fundraising = {
  * would claim a progression the business does not run. The numbering is an
  * index, which is what the rail already reads as.
  *
- * `title`, `lede` and both bodies are existing copy — `offerings.title`,
+ * `title`, `lede` and both bodies are existing copy - `offerings.title`,
  * `thesis.lede`, `secondaries.lede` and the Growth Capital offering
  * respectively. The one authored string is "Primary Capital", a standard
  * category name paired against "Secondary Liquidity". See docs/COPY-REVIEW.md.
@@ -487,7 +487,7 @@ export const solutions = {
       n: "02",
       id: "fundraising",
       label: fundraising.eyebrow,
-      // Authored — the category name opposite "Secondary Liquidity".
+      // Authored - the category name opposite "Secondary Liquidity".
       title: "Primary Capital",
       // The Growth Capital offering, verbatim. DRAFT at its source.
       body: offerings.items[2].body,
@@ -498,14 +498,14 @@ export const solutions = {
 /**
  * Raise types, above the featured case study.
  *
- * PLACEHOLDER BODIES — the stage and structure names are standard capital
+ * PLACEHOLDER BODIES - the stage and structure names are standard capital
  * market categories and line up with fundraisr.ai's own Solutions set, but the
  * descriptions were written here, not lifted from an Avalanche property. They
  * make no claim the site does not already make. See docs/COPY-REVIEW.md.
  */
 /**
  * "What we raise". **IT RENDERS ON /solutions/fundraising, NOT ON THE
- * HOMEPAGE** — moved there 8 Sep 2026, by request. It is a list of the raise
+ * HOMEPAGE** - moved there 8 Sep 2026, by request. It is a list of the raise
  * shapes Avalanche runs, which is a fundraising-page argument; the homepage
  * slot it vacated now carries `whoWeWorkWith` below, which names the CLIENTS
  * rather than the instruments.
@@ -551,7 +551,7 @@ export const raiseTypes = {
 } as const;
 
 /**
- * The homepage's "who we work with" block — SUPPLIED 8 Sep 2026, every word.
+ * The homepage's "who we work with" block - SUPPLIED 8 Sep 2026, every word.
  * Nothing here was drafted or extrapolated, so it carries no DRAFT marker and
  * needs no sign-off.
  *
@@ -565,7 +565,7 @@ export const raiseTypes = {
  * "Companies" and "Special Cases" do not, and that set is a sector list rather
  * than a general-purpose icon library. One cell with a glyph and two without
  * reads as a missing asset, and inventing marks for the other two would put a
- * sector icon on an abstract block — the rule in AGENTS.md. `TrackRecord` and
+ * sector icon on an abstract block - the rule in AGENTS.md. `TrackRecord` and
  * `Thesis` are already iconless for the same reason.
  */
 export const whoWeWorkWith = {
@@ -593,7 +593,7 @@ export const whoWeWorkWith = {
 /**
  * Verticals grid on the homepage.
  *
- * PLACEHOLDER — neither avalanche-capital.com nor fundraisr.ai publishes an
+ * PLACEHOLDER - neither avalanche-capital.com nor fundraisr.ai publishes an
  * industry list, so these ten are a standard capital-advisory vertical set
  * standing in until the real list arrives. `icon` keys map to the inline SVGs
  * in components/sections/industries.tsx; add a matching icon if you add a row.
@@ -637,7 +637,7 @@ export const industries = {
  * wrong run.
  *
  * `photo` IS THE SLIDE'S PICTURE, and since 9 Sep 2026 it is the whole left
- * half of the slide rather than a plate beside the quote — big, square, and
+ * half of the slide rather than a plate beside the quote - big, square, and
  * the first thing on the slide a reader sees. It is REQUIRED for that reason:
  * a slide without one has an empty column, not a tidier layout.
  *
@@ -645,14 +645,14 @@ export const industries = {
  * Nobody Studios supplied positioning copy rather than a person's words and
  * no photograph, so its slide shows the same white-on-transparent mark the
  * /customers grid uses. That changes the fit from `cover` to `contain` and
- * needs padding, a plate and `logo-mark` — see the component. A portrait
+ * needs padding, a plate and `logo-mark` - see the component. A portrait
  * entry must not take it. Note the mark is a 320px-wide source and the column
  * is ~450px: it is drawn inside its native width at 1x and will be soft on a
  * HiDPI screen until a larger file exists.
  */
 /**
  * The case-study block's own framing, which was hardcoded in the section
- * until 8 Sep 2026 — eyebrow, lede and button label all sat as literals in
+ * until 8 Sep 2026 - eyebrow, lede and button label all sat as literals in
  * JSX, which is exactly how editable copy stops being editable.
  *
  * The eyebrow is PLURAL now and the lede says "These show" rather than "This
@@ -663,8 +663,8 @@ export const caseStudySection = {
   eyebrow: "Selected case studies",
   lede: "Every mandate is different. These show what mandate-fit targeting, investor readiness, and pipeline execution produce when they run end to end.",
   cta: "See more customer stories",
-  /** The scroll region's accessible name. It is not rendered — the pager,
-   *  the dots and the two arrows are what a sighted reader gets — so it has
+  /** The scroll region's accessible name. It is not rendered - the pager,
+   *  the dots and the two arrows are what a sighted reader gets - so it has
    *  to say in words what those say in position. */
   carouselLabel: "Selected case studies, one at a time",
 } as const;
@@ -687,7 +687,7 @@ export const caseTestimonials = {
       "Nobody Studios - on a mission to scale and exit 100 AI-native companies in the next 5 years.",
     /**
      * SUPPLIED 8 Sep 2026, and it is a statement about the FIRM rather than a
-     * quotation from a person — which is why there is no `name` and no
+     * quotation from a person - which is why there is no `name` and no
      * `role`. Do not attribute it to a founder to make the figure match
      * Neurable's; the two are shaped differently on purpose and the component
      * renders the caption it is given.
@@ -707,7 +707,7 @@ export const customers = {
   /**
    * SUPPLIED 9 Sep 2026, title and lede both.
    *
-   * The title was "Built for the firms and GPs moving private capital." —
+   * The title was "Built for the firms and GPs moving private capital." -
    * `accent` still ends the sentence the same way, so it did not need
    * revisiting. "Working with" rather than "Built for" is the same shift the
    * /solutions header made the same day: "built for" is how a product
@@ -717,7 +717,7 @@ export const customers = {
    * "Used by placement agents, boutique investment banks, emerging fund
    * managers, and founding teams raising capital from HNWIs, family offices,
    * and institutional investors. Our clients don't need another CRM - they
-   * need infrastructure that makes their fundraise executable." — a list of
+   * need infrastructure that makes their fundraise executable." - a list of
    * segments followed by a positioning line about software. Note what that
    * takes with it: **this page no longer names the investor types it sells
    * to**, and `whoWeServe` on the homepage is now the only place that list
@@ -728,7 +728,7 @@ export const customers = {
   accent: "moving private capital.",
   lede: "Avalanche Capital works with eager fund managers and founders who aim to bring innovative initiatives to their respective industries.",
   /** The page-header CTA. It was hardcoded in app/customers/page.tsx while
-   *  every other page header read its label from content — which is exactly
+   *  every other page header read its label from content - which is exactly
    *  how a label drifts when it is renamed. */
   cta: "Get in touch",
   /**
@@ -736,7 +736,7 @@ export const customers = {
    * `SectionHeading` in a light band of its own between the page header and
    * the tile grid; the section was removed and the grid now follows the header
    * directly. Kept because they are the only sentence on the site that names
-   * the asset classes — venture, private credit, real estate, private equity —
+   * the asset classes - venture, private credit, real estate, private equity -
    * and the geography, so deleting them would lose that phrasing rather than
    * merely unmount it. Nothing else says it; `whoWeServe` names investor types
    * and `customers.lede` now names client types.
@@ -746,7 +746,7 @@ export const customers = {
     "We work across venture, private credit, real estate, and private equity - with clients from the US, Australia, and everywhere in between. Here's what that looks like in practice.",
   logoNote: "Client logos represent past engagements of Avalanche Capital.",
   /**
-   * NOT CURRENTLY RENDERED — the strips were unlabelled by request on
+   * NOT CURRENTLY RENDERED - the strips were unlabelled by request on
    * 3 Sep 2026. Kept because if a caption ever goes back under the venture
    * strip at the foot of the /customers hero, it has to be this careful:
    * those marks are firms active in the market, NOT Avalanche clients or
@@ -757,7 +757,7 @@ export const customers = {
   ecosystemNote:
     "Logos represent venture capital firms and institutional investors active in the ecosystem.",
   trustedByEyebrow: "Trusted by",
-  // DRAFT — the only line on this page not lifted from an Avalanche property.
+  // DRAFT - the only line on this page not lifted from an Avalanche property.
   // It heads the client logo grid; the paragraph beside it is `trustedByBody`
   // below. See docs/COPY-REVIEW.md.
   trustedByTitle: "Trusted by top teams across private capital.",
@@ -769,7 +769,7 @@ export const customers = {
    * the list of investor types it heads on the homepage and wrong here: the
    * grid under this paragraph is CLIENT marks, so an investor-side sentence
    * captions the wrong pictures. This is the original wording, unchanged and
-   * still sourced — it names who hires Avalanche, which is what a "Trusted
+   * still sourced - it names who hires Avalanche, which is what a "Trusted
    * by" band is claiming. Do not re-point this at `whoWeServe.lede`.
    */
   trustedByBody:
@@ -793,7 +793,7 @@ export const ctaBand = {
  *
  * The block was three white cards on a white band, separated only by a
  * hairline, with the outlet set as an eyebrow rather than its mark, no link to
- * any article and no hover state — while the same site runs real logo lockups
+ * any article and no hover state - while the same site runs real logo lockups
  * in the hero strip and across /customers. It could not be fixed in place:
  * there are no outlet marks in `public/logos/` for these three and no article
  * URLs anywhere in the repo, and inventing either is not available. So it was
@@ -801,7 +801,7 @@ export const ctaBand = {
  *
  * Kept because the quotes are still wanted if the articles are real. Bring it
  * back with marks, anchors and a hover state, on the `BracketGrid` lattice
- * rather than as filled panels — see docs/COPY-REVIEW.md.
+ * rather than as filled panels - see docs/COPY-REVIEW.md.
  */
 export const media = [
   {

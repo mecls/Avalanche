@@ -9,7 +9,7 @@
 
    TYPE is not. The reference's Cormorant Garamond / Cormorant Infant /
    Inter trio was replaced on 4 Sep 2026 by Satoshi alone, on
-   everything — headings, figures, body, buttons, nav. There is no
+   everything - headings, figures, body, buttons, nav. There is no
    serif on the site and no secondary display face. Satoshi is self-
    hosted from app/fonts/ (it is a Fontshare release, not on Google
    Fonts); app/layout.tsx has the loading notes, including why nothing
@@ -19,7 +19,7 @@
    derived one (Satoshi, flat white type, no accent), then the
    farahcap serif rebuild, and now farahcap's layout carrying
    fundraisr's face. A doc claiming "no serif, no accent colour" is
-   half right by accident — the serif is indeed gone again, but the
+   half right by accident - the serif is indeed gone again, but the
    accent is real. Trust this file over docs/BUILD-NOTES.md.
 
    Tokens are named by ROLE, not by hue, so a section can re-point the
@@ -29,14 +29,14 @@
    --------------------------------------------------------------- */
 @theme {
   /* Ground. The reference runs ONE dark value, not a three-step ramp, so
-     these are deliberately identical — components that reach for a
+     these are deliberately identical - components that reach for a
      different ground must not reintroduce banding against it. */
   --color-ground-deep: #151515;
   --color-ground: #151515;
   --color-ground-alt: #151515;
   /* The ONE dark surface that is not the ground. Cards sit on top of a
      #151515 band and have to read as raised, so this is deliberately a few
-     points lighter rather than equal to it — with `border-line` on top that
+     points lighter rather than equal to it - with `border-line` on top that
      is enough lift without a shadow. fg-muted still measures 6.2:1 here. */
   --color-card: #202020;
 
@@ -55,7 +55,7 @@
   --color-fg-muted: #a8a8a8;
   --color-fg-faint: #949494;
 
-  /* The accent. #73B6FF — hue 211, and the value the brand was specified in
+  /* The accent. #73B6FF - hue 211, and the value the brand was specified in
      on 8 Sep 2026. It supersedes #3056EE (hue 228, and the same role), a brief
      obsidian palette and, before those, the reference's gold (#ae9e77 /
      #decfab / #7c6c45); the token was renamed off the hue when the gold went,
@@ -66,13 +66,13 @@
      THE VALUE BELOW IS THE DARK-BAND ONE, and this time it IS the specified
      colour. #73B6FF is already a light blue (HSL lightness 72.5%), so the
      band that needs it as given is the dark one, and the LIGHT band is what
-     has to be derived — the exact reverse of the #3056EE arrangement this
+     has to be derived - the exact reverse of the #3056EE arrangement this
      replaced, which was dark enough to be itself on white and had to be lit
      for #151515. The derivation is further down; the constraint driving both
      has not moved.
        on #151515             8.6:1
        on #202020 (card)      7.7:1
-       step down from fg      2.1:1  — reads as its own colour, not as white.
+       step down from fg      2.1:1  - reads as its own colour, not as white.
                                        That step was 2.4:1 under #8aa4ff and
                                        this is the one measurement the new
                                        value gives up. Hue buys it back: a
@@ -81,7 +81,7 @@
                                        did, which is what the number cannot
                                        say.
        step up from a 50%
-         fg-muted dot         3.0:1  — was 2.7:1. This is the number that
+         fg-muted dot         3.0:1  - was 2.7:1. This is the number that
                                        matters most: the /solutions diagrams
                                        draw matched routes in accent against
                                        ghost dots in 50% fg-muted, and two
@@ -107,14 +107,14 @@
      4.9:1 at the foot. That 2.6x swing is close to the gold gradient's own
      ratio, which is what keeps the line reading as one thread darkening
      toward the marker rather than as two colours meeting. On a dark ground
-     they would be invisible — every accent pair that has held this slot has
+     they would be invisible - every accent pair that has held this slot has
      had the same restriction.
 
      --color-accent-deep is the DERIVED light-band value exactly, so the rail
      terminates in the same blue the eyebrows on that band are set in. It
      therefore coincides with the light-band --color-accent below; that is a
      coincidence of this palette, not a rule, and the gold it replaced did not
-     have it. Don't collapse the two — and note that the head is now within a
+     have it. Don't collapse the two - and note that the head is now within a
      few points of the dark-band --color-accent for the same reason the old
      head sat next to #8aa4ff. Also a coincidence, also not a rule.
 
@@ -134,7 +134,7 @@
   --color-line-soft: rgba(255, 255, 255, 0.09);
 
   /* The only chromatic note besides the accent: a live-status dot.
-     Decorative — it never carries meaning alone, so it needs no ratio. */
+     Decorative - it never carries meaning alone, so it needs no ratio. */
   --color-live: #4ade80;
 
   /* ONE face, three roles. Satoshi carries headings, figures and every UI run;
@@ -159,7 +159,7 @@
   --font-ui-src: var(--font-satoshi);
 }
 
-/* A light band. Re-points the role tokens for its whole subtree — shared
+/* A light band. Re-points the role tokens for its whole subtree - shared
    components (buttons, headings, cards) invert automatically because they
    reference roles rather than colours.
    Contrast on the light grounds (#ffffff / #fafafa / #f3f3f3):
@@ -178,7 +178,7 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
   --color-fg-muted: #686868;
   --color-fg-faint: #686868;
 
-  /* The brand blue DARKENED for a light ground — hue 211 and saturation 100%
+  /* The brand blue DARKENED for a light ground - hue 211 and saturation 100%
      held from #73B6FF, lightness 72.5% -> 40%. Same blue, sat down for a lit
      room, and the mirror image of what the dark band used to do to #3056EE.
      The specified value cannot be used here: #73B6FF measures 2.1:1 on white,
@@ -200,7 +200,7 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
 }
 
 /* Only a band paints itself. The header selector above borrows the same
-   tokens WITHOUT the ground, because the header owns its own background — it
+   tokens WITHOUT the ground, because the header owns its own background - it
    has to be able to go fully transparent over the hero video. */
 [data-band="light"] {
   background-color: var(--color-ground);
@@ -209,7 +209,7 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
 
 /* A page that opens on a light band. The header is transparent everywhere
    now, so on a light first section its white type would vanish. This is pure
-   CSS because the header no longer moves relative to the bands — it is
+   CSS because the header no longer moves relative to the bands - it is
    absolutely positioned and scrolls away, so the band beneath it never
    changes after first paint. */
 body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
@@ -218,7 +218,7 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
 
 /* ...and the band it sits on has to be light too.
    `main` reserves --header-h of PADDING for the chrome, and padding paints the
-   element's own background — which was nothing, so the reserved strip showed
+   element's own background - which was nothing, so the reserved strip showed
    the dark <body> ground through it. On a dark-first page that is invisible
    and correct. On a light-first one it put a 79px black bar between the
    announcement bar and the first section, with the rule above rendering the
@@ -234,7 +234,7 @@ body:has(main > :first-child[data-band="light"]) main {
 /* Client marks are pre-processed to white-on-transparent
    (scripts/logos-to-alpha.mjs), so they vanish on a light band. Inverting
    maps pure white onto pure black and leaves alpha untouched, which is
-   exactly the second tone the light bands need — no second set of assets to
+   exactly the second tone the light bands need - no second set of assets to
    generate and keep in sync. */
 [data-band="light"] .logo-mark {
   filter: invert(1);
@@ -268,7 +268,7 @@ body:has(main > :first-child[data-band="light"]) main {
   /* The chrome is ONE element: a 79.2px nav, absolutely positioned, which
      scrolls away with the page. `main` reserves it and the hero cancels it.
 
-     It used to be two — a `fixed` 37px announcement bar sat above the nav and
+     It used to be two - a `fixed` 37px announcement bar sat above the nav and
      --header-h published the 116.2px sum. The bar is gone, so the sum is just
      the nav, and --header-bar-h / --header-nav-h went with it: one number with
      one consumer does not need three names. Nothing on the site is `fixed`
@@ -297,7 +297,7 @@ body {
   html {
     scroll-behavior: auto;
   }
-  /* Named separately because `scroll-behavior` is not inherited — the
+  /* Named separately because `scroll-behavior` is not inherited - the
      carousel is its own scroll container and would keep animating. */
   .case-carousel {
     scroll-behavior: auto;
@@ -316,35 +316,35 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   Type. These carry family, weight, leading and tracking only —
+   Type. These carry family, weight, leading and tracking only -
    sizes are set at the call site.
    --------------------------------------------------------------- */
 
 /* Bare uppercase eyebrow. The hero uses the pill below instead.
 
-   THIS CARRIES THE ACCENT, by request on 4 Sep 2026 — "Verticals", "What we
+   THIS CARRIES THE ACCENT, by request on 4 Sep 2026 - "Verticals", "What we
    raise" and every label like them. It is the block's name, and colouring it
    is what makes a section announce itself before the heading does.
 
    Note the history, because this rule has moved twice in one day: it was
    accented, judged too much across the site, reverted to `fg-muted`, then
    asked for again specifically. The middle step was a judgement about the
-   accent being EVERYWHERE — corner brackets, grid icons, FAQ glyphs, team
-   monograms — not about the eyebrow itself. Those all stayed monochrome; only
+   accent being EVERYWHERE - corner brackets, grid icons, FAQ glyphs, team
+   monograms - not about the eyebrow itself. Those all stayed monochrome; only
    this one came back. If it is ever pulled again, pull it alone.
 
    ONE RULE, MANY MARKS. This colours the section eyebrows, the thesis
    ordinals, the who-we-serve labels, media outlets and the footer column
-   heads — around a dozen on the homepage. It carried the case-study CATEGORY
+   heads - around a dozen on the homepage. It carried the case-study CATEGORY
    until 9 Sep 2026 and no longer does: small uppercase accent type on a card
    reads as a link, and that one goes nowhere. It is an outlined muted tag at
-   its call site now — see the note in featured-case-study.tsx. That is the
+   its call site now - see the note in featured-case-study.tsx. That is the
    intended reading now, but it is why this utility is the first place to look
    if the page ever feels loud again.
 
    CONTRAST: 14px/600 is NOT large text, so this needs the full 4.5:1 rather
    than the 3:1 large-text floor, and it is the only place the accent carries
-   small type. Both band values clear it — 5.7:1 on white, 5.2:1 on the
+   small type. Both band values clear it - 5.7:1 on white, 5.2:1 on the
    #f3f3f3 band, 8.6:1 on #151515, 7.7:1 on the #202020 card. Any future
    accent has to hold 4.5:1 on ALL FOUR before it can land here, which is why
    #73B6FF is not used as supplied on the light band: it measures 2.1:1 there
@@ -359,7 +359,7 @@ body {
   color: var(--color-accent);
 }
 
-/* The PAGE-level label, above the 72px H1 — a different run from `eyebrow`
+/* The PAGE-level label, above the 72px H1 - a different run from `eyebrow`
    above, which labels a section inside a page.
 
    Lighter (500, not 600) and set in full-strength ink rather than `fg-muted`,
@@ -370,7 +370,7 @@ body {
 
    It lived as a `LABEL` const inside solutions-steps.tsx until /customers
    needed the same run on 4 Sep 2026. Two copies of a type spec drift; this is
-   the one place to change it. Do NOT fold it into `eyebrow` — that utility
+   the one place to change it. Do NOT fold it into `eyebrow` - that utility
    renders twelve times on the homepage and this one renders once per page,
    which is exactly why they are allowed to differ. */
 @utility page-label {
@@ -382,7 +382,7 @@ body {
   text-transform: uppercase;
 }
 
-/* Display headings — Satoshi at MEDIUM, 1.05 leading, -0.025em.
+/* Display headings - Satoshi at MEDIUM, 1.05 leading, -0.025em.
    All three values changed with the face on 4 Sep 2026 and none of them is
    arbitrary:
 
@@ -410,7 +410,7 @@ body {
 }
 
 /* 40px card headings and process steps: real leading, because they wrap to
-   two and three lines. NOTE: currently unused — nothing on the site renders
+   two and three lines. NOTE: currently unused - nothing on the site renders
    `display-md` or `display-sm`. Kept as the rungs between `display` and body
    for whatever needs them next; delete both if that never comes. */
 @utility display-md {
@@ -428,7 +428,7 @@ body {
   letter-spacing: -0.015em;
 }
 
-/* Figures. This was Cormorant *Infant* — a separate face from the heading
+/* Figures. This was Cormorant *Infant* - a separate face from the heading
    Garamond, carried purely for its numerals. Satoshi has one set of figures
    and they are the heading's, so `numeral` no longer switches face; it stays
    a distinct utility because a figure still wants its own weight and normal
@@ -481,8 +481,8 @@ body {
    the part that matters: an uncapped percentage is what the 80rem/
    clamp(1.25rem,4vw,2.5rem) version did, and it both capped the content
    narrower AND kept widening its own gutter on a large screen, so the page
-   read pinched exactly where there was most room. Capping at 72px — 5% of a
-   1440 window — means the gutter stops growing at the width the shell itself
+   read pinched exactly where there was most room. Capping at 72px - 5% of a
+   1440 window - means the gutter stops growing at the width the shell itself
    stops growing, and the content box holds 1296px from 1440 up.
 
    It was a FIXED 20px until 8 Sep 2026, matching the reference at every
@@ -502,8 +502,8 @@ body {
   padding-inline: clamp(20px, 5%, 72px);
 }
 
-/* Fixed 120px, not a clamp. The previous clamp resolved to 52-72px — roughly
-   half the reference rhythm — which is what made the page read cramped. */
+/* Fixed 120px, not a clamp. The previous clamp resolved to 52-72px - roughly
+   half the reference rhythm - which is what made the page read cramped. */
 @utility section-y {
   padding-block: 120px;
 }
@@ -512,14 +512,14 @@ body {
    The homepage case-study carousel
 
    TWO SLIDES IN A SCROLL CONTAINER, AND NO CAROUSEL STATE. A
-   carousel's index is state — but a SCROLL POSITION is state the
+   carousel's index is state - but a SCROLL POSITION is state the
    browser already keeps, so the slides sit in an `overflow-x`
    container with scroll-snap and nothing tracks which one is
    showing. Swipe, trackpad and shift-wheel come for free and the
    section stays server-rendered. The `tabIndex` on the track is for
    its accessible name; a focused scroll container is also supposed
    to take Left/Right natively, but that could not be confirmed under
-   browser automation — read AGENTS.md before claiming it works. Same reasoning that keeps /solutions' rail and
+   browser automation - read AGENTS.md before claiming it works. Same reasoning that keeps /solutions' rail and
    /about's layer sequence on CSS.
 
    ONE CLIENT ISLAND, AND ONLY BECAUSE THE BROWSER WOULD NOT DO IT.
@@ -530,7 +530,7 @@ body {
    THE CONTROLS LIVE INSIDE THE SLIDES, and that is what makes a
    stateless carousel possible. Only one slide is ever on screen, so
    the control in view is always the right one and nothing has to
-   know which index is active — including the DISABLED end-stop,
+   know which index is active - including the DISABLED end-stop,
    which is known statically from the slide's own position. A shared
    pair of arrows OUTSIDE the container could not do that: it would
    have to work out which end it was at, which is the state being
@@ -541,7 +541,7 @@ body {
    tall in an 806px viewport: the controls were off screen by the
    time the reader reached the quote, so the section's only signal
    that a second study existed was gone at exactly the moment it was
-   needed. Sticky controls are not an alternative — `overflow-x:
+   needed. Sticky controls are not an alternative - `overflow-x:
    auto` computes `overflow-y` to `auto`, so the track is its own
    scrollport and, being as tall as its tallest slide, has no
    vertical overflow for a sticky element to move against.
@@ -583,7 +583,7 @@ body {
   flex: 0 0 100%;
   /* Flex items floor at min-content, and the wide card inside carries
      a metric pill that would push that floor well past 100% of the
-     track — the slide would then be wider than its own snap step. */
+     track - the slide would then be wider than its own snap step. */
   min-width: 0;
   scroll-snap-align: start;
   /* A hash link scrolls the DOCUMENT as well as the carousel, because
@@ -616,7 +616,7 @@ body {
  *
  * **IT WAS FIVE COPIES OF AN INLINE STYLE AND IT FROZE THE PAGE.** The tile
  * size has to stay in step with `SIZE` in scripts/make-grain.mjs, which is why
- * it is one rule now rather than five literals — but the promotion below is
+ * it is one rule now rather than five literals - but the promotion below is
  * the reason this exists at all.
  *
  * `will-change: transform` IS LOAD-BEARING, NOT A MICRO-OPTIMISATION.
@@ -625,16 +625,16 @@ body {
  * grain layers took the same frame to 2.9ms. A repeated semi-transparent
  * noise bitmap over several large areas was being re-rastered as part of one
  * enormous paint instead of composited. Promoting each layer makes it its own
- * texture, rastered once and reused — the same frames then measure 7-42ms.
+ * texture, rastered once and reused - the same frames then measure 7-42ms.
  *
  * These layers never move or change, so promotion costs one texture each and
  * nothing per frame. **Do not remove it, and re-measure before adding
- * another** — the cost scales with total grain area, which is also why /about
+ * another** - the cost scales with total grain area, which is also why /about
  * froze at 900px wide before it froze at 1440: the plates go full-width below
  * 1200 and each one's grain gets bigger.
  *
- * /about is at EIGHT now — the layer sequence turned one plate into three on
- * 7 Sep 2026 — and was re-measured on a production build at that count:
+ * /about is at EIGHT now - the layer sequence turned one plate into three on
+ * 7 Sep 2026 - and was re-measured on a production build at that count:
  * worst frame 17ms over 72 frames scrolling the whole sequence, with the
  * crossfade running. Promotion holds.
  *
@@ -666,7 +666,7 @@ body {
    page headers, kept together here so the two cannot drift apart.
 
    These were `.display-80` / `.display-58` and were RENAMED with the values
-   when the face changed on 4 Sep 2026 — a class called `display-80` that sets
+   when the face changed on 4 Sep 2026 - a class called `display-80` that sets
    72px is a trap for the next reader.
 
    Only `font-size` is overridden. `display` sets its leading and tracking in
@@ -705,7 +705,7 @@ body {
      1000  12.6px      390    6.4px
       900  11.3px      360    5.8px
 
-   — a 2.2x swing for one number, overshooting on tablet and collapsing
+   - a 2.2x swing for one number, overshooting on tablet and collapsing
    to texture on a phone. The file header used to claim the card was
    ~460px on a phone and that the per-breakpoint widths held a 17px label
    at ~12px. Both were wrong: the card is 350px at a 390px viewport and
@@ -714,7 +714,7 @@ body {
    The fix is in two halves and needs both:
 
    1. `Frame` is now `w-[94%] max-w-[560px]`. The cap is what stops the
-      scale RISING — a full-width card on a tablet was 960px, which blew
+      scale RISING - a full-width card on a tablet was 960px, which blew
       the diagram up past its design size. Everything from 600px to
       1600px now sits between 0.734 and 0.903.
    2. Below 600px the card is physically smaller than the cap, so the
@@ -731,13 +731,13 @@ body {
 
    THE LOW POINT IS NO LONGER ON A PHONE. From 8 Sep 2026 the gutter is
    5% and a half-row card at a 1200px viewport is 484px rather than
-   524px, which renders `dgm-xs` at 8.8px — the one width in the range
+   524px, which renders `dgm-xs` at 8.8px - the one width in the range
    under the 9.2px floor, in a 1200-1240px window and nowhere else
    (below 1200 the card goes full-width and the frame hits its cap, so
    the scale JUMPS from 0.734 to 0.903 across that gate). Two ways back
    if it ever matters: raise `Frame`'s 94%, or move the media row's
    1200px gate up to ~1280 so the two-column layout only starts where
-   the card can carry it. Neither was taken — the band is narrow, these
+   the card can carry it. Neither was taken - the band is narrow, these
    frames are `aria-hidden`, and the copy beside every diagram states
    its claim in words. Do NOT reach for a capped rung here; see below.
 
@@ -750,7 +750,7 @@ body {
    It is gone: that grid was transposed instead, putting the long sector
    names on the vertical axis where word length costs nothing, so every
    run on every diagram now takes a full rung. Do NOT reintroduce a
-   capped rung to rescue a dense axis — re-pitch the axis.
+   capped rung to rescue a dense axis - re-pitch the axis.
    --------------------------------------------------------------- */
 .dgm-xs {
   font-size: 12px;
@@ -805,7 +805,7 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   The /solutions step timeline — scroll-linked reveal, with NO JS.
+   The /solutions step timeline - scroll-linked reveal, with NO JS.
 
    `view-timeline-name` on each row publishes that row's own progress
    through the viewport; the rail fill and the text column both read it,
@@ -813,7 +813,7 @@ body {
    things from a scroll listener.
 
    EVERYTHING here is inside @supports, and the un-animated base state is
-   the FINISHED state — rail filled, text visible. A browser without
+   the FINISHED state - rail filled, text visible. A browser without
    scroll-driven animations therefore gets a complete, static section
    rather than an empty rail and invisible copy. Same under reduced motion,
    which is why the block below sets `animation: none` explicitly: for a
@@ -828,7 +828,7 @@ body {
     }
 
     /* The fill is deliberately TALLER than the track that clips it, so a
-       full sweep is one translate of its own height — no height animation,
+       full sweep is one translate of its own height - no height animation,
        which would relayout on every frame. */
     @keyframes rail-fill {
       from {
@@ -849,8 +849,8 @@ body {
        row leaves past the top, which is what the reference measures.
 
        The two ZERO points are pinned to `entry 0%` and `exit 100%` on
-       purpose. Those are exactly the instants the row is wholly off-screen —
-       its top at the bottom edge, its bottom at the top edge — so fully
+       purpose. Those are exactly the instants the row is wholly off-screen -
+       its top at the bottom edge, its bottom at the top edge - so fully
        transparent text is never text the reader could otherwise be reading.
        Pulling either one inwards (entry 15% was the first attempt) buys a
        punchier fade at the cost of that guarantee, and also dims the first
@@ -883,7 +883,7 @@ body {
 }
 
 /* ---------------------------------------------------------------
-   The /about access-layer sequence — three slides in ONE pinned
+   The /about access-layer sequence - three slides in ONE pinned
    stage, each replacing the last IN PLACE.
 
    IT WAS THREE FULL-SCREEN PANELS IN FLOW AND THAT WAS THE PROBLEM.
@@ -892,7 +892,7 @@ body {
    is a screenful of the outgoing block's empty half above the
    incoming block's empty half, however the two are faded. What was
    asked for is substitution, and substitution needs both slides in
-   the same place at the same time — which flow cannot do.
+   the same place at the same time - which flow cannot do.
 
    So: a 400svh container as pure scroll runway, one `sticky` stage
    pinned inside it for the whole of it, and the three slides stacked
@@ -903,13 +903,13 @@ body {
    chosen. The container publishes its own view progress; over a
    400svh box in a 100svh viewport the cover range is 500svh, so the
    stage is pinned from 100/500 = 20% to 400/500 = 80%. That is 60
-   points of timeline for three slides — 20 each, with the handovers
+   points of timeline for three slides - 20 each, with the handovers
    at 40% and 60%. The crossfades straddle those: 4 points, which is
    20svh of scrolling, short enough to read as a cut rather than a
    dissolve. **If the container height changes, all six numbers move.**
 
    `visibility` rides along with `opacity` so a slide that is not on
-   screen is not in the tab order either — slide three carries the
+   screen is not in the tab order either - slide three carries the
    section's only button, and it would otherwise be focusable and
    clickable through the two slides in front of it. It interpolates
    as "visible if either end is visible", so a slide stays reachable
@@ -933,8 +933,8 @@ body {
         /* THE HEIGHT OF ONE PANEL, and the single number this whole block is
            tuned around. It is the tallest of the three text columns, measured
            at the WIDTH THAT MAKES THEM TALLEST: panel 01 is 295px, panel 03 is
-           366px and panel 02 — which carries the four "Why This Segment"
-           reasons — is the one that sets it. The plate is shorter than all of
+           366px and panel 02 - which carries the four "Why This Segment"
+           reasons - is the one that sets it. The plate is shorter than all of
            that (497px at a 1200px viewport, 599px from 1440px up, capped by
            the shell), so the column drives the row at every width the stage
            exists at.
@@ -942,7 +942,7 @@ body {
            IT IS MEASURED AT 1200px, NOT AT 1440. The body copy is capped at
            560px, so above a 1280px viewport the column is wider than its own
            measure and panel 02 settles at 677px. At the 1200px gate the
-           column is only 522px — narrower than the cap — the reasons list
+           column is only 522px - narrower than the cap - the reasons list
            re-wraps and the panel grows to 697px. Sizing the stage off the
            wide measurement spills panel 02 out of it in exactly the 1200-1280
            band, which is a common laptop window. One value still covers
@@ -952,7 +952,7 @@ body {
            from a fixed 20px to 5%, which took ~52px off each column.
 
            RE-MEASURE AFTER ANY COPY CHANGE in `layers`, AND AFTER ANY CHANGE
-           TO THE SHELL — set it to 0, read the three column heights at a
+           TO THE SHELL - set it to 0, read the three column heights at a
            1200px viewport, take the largest. Too small and panel 02 overflows
            the stage; too large and all three panels carry dead space they did
            not ask for. */
@@ -961,8 +961,8 @@ body {
 
       /* PINNED CENTRED, AND SIZED TO THE PANEL RATHER THAN THE SCREEN.
 
-         It was `top: 0; height: 100svh` — a full-viewport box with the panel
-         centred inside it — and that put (100svh - panel) / 2 of white INSIDE
+         It was `top: 0; height: 100svh` - a full-viewport box with the panel
+         centred inside it - and that put (100svh - panel) / 2 of white INSIDE
          the stage, above the picture. Invisible once pinned, because the slack
          is then just the margin around a centred composition. Very visible
          BEFORE pinning, which is the state a reader arrives in: the stage sits
@@ -970,15 +970,15 @@ body {
          a ~190px hole between the lede and the first picture.
 
          Sizing the box to the panel and pushing it down with `top` instead
-         puts the identical composition on screen when pinned — the panel still
-         lands (100svh - panel) / 2 from the top — while the box above it
+         puts the identical composition on screen when pinned - the panel still
+         lands (100svh - panel) / 2 from the top - while the box above it
          collapses to nothing, so the gap under the heading is just the
          runway's own `mt-10` plus the plate's 23px of centring: ~63px, which
          is the `mt-16` rhythm the rest of the site's sections use.
 
          It also shortens the un-pinning tail at the end of the sequence by the
          same amount, and it moves the pinned window on the timeline a little
-         wider — 16.8% to 83.2% at a 1026px viewport, against 20/80 before. The
+         wider - 16.8% to 83.2% at a 1026px viewport, against 20/80 before. The
          four crossfade percentages below sit at 38/42 and 58/62 and stay well
          inside that, so they did not have to move; check they still do if this
          height changes a lot.
@@ -997,14 +997,14 @@ body {
 
       /* THE FLOOR THAT ALIGNS THE THREE PANELS. Each slide's row is
          `items-center`, so a column's own height decides where its first line
-         lands — measured 295 / 677 / 366, which would put "01", "02" and "03"
+         lands - measured 295 / 677 / 366, which would put "01", "02" and "03"
          up to 190px apart. One floor above the tallest makes all three the
          same box, so every panel's ordinal, heading and body start on the same
          line and only the words change as the reader scrolls.
 
          It is HERE rather than on the element because it must apply exactly
-         where the pinned stage does. In the fallback below — under 1200px, or
-         without scroll-driven animations, or under reduced motion — the panels
+         where the pinned stage does. In the fallback below - under 1200px, or
+         without scroll-driven animations, or under reduced motion - the panels
          are in flow one under the next, nothing needs aligning, and this floor
          would be ~380px of dead space under panels 01 and 03. */
       .layer-col {
@@ -1023,12 +1023,12 @@ body {
       /* EVERY SET PINS `cover 0%` AND `cover 100%` EXPLICITLY, and that is
          not padding. A keyframe set that does not reach both ends of the
          timeline gets IMPLICIT from/to keyframes synthesised from the
-         element's own computed value — opacity 1 here — so a set written as
+         element's own computed value - opacity 1 here - so a set written as
          just "1 at 38%, 0 at 42%" actually runs "1 at 0%, 1 at 38%, 0 at
          42%, **1 at 100%**" and every slide ramps back up over the rest of
          the scroll. Measured before this was fixed: all three were part-
          visible at once at 23% and again at 70%. `both` fill does not save
-         it — there is nothing outside the range to fill.
+         it - there is nothing outside the range to fill.
 
          (The `/solutions` sets above get away without it because
          `entry 0%` and `exit 100%` ARE the two ends of the range.) */
@@ -1115,7 +1115,7 @@ body {
 
       /* A 1366x768 LAPTOP IS THE CASE THIS EXISTS FOR. Chrome's chrome and
          the OS bar leave it about 640px of viewport, and a 677px panel does
-         not fit — the stage would pin with its top off-screen and the panel
+         not fit - the stage would pin with its top off-screen and the panel
          would spill over the bands above and below it.
 
          So the densest thing in the panel tightens instead of the stage
@@ -1127,7 +1127,7 @@ body {
          is max(tallest column, plate) and both ends have to be checked. 623px
          is the tightened panel 02 at a column wider than the 560px measure
          cap; at the 1200px gate the column is 522px, the reasons re-wrap and
-         the tightened panel is 641px — the same trap the base value above
+         the tightened panel is 641px - the same trap the base value above
          documents, one step down. So the tightening buys the 56px between 697
          and 641, and 649 keeps a little air over it.
 
@@ -1135,7 +1135,7 @@ body {
          reached 649px on any viewport 1480px or wider, and sizing the stage
          under it spilled the picture on a wide-but-short window (1600x768 is
          the ordinary one). The 5% gutter took the plate's ceiling to 599px on
-         8 Sep 2026, so the column binds at both heights now — but check the
+         8 Sep 2026, so the column binds at both heights now - but check the
          plate again before lowering this, because it is the end that cannot
          be tightened: its height is its width over a fixed aspect ratio.
 

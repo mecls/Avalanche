@@ -12,16 +12,16 @@ export const metadata: Metadata = {
 };
 
 /**
- * /get-in-touch — the destination behind every CTA on the site.
+ * /get-in-touch - the destination behind every CTA on the site.
  *
  * IT REPLACES AN ANCHOR. Until 5 September 2026 `#get-in-touch` was the id on
  * the closing band, and every CTA scrolled to it; the band's own button then
  * sent people to an external scheduler. The CTAs now come here instead. The
- * band stays on every other page — it is the closing furniture, not the
- * conversion mechanism — and its id is kept so an old `/#get-in-touch` link
+ * band stays on every other page - it is the closing furniture, not the
+ * conversion mechanism - and its id is kept so an old `/#get-in-touch` link
  * still lands somewhere sensible.
  *
- * IT ENDS THE WAY EVERY OTHER ROUTE ENDS — FAQ, then the closing band, then
+ * IT ENDS THE WAY EVERY OTHER ROUTE ENDS - FAQ, then the closing band, then
  * the footer. It shipped without the band, on the reasoning that the band's
  * job is to send people here and it would therefore be a button pointing at
  * the page you are already on. That was overruled (6 Sep 2026): the ending is
@@ -31,19 +31,19 @@ export const metadata: Metadata = {
  * is also why the opening section carries an id it otherwise would not need.
  *
  * The FAQ stays where it is, above the band, which is both the homepage's
- * order and what a contact page wants — the questions people ask before
+ * order and what a contact page wants - the questions people ask before
  * filling in a form are the ones already answered on the homepage.
  *
  * The header is NOT `components/site/page-header.tsx`. That component is one
- * composition — label, H1, lede, and a CTA bottom-right on an `items-end` row
- * — and this page has a form in the right column and no header CTA at all.
+ * composition - label, H1, lede, and a CTA bottom-right on an `items-end` row
+ * - and this page has a form in the right column and no header CTA at all.
  * The type utilities are the same ones by hand so the two still read as one
  * family; if the 72px/720px header spec ever moves, move this with it.
  */
 export default function GetInTouchPage() {
   return (
     <>
-      {/* A STILL, not a video, and the section is DARK because of it — it
+      {/* A STILL, not a video, and the section is DARK because of it - it
           carries no `data-band`, so it inherits the root tokens.
 
           It shipped as a background video on 6 Sep 2026 and became a still
@@ -59,7 +59,7 @@ export default function GetInTouchPage() {
           height is added back to the content's top padding.
 
           `min-h-dvh` rather than the hero's exact `h-dvh`, and the difference
-          matters here. The hero's composition depends on an exact height — its
+          matters here. The hero's composition depends on an exact height - its
           content box is `calc(100% - 100px)` reserving the logo band, and a
           min-height would push that band off the fold. This section has no
           such reservation and its card GROWS: the six-option question is
@@ -72,7 +72,7 @@ export default function GetInTouchPage() {
           The image is the LAST FRAME of the source clip: the camera has
           pulled fully back onto the lift's viewing platform against the Carmo
           ruins, and the blown sun flare from the first half of the clip has
-          gone — which is what makes white type over the left of it work. */}
+          gone - which is what makes white type over the left of it work. */}
       <section
         id="questionnaire"
         className="relative isolate -mt-[var(--header-h)] flex min-h-dvh flex-col justify-center overflow-clip bg-ground"
@@ -88,10 +88,10 @@ export default function GetInTouchPage() {
 
             From `lg` up the type sits in the left column and the right half
             carries an opaque card, so the gradient runs left-weighted and lets
-            the footage come up on the right — the closing band's approach.
+            the footage come up on the right - the closing band's approach.
 
             BELOW `lg` THE LAYOUT STACKS AND THE TYPE SPANS THE FULL WIDTH, so
-            its right end lands in the light end of that same gradient — 4.23:1
+            its right end lands in the light end of that same gradient - 4.23:1
             on a 390px phone and 2.93:1 on a 768px tablet against a 4.5 floor,
             measured while this was still a video. So the stacked layout gets a
             vertical scrim instead, dark across the whole width.
@@ -101,11 +101,11 @@ export default function GetInTouchPage() {
             frame of that clip puts open sky exactly where the text sits, and
             the tightest case is a 1024px laptop, where the two-column grid is
             live but each column is only 460px so the run reaches 47% of the
-            width. At the old stops that measured 4.84:1 — passing, but too
+            width. At the old stops that measured 4.84:1 - passing, but too
             thin to leave alone.
 
             Both are measured, not assumed. Re-measure if the footage, the
-            gradient or the breakpoint changes — the method is in the README. */}
+            gradient or the breakpoint changes - the method is in the README. */}
         <div
           aria-hidden
           className="absolute inset-0 z-[1] lg:hidden"
@@ -146,7 +146,7 @@ export default function GetInTouchPage() {
             </p>
 
             {/* TODO(miguel): an email address and a phone number go here when
-                they exist — see content/contact.ts. Nothing is invented in the
+                they exist - see content/contact.ts. Nothing is invented in the
                 meantime, so this offers the one public channel the repo has. */}
             <div className="mt-6 w-full max-w-[520px] border-t border-white/20 pt-6">
               <p className="text-sm text-white/70">{contact.asideLabel}</p>

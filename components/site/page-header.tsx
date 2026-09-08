@@ -7,9 +7,9 @@ import { ArrowGlyph, CtaButton } from "@/components/ui/button";
  *
  * IT WAS DUPLICATED JSX AND THAT IS WHY THIS EXISTS. /solutions and
  * /customers were separate builds until 4 Sep 2026 and had drifted to a
- * different value in every row — 64px vs 80px H1 (both now 72), a 600-weight
+ * different value in every row - 64px vs 80px H1 (both now 72), a 600-weight
  * grey label against a 500-weight ink one, a 15px lede against 16px, a 576px
- * column against 720 — which is what made /customers read as a different
+ * column against 720 - which is what made /customers read as a different
  * site. They were hand-aligned and both carried a "keep them in step"
  * comment. A third page would have made three copies of a construction that
  * has already drifted once, so the copies were collapsed into this.
@@ -26,7 +26,7 @@ import { ArrowGlyph, CtaButton } from "@/components/ui/button";
  *    from the `text-[72px]` beside it. Drop either and the heading is unsized
  *    at one end of the range.
  *  - `page-label` carries no colour of its own. The accent is applied here,
- *    at the call site, and must not be folded into the utility — the
+ *    at the call site, and must not be folded into the utility - the
  *    /solutions block labels and rail numbers take the same utility and
  *    deliberately stay ink.
  *
@@ -45,8 +45,8 @@ export function PageHeader({
   eyebrow: string;
   /**
    * `ReactNode` rather than `string` so a page can author its own line
-   * breaks. /about does — it inherited the two-line H1 from /manifesto when
-   * that page was folded into it — and the other two pass a plain string and
+   * breaks. /about does - it inherited the two-line H1 from /manifesto when
+   * that page was folded into it - and the other two pass a plain string and
    * render byte-identically to the markup this replaced.
    */
   title: React.ReactNode;
@@ -54,8 +54,8 @@ export function PageHeader({
   cta: string;
   ctaHref?: string;
   /**
-   * `center` stacks the whole header on the centre line — eyebrow, H1, lede
-   * and CTA — which is what /about uses. The other two pass nothing and render
+   * `center` stacks the whole header on the centre line - eyebrow, H1, lede
+   * and CTA - which is what /about uses. The other two pass nothing and render
    * the left-aligned row they always have, byte for byte.
    *
    * It replaced an inset visual in the right half (a small dark plate, added
@@ -97,7 +97,7 @@ export function PageHeader({
     <div className="shell flex flex-col items-center justify-center gap-2.5 overflow-clip pt-[100px] pb-12 max-[809px]:pt-[60px] max-[809px]:pb-8">
       <div className="flex w-full flex-row items-end justify-center gap-6 max-[809px]:flex-col max-[809px]:items-start max-[809px]:gap-8">
         <div className="flex flex-1 flex-col items-start justify-center gap-4 overflow-clip max-[809px]:w-full max-[809px]:flex-none">
-          {/* Accented, matching the section eyebrows — this is the page's own
+          {/* Accented, matching the section eyebrows - this is the page's own
               name and does the same job. */}
           <p className="page-label text-accent">{eyebrow}</p>
 

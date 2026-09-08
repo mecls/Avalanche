@@ -5,14 +5,14 @@ import { site, ctaBand } from "@/content/copy";
 /**
  * PLACEHOLDER for the booking calendar.
  *
- * The real scheduler is not wired up yet — `site.booking` currently points at
+ * The real scheduler is not wired up yet - `site.booking` currently points at
  * the Fundraisr booking page, which is live and ours, so the button works in
  * the meantime.
  *
  * To swap in a real embed later: replace the panel below with the iframe or
  * widget, keep the `<noscript>`-safe link, and delete this comment. Note the
  * Fundraisr page runs on LeadConnector (GoHighLevel) rather than Calendly, so
- * the old `components/sections/calendly.tsx` will not fit it — that component
+ * the old `components/sections/calendly.tsx` will not fit it - that component
  * is no longer mounted.
  */
 export function BookingPanel() {
