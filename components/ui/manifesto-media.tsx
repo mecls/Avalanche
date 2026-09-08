@@ -61,10 +61,6 @@ const px = (i: number) =>
   PLOT.x0 + (i * (PLOT.x1 - PLOT.x0)) / (SERIES.length - 1);
 const py = (v: number) => PLOT.bottom - v * (PLOT.bottom - PLOT.top);
 
-/** The index the pill straddles — far enough right that the gap is obviously
- *  open, far enough left that a 112-unit pill stays inside the frame. */
-const PILL_AT = 3;
-
 export function DivergenceDiagram() {
   const capital = SERIES.map((d, i) => `${px(i)},${py(d.capital)}`).join(" ");
   const access = SERIES.map((d, i) => `${px(i)},${py(d.access)}`).join(" ");
