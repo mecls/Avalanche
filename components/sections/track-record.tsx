@@ -227,10 +227,24 @@ export function TrackRecord({
           align="center"
         />
 
-        {/* Two cells over three. A 6-column track divides into both rows —
-            3+3 above, 2+2+2 below — so one grid does the whole thing. At the
-            2-column breakpoint five cells would leave a ragged half-row, so
-            the last one spans the full width there. */}
+        {/* TWO OVER TWO, AND THE SHAPE IS TIED TO THE FIGURE COUNT.
+
+            It was two cells over three — 3+3 above, 2+2+2 below in a 6-column
+            track, with the fifth cell widened to `sm:col-span-2` so the
+            2-column breakpoint did not end on a ragged half-row. The platform
+            database figure ("1.2M+ active investor profiles") was dropped on
+            8 Sep 2026 and four cells do not divide that way: the second row
+            would have been 2+2 of a 6-wide track, leaving a third of it empty
+            with the corner bracket floating past the last cell.
+
+            Four peers, so every cell takes half the track at `lg` and the
+            `sm` grid's own 2 columns do the rest — no span override at all
+            below `lg`, because 4 divides evenly into 2.
+
+            **If a fifth figure ever comes back, the old spans come back with
+            it**; the two shapes are not interchangeable, and a count that
+            does not divide into 6 needs `trailingSpans` from bracket-grid
+            rather than a hand-written span. */}
         <BracketGrid className="mt-8 sm:mt-10 lg:[&>div:first-child]:grid-cols-6">
           {trackRecord.stats.map((s, i) => (
             <Stat
@@ -238,9 +252,7 @@ export function TrackRecord({
               {...s}
               index={i}
               run={run}
-              className={`${i < 2 ? "lg:col-span-3" : "lg:col-span-2"} ${
-                i === trackRecord.stats.length - 1 ? "sm:col-span-2" : ""
-              }`}
+              className="lg:col-span-3"
             />
           ))}
         </BracketGrid>

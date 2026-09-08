@@ -4,10 +4,7 @@ import { LogoGrid } from "@/components/sections/logo-grid";
 import { TrackRecord } from "@/components/sections/track-record";
 import { CtaBand } from "@/components/site/cta-band";
 import { PageHeader } from "@/components/site/page-header";
-import { LogoMarquee } from "@/components/ui/logo-marquee";
-import { SectionHeading } from "@/components/ui/section-heading";
-import { customers, whoWeServe } from "@/content/copy";
-import { ecosystemLogos } from "@/content/ecosystem-logos";
+import { customers } from "@/content/copy";
 
 export const metadata: Metadata = {
   title: "Customers",
@@ -51,7 +48,22 @@ export default function CustomersPage() {
           opposite the heading, where the hero puts its stat and /solutions
           its button. The CTA moved up into that column and the fixed
           100/48 rhythm replaced the fold. */}
-      <section data-band="light" className="flex flex-col overflow-hidden">
+      {/* `pb-16` ON TOP OF THE HEADER'S OWN `pb-12`, i.e. 112px under the
+          lede and the button before the dark grid begins (9 Sep 2026, by
+          request). The header's 48px was tuned when the venture strip sat
+          below it and supplied ~116px of its own — a border, `py-10` and a
+          36px row of marks. With the strip gone that 48px put the tile grid
+          almost against the button.
+
+          **IT IS ON THE SECTION, NOT IN `PageHeader`.** That component is
+          shared by /customers, /about and both /solutions routes, and the
+          other three did not lose anything below their headers; raising its
+          `pb` would move all four to fix one. This is exactly the case the
+          component's split exists for — it renders the inner `shell` div and
+          leaves the `<section>` to the caller. 112px also sits close to the
+          100px above the eyebrow, so the header reads as evenly set rather
+          than bottom-heavy. */}
+      <section data-band="light" className="pb-16">
         <PageHeader
           eyebrow={customers.eyebrow}
           title={customers.title}
@@ -59,50 +71,45 @@ export default function CustomersPage() {
           cta={customers.cta}
         />
 
-        {/* Venture strip across the foot of the header.
+        {/* THE VENTURE STRIP WAS REMOVED HERE (9 Sep 2026, by request) — a
+            shell-width `LogoMarquee` of the ecosystem marks under a
+            `border-t`, at the foot of the header. `content/ecosystem-logos.ts`
+            and `public/logos/ecosystem/` are kept, and so is
+            `scripts/fetch-ecosystem-logos.mjs` that built them; nothing on the
+            site renders them now. `customers.ecosystemNote` was already its
+            unrendered caption.
 
-            INSIDE `shell`, unlike the hero's strip on the homepage. That one
-            is full-bleed on purpose — it sits on its own translucent band over
-            the video, where running edge to edge is the point. This one sits
-            on the same flat white as the heading above it, and full-bleed left
-            it as the only thing on the page not lining up with the text: the
-            marks started at the viewport edge while "CUSTOMERS" and the H1
-            started at the shell. Both the rule and the marks are now shell
-            width, so the strip reads as part of the header rather than as a
-            band under it.
+            THE SECTION LOST `flex flex-col overflow-hidden` WITH IT, and that
+            is not tidying for its own sake: those three were on this section
+            and no other page header's, because the strip was a second child
+            that had to be laid out under the header and clipped. One child is
+            left, so they say nothing. `data-band="light"` STAYS and is the
+            load-bearing half — two rules in globals.css key off
+            `main > :first-child[data-band="light"]`, one flipping the nav's
+            type to ink and one painting `main`, and they fail together with
+            the whole nav rendering white on white.
 
-            The marquee does not care. Its `overflow-hidden` clip and its
-            8%/92% mask are both relative to its own box, and the scroll
-            distance is set by the content rather than the container, so
-            narrowing it changes neither the fade nor the speed.
-
-            These are the ecosystem marks, NOT the client roster: full colour,
-            and no `logo-mark`, since inverting them would blow them out to
-            white on this band. See content/ecosystem-logos.ts.
-
-            The strip runs unlabelled by request. `customers.ecosystemNote` is
-            the caption it used to carry, kept in place should it come back. */}
-        <div className="shell">
-          <div className="border-t border-line-soft py-10">
-            <LogoMarquee
-              logos={ecosystemLogos}
-              alphaMarks={false}
-              itemClassName="h-9 w-32"
-            />
-          </div>
-        </div>
+            What the reader gets instead is the header's own `pb-12` and then
+            the dark tile grid. The light-to-dark cut is the separation now;
+            the rule the strip carried went with it. */}
       </section>
 
-      <section data-band="light" className="section-y border-t border-line">
-        <div className="shell">
-          <SectionHeading
-            title={customers.gridTitle}
-            accent="billion-dollar deal books."
-            lede={customers.gridLede}
-          />
-        </div>
-      </section>
+      {/* THE GRID'S HEADING SECTION WAS REMOVED HERE (9 Sep 2026, by request).
+          It was a `SectionHeading` alone in its own light band — "From first
+          mandate to billion-dollar deal books." over a line about working
+          across venture, private credit, real estate and private equity. Both
+          strings are kept, unrendered, as `customers.gridTitle` / `gridLede`.
 
+          Two things it took with it. The light header now runs straight into
+          the dark tile grid with no band between them, which is the same cut
+          /about makes under its own header and wants no softening. And the
+          GRID SECTION IS NOW UNHEADED: `CaseStudyGrid` renders a search box, a
+          category select and the tiles, and nothing names the block — so the
+          page's outline goes from the H1 to the "Trusted by" H2 with the
+          largest section on the page carrying no heading of its own. That is
+          the state that was asked for; if a screen-reader label is ever wanted
+          without the display heading coming back, an `aria-label` on the
+          section is the cheap way to it. */}
       <section className="section-y bg-ground-deep">
         <div className="shell">
           <CaseStudyGrid />
@@ -122,8 +129,13 @@ export default function CustomersPage() {
                 {customers.trustedByTitle}
               </h2>
             </div>
+            {/* `customers.trustedByBody`, NOT `whoWeServe.lede` — it was the
+                latter until 8 Sep 2026, when that key was rewritten to
+                describe investor types. This paragraph sits over a grid of
+                CLIENT marks and has to keep naming who hires Avalanche; see
+                the note on the key. */}
             <p className="text-[0.9375rem] leading-relaxed text-fg-muted lg:pt-12">
-              {whoWeServe.lede}
+              {customers.trustedByBody}
             </p>
           </div>
 

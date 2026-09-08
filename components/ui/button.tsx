@@ -53,15 +53,24 @@ export function CtaButton({
 }
 
 /**
- * The button look, in one place, because there are now two elements wearing it.
+ * The button look, in one place, because there are now three elements wearing
+ * it.
  *
- * Everything on the site that navigates is a `CtaButton`, i.e. a `Link`. The
- * questionnaire on /get-in-touch needs a real `<button type="submit">` — an
- * anchor with `href="#"` and a click handler would break middle-click, break
- * Enter-to-submit, and put a bogus destination in the DOM. Both call this so
- * the two cannot drift apart.
+ * Almost everything on the site that navigates is a `CtaButton`, i.e. a
+ * `Link`. The questionnaire on /get-in-touch needs a real
+ * `<button type="submit">` — an anchor with `href="#"` and a click handler
+ * would break middle-click, break Enter-to-submit, and put a bogus
+ * destination in the DOM.
+ *
+ * The third is the homepage case-study carousel, which wants a BARE `<a>`
+ * rather than a `Link`. Its controls are same-page hash links whose whole job
+ * is to scroll a horizontal container, and that is native anchor behaviour:
+ * the browser brings the target into view in every scroll container it sits
+ * in, ancestors included. A router navigation to a hash does not owe anyone
+ * that, so the plain element is the one with the guarantee. All three call
+ * this so they cannot drift apart.
  */
-function ctaClass(
+export function ctaClass(
   size: "sm" | "md",
   variant: "solid" | "ghost",
   className: string,

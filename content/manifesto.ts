@@ -101,7 +101,7 @@ export const manifesto = {
     eyebrow: "The divergence",
     title: "Two forces, moving apart",
     body: [
-      "The pool of capital is widening. Alternatives keep compounding, and the number of people who can commit without a committee — family offices above all — keeps growing.",
+      "The pool of capital is widening. Alternatives keep compounding, and the number of people who can commit without a committee - family offices above all - keeps growing.",
       "The routes that reach them are narrowing. Distribution has consolidated into fewer, larger intermediaries serving fewer, larger issuers. Supply of capital and access to capital have decoupled.",
     ],
     note: "The space between those two lines is the whole reason this firm exists.",
@@ -132,7 +132,7 @@ export const manifesto = {
       },
       {
         title: "Access is infrastructure, not a rolodex.",
-        body: "Treated as a contact list, a network is a depreciating asset — worth most on the first mandate and less on every one after it. Treated as infrastructure, it compounds. That distinction is the whole of how this firm is built.",
+        body: "Treated as a contact list, a network is a depreciating asset - worth most on the first mandate and less on every one after it. Treated as infrastructure, it compounds. That distinction is the whole of how this firm is built.",
       },
     ] as Belief[],
   },

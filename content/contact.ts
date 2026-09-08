@@ -117,7 +117,7 @@ export const contact = {
   submit: "Send",
   // DRAFT
   done: {
-    title: "Thank you — we have your details.",
+    title: "Thank you - we have your details.",
     body: "We read every submission ourselves. If there is a fit you will hear from one of us within two business days.",
     /** The direct route for anyone who would rather not wait. */
     // DRAFT

@@ -2,9 +2,8 @@ import { PageHeader } from "@/components/site/page-header";
 import { ArrowGlyph, CtaButton } from "@/components/ui/button";
 import { Plate } from "@/components/ui/diagram";
 import {
-  EngagementDiagram,
+  BuySideDiagram,
   FundraisingDiagram,
-  MeetingDiagram,
   PendingPlate,
   PipelineDiagram,
   PreMarketingDiagram,
@@ -50,32 +49,49 @@ import type { SolutionView } from "@/content/solutions";
  * Which diagram a block gets, BY BLOCK ID rather than by index.
  *
  * It was a positional array while there was one view with two blocks. There
- * are now two views of five, so position says nothing — block 02 means
- * investor sourcing on one view and pricing on the other. Keying on the id
- * means a block either has artwork that is genuinely about it, or it renders
- * the pending plate.
+ * are now two views of DIFFERENT LENGTHS — Fundraising is three blocks since
+ * 9 Sep 2026 and Secondaries is still five — so position says nothing at all.
+ * Keying on the id means a block either has artwork that is genuinely about
+ * it, or it renders the pending plate.
  *
- * Both diagrams carry specific meaning (which route matched; which segment was
- * selected), so they must not be reused to fill a card they do not describe.
- * Add an entry here when new artwork exists, and drop that block's `pending`
- * flag in content/solutions.ts at the same time.
+ * Each diagram carries a specific claim (which route matched; which segment
+ * was selected; which branch was taken), so they must not be reused to fill a
+ * card they do not describe. Add an entry here when new artwork exists, and
+ * drop that block's `pending` flag in content/solutions.ts at the same time.
+ *
+ * **WHEN A BLOCK'S COPY CHANGES, CHECK ITS ENTRY.** Three moved on 9 Sep 2026
+ * and one of them is the reason this paragraph exists. Block 03 stopped being
+ * about outreach campaigns and became deal closure; `EngagementDiagram` draws
+ * follow-ups branching on an engagement signal, which is not a term sheet, a
+ * dataroom or a signed commitment, so leaving it in place would have been
+ * exactly the failure this map is keyed by id to prevent. `PipelineDiagram`
+ * moved into that slot from the removed block 04 instead — its four stages end
+ * at Committed and only that column is accented, which is the new block's
+ * whole claim.
  */
 const MEDIA: Record<string, () => React.ReactElement> = {
-  // --- Fundraising: complete as of 4 Sep 2026 ---
-  /** Three raise inputs converging into one positioned package. */
+  // --- Fundraising: all three blocks, complete ---
+  /** Dataroom, decks and supporting docs converging into one positioned
+   *  package. The three chips are the block body's own nouns. */
   "pre-marketing": PreMarketingDiagram,
-  /** The stage x sector grid with a matched subset IS investor sourcing. */
+  /** The stage x sector grid with a matched subset IS the mandate-aligned
+   *  investor set the block describes identifying. */
   fundraising: FundraisingDiagram,
-  /** A multi-touch sequence branching on an engagement signal. */
-  engagement: EngagementDiagram,
-  /** Four stages, top-aligned, so the columns are the funnel. */
-  pipeline: PipelineDiagram,
-  /** One counterparty against the mandate parameters that align. */
-  meetings: MeetingDiagram,
+  /** Contacted -> Engaged -> Diligence -> Committed, with only the committed
+   *  column accented. It was block 04's until that block was removed; it sits
+   *  here now because reaching a signed commitment is what block 03 claims. */
+  closure: PipelineDiagram,
 
-  // --- Secondaries: one of five, the rest awaiting both art and copy ---
-  /** Holders routed to counterparties IS the counterparty search. */
-  counterparties: SecondariesDiagram,
+  // --- Secondaries: two of five, the rest awaiting both art and copy ---
+  /** Sourced positions meeting a vetting line, and only what clears it
+   *  reaching the buyer — a FILTER, and the missing row is the claim. */
+  secondaries: BuySideDiagram,
+  /** A held position routed to one counterparty out of many, the rest ghosted
+   *  — a SEARCH. It was `counterparties` (block 03) until 9 Sep 2026 and moved
+   *  when block 02 got copy that names what it draws: "run a discreet process
+   *  to identify the right buyer". Block 03 has placeholder copy, so the
+   *  picture was illustrating a line that made no claim. */
+  "sell-side": SecondariesDiagram,
 };
 
 export function SolutionsSteps({ view }: { view: SolutionView }) {
@@ -157,7 +173,7 @@ export function SolutionsSteps({ view }: { view: SolutionView }) {
                     flag in content/solutions.ts and this goes with it. */}
                 {block.pending && (
                   <p className="border-l-2 border-line pl-3 text-[13px] leading-5 text-fg-faint">
-                    Placeholder — awaiting approved copy.
+                    Placeholder - awaiting approved copy.
                   </p>
                 )}
 

@@ -506,15 +506,35 @@ export default function AboutPage() {
             lede={about.team.lede}
           />
 
-          {/* FIVE ACROSS, ONE ROW. Five people in a four- or three-column
-              grid always left a ragged second row, and the wider the columns
-              got the worse it paid: three across gave the biggest portraits
-              and the tallest block on the page by far (1977px, against 1612
-              at four). Five columns fit the whole team on one row, which
-              removes the orphan and the second row's height together.
+          {/* THREE ACROSS, TWO ROWS OF THREE (9 Sep 2026, by request).
+
+              THE RULE THIS REPLACES WAS "the column count is the headcount",
+              and it was written when five people in a four- or three-column
+              grid always left an orphan on a second row. Six divides by three,
+              so the orphan is gone either way and the argument became a
+              straight trade: six across held the whole team on one screen at
+              ~196px a card, three across enlarges the portrait and costs a
+              second row. The portraits won, and were then capped back to
+              ~344px by the `max-w` below.
+
+              WHAT MOVED WITH IT, because a column width is never only a column
+              width. The `sizes` below (the only other place the count is
+              written down). The name and bio, which step UP at `sm` — 20px and
+              13px were sized for a 196-254px column and read as fine print
+              under a 344px portrait; the note about a 24px name wrapping
+              applies to the narrow column, not this one. `MAX_WIDTH` in
+              scripts/optimize-team-photos.mjs, which went 640 -> 832 because
+              the card outgrew its own crops at 2x DPR. And the block's HEIGHT:
+              this section is now comfortably past its `min-h-svh` floor rather
+              than sitting on it.
+
+              A SEVENTH PERSON FITS WITHOUT A LAYOUT CHANGE — 3+3+1 leaves the
+              orphan back, so it is eight that needs a decision, and four
+              across is the answer then rather than a narrower card.
 
               The type steps down with the column — 20px name, 13px bio —
-              because a 24px display name wraps in a 254px column.
+              because a 24px display name wraps in a 254px column, and the
+              column is 196px now.
 
               THERE IS NO TWO-COLUMN STEP, AND THAT IS THE SAME DECISION AS
               THE FIVE-COLUMN ONE. It went 1 -> 2 -> 5 at first, which left
@@ -523,14 +543,18 @@ export default function AboutPage() {
               exact bloat this layout was changed to remove, one breakpoint
               down. Three columns from `sm` holds the card between 184 and
               307px across that whole range and the block between 1.3k and
-              1.6k. Five people on three columns still leave one orphan, which
-              is what the card carrying no chrome is for.
+              1.6k. Six people divide by three exactly, which five did not —
+              that breakpoint was the reason the card carries no chrome, and it
+              is the one place the sixth arrival made the layout tidier rather
+              than tighter.
 
               NO CARD. There is no border, no fill and no padding around the
               whole thing: the only frame is on the picture, and the type sits
               on the band. That mattered more when the last row was ragged; it
               is kept because the cards still have to sit on the band cleanly
-              at the two-column breakpoint, where five people do leave one.
+              wherever the count and the columns stop dividing — under 640px
+              they are one per row, and any future headcount can put the
+              orphan back.
 
               THE BIOS ARE RENDERED AGAIN, under the role, by request on
               7 Sep 2026. They came off when the grid was rebuilt around the
@@ -538,7 +562,7 @@ export default function AboutPage() {
               "Read Bio" overlay instead. Two things follow from putting them
               back, and both are load-bearing:
 
-              They are DRAFT copy about five NAMED, IDENTIFIABLE PEOPLE, and
+              They are DRAFT copy about six NAMED, IDENTIFIABLE PEOPLE, and
               they are now public rather than sitting unrendered in
               content/team.ts. That is why each one describes the SEAT rather
               than the person — no career history, no prior firms, no
@@ -551,7 +575,46 @@ export default function AboutPage() {
               at a fixed height, so the bio is the only thing that varies and
               it varies BELOW everything else. Cards in a row therefore stay
               aligned down to the role no matter how long a bio runs. */}
-          <ul className="mt-16 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-3 lg:grid-cols-5">
+          {/* SIX ACROSS AT `lg`, AND THE COLUMN COUNT IS THE HEADCOUNT. It
+              was five until 9 Sep 2026, when an Associate was added: a sixth
+              card under a five-column track is one portrait alone on a second
+              row, which is the ragged break this grid was written to avoid.
+              `sm:grid-cols-3` needs no change and is better off for it — five
+              broke 3+2 there and six breaks 3+3.
+
+              Two rows of three was the alternative and it does not fit: the
+              cards would be ~416px wide, so a row runs ~700px with its name,
+              role and bio, and two of them overflow the section's `min-h-svh`
+              on any laptop. One row of six holds ~196px cards, which the 640px
+              crops still cover at 2x DPR.
+
+              **The `sizes` below is part of this.** It is the only place the
+              column count is stated twice, so change both or next/image starts
+              fetching a 5-column image for a 6-column box. */}
+          {/* THE 1080px CAP IS WHAT SIZES THE PORTRAIT (9 Sep 2026, by
+              request — "a bit smaller"). Three across the full 1296px shell
+              gave a 416px card, which was the largest anything on this page
+              has ever been; capped, the card is 344px and the block loses
+              ~180px of height with it.
+
+              It is a cap on the GRID, not on the picture, so the photograph
+              and the name, role and bio under it all narrow together — a
+              max-width on the frame alone would leave every portrait
+              visibly narrower than its own caption. And it only bites above a
+              ~1200px viewport, because that is where `.shell` first hands out
+              more than 1080px of content; every breakpoint below is unchanged
+              and still fills its column.
+
+              **`mx-auto` PUTS THE LEFTOVER ON BOTH SIDES** (9 Sep 2026, by
+              request). Left-aligned, the cap spent all ~216px of it as one
+              empty margin down the right of the section, which read as a
+              column missing rather than as a narrower block. Centred, the
+              first portrait no longer lines up with the eyebrow and the
+              heading above it — that is the trade, and it is the wanted one:
+              the heading is a full-width run and the grid is a plate inside
+              it. Do not "fix" the alignment by dropping the cap; that is what
+              made the portraits too big in the first place. */}
+          <ul className="mt-16 grid max-w-[1080px] grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-3 lg:mx-auto">
             {team.map((m) => (
               <li key={m.name} className="flex flex-col">
                 {/* `aspect-[4/5]` is the contract with
@@ -559,15 +622,16 @@ export default function AboutPage() {
                     to exactly this. Change one and change the other, or the
                     `object-cover` starts throwing away a band of each photo.
 
-                    The monogram FALLBACK stays: `photo` is nullable, a sixth
-                    member can arrive before their picture does, and an empty
-                    frame is worse than initials.
+                    The monogram FALLBACK stays: `photo` is nullable, a
+                    seventh member can arrive before their picture does — the
+                    sixth arrived WITH one on 9 Sep 2026 — and an empty frame
+                    is worse than initials.
 
-                    `placeholder="blur"` is not decoration. These five are the
+                    `placeholder="blur"` is not decoration. These six are the
                     only images on the page, they sit ~4000px down it, and
                     next/image lazy-loads by default — so scrolling here before
-                    they decode showed five EMPTY BORDERED FRAMES on the dark
-                    band. The frame's own `bg-ground-alt` is the same #151515
+                    they decode showed a row of EMPTY BORDERED FRAMES on the
+                    dark band. The frame's own `bg-ground-alt` is the same #151515
                     as the band behind it, so "not loaded yet" and "nothing
                     here" looked identical, and the section read as a blank
                     slab rather than as loading. The data URIs are generated
@@ -585,7 +649,16 @@ export default function AboutPage() {
                       src={m.photo}
                       alt=""
                       fill
-                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 20vw"
+                      // One column, then three the whole way up, so 100vw
+                      // then 33vw. Rounded UP, and increasingly so: the grid
+                      // caps at 1080px, so the card stops growing at ~344px
+                      // and 33vw over-states it on every screen past ~1200px.
+                      // Over-fetching costs bytes, under-fetching costs
+                      // sharpness. 344px at 2x wants 688px, which is why
+                      // MAX_WIDTH in the photo script is 832 — three of the
+                      // six masters reach it and the rest stop at their own
+                      // ceiling; the script's note says which.
+                      sizes="(max-width: 639px) 100vw, 33vw"
                       placeholder={teamBlur[m.photo] ? "blur" : "empty"}
                       blurDataURL={teamBlur[m.photo]}
                       className="object-cover"
@@ -600,11 +673,14 @@ export default function AboutPage() {
                   )}
                 </div>
 
-                <h3 className="display mt-6 text-xl">{m.name}</h3>
+                {/* Steps up with the column: 20px was sized for the
+                    196-254px card this grid used to hold, and reads as fine
+                    print against a 416px portrait. */}
+                <h3 className="display mt-6 text-xl sm:text-2xl">{m.name}</h3>
 
                 {/* `page-label` rather than `eyebrow`: this run has to stay
                     monochrome. `eyebrow` carries the accent and renders a
-                    dozen times a page as a BLOCK's name — five job titles are
+                    dozen times a page as a BLOCK's name — six job titles are
                     neither, and colouring them would put the loudest thing on
                     the page under every portrait. Same 14px uppercase spec,
                     no colour of its own, which is the whole reason that
@@ -619,10 +695,10 @@ export default function AboutPage() {
                     without it the last line is regularly one orphaned word.
 
                     Guarded on `m.bio` for the same reason the photo is:
-                    `bio` is nullable, and a sixth member can arrive before
+                    `bio` is nullable, and a seventh member can arrive before
                     their copy does. */}
                 {m.bio && (
-                  <p className="mt-3 text-[13px] leading-relaxed text-pretty text-fg-muted">
+                  <p className="mt-3 text-[13px] leading-relaxed text-pretty text-fg-muted sm:mt-4 sm:text-[15px]">
                     {m.bio}
                   </p>
                 )}

@@ -25,12 +25,12 @@ export type Faq = { q: string; a: string };
 export const faqs: Faq[] = [
   {
     q: "What exactly does Avalanche Capital do?",
-    a: "Avalanche Capital is a private capital advisory. We work with funds, founders, and operating companies on positioning, materials, investor targeting, and end-to-end execution of a raise — connecting clients to capital, deal flow, or secondary liquidity across venture and private equity. The work is backed by Fundraisr, our own platform, which gives investor relations teams, placement firms, and fund managers the tools to identify, engage, and convert the right investors at scale.",
+    a: "Avalanche Capital is a private capital advisory. We work with funds, founders, and operating companies on positioning, materials, investor targeting, and end-to-end execution of a raise - connecting clients to capital, deal flow, or secondary liquidity across venture and private equity. The work is backed by Fundraisr, our own platform, which gives investor relations teams, placement firms, and fund managers the tools to identify, engage, and convert the right investors at scale.",
   },
   {
     // DRAFT
     q: "What makes your approach different?",
-    a: "Fundraising still runs on who you know, and it shouldn't. We pair a direct network of LPs, family offices, and institutional investors with infrastructure most advisories don't have: 1.2M+ investor profiles across venture, private credit, real estate, and private equity, filterable by thesis, stage, geography, cheque size, and recent activity. That means every mandate goes to a curated set of investors whose criteria already align — not a broadcast. Our team has also sat on both sides of the table, as investors and as operators, so we know what an allocator needs to see.",
+    a: "Fundraising still runs on who you know, and it shouldn't. We pair a direct network of LPs, family offices, and institutional investors with infrastructure most advisories don't have: 1.2M+ investor profiles across venture, private credit, real estate, and private equity, filterable by thesis, stage, geography, cheque size, and recent activity. That means every mandate goes to a curated set of investors whose criteria already align - not a broadcast. Our team has also sat on both sides of the table, as investors and as operators, so we know what an allocator needs to see.",
   },
   {
     // DRAFT
@@ -49,7 +49,7 @@ export const faqs: Faq[] = [
   {
     // DRAFT
     q: "How do I know if I qualify to work with you?",
-    a: "Our clients are startups raising capital, placement agencies, boutique investment banks, and emerging fund managers — raising from HNWIs, family offices, and institutional investors across venture, private credit, real estate, and private equity. If that describes you, the intro call is the fastest way to find out. It's a qualification conversation in both directions.",
+    a: "Our clients are startups raising capital, placement agencies, boutique investment banks, and emerging fund managers - raising from HNWIs, family offices, and institutional investors across venture, private credit, real estate, and private equity. If that describes you, the intro call is the fastest way to find out. It's a qualification conversation in both directions.",
   },
   {
     // DRAFT

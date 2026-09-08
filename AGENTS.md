@@ -105,13 +105,19 @@ is half right by accident: the serif is gone again, the accent is real.
   corners, a hairline lattice (`border-t border-l` on the wrapper,
   `border-r border-b` per cell), a 13rem floor, a faint grey TABULAR index in
   the top-RIGHT, the title pushed down by `justify-between`, and two offset
-  crop-mark brackets. Four sections use it — track record, raise types,
-  verticals, and "Why Avalanche" on /about. **Do not build a new card block as
-  rounded filled panels on a gap grid**: /about shipped two of those and they
-  were the single biggest reason the page read as a different template. Cells
-  may go without an icon (`TrackRecord` and `Thesis` do); `components/ui/
+  crop-mark brackets. Five sections use it — track record, who we work with,
+  verticals and "Why Avalanche" on /about, plus raise types over on
+  /solutions/fundraising. **Do not build a new card block as rounded filled
+  panels on a gap grid**: /about shipped two of those and they were the single
+  biggest reason the page read as a different template. Cells may go without
+  an icon (`TrackRecord`, `Thesis` and `WhoWeWorkWith` do); `components/ui/
   icons.tsx` is a set of SECTOR marks, so do not force one onto an abstract
-  block.
+  block. **The track is sized to the CELL COUNT, not chosen once**: 6 for the
+  five-cell raise types (3+3 then 2+2+2), 6 for the four-cell track record
+  (2+2), 3 for the three-cell who-we-work-with. A count that does not divide
+  needs `trailingSpans` from `bracket-grid.tsx` rather than a hand-written
+  span, and a `sm:col-span-2` patching the 2-column breakpoint has to be
+  undone again at `lg`.
 - **EVERY BLOCK ON `/about` IS `min-h-svh` EXCEPT THE FIRST AND THE LAST**
   (7 Sep 2026, by request). The thesis, the divergence, the beliefs and the
   team take the floor. The track record was on that list until it came off
@@ -139,13 +145,19 @@ is half right by accident: the serif is gone again, the accent is real.
   `.layer-col` in `globals.css`; no client component.
   - **`--layer-h` IS THE ONE NUMBER THE WHOLE BLOCK IS TUNED AROUND**, and it
     is a MEASUREMENT, not a taste call: the tallest of the three text
-    columns, 677px, set by panel 02's four "Why This Segment" reasons. It is
+    columns, 697px, set by panel 02's four "Why This Segment" reasons. It is
     the stage's height AND the column floor, so re-measure after any copy
-    change in `layers` — set it to 0, read the three columns, take the
-    largest. Too small and panel 02 spills out of the stage; too large and
+    change in `layers` — AND after any change to `.shell`, which is what took
+    it from 677px to 697px on 8 Sep 2026. **Measure at a 1200px viewport, not
+    at 1440.** The body copy is capped at 560px, so above ~1280 the column is
+    wider than its own measure and panel 02 settles at 677px; at the 1200px
+    gate the column is 522px, the reasons re-wrap, and it grows to 697px.
+    Set it to 0, read the three columns there, take the largest. Too small
+    and panel 02 spills out of the stage in exactly that band; too large and
     all three carry dead space. It drops to 649px under `max-height: 800px`,
-    which is the PLATE's own ceiling and therefore the floor of the floor —
-    read the comment there before lowering it further.
+    which used to be the PLATE's own ceiling and is now ~8px of air over the
+    tightened panel 02 (641px at 1200) — read the comment there before
+    lowering it further, because the plate is the end that cannot tighten.
   - **The stage is sized to the PANEL and pushed down with `top`, not sized
     to the screen.** `top: 0; height: 100svh` put half the leftover viewport
     INSIDE the stage above the picture — invisible once pinned, and a ~190px
@@ -206,9 +218,14 @@ is half right by accident: the serif is gone again, the accent is real.
   keep holding: `display-72` has **no base rule** (it exists only inside
   `@media (max-width: 809px)`, so `text-[72px]` beside it is the base size),
   and `page-label` carries no colour of its own — the accent is applied at the
-  call site. It renders only the inner `shell` div; the `<section>` stays with
-  the caller, because `/customers` adds `flex flex-col overflow-hidden` for its
-  logo strip. The type spec itself lives in `globals.css`.
+  call site. It renders only the inner `shell` div and the `<section>` stays
+  with the caller — which was worth keeping for a reason that has now expired:
+  `/customers` used to add `flex flex-col overflow-hidden` there for the venture
+  strip it hung below the header, and that strip came off on 9 Sep 2026, taking
+  the three classes with it. All three headers are now a bare
+  `<section data-band="light">`. Keep the split anyway; the next page that
+  hangs something under its header will want it. The type spec itself lives in
+  `globals.css`.
 - Colour tokens are named by **role**, never by hue: `ground`, `ground-deep`,
   `ground-alt`, `card`, `fg`, `fg-muted`, `fg-faint`, `line`, `line-soft`,
   `accent`. Do not reintroduce hue names, and do not hardcode a hex or
@@ -230,29 +247,48 @@ is half right by accident: the serif is gone again, the accent is real.
   that flips the header's colour. It must use `--color-paper`, not
   `var(--color-ground)`: `main` is outside the light band, so its own
   `--color-ground` still resolves dark.
-- **The accent is the brand blue `#3056EE`** — but the DARK-band value is
-  `#8aa4ff` and that is not an oversight. At full strength the brand blue is
-  3.2:1 on `#151515` (under the 4.5:1 floor the diagram pills need) and 1.14:1
-  against the 50%-opacity `fg-muted` ghost dots the `/solutions` diagrams draw
-  matched routes against — equal luminance separated only by hue, which is
-  what disappears for a colour-blind reader. So a dark band takes a true
-  lightening of the same colour: hue 227 held, saturation 100%, lightness
-  56% → 77%. A light band swaps `#3056EE` itself back in at 5.7:1 on white.
-  **Darkening the dark value toward the brand value is the tempting mistake**
-  — more on-brand in isolation, and it quietly breaks the media cards.
-- The measured distances that keep it working: 7.7:1 on `#151515`, a 2.4:1
+- **The accent is the brand blue `#73B6FF`** (8 Sep 2026, by request; it
+  replaced `#3056EE`) — but the LIGHT-band value is `#0063cc` and that is not
+  an oversight. `#73B6FF` is already a light blue, HSL 211/100%/72.5%, so it
+  measures 2.1:1 on white: under even the 3:1 large-text floor, and the
+  eyebrows it would carry are 14px. So a light band takes a true darkening of
+  the same colour — hue 211 and saturation 100% held, lightness 72.5% → 40% —
+  and lands at 5.7:1 on white, within a hair of where `#3056EE` sat. **The
+  derivation is the reverse of the one it replaced and the reason is
+  unchanged**: one specified value cannot clear 4.5:1 on both a `#151515` and
+  a `#ffffff` ground, so the band that can take it as given takes it and the
+  other is derived from it. Under `#3056EE` that was the light band; under
+  `#73B6FF` it is the dark one.
+- The measured distances that keep it working: 8.6:1 on `#151515`, a 2.1:1
   step down from `fg` (so it reads as its own colour, not as white), and a
-  2.7:1 step up from a ghost dot. Hue does most of the signalling now, the way
-  gold's did; the luminance step is the fallback for readers who cannot use
-  the hue. Keep both.
-- **The accent appears in FOUR places. That is the whole list.** The section
+  3.0:1 step up from a ghost dot — the 50%-opacity `fg-muted` the `/solutions`
+  diagrams draw unmatched routes in, where equal luminance separated only by
+  hue is what disappears for a colour-blind reader. The step from `fg` is the
+  one number that got worse (2.4:1 under `#8aa4ff`) and hue buys it back: a
+  sky blue separates from white far more visibly than the old periwinkle did.
+  Hue does most of the signalling now, the way gold's did; the luminance step
+  is the fallback for readers who cannot use the hue. Keep both.
+  **Lightening the light-band value toward the brand value is the tempting
+  mistake** — more on-brand in isolation, and it takes every eyebrow on
+  `/about`, `/customers` and the homepage with it.
+- **The accent appears in THREE places. That is the whole list.** The section
   eyebrows and page labels (`eyebrow`, plus `text-accent` on the two page-name
   `page-label` runs) — a block's own name, and the largest group; the
-  /solutions rail and its six diagrams (functional — the colour is the
+  /solutions rail and its diagrams (functional — the colour is the
   diagram's only way of saying which route matched, which segment was
-  selected, which branch was taken); the case-study metric
-  pill (one number, once per page); and the CTA band's chip (once per page, at
-  the conversion point). Everything else is monochrome.
+  selected, which branch was taken); and the CTA band's chip (once per page,
+  at the conversion point). Everything else is monochrome.
+  **It was FOUR until 9 Sep 2026** — the fourth was the case-study metric
+  pill, one number once per page, and it came off with the top half of the
+  homepage's proof card by request. Nothing else rendered it: `/customers`
+  draws its grid with `CaseStudyTile`, which never carried one. So the pill is
+  gone from the site, not merely from that block. Two consequences worth
+  knowing before "restoring" it. The homepage's accent is now eyebrows and one
+  CTA chip, which is a quieter page than the list above described. And the
+  case-study CATEGORY went monochrome in the same change — it wore `eyebrow`,
+  so it was accent-coloured, and small uppercase accent type on a card reads
+  as a link when it goes nowhere; it is an outlined muted tag at its call site
+  now. Do not put either colour back on its own.
 - **The eyebrow rule has moved twice in one day — read this before moving it a
   third time.** It was accented, judged too much, reverted, then asked for
   again specifically (4 Sep 2026). The middle step was a judgement about the
@@ -276,11 +312,13 @@ is half right by accident: the serif is gone again, the accent is real.
   footage, not a flat band. Do not fold them into `eyebrow`.
 - **`eyebrow` is the only place the accent carries SMALL type** (14px/600), so
   it needs the full 4.5:1 rather than the 3:1 large-text floor — and it lands
-  on four different grounds. Measured: `#3056EE` is 5.7:1 on `#ffffff`, 5.5:1
-  on `#fafafa` and 5.1:1 on `#f3f3f3`; `#8aa4ff` is 7.7:1 on `#151515` and
-  6.9:1 on the `#202020` card. **Any future accent has to clear 4.5:1 on all
+  on four different grounds. Measured: `#0063cc` is 5.7:1 on `#ffffff`, 5.5:1
+  on `#fafafa` and 5.2:1 on `#f3f3f3`; `#73B6FF` is 8.6:1 on `#151515` and
+  7.7:1 on the `#202020` card. **Any future accent has to clear 4.5:1 on all
   five before it can go here**, which is a much harder test than the diagram
-  pills alone used to impose.
+  pills alone used to impose — and it is the test `#73B6FF` fails on the light
+  grounds, which is why that band derives its own value rather than taking the
+  supplied one.
 - `--color-accent-light` / `--color-accent-deep` are the rail gradient's stops,
   **held constant across bands**, decorative only. `--color-accent` follows the
   band so type set in it clears contrast either way; that flip is wrong for a
@@ -302,10 +340,23 @@ is half right by accident: the serif is gone again, the accent is real.
 
 ## Client components
 
-Four: `nav`, `track-record`, `case-study-grid` and `contact-form`. The first
-three read EXTERNAL state, which is why the `useSyncExternalStore` rule below
-exists; `contact-form`'s step and answers are its own, so plain `useState` is
-correct there and that rule is not in play. **`/solutions` deliberately adds
+Five: `nav`, `track-record`, `case-study-grid`, `contact-form` and
+`ui/slide-link`. The first three read EXTERNAL state, which is why the
+`useSyncExternalStore` rule below exists; `contact-form`'s step and answers are
+its own, so plain `useState` is correct there and that rule is not in play.
+
+**`slide-link` is the fifth and it holds NO STATE AT ALL** — no `useState`, no
+effect, nothing to hydrate but a click handler. It is the prev/next control of
+the homepage case-study carousel, and it exists only because **a fragment
+navigation does not reliably drive a horizontal scroll container**: the
+controls shipped as bare `<a href="#slide-id">` on the reasoning that the
+scroll position is state the browser already keeps, and they did not move it.
+`scrollIntoView` on the same element does. The file's own comment has the
+measurements and what was ruled out; read it before deleting the island and
+"simplifying" back to an anchor. **Do not widen the boundary**: the studies,
+the cards and the quotes are all still server-rendered, and the carousel
+itself is CSS scroll-snap, so swipe and trackpad work with the island absent
+entirely. **`/solutions` deliberately adds
 none** — its scroll-linked rail and text reveal are CSS `view-timeline`,
 not JS. Keep it that way; see "The solutions timeline" in `README.md` before touching
 it, including why the reduced-motion guard has to say
@@ -397,23 +448,41 @@ untabbable while closed and focus can only reach them through the trigger.
 - **Every text run in the hero is `fg`, never `fg-muted`/`fg-faint`.** The
   muted tokens are calibrated for flat grounds; on a photograph contrast has to
   be measured against the brightest column each run crosses.
-- **`.shell` is 1440px with a FIXED 20px gutter**, and `.section-y` is a fixed
-  120px. Both were clamped before and both resolved far smaller, which is what
-  made the page read cramped on a large screen.
+- **`.shell` is 1440px with a `clamp(20px, 5%, 72px)` gutter** (widened from a
+  fixed 20px on 8 Sep 2026, by request — the content sat against the glass in
+  a 1200-1440 window). The CAP is the load-bearing half: an uncapped
+  percentage is what the old `clamp(1.25rem,4vw,2.5rem)` did, and it kept
+  widening the gutter on a large screen, which is what made the page read
+  pinched. 72px is 5% of 1440, so the gutter stops growing where the shell
+  does and the content box holds 1296px from 1440 up. Percent, not `vw` —
+  `vw` includes the scrollbar. Two derived numbers move with it and are
+  documented at their own sites: `--layer-h` on `/about` (the columns lost
+  ~52px each, so panel 02 re-wraps at a 1200px viewport and the stage is
+  697px, not 677px) and the `/solutions` diagram scale, whose desktop floor
+  drops from 9.5px to 8.8px in a 1200-1240px window. **Re-measure both after
+  any further change here.**
+- **`.section-y` is a fixed 120px.** It was clamped once and resolved to
+  52-72px, roughly half the reference rhythm, which is what made the page read
+  cramped on a large screen. That is also the history behind the shell's cap
+  above: a gutter is allowed to grow with the viewport, a section rhythm is
+  not, and neither is allowed to grow without a ceiling.
 - **All white-on-transparent marks must carry `logo-mark`.** Client marks
   (`scripts/logos-to-alpha.mjs`), the hero strip, and now the **case-study**
   logos, which are pure white (measured mean luma 255) and were invisible the
   moment their section became a light band. `globals.css` inverts anything with
   that class inside `[data-band="light"]`. Do not add a blend mode instead, and
   re-run the script after adding logos.
-- **The two logo strips are DIFFERENT widths, and each is right.** The hero's
-  is full-bleed, outside `.shell`, 100px tall on its own translucent blurred
-  ground over the video — running edge to edge is the point there. The
-  `/customers` venture strip is INSIDE `.shell`, so its rule and its marks line
-  up with the page label, the H1 and the CTA above them. It was full-bleed
-  until 4 Sep 2026 and was the only thing on that page not aligning with the
-  text. Do not "unify" them: one sits on footage, the other on the same flat
-  white as the heading it belongs to.
+- **THERE IS ONE LOGO STRIP LEFT: the hero's.** It is full-bleed, outside
+  `.shell`, 100px tall on its own translucent blurred ground over the video —
+  running edge to edge is the point there.
+  The `/customers` venture strip was the second and was REMOVED on 9 Sep 2026
+  by request. It is worth knowing why it was shaped the way it was, because
+  the reasoning applies to any strip that goes back: it sat INSIDE `.shell`,
+  so its rule and its marks lined up with the page label, the H1 and the CTA
+  above them. It was full-bleed until 4 Sep 2026 and was the only thing on that
+  page not aligning with the text. **Do not "unify" a new strip with the
+  hero's**: one sits on footage, the other would sit on the same flat white as
+  a heading it belongs to.
 - `logo-marquee.tsx` needs its `overflow-hidden` at either width: the scrolling
   row is far wider than the box and `mask-image` defaults to
   `mask-repeat: repeat`, so without clipping the fade gradient tiles and the
@@ -470,6 +539,104 @@ untabbable while closed and focus can only reach them through the trigger.
   content height to the column's intrinsic size, the rail becomes the tallest
   item, and it drives the row height instead of the card. `min-height: 0` does
   not fix that.
+- **`RaiseTypes` IS ON `/solutions/fundraising`, NOT THE HOMEPAGE** (8 Sep
+  2026, by request). "What we raise" lists the raise shapes we run, which is a
+  fundraising argument rather than a statement about who the firm is for, so
+  it moved and the homepage slot went to `WhoWeWorkWith` — supplied copy,
+  Funds / Companies / Special Cases, the same `BracketGrid` idiom in the same
+  position so the page's rhythm did not change. **This is the one place the
+  two solutions routes stop being identical but for their content object**:
+  Secondaries does not mount it, because none of those five entries is a
+  secondary. The two headings are also one word apart — "Built for Funds and
+  Operators Raising Growth Capital" against "Built for Emerging Fund Managers
+  and Operators Raising Growth Capital" — so do not mount both in one
+  document without renaming one.
+- **THE HOMEPAGE CASE-STUDY BLOCK IS A CAROUSEL AND SHOWS ONE STUDY AT A
+  TIME.** Neurable is first and Nobody Studios is off-frame until the reader
+  scrolls, swipes, clicks a dot or presses the button
+  (8 Sep 2026, by request; they were stacked one under the other for part of
+  the same day). It is a CSS scroll-snap container — `.case-carousel` /
+  `.case-slide` in `globals.css` — so swipe, trackpad and shift-wheel are
+  native and free. **The track's `tabIndex` is for the accessible name
+  first**; a focused scroll container is also supposed to take Left/Right
+  arrow keys natively, which the mandatory snap would turn into a slide
+  change, but that COULD NOT BE CONFIRMED here — key presses did not move the
+  track under browser automation, with and without smooth scrolling, so treat
+  it as unverified rather than as a feature. Adding a real key handler is not
+  free: it would have to live on the track, which wraps every slide, so it
+  would take the whole section client-side.
+  **The controls live INSIDE the slides**: only one
+  slide is on screen, so a control that belongs to a slide is always the
+  correct one and nothing tracks an active index — including the DISABLED
+  end-stop, which is known statically from the slide's own position. A shared
+  pair of arrows outside the container would have to work out which end it was
+  at, which is the state this avoids. The one thing that is not free is the
+  button, `ui/slide-link` — see the client-components section.
+- **A SLIDE HAS TO FIT THE VIEWPORT, and on desktop that is the whole reason
+  the layout is what it is** (9 Sep 2026). Stacked — headline, client line,
+  metric card, then a separate testimonial figure under it — a slide was 932px
+  tall in an 806px viewport. The controls sit at the top of the slide, so they
+  were off screen by the time the reader reached the quote, and the section's
+  only signal that a second study existed was gone at exactly the moment it
+  was needed. It is two columns now, the picture on the left and everything
+  said about it on the right, and it measures 62-68% of the viewport from
+  1030px up. **Sticky controls are not the alternative**: `overflow-x: auto`
+  computes `overflow-y` to `auto`, so the track is its own scrollport, and
+  being as tall as its tallest slide it has no vertical overflow for a sticky
+  element to move against. A PEEK of the next slide is not the alternative
+  either — a slide is full-bleed text inside the shell rather than a card with
+  an edge, so the 20px on show is the left half of a letterform. Below `lg`
+  the columns stack and a slide runs ~1000px on a phone: that is accepted, the
+  portrait is a square 800px source and cropping it to buy the difference
+  risks the face. Swipe is the affordance there and the dots are on screen
+  when the reader arrives.
+- **THE PICTURE IS THE LEFT COLUMN AND IT LEADS** (9 Sep 2026, by request).
+  With it came the removal of the card's whole top half — the client's logo,
+  the accent metric pill and our own result sentence. The headline already
+  says what closed and how fast, so the pill repeated it in miniature and the
+  sentence repeated it in prose; what is left is one claim per voice, ours in
+  the headline and theirs in the quote. `CaseStudyCard` went with it (nothing
+  else rendered it) and so did the site's last metric pill — see the accent
+  list above, which is now three entries long.
+- **THE POSITION IS SAID THREE WAYS AND ALL THREE ARE STATELESS.** A "01 / 02"
+  pager, a row of dots whose current entry is a bar, and prev/next buttons
+  with the spent direction rendered `aria-disabled` rather than dropped. Each
+  slide knows its own index, so none of it needs an active-index. The disabled
+  control follows the nav's "Log in" precedent — `aria-disabled` keeps it in
+  the tab order, so a keyboard reader learns it exists and that it is spent.
+  Dropping it instead moved the surviving button across the row as the reader
+  advanced, and left slide 01 with one control that could only mean one thing.
+- **THE SLIDES CANNOT BE MADE `inert` AND THAT IS THE ONE PART OF THE ARIA
+  CAROUSEL PATTERN THIS BLOCK DOES NOT HOLD.** Hiding the off-screen slide
+  from the tab order and from a screen reader needs an active index, which
+  needs state, which would take the whole section client-side. What it does
+  carry is the labelled structure: `aria-roledescription="carousel"` on the
+  track and `role="group"` + `aria-roledescription="slide"` +
+  `aria-label="Case study 1 of 2: …"` on each article. A live region
+  announcing the change is out for the same reason. If either is ever
+  required, the cost is the client boundary — weigh it, do not sneak it in.
+- **IT IS DRIVEN BY AN ARRAY.** `featuredCaseStudies` in `content/case-studies.ts` looks them up by
+  SLUG out of the same list `/customers` renders, so a result sentence, metric
+  or category cannot drift between the two pages; `caseTestimonials` in
+  `copy.ts` is keyed on the same slugs. Adding a third means a slug in both.
+  Three things the second study forced and that must not be "tidied": the
+  section's eyebrow and lede sit ABOVE the loop rather than on the first study
+  (hanging them off study 01 made its header a third taller than 02's), the
+  testimonial `quote` is an ARRAY of paragraphs, and `name`/`role` are
+  OPTIONAL — Nobody Studios supplied positioning copy rather than a personal
+  quotation, so that caption is the company alone. **Do not invent a speaker
+  to make the two match.** Its picture is the client's LOGO, which is why
+  `logo: true` switches the frame to `contain` + inset + plate + `logo-mark`
+  instead of `cover`; a portrait must not take that flag. That mark is a 320px
+  source and the column is ~450px, so it is drawn just inside its own width
+  and will be soft on a HiDPI screen until a larger file exists — the portrait
+  is 800px and has the same limit at 2x.
+  **What the homepage still takes from the case-study RECORD is now `name` and
+  `category` only**, since the result sentence and the metric pill came off
+  the slide. The shared-record rule still earns its keep — a client cannot be
+  filed as Startups on one page and Funds on the other — but `result` and
+  `metric` are read by `/customers` alone now, so a change to either is no
+  longer visible on two pages.
 - **`/solutions` is TWO ROUTES**, `/solutions/fundraising` and
   `/solutions/secondaries`, each an independent copy of the same layout fed by
   a content object in `content/solutions.ts`. Bare `/solutions` and the legacy
@@ -478,17 +645,57 @@ untabbable while closed and focus can only reach them through the trigger.
   is gone — so a third view means a route, a content object and an entry there.
 - **Two DIFFERENT kinds of gap on `/solutions`, and they are tracked
   separately on purpose.** A block's `pending` flag means its **copy** is
-  placeholder and renders a visible note on the page; all five Secondaries
-  blocks have it and no Fundraising block does. Whether a block gets a
+  placeholder and renders a visible note on the page. **NO BLOCK CARRIES IT
+  ANY MORE** — Secondaries' five placeholders became two blocks of supplied
+  copy on 9 Sep 2026 and Fundraising never had one — so the flag, the visible
+  note and `PendingPlate` are all wired up and unused. Keep them: they are what
+  stops the next block arriving without copy or artwork and shipping
+  silently. Whether a block gets a
   **diagram** is decided only by the `MEDIA` map, keyed on block `id`, and
   anything missing renders `PendingPlate`. A block can have real copy and no
   art, or real art and placeholder copy (Secondaries 03). Closing one gap must
-  not silently claim the other is closed. **Fundraising has now closed both** —
-  all five blocks have real copy and their own diagram. Secondaries has four
+  not silently claim the other is closed. **Fundraising has closed both** —
+  all THREE blocks have real copy and their own diagram. Secondaries has four
   blocks still awaiting each.
+- **THE TWO VIEWS ARE NO LONGER THE SAME LENGTH.** Fundraising is three blocks
+  since 9 Sep 2026 and Secondaries is two, so nothing may assume a count and
+  `MEDIA` being keyed on `id` rather than index is now load-bearing rather than
+  merely careful. **Secondaries is TWO SIDES, not a sequence:** buy-side and
+  sell-side advisory, both supplied copy, followed by a logo band. Its five
+  placeholder stages — "Position review", "Pricing", "Counterparties",
+  "Process", "Close" — were replaced by the first two and the rest removed by
+  request, because two sides of a trade under three stages of one mandate had
+  the page describing itself two ways at once. Fundraising was five steps of fundraisr.ai copy with the
+  brand filed off; the header and blocks 01-03 were replaced with supplied
+  Avalanche copy and blocks 04-05 ("Pipeline management", "Meeting
+  intelligence") were removed by request, leaving an advisory process in three
+  moves — get ready, get introduced, get closed — instead of a five-feature
+  product tour. **Nothing on that view is fundraisr's copy any more**, so the
+  de-branding note in `content/solutions.ts` applies to the Secondaries
+  scaffolding alone.
 - **Do not reuse a diagram to fill a card it does not describe.** `MEDIA` is
   keyed on `id` rather than index precisely so it cannot happen by accident —
-  position means nothing now that two views share the layout. Each of the six
+  position means nothing now that two views of different lengths share the
+  layout. **CHECK THE ENTRY WHENEVER A BLOCK'S COPY CHANGES**: four diagrams
+  moved on 9 Sep 2026 because their blocks did, and one was drawn from
+  scratch. Block 01's three input chips
+  were the old body's nouns and are now the new one's; block 03 stopped being
+  about outreach campaigns and became deal closure, so `EngagementDiagram` —
+  follow-ups branching on an engagement signal, not a term sheet or a
+  dataroom — came out and `PipelineDiagram` moved in from the removed block 04,
+  its four stages ending at Committed with only that column accented. Its two
+  frame captions moved with it ("Pipeline" / "All mandates" said book of
+  business, not one deal closing). `EngagementDiagram` and `MeetingDiagram` are
+  KEPT, unrendered, and each says so at the top of its own comment. On
+  Secondaries the holders-to-counterparties picture moved from block 03 to
+  block 02, where the supplied copy names what it draws ("run a discreet
+  process to identify the right buyer") instead of sitting beside a line that
+  said only that copy was pending. **`BuySideDiagram` is the one new drawing**
+  — sourced positions meeting a vetting line, three of four clearing it, the
+  screened-out row visibly absent from the right column. It is deliberately a
+  FILTER where the sell-side picture beside it is a SEARCH: one column in and a
+  shorter column out, nothing crossing, so the two do not read as a repeat.
+  Each diagram
   carries a specific claim (which route matched, which segment was selected,
   which branch was taken), so putting the counterparty-routing picture beside a
   pricing block would illustrate the wrong thing. An honest blank beats a
@@ -532,8 +739,19 @@ untabbable while closed and focus can only reach them through the trigger.
   facts were available. Do not invent career history, prior firms or
   credentials for them. **They are RENDERED on /about** under each portrait
   (put back 7 Sep 2026 after a day unrendered), so this is public DRAFT copy
-  about five named, identifiable people — the constraint is tighter now, not
-  looser.
+  about six named, identifiable people — the constraint is tighter now, not
+  looser. The sixth, Arsenio Renato (Associate, 9 Sep 2026), came with a name,
+  a title and a generative portrait and nothing else, so his line is thinner
+  than the rest on purpose.
+- **THE TEAM GRID'S COLUMN COUNT IS THE HEADCOUNT.** `lg:grid-cols-5` became
+  `lg:grid-cols-6` when the sixth portrait landed, because a grid narrower than
+  the team leaves one card alone on a second row. Two things move with it and
+  are easy to miss: the `sizes` on the portrait (the only other place the
+  column count is written down) and `about.team.lede`, which used to open
+  "Five people" and now names the coverage instead of counting the room. A
+  SEVENTH does not get a seventh column — six holds ~196px cards inside the
+  1296px shell, seven lands at ~166px and the 13px bio starts breaking two
+  words to a line; two rows of four is the honest move at that point.
 - **Dev runs on port 3200**, pinned. Port 3000 collides with another project on
   this machine and Next moves ports silently, which makes the site look broken.
 

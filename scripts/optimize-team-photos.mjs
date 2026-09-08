@@ -9,7 +9,7 @@
  * **THE MASTERS LIVE IN THE REPO, and that is a change from how the other
  * asset scripts work.** `optimize-bg-video.mjs` reads its sources out of
  * ~/Downloads, which is fine for a 100MB video that can be re-downloaded.
- * Four of these five are GENERATIVE OUTPUTS — one-shot, non-deterministic, and
+ * Five of these six are GENERATIVE OUTPUTS — one-shot, non-deterministic, and
  * gone for good if that folder is ever cleaned. So they are committed:
  * `docs/assets/team/<slug>.webp`, named for the person rather than by whatever
  * the tool that made them called the file.
@@ -27,6 +27,13 @@
  *    1254x1254) from the original photographs, which were five different
  *    shoots — a beach, a sponsor wall, an office, a curtain — and never read
  *    as a set. The originals are in the git history of this directory.
+ *  - `arsenio-renato` is the SIXTH and it arrived differently: supplied
+ *    directly on 9 Sep 2026 as `ChatGPT Image Sep 8, 2026, 03_22_31 PM.png`
+ *    (1254x1254), so it is generative like the four above but has no original
+ *    photograph behind it in this repo and no CMS record naming it. It landed
+ *    already matching the set on the three things that took the others four
+ *    passes — backdrop, dress and angle — and needed only the crop distance,
+ *    below.
  *
  * **BERNARDO AND BRUNO HAVE EACH BEEN THROUGH THREE GENERATIVE FRAMES**, all
  * on 7 Sep 2026, and the sequence is the useful part rather than the count:
@@ -49,10 +56,13 @@
  * wider again at roughly a quarter. 0.88 and 0.65 crop each of them back to
  * head-and-shoulders on the others' scale.
  *
- * **THREE OF THE FIVE NOW ZOOM, AND ALL THREE ZOOM THE SAME WAY** — see the
+ * **FOUR OF THE SIX NOW ZOOM, AND ALL FOUR ZOOM THE SAME WAY** — see the
  * note below. There is no entry that zooms out; `zoom` only ever crops in,
  * because the failure it fixes is always the same one, a master shot wider
- * than the head-and-shoulders standard the set is built on.
+ * than the head-and-shoulders standard the set is built on. Arsenio is the
+ * fourth and the tightest at 0.72: at `zoom: 1` his head filled about a third
+ * of the card against the others' half, which the contact sheet showed at once
+ * and no single frame would have.
  *
  * So: **match the dress, the angle AND the crop distance.** The backdrop alone
  * does not make a set, and neither does the wardrobe. Two things no crop can
@@ -97,9 +107,18 @@
  * replaced. Tatjana's original is black and white; desaturating the rest is
  * the direction that invents nothing.
  *
- * **Nothing is upscaled.** The four re-shoots crop to 640x800, which covers
- * the ~272x340 card at 2x DPR. Tatjana's crops to 640x800 from an 800x800
- * master and just makes it.
+ * **Nothing is upscaled**, and that is `withoutEnlargement` doing it rather
+ * than the numbers happening to work out. See the note on MAX_WIDTH: three of
+ * the six reach the 832px target and three stop at whatever their master
+ * holds.
+ *
+ * The card moved three times in one day: ~272px, then ~196px when the grid
+ * took six columns to hold the sixth portrait in one row, then ~416px when
+ * that became two rows of three, then ~344px when the grid was capped. At
+ * 196px every crop had margin to spare; at 416px only half cleared 2x. **Re-
+ * check this constant whenever the team grid changes, and re-check Tatjana
+ * first — hers is the shortest master in the set and the first to fall
+ * behind** (512px against a 688px ideal, so 0.74x).
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -110,7 +129,21 @@ const OUT_DIR = path.join(process.cwd(), "public", "team");
 
 /** The card's aspect, width over height. Matches `aspect-[4/5]` on the page. */
 const ASPECT = 4 / 5;
-const MAX_WIDTH = 640;
+/**
+ * RAISED FROM 640 TO 832 ON 9 Sep 2026, and it is the card at 2x DPR with
+ * room. The /about grid went from six columns to two rows of three the same
+ * day, so the card grew from ~196px to ~416px and then settled at ~344px once
+ * the grid was capped at 1080px. The old 640px crops covered 196px three times
+ * over and 344px only 1.86 times, which is under retina; 832 clears 688 with
+ * margin for the next time that card moves.
+ *
+ * It does NOT reach every portrait, and `withoutEnlargement` is what makes
+ * that safe rather than a silent upscale. What each master can actually give
+ * at its own crop: Lev and Lucas 1003px, Bernardo 883, Arsenio 722, Bruno 652,
+ * Tatjana 512. So three of the six land on 832 and three stay where their
+ * masters end — Tatjana's is the one to re-shoot if this matters, at 1.23x.
+ */
+const MAX_WIDTH = 832;
 const QUALITY = 82;
 /** See the note above before turning this off. */
 const GREYSCALE = true;
@@ -182,6 +215,12 @@ const PEOPLE = [
   // The untouched photograph. See above.
   { slug: "tatjana-sotirovik", faceX: 0.45, faceY: 0.36, zoom: 0.8 },
   { slug: "lucas-barrozo", faceX: 0.5 },
+  // Landed matching the set on backdrop, dress and angle, and needed only the
+  // crop distance — the one thing the note above says a contact sheet is for.
+  // `faceX` is the measured hair-band centroid (0.454, so slightly left of
+  // centre); `faceY` is the midpoint of hair-top to chin (0.373); 0.72 is what
+  // puts his head on the others' scale, checked in a row with all six.
+  { slug: "arsenio-renato", faceX: 0.454, faceY: 0.373, zoom: 0.72 },
 ];
 
 mkdirSync(OUT_DIR, { recursive: true });

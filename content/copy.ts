@@ -168,7 +168,7 @@ export const hero = {
   ],
   // the word that would carry the accent. Still ignored — see section-heading.
   accent: "edge",
-  lede: "Our unique edge is exposure — to the right capital sources, the right mandates, and the right counterparties.",
+  lede: "Our unique edge is exposure - to the right capital sources, the right mandates, and the right counterparties.",
   cta: "Get started",
   /**
    * NOT RENDERED IN THE HERO. The reference pairs this line with its
@@ -206,35 +206,52 @@ export const thesis = {
     {
       title: "Global Network",
       icon: "network",
-      body: "Direct relationships with LPs, family offices, and institutional investors across the US, Europe, and the Middle East — and the reach to go beyond them when the mandate demands it.",
+      body: "Direct relationships with LPs, family offices, and institutional investors across the US, Europe, and the Middle East - and the reach to go beyond them when the mandate demands it.",
     },
     {
       title: "Both Sides of The Table",
       icon: "bothSides",
-      body: "Our team has operated as investors and as operators — which means we understand what capital allocators need to see, and how to position an opportunity that gets funded.",
+      body: "Our team has operated as investors and as operators - which means we understand what capital allocators need to see, and how to position an opportunity that gets funded.",
     },
     {
       title: "Precision & Execution",
       icon: "precision",
-      body: "We don't approach the market broadly. Every mandate is matched against a curated set of investors whose criteria, geography, and appetite align — minimising meaningless conversations.",
+      body: "We don't approach the market broadly. Every mandate is matched against a curated set of investors whose criteria, geography, and appetite align - minimising meaningless conversations.",
     },
   ],
 } as const;
 
 export const whoWeServe = {
   eyebrow: "Who we serve",
-  title: "Investor Verticals We Work With",
+  title: "Investor Types We Work With",
   accent: "Work With",
-  lede: "We are used by placement agents, boutique investment banks, emerging fund managers, and founding teams raising from HNWIs, family offices, and institutional investors.",
+  /**
+   * SUPPLIED 8 Sep 2026, and it no longer describes CLIENTS.
+   *
+   * The old line ("We are used by placement agents, boutique investment
+   * banks...") named who hires Avalanche; this one names the investor types
+   * the block below actually lists, which is what a lede over a list of
+   * investor types should do. That is also why it stopped being shared:
+   * /customers ran it beside "Trusted by" and a grid of CLIENT logos, where
+   * an investor-side sentence reads as a caption for the wrong pictures. The
+   * old wording is kept intact as `customers.trustedByBody` and still runs
+   * there. Do not re-point that page back at this key.
+   */
+  lede: "We operate across the entire spectrum of investor types and profiles which are suitable for the lower/mid-market venture ecosystem.",
   verticals: [
     {
+      // SUPPLIED 8 Sep 2026 — replaced the lifted avalanche-capital.com body,
+      // which named banks, insurance firms and pension funds. This one names
+      // the vehicles that actually appear in a venture cap table.
       title: "Institutional Investors",
-      body: "These are sophisticated entities such as banks, insurance firms, and pension funds, characterized by their substantial capital base and rigorous investment protocols. Institutional investors prioritize stable, long-term returns and typically engage in diversified investment portfolios.",
+      body: "Sophisticated entities such as VCs, Funds of Funds, Sovereigns and Asset Managers, characterised by their substantial capital base and rigorous investment protocols. Institutional investors typically prioritise stable, long-term returns and typically engage in diversified investment portfolios.",
     },
     {
-      // DRAFT
-      title: "Accredited Retail",
-      body: "Individual investors who meet the accreditation thresholds of their jurisdiction and invest their own capital. They commit smaller cheques than institutions and decide considerably faster, which makes them useful for building early momentum in a raise — but they expect the same standard of materials and the same clarity on terms.",
+      // SUPPLIED 8 Sep 2026. It replaced "Accredited Retail", a DRAFT block —
+      // the slot is a different investor type now, not a rewrite of that one,
+      // so the accreditation caveat in docs/COPY-REVIEW.md went with it.
+      title: "Family Offices",
+      body: "Patient capital with a multi-generational mandate, often willing to move faster and more flexibly than institutions on deals that fit the family's thesis. They still expect the same rigor on structuring and terms, but decisions run through fewer hands and less committee process.",
     },
     {
       // DRAFT
@@ -250,45 +267,51 @@ export const trackRecord = {
   accent: "Track Record",
   lede: "Quantitative metrics showing consistent success and impact across venture, private credit, real estate, and private equity.",
   /**
-   * Figures taken from the stats band on fundraisr.ai.
+   * SUPPLIED 8 Sep 2026, and these are AVALANCHE'S OWN figures now.
+   *
+   * They used to be the stats band from fundraisr.ai, which is why one of
+   * them credited the platform rather than the firm ("Capital raising powered
+   * by Fundraisr") and another counted the platform's database ("1.2M+ active
+   * investor profiles"). The database card was dropped outright and the rest
+   * restated as the advisory's own numbers, so every figure in this block is
+   * now the same kind of claim. **They are load-bearing financial claims —
+   * do not adjust one to make a layout work.**
+   *
+   * THERE ARE FOUR OF THEM AND THE GRID IS TUNED TO FOUR. Dropping the fifth
+   * changed the row shape; see the span comment in
+   * components/sections/track-record.tsx before adding or removing one.
    *
    * `to` drives the count-up and `prefix`/`suffix` frame it, so the displayed
    * string is `prefix + to + suffix`. Values under 10 skip the count entirely
-   * (a 0 → 2 tick reads as broken, not impressive), and `decimals` controls the
-   * rendering for figures like 1.2M+.
+   * (a 0 → 2 tick reads as broken, not impressive). `decimals` is 0 on all
+   * four now — it existed for the 1.2M+ card and is kept because the next
+   * supplied figure may need it again.
    */
   stats: [
     {
       prefix: "",
-      to: 30,
+      to: 25,
       suffix: "+",
       decimals: 0,
       label: "Active mandates worldwide",
     },
     {
       prefix: "$",
-      to: 2,
-      suffix: "B+",
+      to: 650,
+      suffix: "M+",
       decimals: 0,
-      label: "Capital raising powered by Fundraisr",
+      label: "Active dealbook",
     },
     {
       prefix: "",
-      to: 600,
+      to: 850,
       suffix: "+",
       decimals: 0,
-      label: "End-to-end qualified investor introductions facilitated",
-    },
-    {
-      prefix: "",
-      to: 1.2,
-      suffix: "M+",
-      decimals: 1,
-      label: "Active investor profiles on the platform",
+      label: "Qualified investor introductions made",
     },
     {
       prefix: "<",
-      to: 10,
+      to: 14,
       suffix: " days",
       decimals: 0,
       label: "Average time to first investor meeting",
@@ -306,13 +329,13 @@ export const offerings = {
     {
       n: "01",
       title: "Deal Readiness",
-      body: "Before a conversation starts, your materials need to meet the market where it is. We benchmark your dataroom, pitch decks, and supporting documentation against comparable raises we've conducted — ensuring every opportunity we take to market is structured for the highest likelihood of success.",
+      body: "Before a conversation starts, your materials need to meet the market where it is. We benchmark your dataroom, pitch decks, and supporting documentation against comparable raises we've conducted - ensuring every opportunity we take to market is structured for the highest likelihood of success.",
     },
     {
       n: "02",
       // DRAFT
       title: "LP Capital",
-      body: "For managers raising a fund, the work is matching strategy, track record, and terms to the LPs whose mandate actually fits. We position the fund against the variables allocators screen on — strategy, team, size, focus, fee structure, minimum commitment — and take it to institutions, family offices, and private allocators already active in that shape of deal.",
+      body: "For managers raising a fund, the work is matching strategy, track record, and terms to the LPs whose mandate actually fits. We position the fund against the variables allocators screen on - strategy, team, size, focus, fee structure, minimum commitment - and take it to institutions, family offices, and private allocators already active in that shape of deal.",
     },
     {
       n: "03",
@@ -330,22 +353,75 @@ export const offerings = {
  * is reused verbatim here rather than padded out with invented material. See
  * docs/COPY-REVIEW.md.
  */
+/**
+ * The logo band at the foot of /solutions/secondaries. SUPPLIED 9 Sep 2026.
+ *
+ * **THE MARKS ARE A CLAIM, and a sharper one than the client roster's.** The
+ * strips on the homepage and /customers say "these firms hired us", and
+ * `customers.logoNote` says so in words. This one says we currently hold
+ * access to secondary opportunities in these named, listed-adjacent companies
+ * — a statement about live inventory rather than about past work. The body
+ * below is the disclaimer that makes it survivable: it says "a selection",
+ * says the list is not exhaustive, and points a reader with a specific request
+ * at the team rather than at the grid. **Do not drop that paragraph and keep
+ * the logos**, and see docs/COPY-REVIEW.md, which flags the whole band for
+ * sign-off.
+ *
+ * The heading ends in a colon on purpose — it runs INTO the grid rather than
+ * standing over it, which is why the body sits beside it rather than beneath.
+ */
+export const directAccess = {
+  eyebrow: "Direct Access",
+  title: "We provide direct access to:",
+  body: "A selection of the companies in which we currently hold direct access to secondary opportunities. This list is not exhaustive - buyers and sellers with specific requests are welcome to contact our team to discuss further.",
+} as const;
+
 export const secondaries = {
   eyebrow: "Secondaries",
   title: "Secondary Liquidity",
-  // DRAFT
-  lede: "Not every position should be held to the end of the fund's life. We work with GPs, LPs, and shareholders seeking liquidity ahead of a full exit — sourcing counterparties, framing the position for them, and running the process discreetly.",
+  /**
+   * SUPPLIED 9 Sep 2026, and it is no longer DRAFT — this is the first real
+   * copy this service has had anywhere. The drafted line it replaces read
+   * "Not every position should be held to the end of the fund's life. We work
+   * with GPs, LPs, and shareholders seeking liquidity ahead of a full exit -
+   * sourcing counterparties, framing the position for them, and running the
+   * process discreetly."
+   *
+   * Note what CHANGED and not just that it did, because it is a different
+   * service description rather than a rewrite of the same one. The draft
+   * described GPs and LPs selling fund positions; this describes PRE-IPO
+   * secondaries in operating companies — shareholders and founders on one
+   * side, and buyers wanting late-stage exposure ahead of a listing on the
+   * other. **The five placeholder BLOCKS below it in content/solutions.ts
+   * still describe the draft's version**: "Position review", "Pricing",
+   * "Counterparties", and the counterparty diagram drawn for them. They are
+   * marked `pending` and say so on the page, so nothing false ships, but the
+   * page's heading and its steps now describe two different trades — that is
+   * the gap to close when the block copy arrives.
+   */
+  lede: "We advise shareholders, founders, and buyers navigating pre-IPO secondary transactions - from pricing and structuring to counterparty identification. For investors seeking exposure to late-stage private companies ahead of a listing, we provide curated access to verified secondary opportunities.",
 } as const;
 
 /**
- * NOT CURRENTLY RENDERED. The three-step fundraising process — Deal Readiness,
- * Investor Segment, Conversion — had its own page until /solutions was cut back
- * to the two blocks below on 4 Sep 2026.
+ * NOT CURRENTLY RENDERED, and `steps[0]` IS NOW LIVE ANYWAY — read this before
+ * editing either copy of it.
  *
+ * The three-step fundraising process — Deal Readiness, Investor Segment,
+ * Conversion — had its own page until /solutions was cut back on 4 Sep 2026.
  * Kept because `steps[0]` and `steps[1]` are genuine copy from
  * avalanche-capital.com and the voice in all three is grounded in the blog
  * posts (see docs/COPY-REVIEW.md). The graphics that went with them are
  * recoverable from commit ac09735.
+ *
+ * **`steps[0].body` IS BYTE-IDENTICAL TO `fundraisingView` BLOCK 01's BODY**
+ * in content/solutions.ts, and that is not a copy-paste slip — the block 01
+ * copy supplied on 9 Sep 2026 turned out to be this exact paragraph, which
+ * means it is published Avalanche copy rather than anything drafted here. Two
+ * places now hold one sentence, so they CAN drift. They are deliberately not
+ * coupled: pointing live page copy at an unmounted object would make this
+ * object load-bearing while still reading as dead, which is worse than a
+ * documented duplicate. **If you edit one, edit the other or delete this
+ * one.**
  */
 export const fundraising = {
   eyebrow: "Fundraising",
@@ -359,7 +435,7 @@ export const fundraising = {
     {
       n: "01",
       title: "Solving For Deal Readiness",
-      body: "Before a conversation starts, your materials need to meet the market where it is. We benchmark your dataroom, pitch decks, and supporting documentation against comparable raises we've conducted — ensuring every opportunity we take to market is structured for the highest likelihood of success.",
+      body: "Before a conversation starts, your materials need to meet the market where it is. We benchmark your dataroom, pitch decks, and supporting documentation against comparable raises we've conducted - ensuring every opportunity we take to market is structured for the highest likelihood of success.",
     },
     {
       n: "02",
@@ -370,7 +446,7 @@ export const fundraising = {
       n: "03",
       // DRAFT
       title: "Solving For Conversion",
-      body: "Meetings are not the milestone — term sheets and signed agreements are. This phase aligns the remaining variables: the message that earns the meeting, the channel it goes out on, the presentation itself, and a data room that carries the same story straight through diligence. Each is refined against what investors actually respond to, so interest converts rather than stalling.",
+      body: "Meetings are not the milestone - term sheets and signed agreements are. This phase aligns the remaining variables: the message that earns the meeting, the channel it goes out on, the presentation itself, and a data room that carries the same story straight through diligence. Each is refined against what investors actually respond to, so interest converts rather than stalling.",
     },
   ],
 } as const;
@@ -427,11 +503,24 @@ export const solutions = {
  * descriptions were written here, not lifted from an Avalanche property. They
  * make no claim the site does not already make. See docs/COPY-REVIEW.md.
  */
+/**
+ * "What we raise". **IT RENDERS ON /solutions/fundraising, NOT ON THE
+ * HOMEPAGE** — moved there 8 Sep 2026, by request. It is a list of the raise
+ * shapes Avalanche runs, which is a fundraising-page argument; the homepage
+ * slot it vacated now carries `whoWeWorkWith` below, which names the CLIENTS
+ * rather than the instruments.
+ *
+ * The two headings are close enough to notice if they ever land on one page:
+ * this one is "Built for Funds and Operators Raising Growth Capital" and its
+ * replacement is "Built for Emerging Fund Managers and Operators Raising
+ * Growth Capital". They are one route apart today. Do not mount both in the
+ * same document without renaming one.
+ */
 export const raiseTypes = {
   eyebrow: "What we raise",
   title: "Built for Funds and Operators Raising Growth Capital",
   accent: "Growth Capital",
-  lede: "From funds to pre-seed through Series C+ — we support structured raises across equity, debt, and hybrid structures.",
+  lede: "From funds to pre-seed through Series C+ - we support structured raises across equity, debt, and hybrid structures.",
   items: [
     {
       name: "Funds",
@@ -446,7 +535,7 @@ export const raiseTypes = {
     {
       name: "Series A–C+",
       icon: "growth",
-      body: "Growth rounds with sharper diligence and tighter mandate fit — pipeline management and conversion support through commitment.",
+      body: "Growth rounds with sharper diligence and tighter mandate fit - pipeline management and conversion support through commitment.",
     },
     {
       name: "Project-Level Real Estate",
@@ -457,6 +546,46 @@ export const raiseTypes = {
       name: "Private Credit / Debt Facilities",
       icon: "credit",
       body: "Debt raises, structured credit, and specialty finance capital with lender targeting and closing coordination.",
+    },
+  ],
+} as const;
+
+/**
+ * The homepage's "who we work with" block — SUPPLIED 8 Sep 2026, every word.
+ * Nothing here was drafted or extrapolated, so it carries no DRAFT marker and
+ * needs no sign-off.
+ *
+ * It took the slot `raiseTypes` used to hold, and it is deliberately the same
+ * IDIOM: a `BracketGrid` in a centred-heading light band, so the homepage's
+ * rhythm did not change when the content did.
+ *
+ * **THE CELLS CARRY NO ICON, AND THAT IS NOT AN OVERSIGHT.** `raiseTypes` has
+ * one per cell because every one of its entries is a raise shape with a mark
+ * in components/ui/icons.tsx. These three are not: "Funds" has a mark,
+ * "Companies" and "Special Cases" do not, and that set is a sector list rather
+ * than a general-purpose icon library. One cell with a glyph and two without
+ * reads as a missing asset, and inventing marks for the other two would put a
+ * sector icon on an abstract block — the rule in AGENTS.md. `TrackRecord` and
+ * `Thesis` are already iconless for the same reason.
+ */
+export const whoWeWorkWith = {
+  eyebrow: "Who we work with",
+  title:
+    "Built for Emerging Fund Managers and Operators Raising Growth Capital",
+  accent: "Growth Capital",
+  lede: "Our unique experience and curated network of investors is most specifically tailored to the following cases.",
+  items: [
+    {
+      name: "Funds",
+      body: "Capital formation for emerging Growth Equity, Private Equity and Venture Capital funds across a variety of industries. We work with first-time and emerging managers who need full fundraising assistance, and a process built to go from first close to final close seamlessly.",
+    },
+    {
+      name: "Companies",
+      body: "Fundraising from Seed to Series C. The toughest stages for most founders, and precisely where we excel. Whether it's your first time raising, or if you're heading into your second institutional round, we ensure you reach your fundraising goal faster.",
+    },
+    {
+      name: "Special Cases",
+      body: "Outside these two lanes, we still take on select mandates - project-level real estate, private credit, and secondary transactions - where our network and process are able to add value.",
     },
   ],
 } as const;
@@ -489,28 +618,132 @@ export const industries = {
   ],
 } as const;
 
-/** Client testimonial, shown alongside the featured Neurable case study. */
-export const testimonial = {
-  quote:
-    "Our mission is to make understanding your brain as natural and intuitive as checking your steps. This funding allows us to scale Neurable AI into new devices and new industries, making cognitive health an accessible, daily utility for everyone.",
-  name: "Dr. Ramses Alcaide",
-  role: "CEO and Co-Founder of Neurable ($35 Million Series A)",
-  company: "Neurable",
-  photo: "/testimonials/ramses-alcaide.webp",
+/**
+ * The homepage case-study block: one entry per study in
+ * `featuredCaseStudies`, keyed by the SAME SLUG so the two lists cannot drift
+ * apart. It was a single `testimonial` object until 8 Sep 2026.
+ *
+ * Three fields carry structure rather than words, and each exists because one
+ * of the two entries needs it:
+ *
+ * `title` and `subject` are the block's own headline and the line under it.
+ * They are NOT derived from the case study record: `metric` is a pill ("$35M
+ * Series A") and `result` is a sentence about the process, while these two
+ * say what closed, how fast, and who the client is. Supplied 8 Sep 2026.
+ *
+ * `quote` is an ARRAY of paragraphs, not a string. Neurable's is one
+ * paragraph and Nobody Studios' is two, and joining them with a line break
+ * inside one string would leave the closing quotation mark attached to the
+ * wrong run.
+ *
+ * `photo` IS THE SLIDE'S PICTURE, and since 9 Sep 2026 it is the whole left
+ * half of the slide rather than a plate beside the quote — big, square, and
+ * the first thing on the slide a reader sees. It is REQUIRED for that reason:
+ * a slide without one has an empty column, not a tidier layout.
+ *
+ * `logo: true` means that picture is the CLIENT'S MARK, not a portrait.
+ * Nobody Studios supplied positioning copy rather than a person's words and
+ * no photograph, so its slide shows the same white-on-transparent mark the
+ * /customers grid uses. That changes the fit from `cover` to `contain` and
+ * needs padding, a plate and `logo-mark` — see the component. A portrait
+ * entry must not take it. Note the mark is a 320px-wide source and the column
+ * is ~450px: it is drawn inside its native width at 1x and will be soft on a
+ * HiDPI screen until a larger file exists.
+ */
+/**
+ * The case-study block's own framing, which was hardcoded in the section
+ * until 8 Sep 2026 — eyebrow, lede and button label all sat as literals in
+ * JSX, which is exactly how editable copy stops being editable.
+ *
+ * The eyebrow is PLURAL now and the lede says "These show" rather than "This
+ * one shows": the block carried a single study until the same day and both
+ * lines counted it. Nothing else about the sentence changed.
+ */
+export const caseStudySection = {
+  eyebrow: "Selected case studies",
+  lede: "Every mandate is different. These show what mandate-fit targeting, investor readiness, and pipeline execution produce when they run end to end.",
+  cta: "See more customer stories",
+  /** The scroll region's accessible name. It is not rendered — the pager,
+   *  the dots and the two arrows are what a sighted reader gets — so it has
+   *  to say in words what those say in position. */
+  carouselLabel: "Selected case studies, one at a time",
+} as const;
+
+export const caseTestimonials = {
+  neurable: {
+    title: "$35M Series closed in 3 months",
+    subject: "Neurable - BCI (brain computer interface) innovation",
+    quote: [
+      "Our mission is to make understanding your brain as natural and intuitive as checking your steps. This funding allows us to scale Neurable AI into new devices and new industries, making cognitive health an accessible, daily utility for everyone.",
+    ],
+    name: "Dr. Ramses Alcaide",
+    role: "CEO and Co-Founder of Neurable ($35 Million Series A)",
+    company: "Neurable",
+    photo: "/testimonials/ramses-alcaide.webp",
+  },
+  "nobody-studios": {
+    title: "$20M Fund I closed in 4 months",
+    subject:
+      "Nobody Studios - on a mission to scale and exit 100 AI-native companies in the next 5 years.",
+    /**
+     * SUPPLIED 8 Sep 2026, and it is a statement about the FIRM rather than a
+     * quotation from a person — which is why there is no `name` and no
+     * `role`. Do not attribute it to a founder to make the figure match
+     * Neurable's; the two are shaped differently on purpose and the component
+     * renders the caption it is given.
+     */
+    quote: [
+      "Nobody Studios is an AI-native, high-velocity venture studio scaling 100 companies in 5 years for rapid exits",
+      "We focus on building startups that achieve profitable milestones quickly - because acquisition is the new exit in today's market.",
+    ],
+    company: "Nobody Studios",
+    photo: "/logos/cases/nobody-studios.webp",
+    logo: true,
+  },
 } as const;
 
 export const customers = {
   eyebrow: "Customers",
-  title: "Built for the firms and GPs moving private capital.",
+  /**
+   * SUPPLIED 9 Sep 2026, title and lede both.
+   *
+   * The title was "Built for the firms and GPs moving private capital." —
+   * `accent` still ends the sentence the same way, so it did not need
+   * revisiting. "Working with" rather than "Built for" is the same shift the
+   * /solutions header made the same day: "built for" is how a product
+   * describes its user, and this is a firm describing its clients.
+   *
+   * The lede lost the last fundraisr claim on this page with it. It read
+   * "Used by placement agents, boutique investment banks, emerging fund
+   * managers, and founding teams raising capital from HNWIs, family offices,
+   * and institutional investors. Our clients don't need another CRM - they
+   * need infrastructure that makes their fundraise executable." — a list of
+   * segments followed by a positioning line about software. Note what that
+   * takes with it: **this page no longer names the investor types it sells
+   * to**, and `whoWeServe` on the homepage is now the only place that list
+   * lives. If a reviewer wants the segments back on /customers, that is a
+   * deliberate addition rather than a restoration.
+   */
+  title: "Working with the GPs and founders moving private capital.",
   accent: "moving private capital.",
-  lede: "Used by placement agents, boutique investment banks, emerging fund managers, and founding teams raising capital from HNWIs, family offices, and institutional investors. Our clients don't need another CRM — they need infrastructure that makes their fundraise executable.",
+  lede: "Avalanche Capital works with eager fund managers and founders who aim to bring innovative initiatives to their respective industries.",
   /** The page-header CTA. It was hardcoded in app/customers/page.tsx while
    *  every other page header read its label from content — which is exactly
    *  how a label drifts when it is renamed. */
   cta: "Get in touch",
+  /**
+   * NOT RENDERED since 9 Sep 2026, by request. These two were a
+   * `SectionHeading` in a light band of its own between the page header and
+   * the tile grid; the section was removed and the grid now follows the header
+   * directly. Kept because they are the only sentence on the site that names
+   * the asset classes — venture, private credit, real estate, private equity —
+   * and the geography, so deleting them would lose that phrasing rather than
+   * merely unmount it. Nothing else says it; `whoWeServe` names investor types
+   * and `customers.lede` now names client types.
+   */
   gridTitle: "From first mandate to billion-dollar deal books.",
   gridLede:
-    "We work across venture, private credit, real estate, and private equity — with clients from the US, Australia, and everywhere in between. Here's what that looks like in practice.",
+    "We work across venture, private credit, real estate, and private equity - with clients from the US, Australia, and everywhere in between. Here's what that looks like in practice.",
   logoNote: "Client logos represent past engagements of Avalanche Capital.",
   /**
    * NOT CURRENTLY RENDERED — the strips were unlabelled by request on
@@ -525,9 +758,22 @@ export const customers = {
     "Logos represent venture capital firms and institutional investors active in the ecosystem.",
   trustedByEyebrow: "Trusted by",
   // DRAFT — the only line on this page not lifted from an Avalanche property.
-  // It heads the client logo grid; the paragraph beside it is whoWeServe.lede,
-  // which is sourced. See docs/COPY-REVIEW.md.
+  // It heads the client logo grid; the paragraph beside it is `trustedByBody`
+  // below. See docs/COPY-REVIEW.md.
   trustedByTitle: "Trusted by top teams across private capital.",
+  /**
+   * The paragraph set against `trustedByTitle`, over the client logo grid.
+   *
+   * IT USED TO BE `whoWeServe.lede` AND IS NOT ANY MORE. That key was
+   * rewritten on 8 Sep 2026 to describe INVESTOR types, which is right over
+   * the list of investor types it heads on the homepage and wrong here: the
+   * grid under this paragraph is CLIENT marks, so an investor-side sentence
+   * captions the wrong pictures. This is the original wording, unchanged and
+   * still sourced — it names who hires Avalanche, which is what a "Trusted
+   * by" band is claiming. Do not re-point this at `whoWeServe.lede`.
+   */
+  trustedByBody:
+    "We are used by placement agents, boutique investment banks, emerging fund managers, and founding teams raising from HNWIs, family offices, and institutional investors.",
 } as const;
 
 export const ctaBand = {

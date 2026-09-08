@@ -38,10 +38,18 @@ function ChevronGlyph() {
 /**
  * Search + category filter over the case studies, then the tile grid.
  *
- * The category filter is a native <select> rather than a row of pills: with
- * four options whose labels run long ("Placement agencies / Investment
- * banks"), pills wrapped to two lines and pushed the grid down. The native
- * control also gives the mobile picker for free.
+ * The category filter is a native <select> rather than a row of pills. The
+ * reason was four options with one long label — "Placement agencies /
+ * Investment banks" — which wrapped pills to two lines and pushed the grid
+ * down. **That option was removed on 9 Sep 2026 when its last two studies came
+ * off the page**, so there are three short ones now and pills would fit. It
+ * stays a `<select>` anyway: the native control gives the mobile picker for
+ * free, and the option list is the kind of thing that grows back.
+ *
+ * **THIS SECTION IS NOW UNHEADED.** The `SectionHeading` above it — "From
+ * first mandate to billion-dollar deal books." — was removed the same day, so
+ * the search box is the first thing in the block. See the note at its old site
+ * in app/customers/page.tsx.
  */
 export function CaseStudyGrid() {
   const [query, setQuery] = useState("");

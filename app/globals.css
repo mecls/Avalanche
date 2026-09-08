@@ -4,7 +4,7 @@
    Avalanche Capital design tokens
 
    LAYOUT is farahcap.com: a #151515 ground, its measured geometry and
-   its section rhythm, with the brand blue (#3056EE) where the
+   its section rhythm, with the brand blue (#73B6FF) where the
    reference runs gold.
 
    TYPE is not. The reference's Cormorant Garamond / Cormorant Infant /
@@ -55,34 +55,47 @@
   --color-fg-muted: #a8a8a8;
   --color-fg-faint: #949494;
 
-  /* The accent. #3056EE — hue 228, and the value the brand was specified in.
-     It supersedes a brief obsidian palette and, before that, the reference's
-     gold (#ae9e77 / #decfab / #7c6c45); the token was renamed off the hue when
-     the gold went, per the role-naming rule at the top of this file, which is
-     why a THIRD colour dropped in here without touching a component. `git log
-     -S "--color-gold"` has the older values.
+  /* The accent. #73B6FF — hue 211, and the value the brand was specified in
+     on 8 Sep 2026. It supersedes #3056EE (hue 228, and the same role), a brief
+     obsidian palette and, before those, the reference's gold (#ae9e77 /
+     #decfab / #7c6c45); the token was renamed off the hue when the gold went,
+     per the role-naming rule at the top of this file, which is why a FOURTH
+     colour has now dropped in here without touching a component. `git log -S
+     "--color-gold"` and `git log -S "#3056ee"` have the older values.
 
-     THE VALUE BELOW IS THE DARK-BAND ONE AND IT IS NOT #3056EE. At full
-     strength the brand blue measures 3.2:1 on #151515 — under the 4.5:1 text
-     floor it needs for the diagram pills — and, worse, 1.14:1 against the
-     50%-opacity fg-muted ghost dots those diagrams draw matched routes
-     against. Two things at equal luminance separated only by hue is exactly
-     the case that disappears for a red-green or blue-yellow colour-blind
-     reader, and it is most of the /solutions media.
-
-     So a dark band gets a true LIGHTENING of the same colour: hue 227 held,
-     saturation at 100%, lightness 56% -> 77%. Same blue, lit for a dark room.
-     A light band swaps the specified value back in further down.
-       on #151515             7.7:1
-       on #202020 (card)      6.9:1
-       step down from fg      2.4:1  — reads as its own colour, not as white
+     THE VALUE BELOW IS THE DARK-BAND ONE, and this time it IS the specified
+     colour. #73B6FF is already a light blue (HSL lightness 72.5%), so the
+     band that needs it as given is the dark one, and the LIGHT band is what
+     has to be derived — the exact reverse of the #3056EE arrangement this
+     replaced, which was dark enough to be itself on white and had to be lit
+     for #151515. The derivation is further down; the constraint driving both
+     has not moved.
+       on #151515             8.6:1
+       on #202020 (card)      7.7:1
+       step down from fg      2.1:1  — reads as its own colour, not as white.
+                                       That step was 2.4:1 under #8aa4ff and
+                                       this is the one measurement the new
+                                       value gives up. Hue buys it back: a
+                                       sky blue at 211 separates from white
+                                       far more visibly than the periwinkle
+                                       did, which is what the number cannot
+                                       say.
        step up from a 50%
-         fg-muted dot         2.7:1  — hue does most of this work now, but the
-                                       luminance step is what keeps the
-                                       diagrams readable without it
-     Darkening this toward the brand value is the tempting mistake: it looks
-     more "on-brand" in isolation and quietly breaks the media cards. */
-  --color-accent: #8aa4ff;
+         fg-muted dot         3.0:1  — was 2.7:1. This is the number that
+                                       matters most: the /solutions diagrams
+                                       draw matched routes in accent against
+                                       ghost dots in 50% fg-muted, and two
+                                       things at equal luminance separated
+                                       only by hue is exactly the case that
+                                       disappears for a red-green or
+                                       blue-yellow colour-blind reader. The
+                                       brand blue AT FULL STRENGTH used to sit
+                                       at 1.14:1 there; that is why this slot
+                                       has always been derived rather than
+                                       taken as specified.
+     Darkening this toward the light-band value is the tempting mistake: it
+     looks more "on-brand" in isolation and quietly breaks the media cards. */
+  --color-accent: #73b6ff;
 
   /* The rail gradient's two stops, held CONSTANT across bands: decorative
      graphics only, never type. --color-accent above follows the band so that
@@ -97,12 +110,20 @@
      they would be invisible — every accent pair that has held this slot has
      had the same restriction.
 
-     --color-accent-deep is the brand value exactly, so the rail terminates in
-     it. It therefore coincides with the light-band --color-accent below; that
-     is a coincidence of this palette, not a rule, and the gold it replaced
-     did not have it. Don't collapse the two. */
-  --color-accent-light: #93aaff;
-  --color-accent-deep: #3056ee;
+     --color-accent-deep is the DERIVED light-band value exactly, so the rail
+     terminates in the same blue the eyebrows on that band are set in. It
+     therefore coincides with the light-band --color-accent below; that is a
+     coincidence of this palette, not a rule, and the gold it replaced did not
+     have it. Don't collapse the two — and note that the head is now within a
+     few points of the dark-band --color-accent for the same reason the old
+     head sat next to #8aa4ff. Also a coincidence, also not a rule.
+
+     Both stops moved to hue 211 with the accent on 8 Sep 2026, holding their
+     measured ratios on the track rather than their hexes: leaving them at 228
+     would have made the rail a visibly different blue from every eyebrow and
+     diagram beside it. */
+  --color-accent-light: #6bb3ff;
+  --color-accent-deep: #0063cc;
 
   /* Off-white for the hero strip label. Left warm on purpose: at 13:1 on the
      hero's ground the cast is imperceptible, so retuning it every time the
@@ -157,19 +178,22 @@ body:has(main > :first-child[data-band="light"]) header:not(.tone-dark) {
   --color-fg-muted: #686868;
   --color-fg-faint: #686868;
 
-  /* The brand blue at full strength — #3056EE as specified, no adjustment.
-     A light ground is where it can be itself: 5.7:1 on white and 5.1:1 on
-     #f3f3f3, both clear of the 4.5:1 text floor, where the same value on the
-     dark band would have sat at 3.2:1. The dark band lightens it instead;
-     see the note up in @theme for why.
+  /* The brand blue DARKENED for a light ground — hue 211 and saturation 100%
+     held from #73B6FF, lightness 72.5% -> 40%. Same blue, sat down for a lit
+     room, and the mirror image of what the dark band used to do to #3056EE.
+     The specified value cannot be used here: #73B6FF measures 2.1:1 on white,
+     under even the 3:1 large-text floor, and the eyebrows this token carries
+     are 14px. The derived one lands where its predecessor did, which is the
+     point of deriving rather than picking:
+       on #ffffff   5.7:1   (#3056ee was 5.7:1)
+       on #fafafa   5.5:1   (5.5:1)
+       on #f3f3f3   5.2:1   (5.1:1)
 
-     No text consumer today — the accent's only text run was the announcement
-     bar's link and that bar is gone, and the /solutions diagrams sit on
-     nested dark plates and take the lightened value. --color-accent-deep is
-     what actually paints the rail on this band. Defined anyway, because a
-     light-band accent with no definition is how a future one ends up
-     hardcoded. */
-  --color-accent: #3056ee;
+     Its consumers are the section eyebrows and the two page-name labels; the
+     /solutions diagrams sit on nested dark plates and take the light value
+     above instead, and --color-accent-deep is what paints the rail on this
+     band. */
+  --color-accent: #0063cc;
 
   --color-line: #eeeeee;
   --color-line-soft: #e0e0e0;
@@ -230,7 +254,7 @@ body:has(main > :first-child[data-band="light"]) main {
   --color-fg: #ffffff;
   --color-fg-muted: #a8a8a8;
   --color-fg-faint: #949494;
-  --color-accent: #8aa4ff;
+  --color-accent: #73b6ff;
 
   --color-line: rgba(255, 255, 255, 0.13);
   --color-line-soft: rgba(255, 255, 255, 0.09);
@@ -273,6 +297,11 @@ body {
   html {
     scroll-behavior: auto;
   }
+  /* Named separately because `scroll-behavior` is not inherited — the
+     carousel is its own scroll container and would keep animating. */
+  .case-carousel {
+    scroll-behavior: auto;
+  }
   /* Drop the video; the poster behind it is already in place. */
   .hero-video {
     display: none;
@@ -305,16 +334,22 @@ body {
    this one came back. If it is ever pulled again, pull it alone.
 
    ONE RULE, MANY MARKS. This colours the section eyebrows, the thesis
-   ordinals, the who-we-serve labels, case-study categories, media outlets and
-   the footer column heads — around a dozen on the homepage. That is the
+   ordinals, the who-we-serve labels, media outlets and the footer column
+   heads — around a dozen on the homepage. It carried the case-study CATEGORY
+   until 9 Sep 2026 and no longer does: small uppercase accent type on a card
+   reads as a link, and that one goes nowhere. It is an outlined muted tag at
+   its call site now — see the note in featured-case-study.tsx. That is the
    intended reading now, but it is why this utility is the first place to look
    if the page ever feels loud again.
 
    CONTRAST: 14px/600 is NOT large text, so this needs the full 4.5:1 rather
    than the 3:1 large-text floor, and it is the only place the accent carries
-   small type. Both band values clear it — 5.7:1 on white, 5.1:1 on the
-   #f3f3f3 band, 7.7:1 on #151515, 6.9:1 on the #202020 card. Any future
-   accent has to hold 4.5:1 on ALL FOUR before it can land here. */
+   small type. Both band values clear it — 5.7:1 on white, 5.2:1 on the
+   #f3f3f3 band, 8.6:1 on #151515, 7.7:1 on the #202020 card. Any future
+   accent has to hold 4.5:1 on ALL FOUR before it can land here, which is why
+   #73B6FF is not used as supplied on the light band: it measures 2.1:1 there
+   and would have taken every eyebrow on /about, /customers and the homepage
+   down with it. */
 @utility eyebrow {
   font-family: var(--font-sans);
   font-size: 0.875rem;
@@ -442,21 +477,121 @@ body {
    Layout
    --------------------------------------------------------------- */
 
-/* 1440 max with a FIXED 20px gutter, not a clamped one. The reference holds
-   20px at every width, so the content box is exactly 1400px on a 1440 window.
-   The previous 80rem/clamp(1.25rem,4vw,2.5rem) both capped narrower AND grew
-   its gutter on a large screen, which is what made the page feel pinched. */
+/* 1440 max with a 5% gutter, floored at 20px and CAPPED at 72px. The cap is
+   the part that matters: an uncapped percentage is what the 80rem/
+   clamp(1.25rem,4vw,2.5rem) version did, and it both capped the content
+   narrower AND kept widening its own gutter on a large screen, so the page
+   read pinched exactly where there was most room. Capping at 72px — 5% of a
+   1440 window — means the gutter stops growing at the width the shell itself
+   stops growing, and the content box holds 1296px from 1440 up.
+
+   It was a FIXED 20px until 8 Sep 2026, matching the reference at every
+   width. That is right for the reference's own 1440 canvas and too tight in a
+   1200-1400 window, which is where this site is actually read: 20px on a 1280
+   screen puts the H1 all but against the glass. Below 400px the 5% falls
+   under the floor and the gutter stays 20px, so phones are unchanged.
+
+   PERCENT, NOT VW. `vw` includes the scrollbar, so a 5vw gutter is a few
+   points wider than it claims in a desktop window and can hand the page a
+   horizontal scrollbar of its own. The percentage resolves against the
+   containing block, which is the full-width <section> every shell sits in. */
 @utility shell {
   width: 100%;
   max-width: 1440px;
   margin-inline: auto;
-  padding-inline: 20px;
+  padding-inline: clamp(20px, 5%, 72px);
 }
 
 /* Fixed 120px, not a clamp. The previous clamp resolved to 52-72px — roughly
    half the reference rhythm — which is what made the page read cramped. */
 @utility section-y {
   padding-block: 120px;
+}
+
+/* ---------------------------------------------------------------
+   The homepage case-study carousel
+
+   TWO SLIDES IN A SCROLL CONTAINER, AND NO CAROUSEL STATE. A
+   carousel's index is state — but a SCROLL POSITION is state the
+   browser already keeps, so the slides sit in an `overflow-x`
+   container with scroll-snap and nothing tracks which one is
+   showing. Swipe, trackpad and shift-wheel come for free and the
+   section stays server-rendered. The `tabIndex` on the track is for
+   its accessible name; a focused scroll container is also supposed
+   to take Left/Right natively, but that could not be confirmed under
+   browser automation — read AGENTS.md before claiming it works. Same reasoning that keeps /solutions' rail and
+   /about's layer sequence on CSS.
+
+   ONE CLIENT ISLAND, AND ONLY BECAUSE THE BROWSER WOULD NOT DO IT.
+   The controls shipped as bare `<a href="#slide-id">` and did not
+   move the container at all; `components/ui/slide-link.tsx` has the
+   measurements and what was ruled out. It holds no state either.
+
+   THE CONTROLS LIVE INSIDE THE SLIDES, and that is what makes a
+   stateless carousel possible. Only one slide is ever on screen, so
+   the control in view is always the right one and nothing has to
+   know which index is active — including the DISABLED end-stop,
+   which is known statically from the slide's own position. A shared
+   pair of arrows OUTSIDE the container could not do that: it would
+   have to work out which end it was at, which is the state being
+   avoided.
+
+   THE SLIDE HAS TO FIT THE VIEWPORT, and that is a load-bearing
+   constraint rather than a taste call. Stacked, a slide was 932px
+   tall in an 806px viewport: the controls were off screen by the
+   time the reader reached the quote, so the section's only signal
+   that a second study existed was gone at exactly the moment it was
+   needed. Sticky controls are not an alternative — `overflow-x:
+   auto` computes `overflow-y` to `auto`, so the track is its own
+   scrollport and, being as tall as its tallest slide, has no
+   vertical overflow for a sticky element to move against.
+   --------------------------------------------------------------- */
+.case-carousel {
+  display: flex;
+  /* Not `stretch`: the container is already as tall as its tallest
+     slide, and stretching the shorter one only moves its background
+     down past where its content ends. */
+  align-items: flex-start;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  /* `scroll-behavior` does NOT inherit, so the `html` rule higher up
+     in this file does not reach here and the reduced-motion override
+     has to name this class again. */
+
+  /* The track is suppressed because the slides fill the shell: a
+     scrollbar under them reads as a page-level control in the wrong
+     place. The pager, the dots and the two arrows are what advertise
+     that there is more, so do not remove them as well. */
+  scrollbar-width: none;
+}
+
+/* The track is in the tab order (it is a scroll region with a name),
+   so it has to show where focus is. `fg` rather than `accent`: the
+   accent's four homes are listed in AGENTS.md and a focus ring is
+   not one of them, and `fg` inverts with the band on its own. */
+.case-carousel:focus-visible {
+  outline: 2px solid var(--color-fg);
+  outline-offset: 6px;
+}
+
+.case-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.case-slide {
+  flex: 0 0 100%;
+  /* Flex items floor at min-content, and the wide card inside carries
+     a metric pill that would push that floor well past 100% of the
+     track — the slide would then be wider than its own snap step. */
+  min-width: 0;
+  scroll-snap-align: start;
+  /* A hash link scrolls the DOCUMENT as well as the carousel, because
+     the browser brings the target into view in every scroll container
+     it sits in. Without this the revealed study lands hard against
+     the top of the viewport. Nothing on this site is `fixed`, so the
+     nav does not have to be accounted for here. */
+  scroll-margin-top: 5rem;
 }
 
 /* Scroll-reveal: opt-in, respects reduced motion via the block above */
@@ -581,7 +716,7 @@ body {
    1. `Frame` is now `w-[94%] max-w-[560px]`. The cap is what stops the
       scale RISING — a full-width card on a tablet was 960px, which blew
       the diagram up past its design size. Everything from 600px to
-      1600px now sits between 0.795 and 0.903, near enough constant.
+      1600px now sits between 0.734 and 0.903.
    2. Below 600px the card is physically smaller than the cap, so the
       scale keeps falling and no width rule can help. The two steps below
       raise the user-unit size to compensate. They are deliberately NOT
@@ -589,8 +724,22 @@ body {
       480-599 band to ~16px.
 
    Rendered result for the smallest rung, across the whole range:
-   9.2px (360) to 13.6px (599), against 5.8-12.6px before. The floor is
-   up 58% and the swing is halved.
+   9.2px (360) to 13.1px (599), against 5.8-12.6px before. The floor is
+   up 58% and the swing is halved. The 360px end is unchanged by the
+   shell's 5% gutter, because 5% of 360 is under the 20px floor and the
+   phone keeps the gutter it had.
+
+   THE LOW POINT IS NO LONGER ON A PHONE. From 8 Sep 2026 the gutter is
+   5% and a half-row card at a 1200px viewport is 484px rather than
+   524px, which renders `dgm-xs` at 8.8px — the one width in the range
+   under the 9.2px floor, in a 1200-1240px window and nowhere else
+   (below 1200 the card goes full-width and the frame hits its cap, so
+   the scale JUMPS from 0.734 to 0.903 across that gate). Two ways back
+   if it ever matters: raise `Frame`'s 94%, or move the media row's
+   1200px gate up to ~1280 so the two-column layout only starts where
+   the card can carry it. Neither was taken — the band is narrow, these
+   frames are `aria-hidden`, and the copy beside every diagram states
+   its claim in words. Do NOT reach for a capped rung here; see below.
 
    Rungs, and what each is for. Eight ad-hoc sizes were collapsed into
    five on the way through; if a diagram needs a size, take a rung rather
@@ -782,20 +931,32 @@ body {
         view-timeline-axis: block;
 
         /* THE HEIGHT OF ONE PANEL, and the single number this whole block is
-           tuned around. It is the tallest of the three text columns, measured:
-           panel 01 is 295px, panel 03 is 366px and panel 02 — which carries
-           the four "Why This Segment" reasons — is the one that sets it. The
-           plate is shorter than all of that (516px at a 1200px viewport,
-           649px from 1600px up, capped by `Frame`'s max-width), so the column
-           drives the row and the row is this tall at every width the stage
-           exists at. The measure is capped at 560px, which is why one value
-           covers 1200px to 1920px rather than needing a curve.
+           tuned around. It is the tallest of the three text columns, measured
+           at the WIDTH THAT MAKES THEM TALLEST: panel 01 is 295px, panel 03 is
+           366px and panel 02 — which carries the four "Why This Segment"
+           reasons — is the one that sets it. The plate is shorter than all of
+           that (497px at a 1200px viewport, 599px from 1440px up, capped by
+           the shell), so the column drives the row at every width the stage
+           exists at.
 
-           RE-MEASURE AFTER ANY COPY CHANGE in `layers` — set it to 0, read
-           the three column heights, take the largest. Too small and panel 02
-           overflows the stage; too large and all three panels carry dead
-           space they did not ask for. */
-        --layer-h: 677px;
+           IT IS MEASURED AT 1200px, NOT AT 1440. The body copy is capped at
+           560px, so above a 1280px viewport the column is wider than its own
+           measure and panel 02 settles at 677px. At the 1200px gate the
+           column is only 522px — narrower than the cap — the reasons list
+           re-wraps and the panel grows to 697px. Sizing the stage off the
+           wide measurement spills panel 02 out of it in exactly the 1200-1280
+           band, which is a common laptop window. One value still covers
+           1200px to 1920px; it is just the 1200px one.
+
+           This grew from 677px on 8 Sep 2026 when the shell's gutter went
+           from a fixed 20px to 5%, which took ~52px off each column.
+
+           RE-MEASURE AFTER ANY COPY CHANGE in `layers`, AND AFTER ANY CHANGE
+           TO THE SHELL — set it to 0, read the three column heights at a
+           1200px viewport, take the largest. Too small and panel 02 overflows
+           the stage; too large and all three panels carry dead space they did
+           not ask for. */
+        --layer-h: 697px;
       }
 
       /* PINNED CENTRED, AND SIZED TO THE PANEL RATHER THAN THE SCREEN.
@@ -963,17 +1124,23 @@ body {
          the panel moves, and above 800px nothing changes at all.
 
          **649px, NOT 623px, AND THAT IS THE POINT OF THIS COMMENT.** The row
-         is max(tallest column, plate), and the plate cannot be tightened: its
-         height is its width over a fixed aspect ratio, and its width is capped
-         by the 1440px shell at 682px, so it reaches 649px on any viewport
-         1480px or wider no matter how short that viewport is. Setting this to
-         the tightened column height would size the stage under its own plate,
-         and a wide-but-short window (1600x768 is the ordinary one) would spill
-         the picture over the bands above and below. So the tightening buys the
-         28px between 677 and 649 and stops there. Below 1480px wide the plate
-         is smaller than 649 and the extra is simply air.
+         is max(tallest column, plate) and both ends have to be checked. 623px
+         is the tightened panel 02 at a column wider than the 560px measure
+         cap; at the 1200px gate the column is 522px, the reasons re-wrap and
+         the tightened panel is 641px — the same trap the base value above
+         documents, one step down. So the tightening buys the 56px between 697
+         and 641, and 649 keeps a little air over it.
 
-         Re-measure both numbers together after any copy change here. */
+         The PLATE used to be what set this number: at a fixed 20px gutter it
+         reached 649px on any viewport 1480px or wider, and sizing the stage
+         under it spilled the picture on a wide-but-short window (1600x768 is
+         the ordinary one). The 5% gutter took the plate's ceiling to 599px on
+         8 Sep 2026, so the column binds at both heights now — but check the
+         plate again before lowering this, because it is the end that cannot
+         be tightened: its height is its width over a fixed aspect ratio.
+
+         Re-measure both numbers together after any copy change here, at a
+         1200px viewport. */
       @media (max-height: 800px) {
         .layer-seq {
           --layer-h: 649px;

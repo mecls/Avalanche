@@ -1,60 +1,17 @@
 import Image from "next/image";
 import type { CaseStudy } from "@/content/case-studies";
 
-/**
- * One case study. `featured` is the wide treatment used for Neurable on the
- * homepage; the default is the grid card on /customers.
+/*
+ * `CaseStudyCard` USED TO LIVE HERE AND IS GONE (9 Sep 2026, by request).
+ * It was the homepage's wide treatment — the client's mark, the accent metric
+ * pill and our result sentence in a bordered panel — and the case-study slide
+ * was rebuilt around a full-column picture instead, with the headline saying
+ * what the pill and the sentence both said. Nothing else ever rendered it:
+ * /customers draws the tile below, which is a different shape entirely. Two
+ * things it took with it, so they are findable: the SITE'S LAST METRIC PILL,
+ * which was one of the four documented homes of the accent, and the featured/
+ * grid variant switch. `git log -S CaseStudyCard` has both.
  */
-export function CaseStudyCard({
-  study,
-  featured = false,
-}: {
-  study: CaseStudy;
-  featured?: boolean;
-}) {
-  return (
-    <article
-      // min-w-0: grid items default to min-width:auto, so the pill below would
-      // otherwise set a min-content floor and overflow the page on narrow screens.
-      className={`flex min-w-0 flex-col rounded-lg border border-line bg-card transition-colors duration-300 hover:border-fg/20 ${
-        featured ? "gap-8 p-9 sm:p-12" : "gap-6 p-7"
-      }`}
-    >
-      <div className="flex items-start justify-between gap-4 sm:gap-6">
-        <div className="relative h-9 w-24 shrink-0 sm:w-32">
-          <Image
-            src={study.logo}
-            alt={study.name}
-            fill
-            sizes="(max-width: 640px) 96px, 128px"
-            className="logo-mark object-contain object-left"
-          />
-        </div>
-        {/* ONE OF THREE ACCENTS LEFT ON THE SITE — see the accent section in
-            README. The metric is the single number on a card and the thing a
-            reader should land on, which is what an accent is for; it also
-            renders once per page, since the /customers grid uses the tile
-            below and carries no pill. Both are why it survived the cut.
-
-            `text-ground` still does the inverting: white on #3056EE in a light
-            band (5.7:1), #151515 on #8aa4ff in a dark one (7.7:1). */}
-        <span className="rounded-full bg-accent px-3 py-1 text-right text-[0.6875rem] font-medium text-balance text-ground">
-          {study.metric}
-        </span>
-      </div>
-
-      <p
-        className={`leading-relaxed text-fg-muted ${
-          featured ? "max-w-2xl text-lg" : "text-sm"
-        }`}
-      >
-        {study.result}
-      </p>
-
-      <p className="eyebrow mt-auto pt-2">{study.category}</p>
-    </article>
-  );
-}
 
 /**
  * The /customers grid treatment: a square tile carrying the client's mark,

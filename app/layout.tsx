@@ -44,12 +44,12 @@ const satoshi = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://avalanche-capital.com"),
   title: {
-    default: `${site.name} — ${site.tagline}`,
-    template: `%s — ${site.name}`,
+    default: `${site.name} - ${site.tagline}`,
+    template: `%s - ${site.name}`,
   },
   description: site.description,
   openGraph: {
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} - ${site.tagline}`,
     description: site.description,
     siteName: site.name,
     type: "website",

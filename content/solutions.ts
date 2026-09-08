@@ -26,11 +26,16 @@ import { secondaries } from "@/content/copy";
  * ---------------------------------------------------------------------------
  * PROVENANCE — read this before editing either block list.
  *
- * FUNDRAISING is fundraisr.ai/solutions, captured 4 Sep 2026, structure and
- * copy. Five steps, in their order, with their headings. It is genuine
- * published copy from a property we own, so it is NOT marked DRAFT.
+ * FUNDRAISING WAS fundraisr.ai/solutions, captured 4 Sep 2026 — five steps in
+ * their order, with their headings, de-branded as described below. **It is
+ * not any more.** On 9 Sep 2026 the header and the first three blocks were
+ * replaced with supplied Avalanche copy and the last two were removed, so the
+ * view is three steps of our own words. The de-branding note below is kept
+ * because it is the reason the SECONDARIES scaffolding reads as it does, and
+ * because `git log` still needs it to make sense of the old bodies.
  *
- * One change was made throughout, deliberately: the product name is removed.
+ * One change was made throughout the fundraisr copy, deliberately: the product
+ * name was removed.
  * The source says "Fundraisr's pre-marketing agent", "Fundraisr generates
  * personalised messaging", "Fundraisr doesn't just give you data". Naming the
  * sister platform on the Avalanche site is a positioning decision rather than
@@ -38,12 +43,16 @@ import { secondaries } from "@/content/copy";
  * instance of it as needing sign-off — so these read as "our" and "we". No
  * claim changed; only the brand attached to it.
  *
- * SECONDARIES is PLACEHOLDER. Every block below is marked DRAFT and says so on
- * the page. Avalanche has published no secondaries process copy anywhere, and
- * inventing five steps for a live financial service would be fabricating a
- * capability. The real copy is coming; when it does, replace the bodies and
- * drop the `pending` flags. Do not "improve" these into something that reads
- * as final.
+ * SECONDARIES WAS PLACEHOLDER and is not any more. Five blocks were marked
+ * DRAFT and said so on the page, because Avalanche had published no
+ * secondaries copy anywhere and inventing five steps for a live financial
+ * service would have been fabricating a capability. On 9 Sep 2026 the heading,
+ * the lede and two blocks arrived as supplied copy and the other three were
+ * removed. Nothing on either view is placeholder now.
+ *
+ * The instruction the old note carried still stands for whatever comes next:
+ * do not "improve" a placeholder into something that reads as final. Mark it
+ * `pending` and let it say so on the page.
  * ---------------------------------------------------------------------------
  */
 
@@ -86,57 +95,114 @@ export type SolutionView = {
 };
 
 /**
- * 01 — Fundraising. fundraisr.ai/solutions, five steps, verbatim but for the
- * de-branding described above.
+ * 01 — Fundraising. THREE steps, and it is no longer fundraisr's page.
  *
- * Every body here is real, published copy. NONE of these blocks is `pending`,
- * and as of 4 Sep 2026 all five have their own diagram — the four that were
- * showing the pending plate were drawn to finish the view. This side of
- * /solutions has no outstanding gap of either kind.
+ * It was five, lifted from fundraisr.ai/solutions with the brand filed off.
+ * On 9 Sep 2026 the header and blocks 01-03 were replaced with supplied copy
+ * and blocks 04-05 were removed, which leaves an advisory process in three
+ * moves — get ready, get introduced, get closed — rather than a five-feature
+ * product tour. Nothing here is fundraisr's copy any more; the de-branding
+ * note in the file header now applies to the SECONDARIES placeholders only.
+ *
+ * NONE of these blocks is `pending` and all three have their own diagram, so
+ * this side of /solutions still has no outstanding gap of either kind. Two of
+ * the three diagrams MOVED with the copy rather than staying put — see the
+ * notes on blocks 01 and 03. That is the rule working, not churn: a picture
+ * that keeps labels its own copy has stopped using is the failure mode the
+ * MEDIA map exists to prevent.
  */
 export const fundraisingView: SolutionView = {
   eyebrow: "Solutions",
-  title: "The full-stack fundraising platform.",
-  lede: "We consolidate investor research, outreach, pipeline management, and meeting intelligence into one system — purpose-built for teams who treat fundraising as a disciplined operation, not a networking exercise.",
+  // SUPPLIED 9 Sep 2026, replacing fundraisr.ai's own header. The page used to
+  // open "The full-stack fundraising platform." over a lede about consolidating
+  // research, outreach, pipeline and meeting intelligence "into one system" —
+  // which described a PRODUCT. This is an advisory firm, and the new pair says
+  // approach and segment rather than software and features. The de-branding
+  // note above still applies to the five blocks; the header is no longer
+  // fundraisr's copy at all.
+  title: "A Definitive Solution For Fundraising",
+  lede: "Our validated approach for raising capital has been specifically tailored for our segment of the market, and the types of clients we serve.",
   cta: "Get started",
   blocks: [
     {
       n: "01",
+      /** The id is the MEDIA key and the anchor, so it is NOT renamed with the
+       *  label — same reason block 02 still says "fundraising". */
       id: "pre-marketing",
-      label: "Pre-marketing",
-      title: "Deal packaging support.",
-      body: "Our pre-marketing agent analyses your raise — structure, thesis, target profile — and ensures your marketing materials are appropriately positioned to resonate with your target investor profiles. The worst thing you can do is put the right deal in front of the right investor with a poorly positioned deal. Our agent ensures that's not the case.",
+      // SUPPLIED 9 Sep 2026, all three lines. The old body described "our
+      // pre-marketing agent" analysing the raise, which was fundraisr product
+      // copy with the brand filed off; this is the firm doing the work.
+      //
+      // THE BODY IS NOT NEW COPY. It is byte-identical to
+      // `fundraising.steps[0].body` in content/copy.ts — the unmounted
+      // three-step process lifted from avalanche-capital.com — so it is
+      // PUBLISHED Avalanche copy, not something drafted, and the title
+      // follows that object's "Solving For ..." pattern too. One sentence in
+      // two files can drift; see the note over `fundraising` there. The
+      // DIAGRAM MOVED WITH IT — its three input chips were the old body's
+      // "structure, thesis, target profile" and are now the new body's
+      // dataroom, decks and supporting documentation. A picture that names
+      // three things its copy no longer mentions is exactly what the "do not
+      // reuse a diagram" rule is about.
+      label: "Deal-readiness",
+      title: "Solving for deal readiness",
+      body: "Before a conversation starts, your materials need to meet the market where it is. We benchmark your dataroom, pitch decks, and supporting documentation against comparable raises we've conducted - ensuring every opportunity we take to market is structured for the highest likelihood of success.",
     },
     {
       n: "02",
       /** Anchor kept from the single-page era: /solutions#fundraising was a
        *  live deep link, and the nav pointed at it for a day. */
       id: "fundraising",
-      label: "Investor sourcing",
-      title: "1.2 million investors, one search away.",
-      body: "Filter the entire private capital landscape by thesis, geography, cheque size, fund stage, sector focus, and recent deployment activity. We don't just give you data — you get ranked, contextualised profiles based on positive signals, so you spend time on conversations that move the needle.",
+      // SUPPLIED 9 Sep 2026. This retires the "1.2 million investors" headline,
+      // which was a platform-database claim and one of the figures
+      // docs/COPY-REVIEW.md had flagged as unverified — see the remaining
+      // citations listed there. The diagram beside it still describes the new
+      // body: it draws a mandate filter selecting investors out of a universe,
+      // which is "identify the LPs and investors whose mandates align with your
+      // deal parameters" exactly.
+      label: "Investor introductions",
+      title: "Solving for LP capital & growth capital.",
+      body: "Whether you're a GP raising a fund or a founder raising growth capital, the right introductions make the difference. We craft credible narratives, identify the LPs and investors whose mandates align with your deal parameters. With established networks across the US, Europe, and the Middle East, and the capability to source beyond them, we make sure every fund and every company we work with gets in front of the right capital, with a heavy emphasis on introductions to investors who bring more to the table than just a cheque.",
     },
     {
       n: "03",
-      id: "engagement",
-      label: "Personalised engagement",
-      title: "Scalable outreach with a personal touch.",
-      body: "Build multi-touch campaigns across email and LinkedIn that adapt to each investor's profile and behaviour. We generate personalised messaging, sequence follow-ups based on engagement signals, and keep every touchpoint compliant. One-to-many reach, without sacrificing personalisation.",
+      /**
+       * RENAMED FROM "engagement" on 9 Sep 2026 with the copy. The two ids
+       * that keep a name they have outgrown — "fundraising" here and
+       * "secondaries" below — do so because they were live deep links from
+       * the single-page era; this one never was, so it says what the block
+       * says. It is the MEDIA key as well as the anchor, so renaming it means
+       * renaming it in solutions-steps.tsx too, which is where its diagram
+       * moved in the same change.
+       */
+      id: "closure",
+      // SUPPLIED 9 Sep 2026, replacing "Personalised engagement / Scalable
+      // outreach with a personal touch." — a body about multi-touch email and
+      // LinkedIn campaigns, which was fundraisr platform copy de-branded.
+      // THE DIAGRAM CHANGED WITH IT and this is the important half: the
+      // outreach-sequence picture that used to sit here draws follow-ups
+      // branching on an engagement signal, which is not term sheets, not a
+      // dataroom and not a signed commitment. The four-stage progression that
+      // was block 04's took its place — Contacted, Engaged, Diligence,
+      // Committed, with only the committed column accented — because that IS
+      // this block's claim. See solutions-steps.tsx.
+      label: "Deal closure",
+      title: "Solving for deal closure",
+      body: "We stay in the room through term sheet negotiations, dataroom reviews, and every step in between, until there's a signed commitment, ensuring momentum is kept throughout the entirety of the raise.",
     },
-    {
-      n: "04",
-      id: "pipeline",
-      label: "Pipeline management",
-      title: "From first touch to signed commitment. Every step, tracked.",
-      body: "Manage your entire investor pipeline in a single view — who's been contacted, who's engaged, who's in diligence, and who's ready to commit. Built for placement teams managing multiple mandates and GPs who need to report progress to existing LPs.",
-    },
-    {
-      n: "05",
-      id: "meetings",
-      label: "Meeting intelligence",
-      title: "Know who you're speaking with, and why.",
-      body: "We report who your next investor meeting is with and where synergies may lie, so you know how to best handle the conversation and which deal parameters matter most to that investor.",
-    },
+    /**
+     * BLOCKS 04 AND 05 WERE REMOVED ON 9 Sep 2026, by request. They were
+     * "Pipeline management / From first touch to signed commitment. Every
+     * step, tracked." and "Meeting intelligence / Know who you're speaking
+     * with, and why." — the last two fundraisr platform steps, and the two
+     * that read most like software features on a page that now describes an
+     * advisory process in three moves: get ready, get introduced, get closed.
+     *
+     * Their artwork was NOT deleted. `PipelineDiagram` moved up to block 03,
+     * where it is a better fit than it ever was here, and `MeetingDiagram` is
+     * kept unrendered in solutions-media.tsx. `git log -S "Meeting
+     * intelligence"` has the bodies if either step comes back.
+     */
   ],
 };
 
@@ -148,16 +214,18 @@ export const fundraisingView: SolutionView = {
  * page is not empty and the toggle has somewhere real to land. Everything
  * below them is scaffolding.
  *
- * The five block titles are the SHAPE of a process, not claims about ours:
- * generic stage names any secondaries mandate would pass through. Each body is
- * a single placeholder line that says outright it is awaiting copy, so nobody
- * can mistake it for approved text and it cannot ship to production unnoticed.
- * Every block here is `pending`.
+ * **IT IS TWO BLOCKS OF SUPPLIED COPY AS OF 9 Sep 2026, AND NOTHING HERE IS
+ * PLACEHOLDER ANY MORE.** Buy-side advisory and Sell-side advisory, with a
+ * diagram each. The three generic stage names that used to follow them —
+ * "Counterparties", "Process", "Close" — were removed by request rather than
+ * filled in, because 01 and 02 are two SIDES of a trade and those three were
+ * STAGES of one mandate: the page was describing itself two ways at once.
  *
- * Block 03 does get real artwork — the holders-to-counterparties diagram is
- * genuinely about counterparty search, and it was drawn for this service. Real
- * art beside placeholder copy is fine and deliberate; it shows the layout
- * working. The copy note below it still says the words are not final.
+ * So NO block on either view carries `pending` now. The flag, the visible
+ * "awaiting approved copy" note and `PendingPlate` all remain wired up and
+ * unused, which is correct — they are the mechanism for the next block that
+ * arrives without copy or artwork, and the whole point of them is that such a
+ * block cannot ship silently.
  */
 export const secondariesView: SolutionView = {
   eyebrow: "Solutions",
@@ -166,46 +234,51 @@ export const secondariesView: SolutionView = {
   lede: secondaries.lede,
   cta: "Get started",
   blocks: [
+    /**
+     * 01 AND 02 ARE REAL AS OF 9 Sep 2026, and they changed what this page IS.
+     *
+     * They were "Position review" and "Pricing" — two stages of one mandate,
+     * placeholder names for the general shape of a secondaries process. The
+     * supplied copy replaced them with the TWO SIDES OF THE TRADE, buy and
+     * sell, which are not stages of anything: a buyer does not go on to become
+     * a seller. That is the same reading the original two-block /solutions had
+     * of Fundraising and Secondaries, and the note in copy.ts explains why the
+     * rail still numbers parallel offerings — the number is position, not
+     * sequence.
+     *
+     * **BLOCKS 03-05 WERE REMOVED THE SAME DAY, by request, and that is what
+     * settles the shape.** "Counterparties", "Process" and "Close" were
+     * placeholder STAGES sitting under two real SERVICES, so the page
+     * described itself two ways at once. Dropping them is the same answer
+     * Fundraising gave when its last two blocks came off: the view is what has
+     * copy, not a fixed number of slots. `git log -S "id: \"counterparties\""`
+     * has the three if a process view is ever wanted back.
+     *
+     * `title` is the supplied phrase and `label` is that phrase minus the word
+     * "advisory", so the small label and the display heading say the same
+     * thing at two sizes — the pattern blocks 01-03 of Fundraising already
+     * use. Neither is invented; there is no third string here that nobody
+     * supplied.
+     */
     {
       n: "01",
-      /** Anchor kept from the single-page era, as above. */
+      /** Anchor kept from the single-page era, as above. It no longer matches
+       *  the block's own name, which is the same trade `fundraising` makes on
+       *  the other view: a live deep link outranks a tidy id. */
       id: "secondaries",
-      label: "Position review",
-      title: "Awaiting copy.",
-      body: "Copy for this step has not been supplied yet. The stage names on this page describe the general shape of a secondaries mandate, not Avalanche's process — nothing here should be read as a claim about how we run one.",
-      pending: true,
+      label: "Buy-side",
+      title: "Buy-side advisory",
+      body: "For investors seeking exposure to late-stage private companies ahead of a listing, we provide curated access to verified secondary opportunities. We source and vet positions across our network, handle counterparty identification, and support pricing and structuring so buyers get clean exposure without doing the legwork of finding a credible seller themselves.",
     },
     {
       n: "02",
-      id: "valuation",
-      label: "Pricing",
-      title: "Awaiting copy.",
-      body: "Copy for this step has not been supplied yet.",
-      pending: true,
-    },
-    {
-      n: "03",
-      id: "counterparties",
-      label: "Counterparties",
-      title: "Awaiting copy.",
-      body: "Copy for this step has not been supplied yet.",
-      pending: true,
-    },
-    {
-      n: "04",
-      id: "process",
-      label: "Process",
-      title: "Awaiting copy.",
-      body: "Copy for this step has not been supplied yet.",
-      pending: true,
-    },
-    {
-      n: "05",
-      id: "close",
-      label: "Close",
-      title: "Awaiting copy.",
-      body: "Copy for this step has not been supplied yet.",
-      pending: true,
+      /** RENAMED from "valuation" with the copy — it was never a deep link,
+       *  unlike the id above, so it says what the block says. It is the MEDIA
+       *  key too; see solutions-steps.tsx. */
+      id: "sell-side",
+      label: "Sell-side",
+      title: "Sell-side advisory",
+      body: "For shareholders and founders looking to generate liquidity ahead of an IPO, we advise on pricing and structuring and run a discreet process to identify the right buyer. We manage the transaction end-to-end, from sourcing buyers, all the way through negotiations and closing.",
     },
   ],
 };

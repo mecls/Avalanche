@@ -17,6 +17,19 @@
  * render on their own page either.
  */
 
+/**
+ * NOT RENDERED ANYWHERE since 9 Sep 2026. These marks were the venture strip at
+ * the foot of the /customers page header, and that strip was removed by
+ * request. The file, the rasters in public/logos/ecosystem/ and
+ * scripts/fetch-ecosystem-logos.mjs are all kept together — the set is a
+ * curated list of real firms and re-assembling it is the expensive part, not
+ * re-rendering it.
+ *
+ * If it comes back, note what made it different from the client roster: these
+ * are FULL COLOUR and must pass `alphaMarks={false}` to `LogoMarquee`, because
+ * `logo-mark` would invert them to white on a light band. And
+ * `customers.ecosystemNote` is the caption it used to carry.
+ */
 export const ecosystemLogos: string[] = [
   "/logos/ecosystem/tiger-global.webp",
   "/logos/ecosystem/sequoia.webp",

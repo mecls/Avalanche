@@ -17,7 +17,7 @@ npm run build
 |---|---|
 | `fundraisr.ai` | The **entire visual design** — palette, Satoshi type, layout rhythm, button and card treatment. Both sites are ours. |
 | `avalanche-capital.com` | Copy: hero, thesis pillars, investor verticals, process steps, track record, team, press |
-| `fundraisr.ai/customers` | All 13 case studies, the ~55 client logos, customers-page structure |
+| `fundraisr.ai/customers` | The case studies (13 captured, 10 still on the page), the ~55 client logos, customers-page structure |
 | `fundraisr.co` | The `$600M+ raised` figure |
 
 Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.ts`, `faqs.ts`, `client-logos.ts`. No CMS; edit the files.
@@ -28,11 +28,16 @@ Everything editable lives in `content/` — `copy.ts`, `case-studies.ts`, `team.
 
 ```
 /                        Hero (video, full-screen, client strip) · Track record ·
-                         Who we serve · What we raise · Neurable case study +
-                         testimonial · Verticals · FAQ · Calendar
-/solutions/fundraising   Page heading · five numbered blocks on a rail
-/solutions/secondaries   Same layout, Secondaries content (COPY PENDING)
-/customers               Filterable grid of all 13 case studies
+                         Who we serve · Who we work with · Case-study carousel
+                         (Neurable, Nobody Studios — picture left, claim and
+                         quote right, one slide per viewport) · Verticals · FAQ ·
+                         Calendar
+/solutions/fundraising   Page heading · three numbered blocks on a rail
+                         (deal readiness · investor introductions · deal
+                         closure) · What we raise
+/solutions/secondaries   Same layout · two blocks (buy-side · sell-side)
+/customers               Page header · filterable grid of 10 case studies ·
+                         track record · client roster
 /about                   Why Avalanche · track record · the divergence ·
                          five beliefs · the three access layers · five partners
 /get-in-touch            Nine-step qualification form · FAQ · CTA band
@@ -50,14 +55,18 @@ It was one page carrying a Secondaries block and a Fundraising block. Since 4 Se
 
 **Two separate gaps, tracked in two places, and they do not mean the same thing:**
 
-- A block's `pending` flag means its **copy** is placeholder. It renders a visible "awaiting approved copy" note on the page so it cannot ship unnoticed. All five Secondaries blocks carry it; no Fundraising block does.
+- A block's `pending` flag means its **copy** is placeholder. It renders a visible "awaiting approved copy" note on the page so it cannot ship unnoticed. **No block carries it as of 9 September 2026** — Secondaries' five placeholders became two blocks of supplied copy that day, and Fundraising never had one. The flag stays wired up because it is what stops the next unfinished block shipping silently.
 - Whether a block gets a **diagram** is decided only by the `MEDIA` map in `components/sections/solutions-steps.tsx`, keyed on block `id`. Anything without an entry renders `PendingPlate`.
 
-**Fundraising has now closed both gaps** — five blocks, five diagrams, all real copy. Four more schematics were drawn on 4 September to finish it: a pre-marketing convergence, an outreach sequence that branches on an engagement signal, a four-stage pipeline funnel, and a meeting brief. Secondaries still has four blocks awaiting each.
+**Fundraising has closed both gaps** — three blocks, three diagrams, all real copy. Secondaries still has four blocks awaiting each.
+
+**It was five blocks of fundraisr.ai copy with the brand filed off, and as of 9 September none of it is.** The header and blocks 01–03 were replaced with supplied Avalanche copy; blocks 04 and 05 — "Pipeline management" and "Meeting intelligence" — were removed. What is left reads as an advisory process in three moves (get ready, get introduced, get closed) rather than a five-feature product tour, and it retires the "1.2 million investors" headline along with it.
+
+**Three diagrams moved with the copy, which is the `MEDIA` map doing its job.** Block 01's three input chips were the old body's nouns (*Structure / Thesis / Target profile*) and are now the new body's (*Dataroom / Pitch decks / Supporting docs*). Block 03 became deal closure, so the outreach-sequence schematic came out — it draws follow-ups branching on an engagement signal, which is not a term sheet, a dataroom or a signed commitment — and the four-stage funnel moved up from the removed block 04, since its stages end at Committed and only that column is accented. Its frame captions changed with it: "Pipeline / All mandates" framed a book of business being administered, not one deal being closed. The outreach and meeting-brief schematics are **kept but unrendered**; each says so at the top of its own comment in `solutions-media.tsx`.
 
 That map is keyed on id rather than position on purpose. It was a positional array when there was one view with two blocks; with two views of five, position means nothing — block 02 is investor sourcing on one and pricing on the other. Each diagram makes a **specific** claim (which route matched, which segment was selected, which branch was taken), so none is reused to fill a card it does not describe. An honest blank beats a plausible-looking wrong picture.
 
-**The ghost value measures 2.8:1 against the plate, under the 3:1 floor for a meaningful graphic, and it stays.** `fg-muted` at 50% is 2.82:1 on `#151515` and 2.75:1 on the `#202020` card centre, against 7.7:1 for the accent. Raising it collapses the other end: at 70% the ghost is 3.9:1 against the ground but only 1.8:1 against the accent, which is precisely the equal-luminance-separated-only-by-hue failure the accent section is written about. The frame is `aria-hidden` and the copy beside every diagram states its claim in words, so the pictures are formally decorative. **If this ever changes it changes for all eight diagrams at once, not for one.** The divergence diagram's falling line, which carries more weight than a ghost dot does, buys back the margin with a dash pattern and an opposite direction — two channels that survive a luminance failure.
+**The ghost value measures 2.8:1 against the plate, under the 3:1 floor for a meaningful graphic, and it stays.** `fg-muted` at 50% is 2.82:1 on `#151515` and 2.75:1 on the `#202020` card centre, against 8.6:1 for the accent. Raising it collapses the other end: at 70% the ghost is 3.9:1 against the ground but only 2.0:1 against the accent, which is precisely the equal-luminance-separated-only-by-hue failure the accent section is written about. The frame is `aria-hidden` and the copy beside every diagram states its claim in words, so the pictures are formally decorative. **If this ever changes it changes for all eight diagrams at once, not for one.** The divergence diagram's falling line, which carries more weight than a ghost dot does, buys back the margin with a dash pattern and an opposite direction — two channels that survive a luminance failure.
 
 **Every count in a diagram pill is derived from the array drawn beside it**, in the same render — "8 matched", "2 committed", "3 of 4 aligned". None is typed twice, so a caption cannot drift from its own picture. Keep that property when editing; it is the only thing stopping a diagram from lying.
 
@@ -65,10 +74,10 @@ That map is keyed on id rather than position on purpose. It was a positional arr
 
 **Diagram type is sized in rungs, and that is not decoration.** A `<text>` inside a viewBox is scaled by (rendered width / 620), so one source size renders at a different physical size on every viewport. Before this was fixed, a 12-unit run shipped anywhere between **5.8px and 12.6px** depending on width — overshooting on tablet and collapsing to texture on a phone. The fix has two halves and needs both:
 
-1. `Frame` is one rule, `w-[94%] max-w-[560px]`, replacing three per-breakpoint percentages that were derived from card widths no longer true. The cap is what stops the scale *rising*: a full-width tablet card is 960px, and the old 68% of that rendered the diagram larger than its design size. From 600px to 1600px the scale now sits between 0.795 and 0.903.
+1. `Frame` is one rule, `w-[94%] max-w-[560px]`, replacing three per-breakpoint percentages that were derived from card widths no longer true. The cap is what stops the scale *rising*: a full-width tablet card is 960px, and the old 68% of that rendered the diagram larger than its design size. From 600px to 1600px the scale now sits between 0.734 and 0.903.
 2. Below 600px the card is physically smaller than the cap, so no width rule helps. The `dgm-xs` … `dgm-xl` rungs in `globals.css` raise the user-unit sizes at 599px and again at 479px, in two steps because a single 1.6× bump over-corrected the middle band.
 
-Result: every run except one now lands between **9.2px and 17.2px** at every width from 360 to 1600. Eight ad-hoc sizes were collapsed into five rungs on the way through — take a rung rather than adding a `text-[Npx]` literal, or this drifts straight back.
+Result: every run except one now lands between **8.8px and 17.2px** at every width from 360 to 1600. The floor was 9.2px until the shell's gutter widened to 5% on 8 Sep 2026, which took ~34px off a half-row card and put the low point in a 1200-1240px window rather than on a phone. Recovering it means either raising `Frame`'s 94% or moving the two-column media row's 1200px gate up to ~1280 — both are real options and neither was taken, because the 1200-1240 band is narrow and these frames are `aria-hidden` with their claims stated in the copy beside them. Eight ad-hoc sizes were collapsed into five rungs on the way through — take a rung rather than adding a `text-[Npx]` literal, or this drifts straight back.
 
 **There is no capped rung, and there should never be one.** There was briefly a sixth, `dgm-axis`, holding the stage × sector grid's labels at 16 units so its six bottom labels would not collide on an 80-unit pitch — it rendered ~8.5px on a phone against ~10px everywhere else. The grid was **transposed** instead: sectors moved to the vertical axis, where word length costs nothing because labels only have to clear each other by line height, and the shorter stage names took the horizontal axis on a 110-unit pitch. Every run on every diagram now takes a full rung. If a dense axis ever fights the type again, re-pitch the axis; do not reintroduce a capped rung.
 
@@ -139,7 +148,11 @@ honest mapping from those to "Global Network" or "Precision & Execution", so
 three abstractions were drawn to the same 24/1.25 spec: a globe, two parties
 across a table, a target. The empty top-left of an icon-less cell was also what
 made the block look hollow beside `RaiseTypes`, whose glyph fills exactly that
-space.
+space. `WhoWeWorkWith`, which took `RaiseTypes`' homepage slot on 8 Sep 2026,
+went the other way and shipped iconless: only one of its three entries (Funds)
+has an honest mark, and one glyph in a row of three reads as a missing asset.
+It drops to the 13rem floor instead, so the space the icon would have filled
+is not left as a void.
 
 ### The design pass of 7 September 2026
 
@@ -205,10 +218,12 @@ is new exposure on a page that never had it.
 section's heading with it. While the thesis was unmounted, `/team` borrowed its
 "Both Sides of The Table" pillar — title *and* body — as its own heading and
 lede. Mounting the pillar put both on one page, so the borrowed version came
-off and the team section took a heading of its own (`about.team`). It has no
-lede: any sentence there would be one this repo invented about five named
-people, and the same restraint applies as to the bios. If the thesis is ever
-unmounted again, that is the block to check.
+off and the team section took a heading of its own (`about.team`). It carries
+a lede as well now, DRAFT on the same terms as the bios: it describes the shape
+of the team and names nobody. It also stopped counting the room on 9 September
+2026 — it opened *"Five people…"* and an Associate was added under it — because
+a hand-typed count beside a rendered list is a second place to be wrong. If the
+thesis is ever unmounted again, this is the block to check.
 
 **The Manifesto footer link is gone, and so is the mechanism behind it.** The
 route was `footerOnly` — real and indexed but not one of the header's primary
@@ -443,9 +458,10 @@ Homepage only, under Verticals. It is a native `<details>` accordion on purpose:
 There are **two different logo sets**, and mixing them up makes a false claim.
 
 - `content/client-logos.ts` — Avalanche's own client roster. White-on-transparent (`scripts/logos-to-alpha.mjs`), so every one carries `logo-mark` and `globals.css` inverts them on a light band. Shown as the scrolling `LogoMarquee` in the hero on `/`, and as the static ruled `LogoGrid` under "Trusted by" on `/customers`. The grid runs brighter than the strip because a roster has to be readable standing still.
-- `content/ecosystem-logos.ts` — venture firms active in the market, mirroring the strip fundraisr.ai runs at the foot of its customers hero. Full colour, so they pass `alphaMarks={false}` and must **never** get `logo-mark`; inverting them would blow them out to white. Fetched by `scripts/fetch-ecosystem-logos.mjs`.
+- `content/ecosystem-logos.ts` — venture firms active in the market, mirroring the strip fundraisr.ai runs at the foot of its customers hero. Full colour, so they pass `alphaMarks={false}` and must **never** get `logo-mark`; inverting them would blow them out to white. Fetched by `scripts/fetch-ecosystem-logos.mjs`. **Nothing renders this set since 9 September 2026** — the `/customers` venture strip was removed by request. The file, the rasters and the fetch script are kept together, because assembling the list is the expensive part.
+- `content/secondary-logos.ts` — the nine marks in the "Direct access" band at the foot of `/solutions/secondaries`. White-on-transparent like the client roster, but written by `scripts/secondary-logos.mjs` rather than `logos-to-alpha.mjs`; that script's header says why the other one could not do it.
 
-**These firms are not clients.** Both strips run unlabelled by request, so nothing on the page says so in words — the footer's legal text is what carries it. `customers.ecosystemNote` is the caption the venture strip used to have and is kept unrendered for whenever it goes back. The client disclaimer (`customers.logoNote`) is still printed, under the client grid, and belongs only there.
+**These firms are not clients.** The hero strip runs unlabelled by request, so nothing on the page says so in words — the footer's legal text is what carries it. `customers.ecosystemNote` is the caption the venture strip used to have and is kept unrendered for whenever it goes back. The client disclaimer (`customers.logoNote`) is still printed, under the client grid, and belongs only there. **The secondaries band is the exception and carries its claim in the open**: its marks assert live access rather than past work, and the paragraph beside them scopes that — see `directAccess` in `content/copy.ts`.
 
 `LogoBand`, the marquee wrapped in its own section, was deleted once `/customers` moved to the grid. Nothing rendered it any more.
 
@@ -491,7 +507,7 @@ The **layout** is a clone of farahcap.com. The **type** is fundraisr.ai's. The s
 
 It was duplicated JSX in two places. They had been built separately and had drifted to a different value in *every* row — 64px vs 80px H1, a 600-weight grey label against a 500-weight ink one, a 15px lede against 16px, a 576px column against 720px — which is what made `/customers` read as a different site. They were hand-aligned on 4 Sep 2026 and both carried a "keep them in step" comment. The manifesto page would have made a third copy, so the copies were collapsed instead. **Verified byte-identical**: the rendered `<main>` of all three pages was diffed before and after the extraction and did not change by a character.
 
-It renders only the inner `shell` div — the `<section>` stays with the caller, because `/customers` adds `flex flex-col overflow-hidden` for the logo strip it hangs below the header and `/solutions` does not. `title` is a `ReactNode` so `/about` can pass its own authored line breaks.
+It renders only the inner `shell` div — the `<section>` stays with the caller. That was for `/customers`, which added `flex flex-col overflow-hidden` for the logo strip it hung below the header; the strip came off on 9 September 2026 and the classes with it, so all three headers are now a bare `<section data-band="light">`. The split is kept for the next page that hangs something under its header. `title` is a `ReactNode` so `/about` can pass its own authored line breaks.
 
 Colour tokens are named by **role**, never by hue. A light section is `data-band="light"` on the `<section>` and that one attribute re-points every token for the subtree, which is why shared components take no `tone` prop — `bg-fg text-ground` is a white button on dark and a black button on light from the same markup.
 
@@ -499,13 +515,15 @@ The three dark grounds are deliberately the same `#151515`; the reference runs o
 
 Contrast is documented in `globals.css` with real ratios, and every text/background pair is verified rather than assumed.
 
-**The accent is the brand blue, `#3056EE`.** It replaced the reference's gold on 4 Sep 2026 (via a brief obsidian palette). The token was renamed off the hue when the gold went — there is no `--color-gold` and no `text-gold`; `git log -S "--color-gold"` has the older values. That rename is why a third colour has since dropped in without a single component changing.
+**The accent is the brand blue, `#73B6FF`.** It replaced `#3056EE` on 8 Sep 2026, which had itself replaced the reference's gold on 4 Sep (via a brief obsidian palette). The token was renamed off the hue when the gold went — there is no `--color-gold` and no `text-gold`; `git log -S "--color-gold"` and `git log -S "#3056ee"` have the older values. That rename is why a fourth colour has now dropped in without a single component changing.
 
-**The dark-band value is not `#3056EE`, and that is deliberate.** At full strength the brand blue measures 3.2:1 on `#151515` — under the 4.5:1 floor the `/solutions` diagram pills need — and 1.14:1 against the 50%-opacity `fg-muted` ghost dots those diagrams draw matched routes against. Two things at equal luminance separated only by hue is precisely what vanishes for a colour-blind reader, and that describes most of the media cards.
+**The light-band value is not `#73B6FF`, and that is deliberate.** The supplied colour is already light — HSL 211° / 100% / 72.5% — so it measures 2.1:1 on white, under even the 3:1 large-text floor, and the `eyebrow` runs it would carry are 14px.
 
-So a dark band gets a true *lightening* of the same colour — hue held at 227°, saturation at 100%, lightness 56% → 77%, giving `#8aa4ff`: 7.7:1 on `#151515`, a 2.4:1 step down from `fg` so it reads as its own colour rather than as white, and a 2.7:1 step up from a ghost dot. A light band swaps the specified value straight back in at 5.7:1 on white. **Darkening the dark-band value toward `#3056EE` is the tempting mistake** — it looks more on-brand in isolation and quietly breaks the diagrams.
+So a light band gets a true *darkening* of the same colour — hue held at 211°, saturation at 100%, lightness 72.5% → 40%, giving `#0063cc`: 5.7:1 on `#ffffff`, 5.5:1 on `#fafafa`, 5.2:1 on `#f3f3f3`. A dark band takes the specified value straight in at 8.6:1 on `#151515`, 7.7:1 on the `#202020` card, a 2.1:1 step down from `fg` so it reads as its own colour rather than as white, and a 3.0:1 step up from a ghost dot. **Lightening the light-band value toward `#73B6FF` is the tempting mistake** — it looks more on-brand in isolation and takes every eyebrow on a white band with it.
 
-### Where the accent appears — four places, and that is the whole list
+**The derivation reversed when the colour changed; the constraint did not.** Under `#3056EE` the light band took the specified value and the dark band was derived from it, for the mirror-image reason: full strength it measured 3.2:1 on `#151515` and 1.14:1 against the 50%-opacity `fg-muted` ghost dots the `/solutions` diagrams draw unmatched routes in — two things at equal luminance separated only by hue is precisely what vanishes for a colour-blind reader, and that describes most of the media cards. `#73B6FF` clears that end comfortably (3.0:1 against a ghost, up from 2.7:1) and fails the other, so the band that derives has swapped. No single value clears 4.5:1 on both grounds; one of the two will always be derived.
+
+### Where the accent appears — three places, and that is the whole list
 
 The site is monochrome except for these:
 
@@ -513,8 +531,9 @@ The site is monochrome except for these:
 |---|---|---|
 | Section eyebrows + page labels | ~12 per page | A block's own name — "Verticals", "What we raise", "Who we serve". The colour is what makes a section announce itself before the heading does. The two page-name `page-label` runs take `text-accent` at the call site to match. |
 | `/solutions` rail + all eight diagrams | six on `/solutions`, two on `/about` | **Functional.** The accent is the diagram's only means of saying which route matched, which region is the subject. Remove it and the pictures stop working. In the two manifesto diagrams it marks what is *not* being reached — the gap, and the outer layer — which is an inversion of the /solutions six and is called out in the file. |
-| Case-study metric pill | once per page | The single number on a card, and the thing a reader should land on. The `/customers` grid uses the tile treatment and carries no pill. |
 | CTA band chip | once per page | The conversion point of every page. Decorative — the label beside it is white and carries the meaning. |
+
+**A fourth entry came off on 9 Sep 2026: the case-study metric pill.** It carried one number once per page — "$35M Series A" — on the homepage's proof card, and the card's whole top half was removed by request when the case-study slide was rebuilt around a full-column picture. Nothing else rendered it: `/customers` draws its grid with `CaseStudyTile`, which never had a pill. So the pill is gone from the site rather than from one block, and the homepage's accent is now eyebrows plus one CTA chip. **The case-study CATEGORY went monochrome in the same change** — it wore `eyebrow`, which is what coloured it, and small uppercase accent type on a card reads as a link when the label goes nowhere. It is an outlined muted tag now, in the same shape family as the pill that used to sit opposite it. Neither colour should come back on its own.
 
 **The eyebrow rule moved twice in one day, so read the history before moving it a third time.** On 4 Sep 2026 the accent first went into every block at once: `eyebrow`, the `BracketGrid` corner brackets, the raise-types and verticals icons, the FAQ `+`, the `/customers` search and filter glyphs, the team monograms and the `/solutions` block labels. That was judged too much and all of it came off. It was then asked for again, specifically for the eyebrows — and only the eyebrows went back. Everything else in that list is still monochrome and each site carries a comment saying why.
 
@@ -526,11 +545,13 @@ One layout change made purely to host the colour was unwound and has stayed unwo
 
 Headings stay monochrome too. The `accent` prop on `SectionHeading` — a trailing substring of each title — is still accepted and ignored, and every heading on the site is flat.
 
-**`eyebrow` is the only place the accent carries small type** (14px/600), so it needs the full 4.5:1 rather than the 3:1 large-text floor — and it lands on five different grounds. Measured: `#3056EE` is 5.69:1 on `#ffffff`, 5.45:1 on `#fafafa`, 5.13:1 on `#f3f3f3`; `#8aa4ff` is 7.68:1 on `#151515` and 6.85:1 on the `#202020` card. A future accent has to clear 4.5:1 on **all five** before it can go here — a much harder test than the diagram pills alone imposed.
+**`eyebrow` is the only place the accent carries small type** (14px/600), so it needs the full 4.5:1 rather than the 3:1 large-text floor — and it lands on five different grounds. Measured: `#0063cc` is 5.74:1 on `#ffffff`, 5.50:1 on `#fafafa`, 5.18:1 on `#f3f3f3`; `#73B6FF` is 8.58:1 on `#151515` and 7.65:1 on the `#202020` card. A future accent has to clear 4.5:1 on **all five** before it can go here — a much harder test than the diagram pills alone imposed.
 
 `--color-accent-light` / `--color-accent-deep` are the rail gradient's two stops, held constant across bands because a decorative graphic carries no text and shouldn't follow a text-contrast flip. Both are calibrated for the light `#eeeeee` track they live on and would be invisible on a dark ground. `--color-accent-deep` is the brand value exactly, so the rail terminates in it; it happens to coincide with the light-band `--color-accent` right now, which is a property of this palette and not a rule.
 
-`.shell` is 1440px with a **fixed** 20px gutter and `.section-y` is a fixed 120px. Both used to be clamped, and both resolved much smaller, which is what made the page feel pinched on a large screen.
+`.shell` is 1440px with a `clamp(20px, 5%, 72px)` gutter and `.section-y` is a fixed 120px. Both used to be clamped, and both resolved much smaller, which is what made the page feel pinched on a large screen.
+
+The gutter went back to a percentage on 8 Sep 2026 — a fixed 20px is right on the reference's own 1440 canvas and puts the H1 against the glass in a 1200-1440 window, which is where this site is actually read. **The cap is what makes it safe**: 72px is 5% of 1440, so the gutter stops growing exactly where the shell stops growing and the content box holds 1296px from there up. The old clamp had no such ceiling, which is why it read pinched on a large screen even though its gutter was smaller at every width below 1000px. It is a percentage rather than `vw` because `vw` counts the scrollbar. Two derived numbers moved with it: `--layer-h` on `/about` (677px → 697px) and the `/solutions` diagram scale (a 9.2px floor → 8.8px, in a 1200-1240px window).
 
 ## The chrome
 
@@ -687,7 +708,7 @@ Worth noting for sign-off that likeness is not stable across passes: he wore gla
 
 So the rule that has now held three times: **match the dress, the angle AND the crop distance.** The backdrop alone does not make a set, and neither does the wardrobe.
 
-**The masters are committed, which is a break from the other asset scripts.** `optimize-bg-video.mjs` reads its sources out of `~/Downloads`, and that is fine for a 100MB video that can be downloaded again. A generative output is one-shot and non-deterministic: clean that folder and it is gone for good. So the five masters live in `docs/assets/team/`, named for the person rather than by whatever the tool that made them called the file — 520KB for all five, and the pipeline now runs for anyone who clones the repo.
+**The masters are committed, which is a break from the other asset scripts.** `optimize-bg-video.mjs` reads its sources out of `~/Downloads`, and that is fine for a 100MB video that can be downloaded again. A generative output is one-shot and non-deterministic: clean that folder and it is gone for good. So the masters live in `docs/assets/team/`, named for the person rather than by whatever the tool that made them called the file — six of them now, and the pipeline runs for anyone who clones the repo.
 
 The **name-to-file mapping for the originals was read, not guessed.** They arrived as Framer CDN exports with hash filenames and no captions, and four of the five subjects are men in business dress. `avalanche-capital.com` is a Framer site and ships its CMS records in the page payload, so the mapping came out of the live HTML where each record carries `{image, name, role, slug}` in order. It returned the same order as `content/team.ts`.
 
@@ -773,7 +794,9 @@ already 75% on screen before a pixel is scrolled.
 
 ## Client-side code
 
-There are four client components — `nav`, `track-record`, `case-study-grid`, `contact-form` — and one rule about the first three: **external state is read with `useSyncExternalStore`, not mirrored into an effect.** `contact-form` is exempt because none of its state is external; see the `/get-in-touch` section above. Scroll offset (`nav`) and `prefers-reduced-motion` (`track-record`) both work that way, with a `false` server snapshot that matches the pre-hydration markup. The nav closes its mobile sheet on route change by adjusting state during render, not in an effect.
+There are five client components — `nav`, `track-record`, `case-study-grid`, `contact-form` and `ui/slide-link` — and one rule about the first three: **external state is read with `useSyncExternalStore`, not mirrored into an effect.** `contact-form` is exempt because none of its state is external; see the `/get-in-touch` section above. Scroll offset (`nav`) and `prefers-reduced-motion` (`track-record`) both work that way, with a `false` server snapshot that matches the pre-hydration markup. The nav closes its mobile sheet on route change by adjusting state during render, not in an effect.
+
+`ui/slide-link` is the fifth and it holds **no state at all** — no `useState`, no effect, nothing to hydrate but a click handler. It is the prev/next and dot control of the homepage case-study carousel, and it exists only because a fragment navigation does not reliably drive a horizontal scroll container: the controls shipped as bare `<a href="#slide-id">` and left the track at `scrollLeft: 0`, while `scrollIntoView` on the same element lands it exactly. Measured, Next moves the track 0 → 1296 and Previous returns it to 0, with the page's own `scrollX`/`scrollY` and the URL untouched. The file's comment has what was ruled out; read it before deleting the island and simplifying back to an anchor. The slides, the pictures and the quotes are all still server-rendered, and the carousel itself is CSS scroll-snap, so swipe and trackpad work with the island absent entirely.
 
 That isn't stylistic — `npm run lint` enforces it via `react-hooks/set-state-in-effect`, and lint is clean. Keep it that way.
 

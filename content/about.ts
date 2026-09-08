@@ -70,11 +70,18 @@ export const about = {
      * sections were missing theirs, which is what broke the vertical rhythm
      * against /customers and /solutions.
      *
-     * It describes the SHAPE of the team, not any individual: five people,
-     * both sides of a raise. That is the same limit the bios keep, for the
-     * same reason — see content/team.ts.
+     * It describes the SHAPE of the team, not any individual: both sides of a
+     * raise. That is the same limit the bios keep, for the same reason — see
+     * content/team.ts.
+     *
+     * **IT USED TO OPEN "Five people" AND NO LONGER COUNTS THE ROOM.** An
+     * Associate was added on 9 Sep 2026 and the line was left saying five for
+     * as long as it took to notice, which is exactly what a hand-typed count
+     * beside a rendered list does. The list is right there under it; a number
+     * here only creates a second place to be wrong, so the sentence names the
+     * coverage and lets the row do the counting.
      */
     // DRAFT
-    lede: "Five people covering both sides of a raise — origination, structuring, investor relationships, and the tooling underneath them.",
+    lede: "A team covering both sides of a raise - origination, structuring, investor relationships, and the tooling underneath them.",
   },
 } as const;
