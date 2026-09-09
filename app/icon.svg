@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- The Avalanche mark as the site's icon. Generated shapes are NOT drawn
+       here by hand: the path is `MARK` from components/ui/logo.tsx, verbatim,
+       so the tab icon and the lockup in the nav can never drift apart.
+
+       WHITE ON #151515, which is the site's own ground. The mark is flat, as
+       it has been since 7 Sep 2026 - the old icon still carried the blue
+       gradient version the lockup dropped, which is what this replaces. A
+       tile rather than a bare glyph because a favicon has to read on a light
+       browser chrome as well as a dark one, and white-on-transparent
+       disappears against the first.
+
+       The mark is 59.77 x 31.516 in the lockup's 188x32 viewBox. Scaled by
+       5.822 it is 348 wide inside this 512 box - 18% clear on the sides - and
+       translate y centres its 183.5 height. -->
+  <rect width="512" height="512" rx="96" fill="#151515"/>
+  <g transform="translate(82 164.25) scale(5.822)">
+    <path fill="#ffffff" d="M12.551 0h13.15l12.7 31.516h-13L12.551 0zM33.92 0h13.15l12.7 31.516h-13L33.92 0zM19.126 16.132H6.276L0 31.516h13.149l5.977-15.384z"/>
+  </g>
+</svg>

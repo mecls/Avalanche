@@ -60,6 +60,22 @@ is half right by accident: the serif is gone again, the accent is real.
   coming back too.** The original artwork is kept at
   `docs/assets/avalanche-logo.svg` and `git log -S MARK_TEXTURE` has the
   downsampled texture, if it ever does.
+- **THE BROWSER-TAB ICON IS THE SAME MARK AND IS GENERATED FROM IT.**
+  `app/icon.svg` holds the `MARK` path out of `components/ui/logo.tsx`
+  verbatim, and `node scripts/make-favicon.mjs` rasterises it into
+  `app/favicon.ico` (16/32/48) and `app/apple-icon.png` (180). Next's App
+  Router picks all three up by filename; nothing imports them. **This is why
+  it is generated rather than drawn:** the favicon went on carrying the mark's
+  OLD BLUE GRADIENT for two days after the lockup went flat on 7 Sep 2026, so
+  the tab and the nav were showing two different logos - exactly the drift the
+  inline `Logo` component exists to prevent. Re-run the script after any
+  change to `MARK`.
+  It is WHITE ON A #151515 TILE rather than the `currentColor` the lockup uses.
+  A favicon has no band to follow and lands on both a light and a dark browser
+  chrome, so white-on-transparent disappears against the first; the tile is
+  what makes one file work in both. The ICO is packed by hand in that script
+  because sharp cannot write one - the format is a header, a directory entry
+  per size and embedded PNGs, which is cheaper than a dependency for one file.
 - **Still do not put `logo-mark` on it.** The reason changed but the rule did
   not: that class inverts an element inside a light band, which is how the
   pre-flattened client marks survive one. This lockup already inverts through
