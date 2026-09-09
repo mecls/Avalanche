@@ -1,12 +1,18 @@
 /** Team from avalanche-capital.com.
  *
- *  A deliberate limit on the DRAFT bios below: they describe the ROLE, not the
- *  person. Names and titles are the only facts any Avalanche property makes
- *  public - the real bios sit behind "Read Bio" modals that render nothing to
- *  the page source. Inventing career history, prior firms, or credentials for
- *  six named individuals is not a placeholder a reviewer can safely skim past,
- *  so none of that is here. Each line says what the seat does at Avalanche and
- *  stops.
+ *  **THE BIOS ARE NOT RENDERED (9 Sep 2026, by request).** The team card is a
+ *  portrait, a name and a job title now. They are kept rather than deleted
+ *  because this has happened before and reversed: they were unrendered on
+ *  7 Sep 2026 and put back the same day. app/about/page.tsx has the line to
+ *  restore at the bio's old site.
+ *
+ *  The deliberate limit on them still applies if they ever come back: they
+ *  describe the ROLE, not the person. Names and titles are the only facts any
+ *  Avalanche property makes public - the real bios sit behind "Read Bio"
+ *  modals that render nothing to the page source. Inventing career history,
+ *  prior firms, or credentials for named individuals is not a placeholder a
+ *  reviewer can safely skim past, so none of that is here. Each line says what
+ *  the seat does at Avalanche and stops.
  *
  *  Replace with the real bios before publishing. See docs/COPY-REVIEW.md.
  *
@@ -16,10 +22,19 @@
  *  rather than matched by eye, and `scripts/optimize-team-photos.mjs` holds
  *  both that note and the face-measured crop for each one.
  *
- *  ARSENIO RENATO WAS ADDED ON 9 Sep 2026 and came from a different place -
- *  supplied directly as a 1254x1254 generative frame, no CMS record and so no
- *  mapping to derive or check. Name and role are the two facts given; the bio
- *  is a role description on the same terms as the other five. */
+ *  THE LAST THREE CAME FROM A DIFFERENT PLACE. Arsenio Renato (9 Sep 2026) and
+ *  the two ACCOUNT EXECUTIVES below him (same day) were supplied directly as
+ *  1254x1254 generative frames - no CMS record, so no mapping to derive or to
+ *  check against.
+ *
+ *  **THE TWO ACCOUNT EXECUTIVES HAVE NO NAMES YET.** Two photographs and one
+ *  job title were supplied and nothing else, so `name` is a visible
+ *  placeholder rather than a guess - inventing a name for a real, pictured
+ *  person is the one thing this file exists to prevent. Their slugs are
+ *  positional for the same reason. Replacing both is a three-step change:
+ *  rename the master in docs/assets/team/, rename the entry in `PEOPLE` in
+ *  scripts/optimize-team-photos.mjs, re-run it, then set `name` and `photo`
+ *  here. */
 
 export type Member = {
   name: string;
@@ -73,5 +88,21 @@ export const team: Member[] = [
     // against, so this says what an associate does on a mandate and stops.
     bio: "Works live mandates day to day - investor research, materials, and the follow-through that keeps a process moving.",
     photo: "/team/arsenio-renato.webp",
+  },
+  {
+    // PLACEHOLDER - see the note in the header. Not a person's name.
+    name: "Name to come",
+    role: "Account Executive",
+    // DRAFT - role description, not biography. Unrendered, like all of them.
+    bio: "Carries mandates day to day, from first investor conversation through to the meetings that move a process forward.",
+    photo: "/team/account-executive-01.webp",
+  },
+  {
+    // PLACEHOLDER - see the note in the header. Not a person's name.
+    name: "Name to come",
+    role: "Account Executive",
+    // DRAFT - role description, not biography. Unrendered, like all of them.
+    bio: "Carries mandates day to day, from first investor conversation through to the meetings that move a process forward.",
+    photo: "/team/account-executive-02.webp",
   },
 ];

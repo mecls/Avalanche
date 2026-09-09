@@ -506,117 +506,62 @@ export default function AboutPage() {
             lede={about.team.lede}
           />
 
-          {/* THREE ACROSS, TWO ROWS OF THREE (9 Sep 2026, by request).
+          {/* FOUR ACROSS, TWO ROWS OF FOUR (9 Sep 2026, by request - two
+              account executives took the team to eight).
 
-              THE RULE THIS REPLACES WAS "the column count is the headcount",
-              and it was written when five people in a four- or three-column
-              grid always left an orphan on a second row. Six divides by three,
-              so the orphan is gone either way and the argument became a
-              straight trade: six across held the whole team on one screen at
-              ~196px a card, three across enlarges the portrait and costs a
-              second row. The portraits won, and were then capped back to
-              ~344px by the `max-w` below.
+              **THE COLUMN COUNT IS DECIDED BY WHAT DIVIDES THE HEADCOUNT.**
+              That rule has survived three arrangements in one day and is the
+              only part worth carrying forward: five people ran six-across in
+              one row once a sixth arrived, six went to three-across in two
+              rows when the portraits were wanted bigger, and eight goes to
+              four. Eight under three columns is 3+3+2, which is the orphaned
+              last row this grid keeps being rewritten to avoid.
 
-              WHAT MOVED WITH IT, because a column width is never only a column
-              width. The `sizes` below (the only other place the count is
-              written down). The name and bio, which step UP at `sm` - 20px and
-              13px were sized for a 196-254px column and read as fine print
-              under a 344px portrait; the note about a 24px name wrapping
-              applies to the narrow column, not this one. `MAX_WIDTH` in
-              scripts/optimize-team-photos.mjs, which went 640 -> 832 because
-              the card outgrew its own crops at 2x DPR. And the block's HEIGHT:
-              this section is now comfortably past its `min-h-svh` floor rather
-              than sitting on it.
+              **THE 1080px CAP AND `mx-auto` CAME OFF WITH IT**, and the result
+              is what was asked for both times they were added. The cap existed
+              only to shrink a 416px card; four columns do that on their own,
+              landing at ~306px inside the full 1296px shell - close to the
+              344px that was signed off. With nothing left over there is no
+              margin to centre, so the grid fills the shell and lines back up
+              with the eyebrow and the heading above it, which is the one thing
+              centring had cost.
 
-              A SEVENTH PERSON FITS WITHOUT A LAYOUT CHANGE - 3+3+1 leaves the
-              orphan back, so it is eight that needs a decision, and four
-              across is the answer then rather than a narrower card.
+              `sm:grid-cols-2` rather than four straight away: four columns at
+              a 640px viewport is a 126px card and the 24px name wraps. Two
+              columns hold 276-449px across that band, and eight people make
+              four clean rows of two.
 
-              The type steps down with the column - 20px name, 13px bio -
-              because a 24px display name wraps in a 254px column, and the
-              column is 196px now.
+              **THE BIO IS NO LONGER RENDERED**, which is why none of this
+              needs the type step-down the earlier arrangements argued about. A
+              card is a portrait, a name and a job title; the row cannot break
+              on copy length because there is no copy left to vary. See the
+              note at the bio's old site below.
 
-              THERE IS NO TWO-COLUMN STEP, AND THAT IS THE SAME DECISION AS
-              THE FIVE-COLUMN ONE. It went 1 -> 2 -> 5 at first, which left
-              640-1023px on two columns: a card reaches 472px there, the
-              portrait under it 590px, and the block hit 2721px at 1023 - the
-              exact bloat this layout was changed to remove, one breakpoint
-              down. Three columns from `sm` holds the card between 184 and
-              307px across that whole range and the block between 1.3k and
-              1.6k. Six people divide by three exactly, which five did not -
-              that breakpoint was the reason the card carries no chrome, and it
-              is the one place the sixth arrival made the layout tidier rather
-              than tighter.
+              **`sizes` BELOW IS THE ONLY OTHER PLACE THE COLUMN COUNT IS
+              WRITTEN DOWN** - change both, or next/image fetches a
+              three-column image for a four-column box. `MAX_WIDTH` in
+              scripts/optimize-team-photos.mjs is the third number in that
+              chain: it went 640 -> 832 when the card grew, and 832 still
+              clears a 306px card at 2x with room.
 
               NO CARD. There is no border, no fill and no padding around the
               whole thing: the only frame is on the picture, and the type sits
-              on the band. That mattered more when the last row was ragged; it
-              is kept because the cards still have to sit on the band cleanly
-              wherever the count and the columns stop dividing - under 640px
-              they are one per row, and any future headcount can put the
-              orphan back.
-
-              THE BIOS ARE RENDERED AGAIN, under the role, by request on
-              7 Sep 2026. They came off when the grid was rebuilt around the
-              reference's photo-name-role card, which puts bios behind a
-              "Read Bio" overlay instead. Two things follow from putting them
-              back, and both are load-bearing:
-
-              They are DRAFT copy about six NAMED, IDENTIFIABLE PEOPLE, and
-              they are now public rather than sitting unrendered in
-              content/team.ts. That is why each one describes the SEAT rather
-              than the person - no career history, no prior firms, no
-              credentials, because none of that was ever sourced. Do not
-              "improve" them by inventing any. docs/COPY-REVIEW.md tracks
-              them, and the entry there is now about copy that ships, not copy
-              that is merely kept.
-
-              The row still cannot break: the picture, name and role all sit
-              at a fixed height, so the bio is the only thing that varies and
-              it varies BELOW everything else. Cards in a row therefore stay
-              aligned down to the role no matter how long a bio runs. */}
-          {/* SIX ACROSS AT `lg`, AND THE COLUMN COUNT IS THE HEADCOUNT. It
-              was five until 9 Sep 2026, when an Associate was added: a sixth
-              card under a five-column track is one portrait alone on a second
-              row, which is the ragged break this grid was written to avoid.
-              `sm:grid-cols-3` needs no change and is better off for it - five
-              broke 3+2 there and six breaks 3+3.
-
-              Two rows of three was the alternative and it does not fit: the
-              cards would be ~416px wide, so a row runs ~700px with its name,
-              role and bio, and two of them overflow the section's `min-h-svh`
-              on any laptop. One row of six holds ~196px cards, which the 640px
-              crops still cover at 2x DPR.
-
-              **The `sizes` below is part of this.** It is the only place the
-              column count is stated twice, so change both or next/image starts
-              fetching a 5-column image for a 6-column box. */}
-          {/* THE 1080px CAP IS WHAT SIZES THE PORTRAIT (9 Sep 2026, by
-              request - "a bit smaller"). Three across the full 1296px shell
-              gave a 416px card, which was the largest anything on this page
-              has ever been; capped, the card is 344px and the block loses
-              ~180px of height with it.
-
-              It is a cap on the GRID, not on the picture, so the photograph
-              and the name, role and bio under it all narrow together - a
-              max-width on the frame alone would leave every portrait
-              visibly narrower than its own caption. And it only bites above a
-              ~1200px viewport, because that is where `.shell` first hands out
-              more than 1080px of content; every breakpoint below is unchanged
-              and still fills its column.
-
-              **`mx-auto` PUTS THE LEFTOVER ON BOTH SIDES** (9 Sep 2026, by
-              request). Left-aligned, the cap spent all ~216px of it as one
-              empty margin down the right of the section, which read as a
-              column missing rather than as a narrower block. Centred, the
-              first portrait no longer lines up with the eyebrow and the
-              heading above it - that is the trade, and it is the wanted one:
-              the heading is a full-width run and the grid is a plate inside
-              it. Do not "fix" the alignment by dropping the cap; that is what
-              made the portraits too big in the first place. */}
-          <ul className="mt-16 grid max-w-[1080px] grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-3 lg:mx-auto">
-            {team.map((m) => (
-              <li key={m.name} className="flex flex-col">
+              on the band. It matters wherever the count and the columns stop
+              dividing - under 640px they are one per row, and a ninth person
+              puts the orphan straight back at 4+4+1. Twelve is the next count
+              that divides four; at nine or ten the honest move is three across
+              again, not a fifth column. */}
+          <ul className="mt-16 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
+            {team.map((m, i) => (
+              // KEYED ON THE PHOTO, NOT THE NAME. It was `m.name` until 9 Sep
+              // 2026, when two account executives arrived without names and
+              // both entries carried the same placeholder - React logged
+              // "Encountered two children with the same key" and would have
+              // been free to drop one of them. A name was never a safe key
+              // anyway: two people can share one. The photo path is unique per
+              // member by construction, and the index covers an entry that has
+              // neither yet.
+              <li key={m.photo ?? `member-${i}`} className="flex flex-col">
                 {/* `aspect-[4/5]` is the contract with
                     scripts/optimize-team-photos.mjs, which crops every source
                     to exactly this. Change one and change the other, or the
@@ -658,7 +603,7 @@ export default function AboutPage() {
                       // MAX_WIDTH in the photo script is 832 - three of the
                       // six masters reach it and the rest stop at their own
                       // ceiling; the script's note says which.
-                      sizes="(max-width: 639px) 100vw, 33vw"
+                      sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
                       placeholder={teamBlur[m.photo] ? "blur" : "empty"}
                       blurDataURL={teamBlur[m.photo]}
                       className="object-cover"
@@ -674,34 +619,39 @@ export default function AboutPage() {
                 </div>
 
                 {/* Steps up with the column: 20px was sized for the
-                    196-254px card this grid used to hold, and reads as fine
-                    print against a 416px portrait. */}
+                    196-254px card this grid held when the whole team ran in
+                    one row, and reads as fine print under a 306px portrait.
+                    It is the last run on the card that can wrap, which is why
+                    `sm` steps to two columns rather than straight to four. */}
                 <h3 className="display mt-6 text-xl sm:text-2xl">{m.name}</h3>
 
                 {/* `page-label` rather than `eyebrow`: this run has to stay
                     monochrome. `eyebrow` carries the accent and renders a
-                    dozen times a page as a BLOCK's name - six job titles are
+                    dozen times a page as a BLOCK's name - eight job titles are
                     neither, and colouring them would put the loudest thing on
                     the page under every portrait. Same 14px uppercase spec,
                     no colour of its own, which is the whole reason that
                     utility does not own one. */}
                 <p className="page-label mt-2 text-fg-muted">{m.role}</p>
 
-                {/* Centred to match the name and role above it rather than
-                    ranged left, which would leave the only left-aligned run
-                    in the card sitting under two centred ones.
-                    `text-balance` is what makes that read as deliberate: at
-                    this measure every bio sets in two or three lines, and
-                    without it the last line is regularly one orphaned word.
+                {/* THE BIO IS NOT RENDERED (9 Sep 2026, by request - "remove
+                    all the text from the images, leave just the titles"). A
+                    card is a portrait, a name and a job title, and nothing
+                    else.
 
-                    Guarded on `m.bio` for the same reason the photo is:
-                    `bio` is nullable, and a seventh member can arrive before
-                    their copy does. */}
-                {m.bio && (
-                  <p className="mt-3 text-[13px] leading-relaxed text-pretty text-fg-muted sm:mt-4 sm:text-[15px]">
-                    {m.bio}
-                  </p>
-                )}
+                    **This is the SECOND time they have come off, and the first
+                    time they came back.** They were unrendered on 7 Sep 2026
+                    when the grid was rebuilt around the reference's
+                    photo/name/role card, and put back by request the same day.
+                    So they are KEPT in content/team.ts rather than deleted,
+                    and this is the line to restore if they are ever wanted a
+                    third time.
+
+                    It also closes the sharpest item in docs/COPY-REVIEW.md:
+                    those sentences were DRAFT copy about named, identifiable
+                    people, describing the seat rather than the person because
+                    nothing biographical was ever sourced. Nothing drafted is
+                    said about anyone on this page now. */}
               </li>
             ))}
           </ul>

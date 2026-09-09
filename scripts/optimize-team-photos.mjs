@@ -34,6 +34,16 @@
  *    already matching the set on the three things that took the others four
  *    passes - backdrop, dress and angle - and needed only the crop distance,
  *    below.
+ *  - `account-executive-01` and `-02` are the SEVENTH and EIGHTH, supplied the
+ *    same way on 9 Sep 2026 (`ChatGPT Image Sep 9, 2026, 11_13_00 AM.png` and
+ *    `11_12_07 AM.png`, both 1254x1254). **THEIR SLUGS ARE POSITIONAL BECAUSE
+ *    NO NAMES WERE SUPPLIED** - two photographs and one job title, nothing
+ *    else - and content/team.ts carries a visible placeholder rather than a
+ *    guess. Renaming them when the names arrive means renaming the master,
+ *    renaming the entry below, re-running, and updating `photo` and `name` in
+ *    content/team.ts. They are the ONLY two entries here whose measured
+ *    numbers were enough on their own: both landed inside the set on head
+ *    scale as well as on backdrop, dress and angle, so neither takes a `zoom`.
  *
  * **BERNARDO AND BRUNO HAVE EACH BEEN THROUGH THREE GENERATIVE FRAMES**, all
  * on 7 Sep 2026, and the sequence is the useful part rather than the count:
@@ -56,7 +66,7 @@
  * wider again at roughly a quarter. 0.88 and 0.65 crop each of them back to
  * head-and-shoulders on the others' scale.
  *
- * **FOUR OF THE SIX NOW ZOOM, AND ALL FOUR ZOOM THE SAME WAY** - see the
+ * **FOUR OF THE EIGHT NOW ZOOM, AND ALL FOUR ZOOM THE SAME WAY** - see the
  * note below. There is no entry that zooms out; `zoom` only ever crops in,
  * because the failure it fixes is always the same one, a master shot wider
  * than the head-and-shoulders standard the set is built on. Arsenio is the
@@ -112,13 +122,15 @@
  * the six reach the 832px target and three stop at whatever their master
  * holds.
  *
- * The card moved three times in one day: ~272px, then ~196px when the grid
- * took six columns to hold the sixth portrait in one row, then ~416px when
- * that became two rows of three, then ~344px when the grid was capped. At
- * 196px every crop had margin to spare; at 416px only half cleared 2x. **Re-
- * check this constant whenever the team grid changes, and re-check Tatjana
- * first - hers is the shortest master in the set and the first to fall
- * behind** (512px against a 688px ideal, so 0.74x).
+ * The card moved four times in one day: ~272px, then ~196px when the grid took
+ * six columns to hold a sixth portrait in one row, then ~416px when that
+ * became two rows of three, then ~344px when the grid was capped, and finally
+ * ~306px when two account executives took the team to eight and the grid went
+ * to four columns. At 196px every crop had margin to spare; at 416px only half
+ * cleared 2x; 306px wants 612px and 832 clears it. **Re-check this constant
+ * whenever the team grid changes, and re-check Tatjana first - hers is the
+ * shortest master in the set and the first to fall behind** (512px against a
+ * 612px ideal, so 0.84x).
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -221,6 +233,13 @@ const PEOPLE = [
   // centre); `faceY` is the midpoint of hair-top to chin (0.373); 0.72 is what
   // puts his head on the others' scale, checked in a row with all six.
   { slug: "arsenio-renato", faceX: 0.454, faceY: 0.373, zoom: 0.72 },
+  // The two that needed nothing but `faceX`. Both measured on the hair-band
+  // centroid, both checked in a contact sheet of all eight: their heads
+  // already sit on the others' scale, so there is no `zoom` to add and adding
+  // one would push them past everybody. Slugs are positional - see the note
+  // above.
+  { slug: "account-executive-01", faceX: 0.543 },
+  { slug: "account-executive-02", faceX: 0.507 },
 ];
 
 mkdirSync(OUT_DIR, { recursive: true });

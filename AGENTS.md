@@ -735,23 +735,33 @@ untabbable while closed and focus can only reach them through the trigger.
   button. The CTA moved up into that column and the fixed 100/48 rhythm
   replaced the fold. Reference fidelity lost to house consistency on purpose -
   do not restore the full height without something to fill the right column.
-- **Team bios describe the role, not the person**, because no biographical
-  facts were available. Do not invent career history, prior firms or
-  credentials for them. **They are RENDERED on /about** under each portrait
-  (put back 7 Sep 2026 after a day unrendered), so this is public DRAFT copy
-  about six named, identifiable people - the constraint is tighter now, not
-  looser. The sixth, Arsenio Renato (Associate, 9 Sep 2026), came with a name,
-  a title and a generative portrait and nothing else, so his line is thinner
-  than the rest on purpose.
-- **THE TEAM GRID'S COLUMN COUNT IS THE HEADCOUNT.** `lg:grid-cols-5` became
-  `lg:grid-cols-6` when the sixth portrait landed, because a grid narrower than
-  the team leaves one card alone on a second row. Two things move with it and
-  are easy to miss: the `sizes` on the portrait (the only other place the
-  column count is written down) and `about.team.lede`, which used to open
-  "Five people" and now names the coverage instead of counting the room. A
-  SEVENTH does not get a seventh column - six holds ~196px cards inside the
-  1296px shell, seven lands at ~166px and the 13px bio starts breaking two
-  words to a line; two rows of four is the honest move at that point.
+- **THE TEAM BIOS ARE NOT RENDERED** (9 Sep 2026, by request - "leave just the
+  titles"). A card is a portrait, a name and a job title. **They are KEPT in
+  content/team.ts, not deleted**, because this has already reversed once: they
+  came off on 7 Sep when the grid was rebuilt around the reference's
+  photo/name/role card, and went back the same day. app/about/page.tsx has the
+  line to restore at the bio's old site. The constraint on them stands if they
+  ever return: they describe the ROLE, not the person, because no biographical
+  facts were ever available - do not invent career history, prior firms or
+  credentials. Nothing drafted is now said about anyone on that page.
+- **TWO OF THE EIGHT HAVE NO NAME, and the placeholder is deliberate.** Two
+  account executives were supplied on 9 Sep 2026 as photographs plus one job
+  title and nothing else, so `name` reads "Name to come" rather than a guess -
+  inventing a name for a real, pictured person is the one thing content/team.ts
+  exists to prevent - and their slugs are positional. The header of that file
+  has the four-step rename. **Do not fill them in from the pictures.**
+- **THE TEAM GRID'S COLUMN COUNT IS DECIDED BY WHAT DIVIDES THE HEADCOUNT**,
+  and it has been five, six, three and now four in two days: six across in one
+  row for six people, three across in two rows when the portraits were wanted
+  bigger, four across for eight. A grid that does not divide the team leaves an
+  orphan on the last row, which is the fault every one of those rewrites was
+  fixing. Three things move with the count and are easy to miss: the `sizes` on
+  the portrait (the only other place it is written down), `MAX_WIDTH` in
+  scripts/optimize-team-photos.mjs (640 -> 832 when the card grew; a 306px card
+  wants 612 at 2x), and `about.team.lede`, which used to open "Five people" and
+  now names the coverage instead of counting the room. A NINTH person puts the
+  orphan straight back at 4+4+1 - twelve is the next count that divides four,
+  so at nine or ten go back to three across rather than to a fifth column.
 - **Dev runs on port 3200**, pinned. Port 3000 collides with another project on
   this machine and Next moves ports silently, which makes the site look broken.
 
