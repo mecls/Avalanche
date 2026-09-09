@@ -744,12 +744,14 @@ untabbable while closed and focus can only reach them through the trigger.
   ever return: they describe the ROLE, not the person, because no biographical
   facts were ever available - do not invent career history, prior firms or
   credentials. Nothing drafted is now said about anyone on that page.
-- **TWO OF THE EIGHT HAVE NO NAME, and the placeholder is deliberate.** Two
-  account executives were supplied on 9 Sep 2026 as photographs plus one job
-  title and nothing else, so `name` reads "Name to come" rather than a guess -
-  inventing a name for a real, pictured person is the one thing content/team.ts
-  exists to prevent - and their slugs are positional. The header of that file
-  has the four-step rename. **Do not fill them in from the pictures.**
+- **TWO OF THE EIGHT ARE MAPPED TO THEIR FACES BY ORDER ALONE.** Sara Ribeiro
+  and Erik Gallegos were added on 9 Sep 2026 as two photographs plus one job
+  title; the names arrived separately, as a pair, and the only thing tying
+  either name to either face is that both were sent in the same order. They
+  shipped for a few hours as "Name to come" rather than as a guess, which is
+  the behaviour to repeat - inventing a name for a real, pictured person is the
+  one thing content/team.ts exists to prevent. docs/COPY-REVIEW.md asks for the
+  pairing to be confirmed, alongside the same question about the other five.
 - **THE TEAM GRID'S COLUMN COUNT IS DECIDED BY WHAT DIVIDES THE HEADCOUNT**,
   and it has been five, six, three and now four in two days: six across in one
   row for six people, three across in two rows when the portraits were wanted

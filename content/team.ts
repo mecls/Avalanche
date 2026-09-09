@@ -27,14 +27,15 @@
  *  1254x1254 generative frames - no CMS record, so no mapping to derive or to
  *  check against.
  *
- *  **THE TWO ACCOUNT EXECUTIVES HAVE NO NAMES YET.** Two photographs and one
- *  job title were supplied and nothing else, so `name` is a visible
- *  placeholder rather than a guess - inventing a name for a real, pictured
- *  person is the one thing this file exists to prevent. Their slugs are
- *  positional for the same reason. Replacing both is a three-step change:
- *  rename the master in docs/assets/team/, rename the entry in `PEOPLE` in
- *  scripts/optimize-team-photos.mjs, re-run it, then set `name` and `photo`
- *  here. */
+ *  **THE TWO ACCOUNT EXECUTIVES ARE MAPPED TO THEIR PHOTOGRAPHS BY ORDER, and
+ *  nothing else.** Both arrived on 9 Sep 2026 as pictures plus one job title
+ *  and no names; they shipped for a few hours as `account-executive-01` and
+ *  `-02` rather than as a guess, and the names came separately as a pair. Sara
+ *  Ribeiro takes the first photograph and Erik Gallegos the second because
+ *  that is the order both were sent in. That is an assumption, it is the same
+ *  kind the first five carry, and docs/COPY-REVIEW.md asks for it to be
+ *  confirmed - swapping them is two `photo` values here plus a rename in
+ *  docs/assets/team/ and in `PEOPLE` in scripts/optimize-team-photos.mjs. */
 
 export type Member = {
   name: string;
@@ -90,19 +91,19 @@ export const team: Member[] = [
     photo: "/team/arsenio-renato.webp",
   },
   {
-    // PLACEHOLDER - see the note in the header. Not a person's name.
-    name: "Name to come",
+    name: "Sara Ribeiro",
     role: "Account Executive",
-    // DRAFT - role description, not biography. Unrendered, like all of them.
+    // DRAFT - role description, not biography. Unrendered, like all of them,
+    // and identical to Erik's below because they hold the same seat: two
+    // different sentences would be inventing a difference nobody supplied.
     bio: "Carries mandates day to day, from first investor conversation through to the meetings that move a process forward.",
-    photo: "/team/account-executive-01.webp",
+    photo: "/team/sara-ribeiro.webp",
   },
   {
-    // PLACEHOLDER - see the note in the header. Not a person's name.
-    name: "Name to come",
+    name: "Erik Gallegos",
     role: "Account Executive",
-    // DRAFT - role description, not biography. Unrendered, like all of them.
+    // DRAFT - see the note on Sara's above.
     bio: "Carries mandates day to day, from first investor conversation through to the meetings that move a process forward.",
-    photo: "/team/account-executive-02.webp",
+    photo: "/team/erik-gallegos.webp",
   },
 ];

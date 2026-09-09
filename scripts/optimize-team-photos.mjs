@@ -34,16 +34,21 @@
  *    already matching the set on the three things that took the others four
  *    passes - backdrop, dress and angle - and needed only the crop distance,
  *    below.
- *  - `account-executive-01` and `-02` are the SEVENTH and EIGHTH, supplied the
- *    same way on 9 Sep 2026 (`ChatGPT Image Sep 9, 2026, 11_13_00 AM.png` and
- *    `11_12_07 AM.png`, both 1254x1254). **THEIR SLUGS ARE POSITIONAL BECAUSE
- *    NO NAMES WERE SUPPLIED** - two photographs and one job title, nothing
- *    else - and content/team.ts carries a visible placeholder rather than a
- *    guess. Renaming them when the names arrive means renaming the master,
- *    renaming the entry below, re-running, and updating `photo` and `name` in
- *    content/team.ts. They are the ONLY two entries here whose measured
- *    numbers were enough on their own: both landed inside the set on head
- *    scale as well as on backdrop, dress and angle, so neither takes a `zoom`.
+ *  - `sara-ribeiro` and `erik-gallegos` are the SEVENTH and EIGHTH, supplied
+ *    the same way on 9 Sep 2026 (`ChatGPT Image Sep 9, 2026, 11_13_00 AM.png`
+ *    and `11_12_07 AM.png`, both 1254x1254). They shipped for a few hours as
+ *    `account-executive-01` and `-02`, because the photographs and a job title
+ *    arrived without names and guessing one for a pictured person is the thing
+ *    content/team.ts exists to prevent; the names came separately and the
+ *    slugs were renamed to match. **THE NAME-TO-FACE MAPPING IS BY ORDER** -
+ *    the two names arrived in the order the two photographs did, and nothing
+ *    else ties either name to either face. It is the same kind of assumption
+ *    the first five carry and is flagged in docs/COPY-REVIEW.md for the same
+ *    reason.
+ *
+ *    They are the ONLY two entries here whose measured numbers were enough on
+ *    their own: both landed inside the set on head scale as well as on
+ *    backdrop, dress and angle, so neither takes a `zoom`.
  *
  * **BERNARDO AND BRUNO HAVE EACH BEEN THROUGH THREE GENERATIVE FRAMES**, all
  * on 7 Sep 2026, and the sequence is the useful part rather than the count:
@@ -236,10 +241,9 @@ const PEOPLE = [
   // The two that needed nothing but `faceX`. Both measured on the hair-band
   // centroid, both checked in a contact sheet of all eight: their heads
   // already sit on the others' scale, so there is no `zoom` to add and adding
-  // one would push them past everybody. Slugs are positional - see the note
-  // above.
-  { slug: "account-executive-01", faceX: 0.543 },
-  { slug: "account-executive-02", faceX: 0.507 },
+  // one would push them past everybody.
+  { slug: "sara-ribeiro", faceX: 0.543 },
+  { slug: "erik-gallegos", faceX: 0.507 },
 ];
 
 mkdirSync(OUT_DIR, { recursive: true });

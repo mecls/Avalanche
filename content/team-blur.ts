@@ -19,6 +19,6 @@ export const teamBlur: Record<string, string> = {
   "/team/tatjana-sotirovik.webp": "data:image/webp;base64,UklGRmIAAABXRUJQVlA4IFYAAADQAQCdASoMAA8AA4BaJaQAAq58KMV+AAD+yDmY2DwVFMNFqxl0kBtucRMZIqbjqI2RG/yKuhYS9LqnK+uCaFrruUfRVh50awtVTrYmNLiTlGxqZExgAA==",
   "/team/lucas-barrozo.webp": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADQAQCdASoMAA8AA4BaJaQAAi6YMRHSAAD+1v+LjCH6pXTynx06HG1FY+KaLFh2BblR9gtZS8S/Ba+WAsxTLsI/Z8bcmbaokvq9QHuicBnaMrvVgAA=",
   "/team/arsenio-renato.webp": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADwAQCdASoMAA8AA4BaJaQAAl0jmX8QYAAA/sX7I3aTOk5TF3d8/v7YuEEAF4mL1ClmhB4TpkfwmxDBWSd/IYgB5/R547k3k9exhrxWUabyf6oAAAA=",
-  "/team/account-executive-01.webp": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoMAA8AA4BaJaQAAv93/flLrWAAAP7roshGEOjnuyeC3TfwtA6JUAOVoW9KRaAcPsl7o+6hpXxJRq3/IGbnHg1laofaw7Uf9qZvfA3nwe2Pz1AA",
-  "/team/account-executive-02.webp": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoMAA8AA4BaJaQAAlrvIxNkAAD+66LGMX83cO6TgiYs6GcqgBJl4rXwn+XrMK9gTvqVTRXn44lzYSlqnR/wPtTqr/AAAA=="
+  "/team/sara-ribeiro.webp": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAQAgCdASoMAA8AA4BaJaQAAv93/flLrWAAAP7roshGEOjnuyeC3TfwtA6JUAOVoW9KRaAcPsl7o+6hpXxJRq3/IGbnHg1laofaw7Uf9qZvfA3nwe2Pz1AA",
+  "/team/erik-gallegos.webp": "data:image/webp;base64,UklGRlYAAABXRUJQVlA4IEoAAADQAQCdASoMAA8AA4BaJaQAAlrvIxNkAAD+66LGMX83cO6TgiYs6GcqgBJl4rXwn+XrMK9gTvqVTRXn44lzYSlqnR/wPtTqr/AAAA=="
 };
