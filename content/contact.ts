@@ -1,5 +1,19 @@
 /**
- * /get-in-touch - the qualification questionnaire behind every CTA on the site.
+ * /get-in-touch - the page behind every CTA on the site.
+ *
+ * **THE QUESTIONNAIRE IS NO LONGER RENDERED** (9 Sep 2026, by request). A
+ * LeadConnector booking calendar took the right column, so `eyebrow`, `title`,
+ * `lede` and `asideLabel` are the only strings here still on the page - the
+ * nine questions, their options and the success panel are kept and unmounted
+ * with `components/sections/contact-form.tsx`. Everything below still applies
+ * to them; it just applies to copy that no longer ships.
+ *
+ * **`lede` NOW DESCRIBES THE WRONG PAGE** and is deliberately left alone. It
+ * says "Share your project details and we'll explore if there's a fit", which
+ * was the form; there is nothing to share details on beside a calendar. It is
+ * DRAFT and flagged in docs/COPY-REVIEW.md rather than rewritten here, because
+ * one invented sentence is how a page starts describing itself wrongly in a
+ * second place.
  *
  * EVERY STRING HERE IS DRAFT except the nine questions and their options,
  * which were supplied on 5 September 2026. The order is exactly as given. Three

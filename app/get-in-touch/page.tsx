@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ContactForm } from "@/components/sections/contact-form";
+import { BookingPanel } from "@/components/sections/booking";
 import { Faqs } from "@/components/sections/faqs";
 import { CtaBand } from "@/components/site/cta-band";
 import { contact } from "@/content/contact";
@@ -7,8 +7,12 @@ import { site } from "@/content/copy";
 
 export const metadata: Metadata = {
   title: "Get in touch",
+  // REWRITTEN 9 Sep 2026 with the page. It described the nine-question
+  // qualification form that used to sit here - "Share your raise and we'll
+  // explore if there's a fit. Nine questions on target amount, structure,
+  // timeline and budget." - and the page books a call now.
   description:
-    "Share your raise and we'll explore if there's a fit. Nine questions on target amount, structure, timeline and budget.",
+    "Book an intro call with Avalanche Capital. Pick a time that suits you and we'll take it from there.",
 };
 
 /**
@@ -26,9 +30,22 @@ export const metadata: Metadata = {
  * job is to send people here and it would therefore be a button pointing at
  * the page you are already on. That was overruled (6 Sep 2026): the ending is
  * furniture and the site should not have one page that stops differently.
- * The band takes a `ctaHref` now, and this page passes `#questionnaire`, so
- * its button scrolls back up to the form instead of reloading the route. That
- * is also why the opening section carries an id it otherwise would not need.
+ * The band takes a `ctaHref` now, and this page passes `#book`, so its button
+ * scrolls back up to the calendar instead of reloading the route. That is also
+ * why the opening section carries an id it otherwise would not need. The id
+ * was `#questionnaire` until 9 Sep 2026 and was renamed with the thing it
+ * points at; it was three days old and internal to this page, unlike
+ * `#get-in-touch` on the band, which is kept precisely because it was a live
+ * link.
+ *
+ * **THE RIGHT COLUMN IS A BOOKING CALENDAR, NOT A FORM** (9 Sep 2026, by
+ * request). A LeadConnector widget, supplied as an embed snippet - see
+ * components/sections/booking.tsx for what was added to it and why.
+ * `ContactForm` is kept and unmounted; it was one of the site's five client
+ * components and taking it off the page leaves four rendered. The left column,
+ * the still, both scrims and the grid are untouched, so nothing measured here
+ * had to be re-measured: the type still ends where it did, which is what the
+ * scrim stops were derived against.
  *
  * The FAQ stays where it is, above the band, which is both the homepage's
  * order and what a contact page wants - the questions people ask before
@@ -74,7 +91,7 @@ export default function GetInTouchPage() {
           ruins, and the blown sun flare from the first half of the clip has
           gone - which is what makes white type over the left of it work. */}
       <section
-        id="questionnaire"
+        id="book"
         className="relative isolate -mt-[var(--header-h)] flex min-h-dvh flex-col justify-center overflow-clip bg-ground"
       >
         <div
@@ -161,12 +178,12 @@ export default function GetInTouchPage() {
             </div>
           </div>
 
-          <ContactForm />
+          <BookingPanel />
         </div>
       </section>
 
       <Faqs />
-      <CtaBand ctaHref="#questionnaire" />
+      <CtaBand ctaHref="#book" />
     </>
   );
 }

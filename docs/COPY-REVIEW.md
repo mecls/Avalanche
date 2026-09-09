@@ -443,9 +443,32 @@ say so in words. The file carries a comment so a future reader does not
 
 ---
 
-## /get-in-touch - the questionnaire
+## /get-in-touch - now a booking calendar
 
-**Added 5 September 2026.** Everything is in `content/contact.ts`.
+**THE QUESTIONNAIRE IS OFF THE PAGE as of 9 September 2026, by request.** A
+LeadConnector booking widget was supplied as an embed snippet and took its
+place in the right column: the page books an intro call rather than qualifying
+a raise. The form and all its copy are kept and unmounted, so everything below
+still describes strings that exist - they are just no longer public. That also
+means the sign-off items in this section have stopped being urgent, but not
+that they are settled.
+
+**THREE THINGS THE EMBED RAISES, none of them copy.**
+
+- **It sets a third-party cookie on load**, before anyone interacts with it,
+  and the site has no consent banner. This is the first embed that needs one
+  considered. Not solved in code - flagged here.
+- **The left column's lede no longer matches the page.** It reads *"Every
+  successful raise begins with a conversation. Share your project details and
+  we'll explore if there's a fit."* - which described the form. There is
+  nothing to share details on now; you pick a time. It is DRAFT copy and was
+  left exactly as it is rather than rewritten, because every other line on this
+  site has come from you. **One sentence closes it.**
+- **The page description was rewritten** because it named the nine questions,
+  and a description is invisible on its own page. It now says the page books an
+  intro call.
+
+**Added 5 September 2026.** Everything below is in `content/contact.ts`.
 
 **The nine questions and every one of their options are YOURS** - they are the
 only strings on the new page that are not drafted, and the order is exactly as

@@ -340,10 +340,13 @@ is half right by accident: the serif is gone again, the accent is real.
 
 ## Client components
 
-Five: `nav`, `track-record`, `case-study-grid`, `contact-form` and
-`ui/slide-link`. The first three read EXTERNAL state, which is why the
-`useSyncExternalStore` rule below exists; `contact-form`'s step and answers are
-its own, so plain `useState` is correct there and that rule is not in play.
+Five exist; FOUR RENDER. `nav`, `track-record`, `case-study-grid` and
+`ui/slide-link` are on the site; `contact-form` is kept and unmounted since
+9 Sep 2026, when the booking calendar took its place on /get-in-touch. The
+first three read EXTERNAL state, which is why the `useSyncExternalStore` rule
+below exists; `contact-form`'s step and answers are its own, so plain
+`useState` is correct there and that rule is not in play - which is worth
+keeping straight, because it is the one whose rule was always an exception.
 
 **`slide-link` is the fifth and it holds NO STATE AT ALL** - no `useState`, no
 effect, nothing to hydrate but a click handler. It is the prev/next control of
@@ -527,10 +530,24 @@ untabbable while closed and focus can only reach them through the trigger.
   re-add a `/login` route to have somewhere to point - that was tried for one
   commit and removed (`git show f5117a6`). This nav has now reached the same
   answer twice; the first `LoginPlaceholder` is in `82037e3`.
-- **`components/sections/booking.tsx` is no longer mounted.** The closing band
-  replaced the two-column heading + booking-panel layout with the reference's
-  single-column one; its button goes straight to `site.booking`. Kept, not
-  rendered, like the other unmounted sections.
+- **`components/sections/booking.tsx` IS THE BOOKING CALENDAR AND IT IS
+  MOUNTED AGAIN** (9 Sep 2026, by request). It was a placeholder panel - an
+  icon, a line and a button out to `site.booking` - left unmounted when the
+  closing band went single-column. A LeadConnector embed snippet was supplied
+  and the file's own instructions were followed rather than replaced: swap the
+  panel for the widget, keep the `<noscript>` link. It renders in the right
+  column of /get-in-touch, where `ContactForm` used to be.
+  **Two things were added to the supplied snippet and both matter.** A starting
+  height, because the snippet sets none and `form_embed.js` is what writes one
+  - an iframe with no height falls back to ~150px and `scrolling="no"` means
+  the calendar inside cannot be reached either; `min-h-[760px]` is a floor the
+  script still grows past (measured: it settles at 848px in a 616px column).
+  And `overflow-clip` beside `rounded-lg`, because the thing painting white is
+  a replaced element with square corners of its own and punches through the
+  radius without it.
+  **It sets a third-party cookie on load**, before anyone interacts with it.
+  The site has no consent banner and this is the first embed that needs one
+  considered - see docs/COPY-REVIEW.md.
 - **The `/solutions` media cards are the layout's load-bearing element.** The
   card is `flex:1 0 0` with `aspect-ratio: 1.05098/1`; the ROW takes its height
   from the card and `items-center` centres the text against it, which is why

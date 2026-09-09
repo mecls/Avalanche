@@ -296,7 +296,7 @@ dashes in the ranges - all three listed in `docs/COPY-REVIEW.md`. The count in
 "Question n of 9" is read from the array rather than typed, so the label cannot
 drift from the number of steps.
 
-**IT DOES NOT SUBMIT ANYWHERE YET.** `send()` in
+**IT IS NO LONGER ON THE PAGE** - the booking calendar replaced it on 9 September 2026 - and it never submitted anywhere. `send()` in
 `components/sections/contact-form.tsx` validates, logs and shows the success
 panel, and that is the whole of it - no route handler, no email service, no
 third-party endpoint. That was a deliberate decision: the flow can be seen and
@@ -439,11 +439,11 @@ The figures count up on scroll. Two things there are deliberate and worth not un
 
 ### Unmounted, not deleted
 
-`components/sections/thesis.tsx` ("Why Avalanche") **came back on 7 Sep 2026** and now opens the body of `/about`. It had been unmounted since the homepage dropped it on 1 Sep, kept rather than deleted because the copy is genuine - one of the few blocks here lifted from avalanche-capital.com rather than drafted. Six days of being wrong about that is the argument for the rule: the unmounted blocks are `booking.tsx`, `calendly.tsx` and the `announce` object, and they are all still one merge away from being wanted.
+`components/sections/thesis.tsx` ("Why Avalanche") **came back on 7 Sep 2026** and now opens the body of `/about`. It had been unmounted since the homepage dropped it on 1 Sep, kept rather than deleted because the copy is genuine - one of the few blocks here lifted from avalanche-capital.com rather than drafted. Six days of being wrong about that is the argument for the rule: the unmounted blocks are `calendly.tsx`, `contact-form.tsx` and the `announce` object, and they are all still one merge away from being wanted. `booking.tsx` is the case in point: it sat unmounted for four days carrying written instructions for its own replacement, and on 9 September a supplied embed snippet arrived and those instructions were followed to the letter.
 
 ### Booking is a placeholder
 
-`site.booking` in `content/copy.ts` points at the Fundraisr booking page - live and ours, so it works today. Since `/get-in-touch` exists it is reached from **one place only**: the success panel at the end of the questionnaire, offered to anyone who has just filled the form and would rather book than wait. Nothing else on the site links to a scheduler.
+`site.booking` in `content/copy.ts` points at the Fundraisr booking page - live and ours. Since 9 September 2026 the real scheduler is embedded on `/get-in-touch` instead, so this link survives as the `<noscript>` route out of `components/sections/booking.tsx`: with JavaScript off the iframe loads but nothing resizes it, and the link is what makes the page usable rather than merely present. Nothing else on the site links to a scheduler.
 
 **Swap that one string when the real calendar link arrives.** If the new scheduler is embeddable, replace the panel body and keep the plain link as a fallback.
 
@@ -650,7 +650,7 @@ Full-bleed and image-backed. The background is the **hero poster, not a second v
 
 It carries the same three-layer stack as the hero - image, scrim, grain - for the same reason: one long gradient over a wide box bands without grain to dither it. The scrim is **left-weighted** rather than vertical, because unlike the hero the type sits in a single left column and the right half of the frame can stay open. Verified by compositing the real poster against the real gradient: white clears AA on the worst column at 10.9:1 or better.
 
-`components/sections/booking.tsx` is no longer mounted - the reference's layout is single-column with one button, so the band's button goes straight to `site.booking`.
+`components/sections/booking.tsx` is mounted again as of 9 September 2026, on `/get-in-touch` rather than under the band: it holds the LeadConnector booking widget that replaced the questionnaire. The band itself is still single-column with one button.
 
 ## The logo
 
@@ -793,7 +793,7 @@ already 75% on screen before a pixel is scrolled.
 
 ## Client-side code
 
-There are five client components - `nav`, `track-record`, `case-study-grid`, `contact-form` and `ui/slide-link` - and one rule about the first three: **external state is read with `useSyncExternalStore`, not mirrored into an effect.** `contact-form` is exempt because none of its state is external; see the `/get-in-touch` section above. Scroll offset (`nav`) and `prefers-reduced-motion` (`track-record`) both work that way, with a `false` server snapshot that matches the pre-hydration markup. The nav closes its mobile sheet on route change by adjusting state during render, not in an effect.
+There are five client components and **four of them render** - `nav`, `track-record`, `case-study-grid` and `ui/slide-link`. `contact-form` is kept and unmounted since 9 September 2026, when the booking calendar replaced the questionnaire. One rule about the first three: **external state is read with `useSyncExternalStore`, not mirrored into an effect.** `contact-form` is exempt because none of its state is external; see the `/get-in-touch` section above. Scroll offset (`nav`) and `prefers-reduced-motion` (`track-record`) both work that way, with a `false` server snapshot that matches the pre-hydration markup. The nav closes its mobile sheet on route change by adjusting state during render, not in an effect.
 
 `ui/slide-link` is the fifth and it holds **no state at all** - no `useState`, no effect, nothing to hydrate but a click handler. It is the prev/next and dot control of the homepage case-study carousel, and it exists only because a fragment navigation does not reliably drive a horizontal scroll container: the controls shipped as bare `<a href="#slide-id">` and left the track at `scrollLeft: 0`, while `scrollIntoView` on the same element lands it exactly. Measured, Next moves the track 0 → 1296 and Previous returns it to 0, with the page's own `scrollX`/`scrollY` and the URL untouched. The file's comment has what was ruled out; read it before deleting the island and simplifying back to an anchor. The slides, the pictures and the quotes are all still server-rendered, and the carousel itself is CSS scroll-snap, so swipe and trackpad work with the island absent entirely.
 
